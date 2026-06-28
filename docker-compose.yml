@@ -11,6 +11,9 @@
 # To pin to a specific version instead of :latest, replace the tag
 # with a short commit SHA (visible in the Actions run output).
 # To force re-pulling, run `docker compose pull` before `docker compose up -d`.
+#
+# Environment variables are injected by Hostinger's Environment section.
+# No .env file is used on the server.
 
 services:
   mongodb:
@@ -19,7 +22,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./data/mongodb:/data/db
+      - mongodb_data:/data/db
     healthcheck:
       test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping').ok"]
       interval: 5s
@@ -32,13 +35,11 @@ services:
     container_name: cspl-mysql
     ports:
       - "3306:3306"
-    env_file:
-      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-employee_db}
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
       - ./db/seeds/mysql:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
@@ -57,15 +58,13 @@ services:
         condition: service_healthy
     volumes:
       - ./db/seeds:/seeds:ro
-    env_file:
-      - .env
     environment:
-      MONGO_HOST: ${MONGODB_HOST}
-      MONGO_PORT: ${MONGODB_PORT}
+      MONGO_HOST: ${MONGODB_HOST:-mongodb}
+      MONGO_PORT: ${MONGODB_PORT:-27017}
       MYSQL_HOST: mysql
       MYSQL_PORT: "3306"
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-employee_db}
       SEED_DATA: ${SEED_DATA:-true}
       USERS_JSON: ${USERS_JSON:-[]}
     restart: "no"
@@ -74,62 +73,88 @@ services:
     image: ghcr.io/askamoghb-rgb/ccms-server:latest
     container_name: cspl-server
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-      - "${NETTY_PORT}:${NETTY_PORT}"
-    env_file:
-      - .env
+      - "${SERVER_PORT:-8102}:${SERVER_PORT:-8102}"
+      - "${NETTY_PORT:-9100}:${NETTY_PORT:-9100}"
     environment:
-      SPRING_DATA_MONGODB_HOST: ${MONGODB_HOST}
-      SPRING_DATA_MONGODB_PORT: ${MONGODB_PORT}
-      SPRING_DATA_MONGODB_DATABASE: ${MONGODB_DATABASE}
-      SPRING_DATA_MONGODB_USERNAME: ${MONGODB_USERNAME}
-      SPRING_DATA_MONGODB_PASSWORD: ${MONGODB_PASSWORD}
-      SERVER_LOG_DIR: ${SERVER_LOG_DIR}
+      SERVER_PORT: ${SERVER_PORT:-8102}
+      SERVER_CONTEXT_PATH: ${SERVER_CONTEXT_PATH:-/user}
+      NETTY_PORT: ${NETTY_PORT:-9100}
+      SPRING_DATA_MONGODB_HOST: ${MONGODB_HOST:-mongodb}
+      SPRING_DATA_MONGODB_PORT: ${MONGODB_PORT:-27017}
+      SPRING_DATA_MONGODB_DATABASE: ${MONGODB_DATABASE:-ccms}
+      SPRING_DATA_MONGODB_USERNAME: ${MONGODB_USERNAME:-}
+      SPRING_DATA_MONGODB_PASSWORD: ${MONGODB_PASSWORD:-}
+      SERVER_LOG_DIR: ${SERVER_LOG_DIR:-/home/CCMS/roadmap/logs}
     depends_on:
       mongodb:
         condition: service_healthy
       seed:
         condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:${SERVER_PORT:-8102}/user/push/hafe_open_connections"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     restart: unless-stopped
 
   ccms_ui:
     image: ghcr.io/askamoghb-rgb/ccms-ui:latest
     container_name: cspl-ccms-ui
-    ports:
-      - "${TOMCAT_PORT}:${TOMCAT_PORT}"
+    ports: []
     volumes:
       - ./data/dontdelete:/home/data/dontdelete
-    env_file:
-      - .env
     environment:
-      CATALINA_OPTS: "-Dccms.server.host=${CCMS_SERVER_HOST} -Dmongodb.host=${MONGODB_HOST} -Dmongodb.port=${MONGODB_PORT} -Dmongodb.database=${MONGODB_DATABASE} -Dmysql.database=${MYSQL_DATABASE} -Dmysql.username=root -Dmysql.password=${MYSQL_ROOT_PASSWORD} -Dserver.port=${SERVER_PORT} -Dbackend.http.port=${SERVER_PORT} -Dbackend.http.context=${SERVER_CONTEXT_PATH}"
+      CCMS_SERVER_HOST: ${CCMS_SERVER_HOST:-server}
+      MONGODB_HOST: ${MONGODB_HOST:-mongodb}
+      MONGODB_PORT: ${MONGODB_PORT:-27017}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-ccms}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-}
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-employee_db}
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SERVER_PORT: ${SERVER_PORT:-8102}
+      BACKEND_HTTP_PORT: ${BACKEND_HTTP_PORT:-8102}
+      BACKEND_HTTP_CONTEXT: ${BACKEND_HTTP_CONTEXT:-/user}
     depends_on:
       mongodb:
         condition: service_healthy
       mysql:
         condition: service_healthy
       server:
-        condition: service_started
+        condition: service_healthy
       seed:
         condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/CCMS/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     restart: unless-stopped
 
   nginx:
+    build:
+      context: ./nginx
     image: ghcr.io/askamoghb-rgb/ccms-nginx:latest
     container_name: cspl-nginx
     ports:
       - "80:80"
-      - "443:443"
-    env_file:
-      - .env
     environment:
-      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN}
-      LETSENCRYPT_LIVE_DIR: ${LETSENCRYPT_LIVE_DIR}
-    volumes:
-      - letsencrypt_data:/etc/letsencrypt
+      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:-ccms.example.com}
     depends_on:
-      - ccms_ui
+      ccms_ui:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     restart: unless-stopped
 
 volumes:
-  letsencrypt_data:
+  mongodb_data:
+  mysql_data:

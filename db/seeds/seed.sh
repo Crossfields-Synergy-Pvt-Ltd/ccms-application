@@ -16,6 +16,10 @@ MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}"
 MYSQL_DATABASE="${MYSQL_DATABASE:-employee_db}"
 SEED_DATA="${SEED_DATA:-true}"
 USERS_JSON="${USERS_JSON:-[]}"
+# Strip surrounding single or double quotes if present (defensive —
+# Hostinger or Docker Compose may pass them).
+USERS_JSON="${USERS_JSON#\'}"; USERS_JSON="${USERS_JSON%\'}"
+USERS_JSON="${USERS_JSON#\"}"; USERS_JSON="${USERS_JSON%\"}"
 
 SEEDS_DIR="/seeds"
 MONGO_ARCHIVE="${SEEDS_DIR}/mongo.archive"
