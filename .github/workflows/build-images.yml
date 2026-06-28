@@ -1,0 +1,64 @@
+name: Build and push Docker images
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'docs/**'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  OWNER: askamoghb-rgb
+
+jobs:
+  build:
+    name: Build & push ccms-${{ matrix.name }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: server
+            context: ./SERVER/ccms
+          - name: ccms-ui
+            context: ./CCMS_UI/STARTUP/ccms_ui
+          - name: ccms-nginx
+            context: ./nginx
+          - name: ccms-seed
+            context: ./db/seeds
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract short SHA
+        id: meta
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ghcr.io/${{ env.OWNER }}/ccms-${{ matrix.name }}:latest
+            ghcr.io/${{ env.OWNER }}/ccms-${{ matrix.name }}:${{ steps.meta.outputs.short_sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false

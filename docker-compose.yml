@@ -1,3 +1,17 @@
+# CCMS production stack.
+#
+# Custom images are pulled from GitHub Container Registry (ghcr.io):
+#   - ghcr.io/askamoghb-rgb/ccms-server
+#   - ghcr.io/askamoghb-rgb/ccms-ui
+#   - ghcr.io/askamoghb-rgb/ccms-nginx
+#   - ghcr.io/askamoghb-rgb/ccms-seed
+# These are built and published by .github/workflows/build-images.yml
+# on every push to main.
+#
+# To pin to a specific version instead of :latest, replace the tag
+# with a short commit SHA (visible in the Actions run output).
+# To force re-pulling, run `docker compose pull` before `docker compose up -d`.
+
 services:
   mongodb:
     image: mongo:3.4
@@ -34,8 +48,7 @@ services:
     restart: unless-stopped
 
   seed:
-    build:
-      context: ./db/seeds
+    image: ghcr.io/askamoghb-rgb/ccms-seed:latest
     container_name: cspl-seed
     depends_on:
       mongodb:
@@ -57,8 +70,7 @@ services:
     restart: "no"
 
   server:
-    build:
-      context: ./SERVER/ccms
+    image: ghcr.io/askamoghb-rgb/ccms-server:latest
     container_name: cspl-server
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
@@ -80,8 +92,7 @@ services:
     restart: unless-stopped
 
   ccms_ui:
-    build:
-      context: ./CCMS_UI/STARTUP/ccms_ui
+    image: ghcr.io/askamoghb-rgb/ccms-ui:latest
     container_name: cspl-ccms-ui
     ports:
       - "${TOMCAT_PORT}:${TOMCAT_PORT}"
@@ -103,8 +114,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    build:
-      context: ./nginx
+    image: ghcr.io/askamoghb-rgb/ccms-nginx:latest
     container_name: cspl-nginx
     ports:
       - "80:80"
