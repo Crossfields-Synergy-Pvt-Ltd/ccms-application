@@ -1,0 +1,60 @@
+
+
+<div class="modal-body">
+
+	<h4 align="center">DCU Configurations Sync Details</h4>
+	<table 
+	 class="datatable-1 table table-bordered table-striped display"
+		width="100%">
+		<tbody>
+
+			<thead>
+				<tr class=table_head>
+					<td align="center"><a
+						ng-click="sortType = 'dcu'; sortReverse = !sortReverse">
+							CONFIGURATION NAME <span ng-show="sortType == 'dcu' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'dcu' && sortReverse" class="fa fa-caret-up"></span>
+					</a></td>
+					<td align="center"><a
+						ng-click="sortType = 'request_sent_time'; sortReverse = !sortReverse">
+							REQUEST SENT TIME  <span
+							ng-show="sortType == 'request_sent_time' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'request_sent_time' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center"><a
+						ng-click="sortType = 'last_sync_time'; sortReverse = !sortReverse">
+							LAST SYNC TIME <span
+							ng-show="sortType == 'last_sync_time' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'last_sync_time' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					
+					
+
+					<td align="center"><a>STATUS</a></td>
+
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="obj in listData | orderBy:sortType:sortReverse | filter:searchFish">
+					
+					<td align="center">{{ obj.conf_type }}</td>
+					<td align="center">{{ obj.request_sent_time}}</td>
+					<td align="center">{{ obj.last_sync_time}}</td>
+
+					<td align="center">{{ obj.status}}</td>
+
+					
+				</tr>
+			</tbody>
+		</table>
+			
+
+</div>

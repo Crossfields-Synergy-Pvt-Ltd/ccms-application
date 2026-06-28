@@ -1,0 +1,122 @@
+<div class="col-md-12">
+	<br>
+	<div align="left" style="font-size: 20px; color: #6D7993">NODE
+		information</div>
+	<br>
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-6 " style="padding: 10px">
+				<div class="panel-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+
+							<div class="form-group">
+								<label class="col-md-4" style="marin-right: 10px" align="left">Node
+									id</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="nodeId"
+										id="nodeId" placeholder="Enter NODE id" ng-model="node.nodeid">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 " style="marin-right: 10px" align="left">Type</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="Type" id="Type"
+										placeholder="Enter NODE Type " ng-model="node.type">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 " style="marin-right: 10px" align="left">Sub
+									Type</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" id="subtype"
+										ng-model="node.subtype" placeholder="Enter Sub Type ">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 " style="marin-right: 10px" align="left">Reserved<span
+									class="compulsaryFieldsColor">*</span></label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="Reserved"
+										id="Reserved" placeholder="Enter Reservtion"
+										ng-model="node.reserved">
+								</div>
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-6 " style="padding: 10px">
+				<div class="panel-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+
+							<div class="form-group">
+								<label class="col-md-4 " style="marin-right: 10px" align="left">Slave
+									ID</label>
+								<div class="col-md-6">
+									<input class="form-control " ng-model="node.slaveid"
+										name="Slave" id="Slave" placeholder="Enter Slave ID">
+								</div>
+							</div>
+
+
+
+							<div class="form-group">
+								<label class="col-md-4" style="marin-right: 10px" align="left">IO
+									Channel 1</label>
+								<div class="col-md-6">
+									<input class="form-control" id="IOChannel1" name="IOChannel1"
+										placeholder="Enter IO Channel" ng-model="node.io_channel_1">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4" style="marin-right: 10px" align="left">IO
+									CHANNEL 2</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="iochannel2"
+										id="iochannel2" placeholder="Enter IO channel 2"
+										ng-model="node.io_channel_2">
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4" style="marin-right: 10px" align="left">IO
+									CHANNEL 3</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="iochannel3"
+										id="iochannel3" placeholder="Enter IO channel 3"
+										ng-model="node.io_channel_3">
+								</div>
+
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col-md-12">
+		<br> <br>
+	</div>
+
+	<div align="center">
+		<a type="button" ng-click="update()" class="btn btn-info btn-sm ">Update</a>
+		<a type="button" ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
+	</div>
+</div>

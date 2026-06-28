@@ -1,0 +1,711 @@
+<div class="col-md-12" onload="init();">
+<link href="/vendor/nouislider/nouislider.css"></link>
+	<div class="col-md-12">
+		<div align="left"
+			style="font-size: 30px; color: #c8ea4d; padding-top: 10px">Create
+			Daily Schedule</div>
+	</div>
+	<div class="col-md-12" style="margin-top: 20px">
+		<div class="panel-group">
+			<div class="panel-body" style="padding: 10px">
+				<div class="col-md-12">
+					<div class="col-md-12">
+						<div class="col-md-12">
+							<br>
+						</div>
+						<div class="form-group">
+							<label class="col-md-1 control-label">Schedule Name </label>
+							<div class="col-md-2">
+								<input type="text" class="form-control "
+									placeholder="Enter schedules name"
+									ng-model="schedules.schedules_name"
+									ng-change="MakePristineTrue()">
+							</div>
+						</div>
+
+						<!-- <div class="form-group">
+							<label class="col-md-1 control-label" style="padding-left: 30px">Valid
+								till </label>
+							<div class="col-md-3">
+								<input type="date" class="form-control"
+									ng-model="schedules.valid_till">
+							</div>
+						</div> --> 
+						
+						 <div >
+							<label  class="col-md-1 control-label" style="padding-left: 30px">Valid
+								till</label>
+								<div class="col-md-3"> <input date-range-picker name="daterange6" id="daterange6"
+								class="form-control date-picker" type="text"
+								ng-model="schedules.valid_till"
+								options="{singleDatePicker: true}" required /></div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-4" style="padding-left: 30px">
+								<div class="form-group">
+									<select class="form-control " ng-model="schedules.timezoneid">
+										<option>Dateline Standard Time(UC-12:00)</option>
+										<option>UTC-11(UTC-11:00)</option>
+										<option>Hawaiian Standard Time(UTC-10:00)</option>
+										<option>Alaskan Standard Time(UTC-09:00)</option>
+										<option>Pacific Standard Time (Mexico)(UTC-08:00)</option>
+										<option>Pacific Standard Time(UTC-08:00)</option>
+										<option>US Mountain Standard Time(UTC-07:00)</option>
+										<option>Mountain Standard Time (Mexico)(UTC-07:00)</option>
+										<option>Mountain Standard Time(UTC-07:00)</option>
+										<option>Central America Standard Time(UTC-06:00)</option>
+										<option>Central Standard Time(UTC-06:00)</option>
+										<option>Central Standard Time (Mexico)(UTC-06:00)</option>
+										<option>Canada Central Standard Time(UTC-06:00)</option>
+										<option>SA Pacific Standard Time(UTC-05:00)</option>
+										<option>Eastern Standard Time(UTC-05:00)</option>
+										<option>US Eastern Standard Time(UTC-05:00)</option>
+										<option>Venezuela Standard Time(UTC-04:00)</option>
+										<option>Paraguay Standard Time(UTC-04:00)</option>
+										<option>Atlantic Standard Time(UTC-04:00)</option>
+										<option>Central Brazilian Standard Time(UTC-04:00)</option>
+										<option>SA Western Standard Time(UTC-04:00)</option>
+										<option>Pacific SA Standard Time(UTC-04:00)</option>
+										<option>Newfoundland Standard Time(UTC-03:30)</option>
+										<option>E. South America Standard Time(UTC-03:00)</option>
+										<option>Argentina Standard Time(UTC-03:00)</option>
+										<option>SA Eastern Standard Time(UTC-03:00)</option>
+										<option>Greenland Standard Time(UTC-03:00)</option>
+										<option>Montevideo Standard Time(UTC-03:00)</option>
+										<option>Bahia Standard Time(UTC-03:00)</option>
+										<option>UTC-02(UTC-02:00)</option>
+										<option>Mid-Atlantic Standard Time(UTC-02:00)</option>
+										<option>Azores Standard Time(UTC-01:00)</option>
+										<option>Cape Verde Standard Time(UTC-01:00)</option>
+										<option>Morocco Standard Time(UTC+00:00)</option>
+										<option>UTC</option>
+										<option>GMT Standard Time(UTC+00:00)</option>
+										<option>Greenwich Standard Time(UTC+00:00)</option>
+										<option>W. Europe Standard Time(UTC+01:00)</option>
+										<option>Central Europe Standard Time(UTC+01:00)</option>
+										<option>Romance Standard Time(UTC+01:00)</option>
+										<option>Central European Standard Time(UTC+01:00)</option>
+										<option>W. Central Africa Standard Time(UTC+01:00)</option>
+										<option>Namibia Standard Time(UTC+02:00)</option>
+										<option>GTB Standard Time(UTC+02:00)</option>
+										<option>Middle East Standard Time(UTC+02:00)</option>
+										<option>Egypt Standard Time(UTC+02:00)</option>
+										<option>Syria Standard Time(UTC+02:00)</option>
+										<option>E. Europe Standard Time(UTC+02:00)</option>
+										<option>South Africa Standard Time(UTC+02:00)</option>
+										<option>FLE Standard Time(UTC+02:00)</option>
+										<option>Turkey Standard Time(UTC+03:00)</option>
+										<option>Israel Standard Time(UTC+02:00)</option>
+										<option>Libya Standard Time(UTC+02:00)</option>
+										<option>Jordan Standard Time(UTC+02:00)</option>
+										<option>Arabic Standard Time(UTC+03:00)</option>
+										<option>Kaliningrad Standard Time(UTC+02:00)</option>
+										<option>Arab Standard Time(UTC+03:00)</option>
+										<option>E. Africa Standard Time(UTC+03:00)</option>
+										<option>Iran Standard Time(UTC+03:30)</option>
+										<option>Arabian Standard Time(UTC+04:00)</option>
+										<option>Azerbaijan Standard Time(UTC+04:00)</option>
+										<option>Russian Standard Time(UTC+03:00)</option>
+										<option>Mauritius Standard Time(UTC+04:00)</option>
+										<option>Georgian Standard Time(UTC+04:00)</option>
+										<option>Caucasus Standard Time(UTC+04:00)</option>
+										<option>Afghanistan Standard Time(UTC+04:30)</option>
+										<option>West Asia Standard Time(UTC+05:00)</option>
+										<option>Pakistan Standard Time(UTC+05:00)</option>
+										<option>India Standard Time(UTC+05:30)</option>
+										<option>Sri Lanka Standard Time(UTC+05:30)</option>
+										<option>Nepal Standard Time(UTC+05:45)</option>
+										<option>Central Asia Standard Time(UTC+06:00)</option>
+										<option>Bangladesh Standard Time(UTC+06:00)</option>
+										<option>Ekaterinburg Standard Time(UTC+05:00)</option>
+										<option>Myanmar Standard Time(UTC+06:30)</option>
+										<option>SE Asia Standard Time(UTC+07:00)</option>
+										<option>N. Central Asia Standard Time(UTC+07:00)</option>
+										<option>China Standard Time(UTC+08:00)</option>
+										<option>Time(UTC+07:00)</option>
+										<option>Singapore Standard Time(UTC+08:00)</option>
+										<option>W. Australia Standard Time(UTC+08:00)</option>
+										<option>Taipei Standard Time(UTC+08:00)</option>
+										<option>Ulaanbaatar Standard Time(UTC+08:00)</option>
+										<option>North Asia East Standard Time(UTC+08:00)</option>
+										<option>Tokyo Standard Time(UTC+09:00)</option>
+										<option>Korea Standard Time(UTC+09:00)</option>
+										<option>Cen. Australia Standard Time(UTC+09:30)</option>
+										<option>AUS Central Standard Time(UTC+09:30)</option>
+										<option>E. Australia Standard Time(UTC+10:00)</option>
+										<option>AUS Eastern Standard Time(UTC+10:00)</option>
+										<option>West Pacific Standard Time(UTC+10:00)</option>
+										<option>Tasmania Standard Time(UTC+10:00)</option>
+										<option>Yakutsk Standard Time(UTC+09:00)</option>
+										<option>Central Pacific Standard Time(UTC+11:00)</option>
+										<option>Vladivostok Standard Time(UTC+10:00)</option>
+										<option>New Zealand Standard Time(UTC+12:00)</option>
+										<option>UTC+12(UTC+12:00)</option>
+										<option>Fiji Standard Time(UTC+12:00)</option>
+										<option>Magadan Standard Time(UTC+11:00)</option>
+										<option>Kamchatka Standard Time(UTC+12:00)</option>
+										<option>Tonga Standard Time(UTC+13:00)</option>
+										<option>Samoa Standard Time(UTC+13:00)</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12" style="margin-top: 30px">
+						<div class="col-md-12">
+							<br>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label formTextWeight">Mater
+								data interval collection : </label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" name="mater data"
+									id="SerialNumber" ng-model="schedules.data_interval_collection"
+									required="required">
+							</div>
+						</div>
+
+						<div class="col-sm-3" style="padding-left: 30px;">
+							<label style="font-size: 15px; height: 15px">Enable fault
+								detection for lights:</label>
+							<md-checkbox ng-model="schedules.enable_fault_detection"
+								ng-click="enable_fault_detection"></md-checkbox>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label formTextWeight">
+								Fault data collection interval:</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" min="1" max="1440"
+									ng-disabled="schedules.enable_fault_detection==false"
+									ng-model="schedules.fault_detection" disabled="disabled">
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-12" style="margin-top: 30px">
+						<div class="col-sm-4">
+							<label>Set schedule as default schedule</label>
+							<md-checkbox
+								ng-model="schedules.set_schedule_as_default_schedule"
+								ng-click="set_schedule_as_default_schedule"></md-checkbox>
+						</div>
+					</div>
+					<hr>
+					<div class="col-md-12">
+						<div id="slider-range" style="width: 100%; margin-top: 45px; color:#c8ea4d"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12 " style="padding-top: 30px">
+		<div class="panel-body">
+			<div class="col-md-12 ">
+				<div class="col-md-3 " style="margin-right: 10px"
+					ng-click="showhide" ng-show="time_slot_1" ng-checked="handle_0_val == 1">
+					<div>
+						<div class="panel panel-primary" >
+							<div class="panel-heading" style="padding-bottom: 20px;">
+								<div class="col-xs-12 ">
+									<div class="col-xs-6">
+										Time: <input id="handle_0_val" ng-model="schedules.handle_0_time" name="handle_0_val" type="text"
+											value="1234" style="background: #c8ea4d; border: 10px;"
+											readonly="readonly" />
+									</div>
+									<div class="col-xs-6" align="right">
+										<md-icon class="material-icons" 
+											data-toggle="tooltip" title="Delete"
+											style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body" style="padding-top: 10px; margin: 10px;">
+								<div class="col-md-12">
+									<div class="btn-group col-xs-6">
+											<a type="button"
+												class="btn btn-info btn-sm" handle_0_schedule_on= "false"
+												 ng-model="schedules.handle_0_status" ng-click="scheduleone('ON');"> ON</a>
+												 
+												<a type="button" ng-click="scheduleone('OFF');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_0_status"> OFF</a>
+												
+												<a type="button" ng-click="scheduleone('DIM');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_0_status"> DIM</a>
+									</div>
+										<div class="col-sm-2"></div>
+									<div class="col-md-4" align="right">
+										<input type="text" class="form-control  name=" mater
+											data" id="SerialNumber"
+											ng-model="schedules.schedul_0_dim_value">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<br>
+								</div>
+								<div class="col-sm-12">
+									<md-checkbox ng-model="schedules.handle_0_apply_sunrise_sunset">
+									&nbsp;&nbsp;&nbsp;&nbsp;<label
+										style="font-size: 15px; height: 10px">Apply sunrise /
+										sunset offset.</label>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-6">
+										<div class="custom-control custom-radio">
+											<input type="radio" class="custom-control-input" id="sunrise"
+												name="sunrise1" ng-model="schedules.handle_0_sunrise"
+												ng-disabled="schedules.handle_0_apply_sunrise_sunset==false">
+											<label class="custom-control-label"
+												for="defaultUncheckedDisabled1"
+												style="font-size: 15px; height: 10px">Sunrise</label>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="custom-control custom-radio">
+											<input type="radio" class="custom-control-input" id="sunset"
+												name="sunrise1" ng-model="schedules.handle_0_sunset"
+												ng-disabled="schedules.handle_0_apply_sunrise_sunset==false">
+											<label class="custom-control-label"
+												for="defaultUncheckedDisabled1"
+												style="font-size: 15px; height: 10px">Sunset</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<br>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label formTextWeight">
+										Offset:</label>
+									<div class="col-md-4">
+										<input type="text" class="form-control"
+											ng-model="schedules.handle_0_sunset_offset"
+											ng-disabled="schedules.handle_0_apply_sunrise_sunset==false">
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<br>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3 " style="margin-right: 10px"
+					ng-click="showhide" ng-show="time_slot_2" ng-checked="handle_1_val == 1">
+					<div class="panel panel-primary">
+						<div class="panel-heading" style="padding-bottom: 20px">
+							<div class="col-xs-12 ">
+								<div class="col-xs-6 " align="left">
+									Time: <input id="handle_1_val" ng-model="schedules.handle_1_time" name="handle_1_val" type="text"
+										value="1234" readonly="readonly"
+										/  style="background: #c8ea4d; border: 10px">
+								</div>
+								<div class="col-xs-6 " align="right">
+
+									<md-icon class="material-icons" 
+										data-toggle="tooltip" title="Delete"
+										style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body" style="padding-top: 10px; margin: 10px;">
+							<div class="col-md-12">
+								<div class="btn-group col-xs-6">
+											<a type="button"
+												class="btn btn-info btn-sm" handle_0_schedule_on= "false"
+												 ng-model="schedules.handle_1_status" ng-click="scheduletwo('ON');"> ON</a>
+												 
+												<a type="button" ng-click="scheduletwo('OFF');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_1_status"> OFF</a>
+												
+												<a type="button" ng-click="scheduletwo('DIM');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_1_status"> DIM</a>
+									</div>
+										<div class="col-sm-2"></div>
+								<div class="col-md-4" align="right">
+									<input type="text" class="form-control  name=" mater
+										data" id="SerialNumber"
+										ng-model="schedules.schedul_1_dim_value">
+								</div>
+							</div>
+
+							<div class="col-sm-12">
+								<br>
+							</div>
+							<div class="col-sm-12">
+								<md-checkbox ng-model="schedules.handle_1_apply_sunrise_sunset">
+								&nbsp;&nbsp;&nbsp;&nbsp;<label
+									style="font-size: 15px; height: 10px">Apply sunrise /
+									sunset offset.</label>
+							</div>
+							<div
+								ng-class="{'unclickable': obj.handle_1_apply_sunrise_sunset==false}"
+								class="unclickable">
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunrise"
+											name="sunrise" ng-model="schedules.handle_1_sunrise"
+											ng-disabled="schedules.handle_1_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunrise</label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunset"
+											name="sunrise" ng-model="schedules.handle_1_sunset"
+											ng-disabled="schedules.handle_1_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunset</label>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<br>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-2 control-label formTextWeight">
+											Offset:</label>
+										<div class="col-md-4">
+											<input type="text" class="form-control"
+												ng-model="schedules.handle_1_sunrise_offset"
+												ng-disabled="schedules.handle_1_apply_sunrise_sunset==false"
+												ng-disabled="disable">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3 " style="margin-right: 10px"
+					ng-click="showhide" ng-show="time_slot_3" ng-checked="handle_2_val == 1">
+
+					<div class="panel panel-primary">
+						<div class="panel-heading" style="padding-bottom: 20px">
+							<div class="col-xs-12 ">
+								<div class="col-xs-6 " align="left">
+									Time: <input id="handle_2_val" ng-model="schedules.handle_2_time" name="handle_2_val" type="text"
+										value="1234" readonly="readonly"
+										/  style="background: #c8ea4d; border: 10px">
+								</div>
+								<div class="col-xs-6 " align="right">
+
+									<md-icon class="material-icons" ng-click="remove_handle();"
+										data-toggle="tooltip" title="Delete"
+										style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body" style="padding-top: 10px; margin: 10px;">
+							<div class="col-md-12">
+								<div class="col-xs-6">
+									<div class="btn-group col-xs-6">
+											<a type="button"
+												class="btn btn-info btn-sm" handle_0_schedule_on= "false"
+												 ng-model="schedules.handle_2_status" ng-click="schedulethree('ON');"> ON</a>
+												 
+												<a type="button" ng-click="schedulethree('OFF');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_2_status"> OFF</a>
+												
+												<a type="button" ng-click="schedulethree('DIM');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_2_status"> DIM</a>
+									</div>
+								</div>
+									<div class="col-sm-2"></div>
+								<div class="col-md-4" align="right">
+									<input type="text" class="form-control  name=" mater
+										data" id="SerialNumber"
+										ng-model="schedules.schedul_2_dim_value">
+								</div>
+							</div>
+
+							<div class="col-sm-12">
+								<br>
+							</div>
+							<div class="col-sm-12">
+								<md-checkbox ng-model="schedules.handle_2_apply_sunrise_sunset">
+								&nbsp;&nbsp;&nbsp;&nbsp;<label
+									style="font-size: 15px; height: 10px">Apply sunrise /
+									sunset offset.</label>
+							</div>
+							<div
+								ng-class="{'unclickable': obj.handle_2_apply_sunrise_sunset==false}"
+								class="unclickable">
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunrise"
+											name="sunrise" ng-model="schedules.handle_2_sunrise"
+											ng-disabled="schedules.handle_2_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunrise</label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunset"
+											name="sunrise" ng-model="schedules.handle_2_sunset"
+											ng-disabled="schedules.handle_2_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunset</label>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<br>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-2 control-label formTextWeight">
+											Offset:</label>
+										<div class="col-md-4">
+											<input type="text" class="form-control"
+												ng-model="schedules.handle__sunrise_offset"
+												ng-disabled="schedules.handle_2_apply_sunrise_sunset==false"
+												ng-disabled="disable">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-12 " style="padding-top: 30px">
+		<div class="panel-body">
+			<div class="col-md-12 ">
+
+				<div class="col-md-3 " style="margin-right: 10px"
+					ng-click="showhide" ng-show="time_slot_4" ng-checked="handle_3_val == 1">
+
+					<div class="panel panel-primary">
+						<div class="panel-heading" style="padding-bottom: 20px">
+							<div class="col-xs-12 ">
+								<div class="col-xs-6 " align="left">
+									Time: <input id="handle_3_val" ng-model="schedules.handle_3_time" name="handle_3_val" type="text"
+										value="1234" readonly="readonly"
+										/  style="background: #c8ea4d; border: 10px">
+								</div>
+								<div class="col-xs-6 " align="right">
+
+									<md-icon class="material-icons" ng-click="remove_handle();"
+										data-toggle="tooltip" title="Delete"
+										ng-click="remove_handle();"
+										style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+								</div>
+							</div>
+
+						</div>
+						<div class="panel-body" style="padding-top: 10px; margin: 10px;">
+							<div class="col-md-12">
+								<div class="btn-group col-xs-6">
+											<a type="button"
+												class="btn btn-info btn-sm" handle_0_schedule_on= "false"
+												 ng-model="schedules.handle_3_status" ng-click="schedulefour('ON');"> ON</a>
+												 
+												<a type="button" ng-click="schedulefour('OFF');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_3_status"> OFF</a>
+												
+												<a type="button" ng-click="schedulefour('DIM');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_3_status"> DIM</a>
+									</div>
+										<div class="col-sm-2"></div>
+								<div class="col-md-4" align="right">
+									<input type="text" class="form-control  name=" mater
+										data" id="SerialNumber"
+										ng-model="schedules.schedul_3_dim_value">
+								</div>
+							</div>
+
+							<div class="col-sm-12">
+								<br>
+							</div>
+							<div class="col-sm-12">
+								<md-checkbox ng-model="schedules.handle_3_apply_sunrise_sunset">
+								&nbsp;&nbsp;&nbsp;&nbsp;<label
+									style="font-size: 15px; height: 10px">Apply sunrise /
+									sunset offset.</label>
+							</div>
+							<div
+								ng-class="{'unclickable': obj.handle_3_apply_sunrise_sunset==false}"
+								class="unclickable">
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunrise"
+											name="sunrise" ng-model="schedules.handle_3_sunrise"
+											ng-disabled="schedules.handle_3_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunrise</label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunset"
+											name="sunrise" ng-model="schedules.handle_3_sunset"
+											ng-disabled="schedules.handle_3_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunset</label>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<br>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-2 control-label formTextWeight">
+											Offset:</label>
+										<div class="col-md-4">
+											<input type="text" class="form-control"
+												ng-model="schedules.handle_3_sunrise_offset"
+												ng-disabled="schedules.handle_3_apply_sunrise_sunset==false"
+												ng-disabled="disable">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-3 " style="margin-right: 10px"
+					ng-click="showhide" ng-show="time_slot_5" ng-checked="handle_4_val == 1">
+					<div class="panel panel-primary">
+						<div class="panel-heading" style="padding-bottom: 20px">
+							<div class="col-xs-12 ">
+								<div class="col-xs-6 " align="left">
+									Time: <input id="handle_4_val"  ng-model="schedules.handle_4_time" name="handle_4_val" type="text"
+										value="1234" readonly="readonly"
+										/  style="background: #c8ea4d; border: 10px">
+								</div>
+								<div class="col-xs-6 " align="right">
+
+									<md-icon class="material-icons" ng-click="remove_handle();"
+										data-toggle="tooltip" title="Delete"
+										style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+								</div>
+							</div>
+
+						</div>
+						<div class="panel-body" style="padding-top: 10px; margin: 10px;">
+							<div class="col-md-12">
+								<div class="btn-group col-xs-6">
+											<a type="button"
+												class="btn btn-info btn-sm" 
+												 ng-model="schedules.handle_4_status" ng-click="schedulefive('ON');"> ON</a>
+												 
+												<a type="button" ng-click="schedulefive('OFF');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_4_status"> OFF</a>
+												
+												<a type="button" ng-click="schedulefive('DIM');"
+												class="btn btn-info btn-sm" ng-model="schedules.handle_4_status"> DIM</a>
+									</div>
+										<div class="col-sm-2"></div>
+								<div class="col-md-4" align="right">
+									<input type="text" class="form-control  name=" mater
+										data" id="SerialNumber"
+										ng-model="schedules.schedul_4_dim_value">
+								</div>
+							</div>
+
+							<div class="col-sm-12">
+								<br>
+							</div>
+							<div class="col-sm-12">
+								<md-checkbox ng-model="schedules.handle_4_apply_sunrise_sunset">
+								&nbsp;&nbsp;&nbsp;&nbsp;<label
+									style="font-size: 15px; height: 10px">Apply sunrise /
+									sunset offset.</label>
+							</div>
+							<div
+								ng-class="{'unclickable': obj.handle_4_apply_sunrise_sunset==false}"
+								class="unclickable">
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunrise"
+											name="sunrise" ng-model="schedules.handle_4_sunrise"
+											ng-disabled="schedules.handle_4_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunrise</label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="custom-control custom-radio">
+										<input type="radio" class="custom-control-input" id="sunset"
+											name="sunrise" ng-model="schedules.handle_4_sunset"
+											ng-disabled="schedules.handle_4_apply_sunrise_sunset==false"
+											ng-disabled="disable"> <label
+											class="custom-control-label" for="defaultUncheckedDisabled2"
+											style="font-size: 15px; height: 10px">Sunset</label>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<br>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-2 control-label formTextWeight">
+											Offset:</label>
+										<div class="col-md-4">
+											<input type="text" class="form-control"
+												ng-model="schedules.handle_4_sunrise_offset"
+												ng-disabled="schedules.handle_4_apply_sunrise_sunset==false"
+												ng-disabled="disable">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-12 " align="left">
+		<a type="button" class="btn btn-info btn-sm" ng-click="add_handle();">Add
+			action</a>
+	</div>
+
+	<div class="col-md-12">
+		<br> <br>
+	</div>
+
+	<div class="col-md-12">
+		<div align="center">
+		<a type="button" ng-click="update(schedules.scheduleId)" class="btn btn-info btn-sm ">Update</a>
+		<a type="button" ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
+	</div>
+	</div>
+

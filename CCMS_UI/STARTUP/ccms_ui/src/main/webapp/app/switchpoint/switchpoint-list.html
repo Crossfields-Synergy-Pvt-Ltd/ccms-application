@@ -1,0 +1,344 @@
+<div class="col-md-12">
+	<div class="col-md-12">
+		<div class="col-md-4">
+			<h3 class=heading>&nbsp;&nbsp;&nbsp; SWITCH POINT INFORMATION</h3>
+
+		</div>
+
+		<div class="col-md-8">
+
+			<!-- 				<div loading-indicator class="waiting-box"> -->
+			<!-- 					<span><img -->
+			<!-- 						src="images/waiting.gif" /></span> -->
+			<!-- 				</div> -->
+		</div>
+
+	</div>
+
+	<div class="col-sm-12">
+		<div class="form-group">
+			<label class="col-md-1">Switch Point</label>
+			<div class="col-md-3">
+				<ui-select tagging tagging-label="('new')"
+					ng-model="selected_dcu.name" style="width: 150px;"
+					theme="bootstrap" title="Choose a DCU"> <ui-select-match
+					theme="bootstrap" placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices
+					repeat="selected_dcu in dcu_data | filter: $select.search"
+					position='down'>
+				<div ng-bind-html="selected_dcu.name | highlight: $select.search"></div>
+				</ui-select-choices> </ui-select>
+			</div>
+		</div>
+
+
+		<div class="col-sm-1">
+			<a type="button"
+				ng-click="view()"
+				class="btn btn-info btn-sm" ng-model="searchFish"
+				data-toggle="tooltip" title="Click here to filter the records">View</a>
+		</div>
+
+	</div>
+
+	<div class="col-md-12" style="margin-top: 10px">
+		<div class="panel panel-primary">
+
+			<div class="panel-heading" style="padding: 10px">
+				<div class="col-md-6">
+					<label><a>{{obj.device_name}}({{obj.id}})</a></label>
+					<md-icon class="material-icons"
+						ng-click="modifydcu(obj.dcu_details)" data-toggle="tooltip"
+						title="Update DCU Details" style="color:#ffffff"font-size: 20px; height: 20px">edit</md-icon>
+				</div>
+
+
+				<div class="col-md-6" align="right">
+					<i
+						class="fa fa-signal headerIcons  connectivity changeCursorPointer connected"></i>
+				</div>
+				<br>
+			</div>
+
+			<div class="panel-body">
+
+				<div class="col-md-12" style="padding: 20px">
+					<br>
+					<div class="col-md-3" style="padding-right: 20px">
+
+						<div class="panel panel-primary" style="padding: 10px">
+							<div align="center">
+								<b>Meter Data</b>
+							</div>
+							<div class="panel-body" style="padding: 25px">
+
+								<br>
+								<div class="row">
+									<div class=" col-md-6 ">
+										<br> Light
+									</div>
+									<a type="button" ng-click="lighton">
+										<div ng-if="obj.dcu_details.light_status == 1">
+											<img src='images/lighton.png'>
+										</div>
+										<div ng-if="obj.dcu_details.light_status == 0">
+											<img src='images/lightoff.png'>
+										</div></a>
+										<div class="col-sm-10" align="right">R-Phase</div>
+								</div>
+								<br>
+								<div class="row">
+
+									<div class=" col-md-5 ">Current (A)</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.current_line_1}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5">Voltage (A)</div>
+									<div class="col-md-4">
+										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.r_phase_voltage}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5 ">PF</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.pf_1}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5 ">Cumulative(kWh)</div>
+									<div class="col-md-4">
+										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.kwh_total}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5 ">Phase Power (kW)</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.r_phase_voltage}}</button>
+									</div>
+								</div>
+
+
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3" style="padding-right: 20px">
+						<div class="panel panel-primary" style="padding: 10px">
+							<div align="center">
+								<b>Configuration</b>
+							</div>
+							<div class="panel-body" style="padding: 25px">
+								<br>
+								<div class="row  vcenter">
+									<div class=" col-md-5">Lower current threshold (A)</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">0.02{{obj.dcu_configurations.phase_2_current_min}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row  vcenter">
+									<div class=" col-md-5 ">Higher current threshold (A)</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">5{{obj.dcu_configurations.phase_3_current_min}}</button>
+									</div>
+								</div>
+								<br>
+
+								<div class="row ">
+									<div class=" col-md-5">Lower voltage threshold (V)</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo" style="width: 90px">150{{obj.dcu_configurations.phase_2_voltage_min}}</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5 ">Higher voltage threshold (V)</div>
+									<div class="col-md-4">
+										<button type="button" class="mdinfo" style="width: 90px">260{{obj.dcu_configurations.phase_3_voltage_min}}</button>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+						<div class="panel panel-primary" style="padding: 20px">
+							<div align="center">
+								<b>Schedule configuration</b>
+							</div>
+							<div class="panel-body" style="padding: 25px">
+								<br>
+								<div class="row  vcenter">
+									<div class=" col-md-5 ">Schedule ON</div>
+									<div class="col-md-4  ">
+										<button type="button" class="mdinfo" style="width: 90px">18:00</button>
+									</div>
+								</div>
+								<br>
+								<div class="row  ">
+									<div class=" col-md-5 ">Schedule OFF</div>
+									<div class="col-md-4  text-center">
+										<button type="button" class="mdinfo" style="width: 90px">6:00</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3" style="padding-right: 20px">
+						<div class="panel panel-primary" style="padding: 10px">
+							<div align="center">
+								<b>Connected Load</b>
+							</div>
+							<div class="panel-body" style="padding: 25px">
+								<br>
+								<div class="row  vcenter">
+									<div class=" col-md-5 ">Wattage</div>
+									<div class="col-md-4  " style="margin-left: 50px">count
+									</div>
+								</div>
+								<br> <label class="md">Calibration file not present</label>
+								<div class=" col-md-12">
+									<br>
+								</div>
+
+								<div class=" col-md-10"></div>
+								<div class="row ">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										Working lights</div>
+
+									<div class="col-md-4">
+										<button type="button" class="mdinfo" style="width: 90px">N/A</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										Less load (kW)</div>
+									<div class="col-md-4  ">
+										<button type="button" class="mdinfo" style="width: 90px">N/A</button>
+									</div>
+								</div>
+
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="panel panel-primary" style="padding: 10px">
+							<div align="center">
+								<b>Alerts</b>
+							</div>
+							<div class="panel-body" style="padding: 20px">
+								<br>
+								<div class="row  vcenter">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										Overload</div>
+									<div class="col-md-4  ">
+										<button type="button" class="mdinfo">No</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										Voltage</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo">In range</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5">Contactor failure</div>
+									<div class="col-md-4  ">
+										<button class="mdinfo" style="background-color: #cc0000;"
+											ng-if="obj.dcu_details.cnt_status == 1">
+											<label style="color: #fff;">Occured</label>
+										</button>
+
+										<button class="mdinfo" ng-if="obj.dcu_details.cnt_status == 0">
+											<label>No</label>
+										</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5">Input power supply</div>
+									<div class="col-md-4  text-center">
+										<button type="button" class="mdinfo">Present</button>
+									</div>
+								</div>
+								<br>
+								<div class="row ">
+									<div class=" col-md-5">MCB</div>
+									<div class="col-md-4  text-center">
+										<button class="mdinfo"
+											style="background-color: #cc0000;"
+											ng-if="obj.dcu_details.mcb_trip == 1">
+											<label style="color:#fff;"> Occurred</label>
+										</button>
+										<button  class="mdinfo" ng-if="obj.dcu_details.mcb_trip == 0">
+											<label > Resolved</label>
+										</button>
+									</div>
+								</div>
+								<br>
+
+								<div class="row">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										outputsupply</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo">Present</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
+										RTU</div>
+									<div class="col-md-4 ">
+										<button type="button" class="mdinfo">On Mains</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class=" col-md-5">Door</div>
+									<div class="col-md-4  ">
+										<button class="mdinfo" style="background-color: #cc0000;"
+											ng-if="obj.dcu_details.door_status == 1">
+											<label style="color: #fff">Open</label>
+										</button>
+										<button class="mdinfo"
+											ng-if="obj.dcu_details.door_status == 0">
+											<label >Closed</label>
+										</button>
+									</div>
+								</div>
+								<br>
+								<div class="row  ">
+									<div class=" col-md-5">Surge protector</div>
+									<div class="col-md-4 ">
+										<button class="mdinfo"
+											style="background-color: #cc0000; color: #ffffff;"
+											ng-if="obj.dcu_details.spd_status == 1">
+											<label style="color: #fff;">Not Working</label>
+										</button>
+										<button class="mdinfo" ng-if="obj.dcu_details.spd_status == 0">
+											<label >Working</label>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 			</div> -->
+			</div>
+		</div>
+	</div>

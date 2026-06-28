@@ -1,0 +1,423 @@
+<section id="brand" class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-12">
+			<div class="col-sm-4">
+				<h3 class=heading>&nbsp;&nbsp;&nbsp; MONITOR AND CONTROL (
+					{{count_stats.total_devices}} )</h3>
+			</div>
+
+
+			<div class="col-sm-2"></div>
+			<div class="col-sm-2" style="padding-top: 20px">
+				<!-- 	<md-checkbox ng-model="user.subscription_event"> Auto
+				update</md-checkbox>
+				<br> -->
+			</div>
+
+			<div class="col-sm-2" style="padding-top: 20px">
+				<md-checkbox ng-model="checked"> Show more information</md-checkbox>
+			</div>
+			<div class="col-sm-2">
+
+				<div align="center" style="margin-top: 13px">
+					<a type="button" ng-click="login();" class="btn btn-info btn-sm">&nbsp;Refresh&nbsp;</a>
+				</div>
+
+
+
+			</div>
+		</div>
+		<hr>
+	</div>
+
+
+	<div class="col-sm-12">
+		<!-- 			<div class="panel panel-primary"> -->
+		<div class="panel-body" style="padding: 20px">
+			<table class="monitor table-bordered">
+
+				<thead>
+					<tr class=monitor_table_head>
+
+						<td align="center"><md-checkbox ng-model="mcbtrip_check"
+								style="background-color:#ffffff"></md-checkbox> <label
+							class=monitor_table_head>MCB Trip</label></td>
+
+
+						<td align="center"><md-checkbox
+								ng-model="contactorfailure_check"></md-checkbox> <label
+							class=monitor_table_head>Contactor Failure</label></td>
+
+						<td align="center"><md-checkbox
+								ng-model="mainssupplyoff_check"> </md-checkbox> <label
+							class=monitor_table_head>Mains Supply Off</label></td>
+						<td align="center"><md-checkbox ng-model="dooropen_check"></md-checkbox>
+							<label class=monitor_table_head>Door Open</label></td>
+						<td align="center"><md-checkbox ng-model="spdfailure_check"></md-checkbox>
+							<label class=monitor_table_head>SPD Failure</label></td>
+
+						<td align="center"><md-checkbox ng-model="nooutput_check"></md-checkbox>
+							<label class=monitor_table_head>No Output</label></td>
+
+						<td align="center"><md-checkbox ng-model="manualmode_check"></md-checkbox>
+							<label class=monitor_table_head>Manual Mode</label></td>
+
+						<td align="center"><md-checkbox ng-model="no_check"></md-checkbox>
+							<label class=monitor_table_head>ON</label></td>
+
+
+						<td align="center"><md-checkbox ng-model="off_check"></md-checkbox>
+							<label class=monitor_table_head>OFF</label></td>
+
+
+						<td align="center"><md-checkbox
+								ng-model="goodgprsconnectivity_check"></md-checkbox> <label
+							class=monitor_table_head>Good GPRS </label></td>
+
+
+						<td align="center"><md-checkbox
+								ng-model="poorgprsconnectivity_check"></md-checkbox> <label
+							class=monitor_table_head>Poor GPRS </label></td>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr style="text-align: center;">
+						<td><h4 style="color: black;">{{count_stats.mcb_trip_count}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.cnt_failure}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.main_supply_off}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.door_open}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.spd_failure}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.no_out_put}}</h4></td>
+
+						<td><h4 style="color: black;">{{count_stats.manual_mode}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.ccms_on}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.ccms_off}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.good_gprs}}</h4></td>
+						<td><h4 style="color: black;">{{count_stats.poor_gprs}}</h4></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+		<!-- 			</div> -->
+	</div>
+
+	
+	
+		<div class="col-sm-12">
+
+		<div class="col-sm-12">
+			<div class="col-sm-3">
+				<div class="col-sm-4" align="center">
+					<label>District &nbsp;</label>
+				</div>
+				<div class="col-sm-8" align="center">
+					<select ng-model="selecte_distict" ng-change="getMandalOnSelect();"
+						class="form-control">
+						<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="col-sm-3">
+				<div class="col-sm-4" align="center">
+					<label for="mondal">Mondal&nbsp;</label>
+				</div>
+
+				<div class="col-sm-8" align="center">
+					<select ng-model="select_mondal" class="form-control"
+						ng-change="getGpOnSelect();">
+						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="col-sm-3">
+				<div class="col-sm-4" align="center">
+					<label for="city">GP &nbsp;</label>
+				</div>
+				<div class="col-sm-8" align="center">
+					<select ng-model="select_gp" class="form-control"
+						ng-change="getVillageOnSelect();">
+						<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+					</select>
+				</div>
+
+			</div>
+			<div class="col-sm-3">
+			<div class="col-sm-2"></div>
+				 <div class="col-sm-6 " align="center">
+					<input class="form-control" ng-model="searchFish" />
+				</div> 
+				
+				<div class="col-sm-4" align="center">
+					<div>
+						<a type="button" ng-click="search();" class="btn btn-info btn-sm">&nbsp;SEARCH&nbsp;</a>
+					</div>
+				</div>
+				
+				
+				
+			</div>
+
+		</div>
+
+	</div>
+	
+	<div class="col-md-12" style="padding: 20px">
+		<!-- 			<div class="col-md-1"></div> -->
+		<div class="col-md-12">
+			<!-- class="col-lg-3 col-md-6 col-sm-12 col-xs-12 
+			 | myFormat : mcbtrip_check : contactorfailure_check  :  mainssupplyoff_check : dooropen_check : spdfailure_check : nooutput_check :  manualmode_check : no_check, off_check : goodgprsconnectivity_check : poorgprsconnectivity_check
+			 -->
+			<div ng-if="loading" style="text-align: center; padding: 20px;">
+				<i class="fa fa-spinner fa-pulse fa-2x"></i> Loading...
+			</div>
+			<div
+				ng-repeat="obj in filteredData">
+				<div class="col-md-4 panel"
+					style="padding: 0px; margin-right: 20px;" >
+
+		
+					<div class="panel-heading">
+						<div class="col-md-12" style="margin-bottom: 20px">
+							<div class="col-md-4">
+								<a type="button" ng-click="gotoswitchpoint(obj)"
+									data-toggle="tooltip"
+									title="Gateway serial number {{obj.device_name}}">{{obj.device_name}}</b></a>
+							</div>
+							<div class="col-md-3" align="right"></div>
+							<div class="col-md-1">
+								<div ng-if="obj.dcu_details.manual_mode_status == 1">
+									<img src='images/manual_mode.png'>
+								</div>
+							</div>
+							<div class="col-md-1" align="right"></div>
+							<div class="col-md-1" align="right">
+								<md-icon data-target="#dcu_details_{{obj.device_name}}"
+									data-toggle="collapse" data-toggle="tooltip"
+									title="View alerts" data-placement="bottom"
+									style="color:#FFFFFF;font-size: 20px; height: 20px">add_alert</md-icon>
+							</div>
+
+							<div class="col-md-1" align="right"></div>
+							<div class="col-md-1" align="right">
+								<md-icon data-toggle="collapse" data-placement="bottom"
+									data-target="#{{obj.device_name}}" data-toggle="tooltip"
+									title="View Connection Information "
+									style="color:#FFFFFF;font-size: 20px; height: 20px">signal_cellular_4_bar</md-icon>
+							</div>
+						</div>
+
+						<div style="margin-bottom: 10px"></div>
+					</div>
+					<div class="panel-body">
+						<!-- Start of view connection info -->
+						<div id="{{obj.device_name}}" class="popover">
+
+							<div align="right" style="margin-top: 5px">
+								<i>Connected</i>
+							</div>
+
+							<div class="col-md-12" style="padding-top: 5px">
+								<div class="col-md-6" align="left">SD card:</div>
+								<div class="col-md-6" align="right">
+									<i>Detected</i>
+								</div>
+							</div>
+
+
+							<div class="col-md-12" style="padding-top: 5px">
+								<div class="col-md-6" align="left">Last communicationtime:</div>
+								<div class="col-md-6" align="right">
+									<i>{{obj.last_communication_time}}</i>
+								</div>
+							</div>
+
+
+							<div class="col-md-12" style="padding-top: 5px">
+								<div class="col-md-6" align="left">ICCID:</div>
+								<div class="col-md-6" align="right">
+									<i>{{obj.dcu_details.iccid_number}}</i>
+								</div>
+							</div>
+
+							<div class="col-md-12" style="padding-top: 5px">
+								<div class="col-md-6" align="left">Mobile number :</div>
+								<div class="col-md-6" align="right">
+									<i>{{obj.dcu_details.mobile_number}}</i>
+								</div>
+							</div>
+
+
+							<div class="col-md-12" style="padding-top: 5px">
+								<div class="col-md-6" align="left">CSQ :</div>
+								<div class="col-md-6" align="right">
+									<i>{{obj.dcu_details.csq}}</i>
+								</div>
+							</div>
+						</div>
+
+						<!-- end of view connection info -->
+
+						<!-- Inner body start -->
+
+						<div class="col-md-12">
+							<div class="col-md-4 " align="left" style="margin-left: 35px">
+								<div style="color: #8bc34a; font-size: 15px">
+									<b>{{obj.meter_data.active_power}} kWh</b>
+								</div>
+								<div style="font-size: 13px">
+									{{obj.last_communication_time }}</div>
+							</div>
+
+							<div class="col-md-6 " align="right">
+								<div
+									style="margin-right: 30px; color: #8bc34a; font-size: 20px;">0
+								</div>
+								<div>Faulty lights</div>
+							</div>
+						</div>
+
+						<div class="col-md-12" style="margin-top: 25px">
+							<div class="col-md-2" style="margin: 5px; margin-left: 20px"
+								align="center">
+								<a type="button" ng-click="turn_on_light(obj);"
+									title="Click to Turn ON/OFF Light ">
+									<div ng-if="obj.dcu_details.light_status == 1">
+										<img src='images/lighton.png'>
+									</div>
+									<div ng-if="obj.dcu_details.light_status == 0">
+										<img src='images/lightoff.png'>
+									</div>
+								</a> <label style="margin: 1px">R-Phases </label> <br>
+							</div>
+							<div class="col-md-6" style="margin-margin-bottom: 10px"></div>
+						</div>
+					</div>
+					<!-- Start of view alert info -->
+
+					<div id="dcu_details_{{obj.device_name}}" class="alert-popover">
+						<div class="col-md-12"></div>
+						<div class="col-md-12" ng-if="obj.dcu_details.mcb_trip == 1">
+							<div class="col-md-6" align="left">Mcb Trip Occurred</div>
+							<div class="col-md-6" align="right">
+								{{obj.dcu_details.mcb_trip_time_stamp * 1000 | date : "medium"
+								}}</div>
+						</div>
+						<div class="col-md-12" ng-if="obj.dcu_details.door_status == 1">
+							<div class="col-md-6">Door Open</div>
+							<div class="col-md-6" align="right">
+								{{obj.dcu_details.door_time_stamp * 1000| date : "medium" }}</div>
+							<br>
+						</div>
+						<div class="col-md-12" ng-if="obj.dcu_details.cnt_status == 1">
+							<div class="col-md-6" align="left">Contact Failure</div>
+							<div class="col-md-6" align="right">
+								{{obj.dcu_details.cnt_time_stamp * 1000 | date : "medium" }}</div>
+							<br>
+						</div>
+						<div class="col-md-12"
+							ng-if="obj.dcu_details.main_supply_status == 1">
+							<div class="col-md-6" align="left">Main supply OFF</div>
+							<div class="col-md-6" align="right">
+								{{obj.dcu_details.main_supply_time_stamp * 1000 | date :
+								"medium" }}</div>
+							<br>
+						</div>
+						<div class="col-md-12" ng-if="obj.dcu_details.spd_status == 1">
+							<div class="col-md-6" align="left">Surge Protect Details</div>
+							<div class="col-md-6" align="right">
+								{{obj.dcu_details.spd_time_stamp * 1000 | date : "medium" }}</div>
+							<br>
+						</div>
+					</div>
+					<!-- End of view alert info -->
+					<div class="col-md-12" style="margin-bottom: 5px"></div>
+
+					<!-- show more info start -->
+
+					<div ng-show="checked">
+
+						<div class="col-md-12"
+							style="margin-right: 50px; padding-top: 5px">
+							<hr>
+							<br> &nbsp;&nbsp;<b>Location:</b>
+							<table style="margin-left: 30px">
+								<tbody>
+									<tr>
+										<td class="col-md-3"></td>
+										<td class="col-md-3 text-center">R-Phase</td>
+										<td class="col-md-3 text-center">Y-Phase</td>
+										<td class="col-md-3 text-center">B-Phase</td>
+									</tr>
+									<tr>
+										<td class="col-md-3"><label>Current (A)</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">{{obj.meter_data.current_line_1}}</label>
+										</td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+									</tr>
+									<tr>
+										<td class="col-md-3"><label>Voltage (V)</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">{{obj.meter_data.r_phase_voltage}}</label>
+										</td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+									</tr>
+									<tr>
+										<td class="col-md-3"><label>PF</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">{{obj.meter_data.pf_1}}</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+									</tr>
+									<tr>
+										<td class="col-md-3"><label>Phase <br>power(kW)
+										</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">{{obj.meter_data.active_power}}</label>
+										</td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+										<td class="col-md-3 text-center"><label
+											class="ng-binding">N/A</label></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- </div> -->
+					</div>
+				</div>
+			</div>
+			<!-- show more info end -->
+
+			<div class="col-md-12" style="text-align: center; padding: 20px;" ng-if="filteredData.length > 0">
+				<button class="btn btn-info btn-sm" ng-click="prevPage()" ng-disabled="currentPage == 0 || loading">
+					<i class="fa fa-chevron-left"></i> Previous
+				</button>
+				<span style="margin: 0 15px;">
+					Page <strong>{{currentPage + 1}}</strong> 
+					<span ng-if="totalRecords > 0">(showing {{filteredData.length}} of {{totalRecords}} devices)</span>
+				</span>
+				<button class="btn btn-info btn-sm" ng-click="nextPage()" ng-disabled="!hasMoreData() || loading">
+					Next <i class="fa fa-chevron-right"></i>
+				</button>
+			</div>
+
+		</div>
+	</div>
+	<!-- Inner body end -->
+</section>

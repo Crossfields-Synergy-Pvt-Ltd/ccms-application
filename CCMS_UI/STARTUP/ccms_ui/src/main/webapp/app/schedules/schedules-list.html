@@ -1,0 +1,98 @@
+
+<section id="brand" class="row">
+
+	<div class="col-md-12">
+
+		<div class="col-md-2" align="left">
+			<h3 class=heading>&nbsp;&nbsp;&nbsp;
+				SCHEDULES</h3>
+		</div>
+		<div class="col-md-6"></div>
+
+		<div class="col-md-2" style="padding: 15px">
+			<a type="button" ng-click="new_schedule();"
+				class="btn btn-info btn-sm pull-right"> New Schedule</a>
+		</div>
+
+		<div class="col-md-2" align="right">
+			<div class="input-group add-on" style="padding: 14px">
+				<input class="form-control" ng-model="searchFish" />
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<div class="col-md-12">
+
+		<table class="table table-bordered">
+			<thead>
+				<tr class=table_head>
+					<td align="center"><a>SI NO</a></td>
+					<td align="center"><a
+						ng-click="sortType = 'schedules_name'; sortReverse = !sortReverse">
+							Schedules Name <span
+							ng-show="sortType == 'schedules_name' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'schedules_name' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>						
+
+					<td align="center"><a
+						ng-click="sortType = 'valid_till'; sortReverse = !sortReverse">
+							Valididty Till <span
+							ng-show="sortType == 'valid_till' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'valid_till' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center"><a
+						ng-click="sortType = 'handle_0_time'; sortReverse = !sortReverse">
+							Summary <span ng-show="sortType == 'handle_0_time' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'handle_0_time' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					<td align="center"><a>ACTION</a></td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="obj in listData | orderBy:sortType:sortReverse | filter:searchFish">
+					<td align="center">{{ $index + 1 }}</td>
+					<td align="center">{{ obj.schedules_name }}</td>
+					<td align="center">{{ obj.valid_till | date}}</td>
+					<td align="center"><b>OFF @&nbsp;{{ obj.handle_0_time }}</b><br><b>ON @ &nbsp;{{ obj.handle_1_time }}</b></td>
+
+					<td align="center"><md-icon class="material-icons"
+							ng-click="update(obj);" data-toggle="tooltip" title="Edit"
+							style="color:#607D8B;font-size: 20px; height: 20px">edit</md-icon>
+
+						<md-icon class="material-icons" ng-click="deleteconf(obj.scheduleId);"
+							data-toggle="tooltip" title="Delete"
+							style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
+
+						<a type="button" ng-click="light();" class="btn btn-info btn-sm "
+						data-toggle="tooltip" title="Apply Schedule to light">Apply to
+							Light</a> <a type="button" ng-click="rtu/dcu();"
+						class="btn btn-info btn-sm " data-toggle="tooltip"
+						title="Apply Schedule t RTU/DCU">Apply to RTU/DCU</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+	</div>
+	<div class="col-md-12" align="center">
+		<pagination boundary-links="true" max-size="3"
+			items-per-page="itemsPerPage" total-items="todos.length"
+			ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	</div>
+</section>

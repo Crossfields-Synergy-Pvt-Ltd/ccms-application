@@ -1,0 +1,102 @@
+
+    <div class="col-md-12">
+<br>
+        <div  align="left" style="font-size:20px; color:#6D7993">
+          Filter
+        </div>
+        <br>
+      </div>
+      
+  <form name="newMeterForm" class="form-horizontal" ng-submit="ok()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
+     
+    <div class="row">
+		<div class="col-md-6 " style="padding: 10px">
+			<div class="panel-body">
+				
+					<div class="form-group">
+
+						 <div class="form-group">
+							<label class="col-md-4" style="marin-right: 10px" align="left">District</label>
+							<div class="col-md-8">
+								<select ng-model="filter.district" class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								  </select>
+							</div>
+						</div> 
+						
+						
+
+						
+						
+						<div class="form-group" ng-class="{'has-error': newMeterForm.Mandal.$invalid &amp;&amp; (newMeterForm.Mandal.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Mandal<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required "  placeholder="Enter Mandal" ng-model="filter.mandal" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Mandal.$error.required &amp;&amp; (newMeterForm.Mandal.$dirty || submitted)">Please enter Mandal.</span>
+                            
+                            </div>
+                        </div>
+
+
+						<div class="form-group" ng-class="{'has-error': newMeterForm.GramPanchayat.$invalid &amp;&amp; (newMeterForm.GramPanchayat.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Gram Panchayat<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required "  placeholder="Enter GramPanchayat"  ng-model="filter.gp" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.GramPanchayat.$error.required &amp;&amp; (newMeterForm.GramPanchayat.$dirty || submitted)">Please enter Gram Panchayat.</span>
+                            
+                            </div>
+                        </div> 
+						
+						<!-- <div class="form-group">
+						  <label class="col-md-4 control-label">Village</label>
+							<div class="col-md-8">
+								 <input type="text" class="form-control"  placeholder="Enter Village" ng-model="filter.village">
+							</div>
+						</div> -->
+						<div class="form-group" ng-class="{'has-error': newMeterForm.Village.$invalid &amp;&amp; (newMeterForm.Village.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Village<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required "  placeholder="Enter Village"  ng-model="filter.village" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Village.$error.required &amp;&amp; (newMeterForm.GramPanchayat.$dirty || submitted)">Please enter Village.</span>
+                            
+                            </div>
+                        </div> 
+						
+						
+						
+				
+		</div>
+			<br>
+
+			
+		</div>
+		</div>
+		</div>
+		</form>
+		<div class="row">
+        <div class="col-xs-12 col-lg-12 col-sm-12">
+        <hr>
+        <br>
+            <div class="pull-left"><span class="compulsaryFieldsColor">*</span>Marked fields are compulsory.</div>
+            <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="cancel()" ng-disabled="backtoCreateMeterClicked==1">Cancel</button>
+            <input type="button" data-toggle="tooltip" data-placement="bottom" title="Update" class="btn btn-primary pull-right adjusantButtons" ng-click="ok()" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" value="Save &amp; proceed" disabled="disabled">
+        
+            
+        </div>
+    </div>
+	
+    
+	
+
+<!-- <div class="col-md-12">
+	<br>
+</div>
+
+<div align="center">
+	<a type="button" ng-click="ok()" class="btn btn-info btn-sm ">Add</a> <a
+		type="button" ng-click="cancel()" class="btn btn-info btn-sm ">Cancel</a>
+</div> -->
+
+
+
+

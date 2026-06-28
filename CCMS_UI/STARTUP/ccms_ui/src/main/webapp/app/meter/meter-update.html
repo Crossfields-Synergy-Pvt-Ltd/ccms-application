@@ -1,0 +1,193 @@
+<div class="col-md-12">
+<div class="col-md-12">
+<br>
+        <div  align="left" style="font-size:30px;">
+            Meter Information
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6 " style="padding: 10px">
+                <div class="panel-body">
+                <form class="form-horizontal">
+   				  <div class="form-group" >
+
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Meter Name:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" name="name" id="name" placeholder="Enter Meter Name" ng-model="meter.name" required="required">                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Serial Number:<span class="compulsaryFieldsColor">*</span></label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="serial_number" id="serial_number" placeholder="Enter Serial Number" ng-model="meter.serial_number"  required="required">
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Date:</label>
+                        <div class="col-md-6" > <li class="fa fa-calendar"></li>
+                            <input type="date" id="selectDate" class="dateTimePicker form-control" ng-model="meter.installation_date">
+                                
+                                
+                            
+                        </div>
+                    </div>
+                    <div class="form-group"  >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Type:<span class="compulsaryFieldsColor">*</span></label>
+                        <div class="col-md-6">
+                         <select  type="text" class="form-control" ng-model="meter.type" required="required" >
+						              <option>RS485_1</option>
+								        <option>RS485_2</option>
+								         <option>RF</option>
+								         </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">RFId:</label>
+                        <div class="col-md-6">
+                            <input class="form-control capitalize ng-pristine ng-untouched ng-valid ng-valid-maxlength" id="rf_id" name="rf_id" placeholder="Enter RFId" ng-model="meter.rf_id" required="required">
+                            <span class="help-block ng-hide" ng-show="newNodeForm.rf_id.$error.maxlength &amp;&amp; (newNodeForm.rf_id.$dirty || submitted)">The maximum length of the DCU rf_id should be 70 characters.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Slave Id:</label>
+                        <div class="col-md-6">
+                            <input class="form-control capitalize ng-pristine ng-untouched ng-valid ng-valid-maxlength" id="rf_id" name="rf_id" placeholder="Enter Slave Id" ng-model="meter.slave_id" required="required">
+                            <span class="help-block ng-hide" ng-show="newNodeForm.slave_id.$error.maxlength &amp;&amp; (newNodeForm.slave_id.$dirty || submitted)">The maximum length of the DCU rf_id should be 70 characters.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Sub type:</label>
+                        <div class="col-md-6">
+                            <select  type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength ng-valid-required" name="sub_type" id="sub_type" placeholder="Enter Metersub type" ng-model="meter.sub_type" required="required">
+                            <option ng-repeat="x in subtype" value="{{x.code}}">{{x.state}}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group" >
+                    <div class="col-md-4 " align="right"></div>
+                        <div class="col-md-6 " align="right">
+                    <md-checkbox ng-model="meter.red" ></md-checkbox> 
+                    <label  style ="color:#6e8cb8; font-size: 13px; height: 8px">Red</label>
+                    &nbsp;&nbsp;
+                    <md-checkbox ng-model="meter.yellow" ></md-checkbox>
+                    <label  style ="color:#6e8cb8; font-size: 13px; height: 8px">Yellow</label>
+                    &nbsp;&nbsp;
+                    <md-checkbox ng-model="meter.blue" ></md-checkbox>
+                    <label  style ="color:#6e8cb8; font-size: 13px; height: 8px">Blue</label>
+                    </div>
+                    </div>
+                    
+                    
+                        <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Initial Reading:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="initial_reading" id="initial_reading" placeholder="Initial Reading" ng-model="meter.initial_reading" required="required">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Multiplication factor:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="multiplication_factor" id="multiplication_factor" placeholder="Enter Multiplication factor" ng-model="meter.multiplication_factor" required="required">
+                            
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Addition factor:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="addition_factor" id="addition_factor" placeholder="Enter Addition factor	" ng-model="meter.addition_factor" required="required">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" >
+                        <label class="col-md-4 " style="margin-right: 10px" align="left">Reset Value:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="reset_value" id="reset_value" placeholder="Enter Reset value	" ng-model="meter.reset_value" required="required">
+                        </div>
+                    </div>
+                </div>
+                </form>
+                </div>
+            </div>
+
+            <input type="hidden" name="NodeType" id="Nodetype" ng-model="newNode.NodeType" value="1" class="ng-pristine ng-untouched ng-valid">
+
+            <div class="col-md-6 "  style="padding: 10px">
+                <div class="panel-body">
+                <form class="form-horizontal">
+    			 <div class="form-group" >
+
+                    <div class="form-group">
+                        <label class="col-md-4" style="margin-right: 10px" align="left">Description:</label>
+                        <div class="col-md-6">
+                            <textarea type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="description" id="description" placeholder="Enter Description" ng-model="meter.description" required="required"></textarea>
+                        </div>
+                    </div>
+                    
+                    
+         					   <label class="col-md-4" style="margin-right: 10px" align="left">Latitude</label>
+                                  <div class="col-sm-6">
+									<div class="controls">
+										<input class="form-control"	  name="lat" id="lat"
+											placeholder="Latitude" ng-model="dcu.latitude">
+									</div>
+									</div>
+									<br></div>
+									
+									
+									<label class="col-md-4 " style="margin-right: 10px" align="left">Logitude</label>
+                                  <div class="col-sm-6">
+									<div class="controls">
+										<input class="form-control" name="lang" id="long"
+											placeholder="longitude" ng-model="dcu.longitude"  >
+									</div>
+								<br></div>
+								
+								<div class="col-sm-12">
+								<div class="col-sm-6" style="margin-right: 10px" align="left" 	>
+									<!-- Longitude: <input id="long" name="long" val="74.006653" /> <br/> -->
+									<div id="map_canvas" style="width: 515px; height: 300px;"></div>
+							<br>
+						</div>
+						</div>
+
+                    <!--- Open Map --->
+                    <a type="button" class="btn btn-info btn-sm pull-right" ng-click="locatedcuonmap()">
+                        Locate on map
+                    </a>
+
+                    <div class="lightBorder col-md-12 ng-hide" ng-show="showMap">
+                        
+                        <div class="addNodeMapHeight" id="addNodeMap"></div>
+                    </div>
+</form>
+                </div>
+                <br>
+                
+              
+                
+                
+                </div>
+            </div>
+        </div>
+    
+ <div class="col-md-12"><br> <br></div>
+    
+	<div align="center">
+			<a type="button"  ng-click="update()" class="btn btn-info btn-sm ">Update</a>
+			<a type="button"  ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
+		</div>
+</div>
+ 

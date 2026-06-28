@@ -1,0 +1,851 @@
+	<!-- 
+
+<div>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar2">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+
+				<div class="navbar-header">
+					<br> <a class="navbar-brand" href="#">&nbsp;&nbsp;&nbsp;
+						CCMS</a>
+				</div>
+
+			</div>
+			<div id="navbar2" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#/station_grid"> <span
+							class="fa fa-dashboard fontbig"></span> &nbsp;&nbsp;DASHBOARD
+					</a></li>
+
+
+
+
+					<li><a href="#/schedules"><span
+							class="fa fa-chain-broken fontbig"></span> &nbsp;&nbsp;SCHEDULES</a></li>
+
+					<li><a href="#/user"><span
+							class="fa fa-chain-broken fontbig"></span> &nbsp;&nbsp;USER</a></li>
+
+					<li><a href="#/dcu"><span
+							class="fa fa-chain-broken fontbig"></span> &nbsp;&nbsp;DCU/RTU</a></li>
+
+													<li > <a href="#/systemconfig"><span
+													class="fa fa-chain-broken fontbig"></span> &nbsp;&nbsp;SYSTEM CONFIG</a></li>
+
+
+					<li><a href="#/event"><span
+							class="fa fa-chain-broken fontbig"></span> &nbsp;&nbsp;EVENT</a></li>
+
+
+
+					<li><a href="#login"><span class="fa fa-mars-stroke"></span>
+							&nbsp;&nbsp;LOGOUT</a></li>
+				</ul>
+			</div>
+			/.nav-collapse
+		</div>
+		/.container-fluid
+
+</div>
+
+<div class="col-md-12">
+
+	<div ui-view></div>
+
+
+</div> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+                minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <base href="/MonitorControl/Index/">
+        <title> GreenLightt solution </title>
+
+
+    <link href="/LibCSS/bootstrap.css" rel="stylesheet"/>
+<link href="/LibCSS/nprogress.css" rel="stylesheet"/>
+<link href="/LibCSS/font-awesome.css" rel="stylesheet"/>
+
+    <link href="/LibCSS/industrial.css" rel="stylesheet"/>
+<link href="/LibCSS/bootstrap.css" rel="stylesheet"/>
+<link href="/Content/StreetLight.less" rel="stylesheet"/>
+<link href="/Content/LightsMonitorControl.less" rel="stylesheet"/>
+<link href="/LibCSS/font-awesome.css" rel="stylesheet"/>
+<link href="/LibCSS/nprogress.css" rel="stylesheet"/>
+<link href="/LibCSS/xeditable.css" rel="stylesheet"/>
+<link href="/LibCSS/ng-table.css" rel="stylesheet"/>
+<link href="/LibCSS/abn_tree.css" rel="stylesheet"/>
+<link href="/Content/sidebar-theme.less" rel="stylesheet"/>
+<link href="/LibCSS/bootstrap-datetimepicker.css" rel="stylesheet"/>
+<link href="/LibCSS/clockpicker.css" rel="stylesheet"/>
+<link href="/LibCSS/daterangepicker-bs3.css" rel="stylesheet"/>
+<link href="/LibCSS/c3.css" rel="stylesheet"/>
+<link href="/LibCSS/bootstrap-toggle.css" rel="stylesheet"/>
+<link href="/LibCSS/angular-ui-tree.min.css" rel="stylesheet"/>
+<link href="/Content/NodeTagAssociation.less" rel="stylesheet"/>
+<link href="/LibCSS/bootstrap-editable.css" rel="stylesheet"/>
+<link href="/LibCSS/select2.min.css" rel="stylesheet"/>
+
+    <link href="/LibCSS/jquery-ui.css" rel="stylesheet"/>
+<link href="/LibCSS/jquery-ui-slider-pips.css" rel="stylesheet"/>
+
+    <link href="/LibCSS/font-awesome.css" rel="stylesheet"/>
+
+    <link href="/Content/Default.less" rel="stylesheet"/>
+
+
+</head>
+<body ng-app="controlIndex">
+    <div id="wrapper">
+        <div id="pageLoadProgressDivId" class="pageLoadProgressDiv hidden">
+            <i class="fa fa-spinner fa-pulse fa-4x"></i>
+        </div>
+
+
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand" href="index.html">
+            <img class="responsive headerimagesize" src="/Configuration/2/Images/CompanyLogo.png">
+            
+        </span>
+    </div>
+
+    <div id="config-tool" class="opened defaultHidden">
+        <a id="config-tool-cog">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    
+    <ul class="nav navbar-right top-nav">
+        <li class="customer-name labelText">
+CrossField        </li>
+        
+        <li class="dropdown">
+
+
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-user margin-right-7"></i>
+        Admin
+        <b class="caret margin-left-7"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="#" id="showModal" onclick="ShowModal()"><i class="fa fa-fw fa-gear"></i>Change Password</a>
+          </li>
+        <li>
+            <a href="/User/Logout"><i class="fa fa-fw fa-power-off"></i> Sign Out</a>
+        </li>
+    </ul>
+
+<div class="modal fade" id="ChangePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<form action="/User/ChangePassword/monitorAndControlWithAlertSummary" data-ajax="true" data-ajax-complete="changePasswordComplete" id="form0" method="post">        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Change password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row-fluid">
+
+                        <div class="panel panel-info">
+
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-4 control-label formTextWeight">Old password<span class="compulsaryFieldsColor">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" data-val="true" data-val-required="Current password field is required" id="OldPassword" name="OldPassword" placeholder="Old password" type="password" />
+                                            <span class="field-validation-valid" data-valmsg-for="OldPassword" data-valmsg-replace="true"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <label class="col-md-4 control-label formTextWeight">New password<span class="compulsaryFieldsColor">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" data-val="true" data-val-length="New password must be at least 5 characters long." data-val-length-max="100" data-val-length-min="5" data-val-required="New password field is required" id="NewPassword" name="NewPassword" placeholder="New password" type="password" />
+                                            <span class="field-validation-valid" data-valmsg-for="NewPassword" data-valmsg-replace="true"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <label class="col-md-4 control-label formTextWeight">Confirm new password<span class="compulsaryFieldsColor">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" data-val="true" data-val-equalto="New password and confirmation password do not match." data-val-equalto-other="*.NewPassword" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirm new password" type="password" />
+                                            <span class="field-validation-valid" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="submit" value="Change Passwod" class="btn btn-primary">Change password</button>
+                            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form></div>
+
+        </li>
+    </ul>
+
+
+<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+    <div id="brandLogoDiv" class="brandLogo hidden">
+        <img class="responsive headerimagesize" src="/Images/BrandLogo.png">
+    </div>
+
+    <ul class="nav navbar-nav side-nav defaultHidden" id="sidebarNavigation">
+
+
+
+
+                                
+
+
+        
+
+
+
+            <li id="MonitorControlWithAlertSummary">
+                <a href="/MonitorControl/Index/monitorAndControlWithAlertSummary" id="MonitorControlWithAlertSummary">
+                    <i class="fa fa-fw fa-th imageandtextdifference"></i>
+                    Monitor and control
+                </a>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <li id="ListView">
+                <a href="/Control/Index/historyDataView" id="controlListViewMenuLink">
+                    <i class="fa fa-fw fa-history imageandtextdifference"></i>
+                    History
+                </a>
+            </li>
+
+            <li id="MeterListView">
+                <a href="/Control/Index/meterListView" id="MeterListMenuLink">
+                    <i class="fa fa-fw fa-bars imageandtextdifference"></i>
+                    List view
+                </a>
+            </li>
+
+
+
+
+
+
+            <li id="alertMenu">
+                <a href="/Alert/Index/">
+                    <i class="fa fa-fw fa-bell imageandtextdifference"></i>
+                    Alerts
+                </a>
+            </li>
+
+
+
+
+            <li id="SinglePhaseSwitchPointSummary">
+                <a href="/MonitorControl/Index/switchPointSinglePhaseSummary" id="NodeSummaryLink">
+                    <i class="fa fa-fw fa-picture-o imageandtextdifference"></i>
+                    Switch pt. summary
+                </a>
+            </li>
+
+
+
+                                    <li id="AnalyticsViewMenu">
+                <a href="/Graph/Index/meteringGraph" id="AnalyticsViewMenuLink">
+                    <i class="fa fa-area-chart imageandtextdifference"></i>
+                    Trends
+                </a>
+            </li>
+        
+        
+
+
+
+       
+       
+
+        
+        <!---Diagnostics invalid DCU config List-->
+
+                                    <li id="MapMenu">
+                <a href="/Control/Index/Map" id="MapMenuLink">
+                    <i class="fa fa-fw fa-map-marker imageandtextdifference"></i>
+                    Map
+                </a>
+            </li>
+       
+
+        <!----ComboBox-reports------>
+            <li id="reportDropDownMenu" class="dropdown menuDropDownHeader ">
+                <a data-target="#" href="#" data-toggle="dropdown" class="dropdown-toggle ">
+                    Reports
+                    <i class="fa fa-angle-right drop-icon"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    
+
+                        <li id="schedulewiseReportOerationalMenu">
+                            <a href="/Report/SchedulewiseOperationalHours" id="">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference"></i>
+                                Operational hours
+                            </a>
+                        </li>
+
+                        <li id="UtilityMenu" class="">
+                            <a href="/Utility/Index/Utility" id="UtilityMenuLink">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference"></i>
+                                Utility
+                            </a>
+                        </li>
+
+     
+
+                    
+
+
+
+
+
+
+                    
+
+
+
+                        <li id="reportDCUConnectionStatusMenu">
+                            <a href="/Report/DCUConnectionReport" id="">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference"></i>
+                                DCU connection status
+                            </a>
+                        </li>
+
+                                                                                                </ul>
+                <!----/-ComboBox-reports------>
+
+            </li>
+
+        <!----comboBox-ConfigMenu---->
+            <li id="configDropDownMenu" class="dropdown menuDropDownHeader ">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle ">
+                    Configuration<i class="fa fa-angle-right drop-icon"></i>
+                </a>
+                <ul class="dropdown-menu">
+
+
+                    <!---/-comboBox-ConfigMenu---->
+                        <li id="nodeMenu">
+                            <a href="/Node/Index/">
+                                <i class="fa fa-fw fa-edit imageandtextdifference"></i>
+                                RTU/DCU
+                            </a>
+                        </li>
+                                                                                                        <li id="MovePanelMenu">
+                            <a href="/SiteUtils/MoveRTUInformationBasedOnCustomer">
+                                <i class="fa fa-fw fa-edit imageandtextdifference"></i>
+                                Move Panel
+                            </a>
+                        </li>
+                                            <li id="MovePanelToServerViewMenu" class="">
+                            <a href="/MovePanelToServer/Index/MovePanelToServerTemplate" id="MovePanelToServerMenuLink">
+                                <i class="fa fa-fw fa-th imageandtextdifference"></i>
+                                Move CCMS Server
+                            </a>
+                        </li>
+                    
+                        <li id="siteConfigurationMenu">
+
+
+                            <a href="/Tag/Index" id="siteConfigurationMenuLink">
+
+
+                                <i class="fa fa-fw fa-wrench imageandtextdifference"></i>
+                                Site configuration
+                            </a>
+                        </li>
+
+
+
+
+                        <li id="schedulemenu">
+                            <a href="/schedule/Index/scheduleList" id="schedulemenuLink">
+                                <i class="fa fa-fw fa-calendar"></i>
+                                Schedule
+                            </a>
+                        </li>
+                    
+
+
+                    
+                        <li id="userMenu">
+                            <a href="/User/Index/">
+                                <i class="fa fa-fw fa-user imageandtextdifference"></i>
+                                Users
+                            </a>
+                        </li>
+
+                        <li id="roleMenu">
+
+
+                            <a href="/Role/Index" id="roleMenuLink">
+
+
+                                <i class="fa fa-fw fa-wrench imageandtextdifference"></i>
+                                User roles
+                            </a>
+                        </li>
+
+
+
+
+
+
+                </ul>
+            </li>
+        <!----comboBox-Upload node---->
+            <li id="uploadDropDownMenu" class="dropdown menuDropDownHeader ">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle ">
+                    Upload files<i class="fa fa-angle-right drop-icon"></i>
+                </a>
+                <ul class="dropdown-menu">
+
+                                                                                    <li id="TagStringImportMenu">
+                            <a href="/Asset/Index/ImportTagString" id="TagStringImportMenuLink">
+                                <i class="fa fa fa-lightbulb-o imageandtextdifference"></i>
+                                Update Node
+                            </a>
+                        </li>
+
+
+                </ul>
+            </li>
+
+
+
+        <div id="footerLogoDiv" class="hidden gridViewCenter" ng-if="38 >
+            0">
+            <img class="responsive headerimagesize margin-top-15" src="/Configuration/2/Images/FooterLogo.png">
+        </div>
+
+
+    </ul>
+
+
+</div>
+
+
+
+<div class="iconNotDisplay" id="iconDND">
+    <!-- icons for sidebar-->
+    <ul class="iconDisplay defaultHidden margin-top-7" id="iconsNavigation">
+
+
+
+
+
+        
+
+
+                <!---Diagnostics invalid DCU config List-->
+
+
+
+
+            <li id="MonitorControlWithAlertSummarySub" data-toggle="tooltip" data-placement="right" title="Monitor and control">
+                <a href="/MonitorControl/Index/monitorAndControlWithAlertSummary" id="MonitorControlWithAlertSummarySub" data-toggle="tooltip" data-placement="right" title="Monitor and control">
+                    <i class="fa fa-fw fa-th imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+            <li id="ListView">
+                <a href="/Control/Index/historyDataView" id="ListViewMenuLink" data-toggle="tooltip" data-placement="right" title="History">
+                    <i class="fa fa-fw fa-history imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+
+            <li id="MeterListView">
+                <a href="/Control/Index/meterListView" id="MeterListMenuLink" data-toggle="tooltip" data-placement="right" title="List view">
+                    <i class="fa fa-fw fa-bars imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+
+
+
+
+
+            <li id="alertMenu">
+                <a href="/Alert/Index/" data-toggle="tooltip" data-placement="right" title="Alerts">
+                    <i class="fa fa-fw fa-bell imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+
+
+
+
+            <li id="SinglePhaseSwitchPointSummary">
+                <a href="/MonitorControl/Index/switchPointSinglePhaseSummary" id="NodeSummary" data-toggle="tooltip" data-placement="right" title="Node summary">
+                    <i class="fa fa-fw fa-picture-o imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+
+            </li>
+
+
+                                    <li id="AnalyticsViewMenu">
+                <a href="/Graph/Index/meteringGraph" id="AnalyticsViewMenuLink" data-toggle="tooltip" data-placement="right" title="Trends">
+                    <i class="fa fa-area-chart imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+        
+
+
+        
+        
+
+
+
+
+
+
+                            <li id="UtilityMenu">
+                <a href="/Utility/Index/Utility" id="UtilityMenuLink" data-toggle="tooltip" data-placement="right" title="Utility">
+                    <i class="fa fa-fw fa-th imageandtextdifference spaceBetweenIcons"></i>
+                </a>
+            </li>
+        
+
+            <li id="MapScreenMenu">
+                <a href="/Control/Index/Map" id="MapScreenMenuLink" data-toggle="tooltip" data-placement="right" title="Map">
+                    <i class="fa fa-fw fa-map-marker imageandtextdifference"></i>
+                </a>
+            </li>
+
+        <!------Submenu-report-dropdown------->
+            <li id="reportDropDownMenu" class="dropdown menuOnlyDropDown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                    <i class="fa fa-fw fa-line-chart imageandtextdifference" data-toggle="tooltip" data-placement="bottom" title="Reports"></i>
+                </a>
+
+                <ul class="dropdown-menu sub-menu">
+                    
+                                            <li id="schedulewiseReportSubMenuOperation">
+                            <a href="/Report/SchedulewiseOperationalHours" id="reportSubMenuOperationalLink" data-toggle="tooltip" data-placement="bottom" title="Operational hours">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference "></i>
+                                Operational hours
+                            </a>
+                        </li>
+
+
+
+                        <li id="schedulewiseReportSubMenuOperation">
+                            <a href="/Utility/Index/Utility" id="reportSubMenuOperationalLink" data-toggle="tooltip" data-placement="bottom" title="Utility">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference "></i>
+                                Utility
+                            </a>
+                        </li>
+
+                    
+
+
+
+
+
+
+                    
+
+
+                        <li id="reportSubMenuDCUConnectionStatus">
+                            <a href="/Report/DCUConnectionReport" id="reportSubMenuDCUConnectionStatusLink" data-toggle="tooltip" data-placement="bottom" title="DCU connection status">
+                                <i class="fa fa-fw fa-area-chart imageandtextdifference "></i>
+                                DCU connection status
+                            </a>
+                        </li>
+
+                                                                                                </ul>
+
+            </li>
+
+        <!----/-Submenu-report-dropdown------->
+            <li id="configDropDownMenu" class="dropdown menuOnlyDropDown">
+                <!----Submenu-ConfigMenu---->
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                    <i class="fa fa-fw fa-dashboard imageandtextdifference" data-toggle="tooltip" data-placement="top" title="Configuration"></i>
+                </a>
+
+                <ul class="dropdown-menu sub-menu">
+                                                                <li id="MovePanelToServerSubMenu">
+                            <a href="/MovePanelToServer/Index/MovePanelToServerTemplate">
+                                <i class="fa fa-fw fa-th imageandtextdifference spaceBetweenIcons"></i>
+                                Move CCMS Server
+                            </a>
+                        </li>
+
+                        <li id="nodeMenu">
+                            <a href="/Node/Index/">
+                                <i class="fa fa-fw fa-edit imageandtextdifference spaceBetweenIcons"></i>
+                                RTU/DCU
+                            </a>
+                        </li>
+                                                            
+
+
+                        <li id="siteConfigurationMenu">
+                            <a href="/Tag/%20Index" id="siteConfigurationMenuLink">
+                                <i class="fa fa-fw fa-wrench imageandtextdifference spaceBetweenIcons"></i>
+                                Site configuration
+                            </a>
+                        </li>
+
+
+
+
+                        <li id="scheduleSubmenu">
+                            <a href="/schedule/Index/scheduleList" id="scheduleSubmenuLink" data-toggle="tooltip" data-placement="right" title="Schedule">
+                                <i class="fa fa-fw fa-calendar imageandtextdifference spaceBetweenIcons"></i>
+                                Schedule
+                            </a>
+                        </li>
+
+
+
+
+
+
+                        <li id="userMenu">
+                            <a href="/User/Index/">
+                                <i class="fa fa-fw fa-user imageandtextdifference spaceBetweenIcons"></i>
+                                Users
+                            </a>
+                        </li>
+
+                        <li id="roleMenu">
+                            <a href="/Role/Index" id="roleMenuLink">
+                                <i class="fa fa-fw fa-wrench imageandtextdifference spaceBetweenIcons"></i>
+                                User roles
+                            </a>
+                        </li>
+
+
+
+
+
+                </ul>
+                <!----Submenu-ConfigMenu---->
+            </li>
+        <!----comboBox-Upload node---->
+            <li id="uploadDropDownMenu" class="dropdown menuOnlyDropDown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle " title="Upload node">
+                    <i class="fa fa-cloud-upload"></i>
+                </a>
+                <ul class="dropdown-menu sub-menu">
+                                                                                                        <li id="TagStringImportMenu">
+                            <a href="/Asset/Index/ImportTagString" id="TagStringImportMenuLink">
+                                <i class="fa fa fa-lightbulb-o imageandtextdifference"></i>
+                                Update Node
+                            </a>
+                        </li>
+                    
+                </ul>
+            </li>
+
+
+    </ul>
+</div>
+
+
+
+</nav>
+
+
+        <div id="page-wrapper" class="pageAlignment appBody">
+            <div class="alert alert-danger hidden-lg hidden-md hidden-sm hidden-xs alertFix" id="outer-model-alert-message">
+                <button type="button" class="close">&times;</button>
+                <label id="outer-alert-message-content">
+                </label>
+            </div>
+            
+
+
+<link href="/Content/MonitorControl.less" rel="stylesheet" />
+
+<div ng-view="">
+
+</div>
+
+        </div>
+        <div class="footer">
+
+            V(107.25)
+        </div>
+    </div>
+
+    <script>
+        var appBaseUrl = '/';
+    </script>
+
+    <script type="text/javascript" src='/JSRoute/Index'></script>
+
+    <script src="/LibScripts/d3.min.js" charset="utf-8"></script>
+    <script src='/bundles/JsModel'></script>
+    <script src="/LibScripts/jquery-2.1.3.js"></script>
+<script src="/LibScripts/jquery.unobtrusive-ajax.js"></script>
+<script src="/LibScripts/jquery.validate.js"></script>
+<script src="/LibScripts/jquery.validate.unobtrusive.js"></script>
+<script src="/LibScripts/bootstrap.js"></script>
+<script src="/LibScripts/angular.js"></script>
+<script src="/LibScripts/angular-bootstrap-multiselect.js"></script>
+
+    <script src="/Scripts/services/SignalRService.js"></script>
+<script src="/Scripts/common/angular-knob.js"></script>
+<script src="/Scripts/common/Constants.js"></script>
+<script src="/Scripts/common/DataPushing.js"></script>
+<script src="/Scripts/common/DateRangePicker.js"></script>
+<script src="/Scripts/common/excanvas.js"></script>
+<script src="/Scripts/common/GlobalEventHandler.js"></script>
+<script src="/Scripts/common/googleAnalytics.js"></script>
+<script src="/Scripts/common/jquery.knob.js"></script>
+<script src="/Scripts/common/MonitorControlModel.js"></script>
+<script src="/Scripts/common/TagAssociation.js"></script>
+<script src="/Scripts/common/URLs.js"></script>
+<script src="/Scripts/common/Util%20-%20Copy.js"></script>
+<script src="/Scripts/common/Util.js"></script>
+<script src="/Scripts/VO/RuleModelVO.js"></script>
+<script src="/Scripts/VO/ScheduleInfo.js"></script>
+<script src="/Scripts/VO/ServerScheduleVO.js"></script>
+<script src="/Scripts/LightingApp.js"></script>
+
+    <script src="/LibScripts/jquery-ui-1.11.3.js"></script>
+
+    <script src="/LibScripts/jquery-ui-1.11.3.js"></script>
+<script src="/LibScripts/jquery-ui-slider-pips.js"></script>
+<script src="/LibScripts/angular-route.js"></script>
+<script src="/LibScripts/DataTables-1.10.4/jquery.dataTables.js"></script>
+<script src="/LibScripts/abn_tree_directive.js"></script>
+<script src="/LibScripts/bootstrap-datetimepicker.js"></script>
+<script src="/LibScripts/moment.js"></script>
+<script src="/LibScripts/daterangepicker.js"></script>
+<script src="/LibScripts/c3new.js"></script>
+<script src="/LibScripts/c3js-directive.js"></script>
+<script src="/LibScripts/graph-app-directive-1.js"></script>
+<script src="/LibScripts/ui-bootstrap-custom-tpls-0.13.0.js"></script>
+<script src="/LibScripts/jquery.signalR-2.2.0.js"></script>
+<script src="/LibScripts/xeditable.js"></script>
+<script src="/LibScripts/ngProgress.js"></script>
+<script src="/LibScripts/ngDraggable.js"></script>
+<script src="/LibScripts/angular-file-upload.js"></script>
+<script src="/LibScripts/ng-table.js"></script>
+<script src="/LibScripts/bootstrap-toggle.js"></script>
+<script src="/LibScripts/angular-ui-tree.js"></script>
+<script src="/LibScripts/less.js"></script>
+<script src="/LibScripts/ng-infinite-scroll.min.js"></script>
+<script src="/LibScripts/bootstrap-editable.min.js"></script>
+<script src="/LibScripts/jquery.maphilight.min.js"></script>
+<script src="/LibScripts/select2.full.min.js"></script>
+
+    
+    <script src="/signalr/hubs"></script>
+
+    <script src="/Scripts/services/RequestErrorHandler.js"></script>
+    <script src="/LibScripts/abn_tree_directive.js"></script>
+    
+    <script src="/Scripts/directives/onFinishRender.js"></script>
+
+    <script src="/Scripts/services/controlScreenDataService.js"></script>
+<script src="/Scripts/services/mapDataService.js"></script>
+<script src="/Scripts/services/tagFilter.js"></script>
+<script src="/Scripts/services/DCUConnection.js"></script>
+<script src="/Scripts/services/nodeDataService.js"></script>
+<script src="/Scripts/services/alertDataService.js"></script>
+<script src="/Scripts/controllers/controlController.js"></script>
+<script src="/Scripts/controllers/meterDataController.js"></script>
+<script src="/Scripts/controllers/meterDataHistoryAlertController.js"></script>
+<script src="/Scripts/controllers/mapViewController.js"></script>
+<script src="/Scripts/controllers/switchPointSummaryController.js"></script>
+<script src="/Scripts/controllers/lightsMonitorControlController.js"></script>
+<script src="/Scripts/controllers/lightsMonitorControlPaginationController.js"></script>
+<script src="/Scripts/controllers/philipsLightsMonitorControlScreen.js"></script>
+<script src="/Scripts/controllers/waterMeterController.js"></script>
+<script src="/Scripts/controllers/meterMonitorAndControlController.js"></script>
+<script src="/Scripts/controllers/controlScreenOptimizedController.js"></script>
+<script src="/Scripts/controllers/controlScreenOptimizedPaginationController.js"></script>
+<script src="/Scripts/controllers/controlScreenOptimizedPaginationController-2.js"></script>
+<script src="/Scripts/controllers/controlScreenOptimizedQWatchController.js"></script>
+<script src="/Scripts/controllers/transparentModeController.js"></script>
+<script src="/Scripts/controllers/meteringListViewController.js"></script>
+<script src="/Scripts/controllers/meterMonitoringController.js"></script>
+<script src="/Scripts/services/nodeTagDataService.js"></script>
+<script src="/LibScripts/jquery.knob.js"></script>
+<script src="/Scripts/controllers/kryptonMonitorControlController.js"></script>
+<script src="/Scripts/controllers/manholeMapViewController.js"></script>
+<script src="/Scripts/controllers/deviceMonitorController.js"></script>
+<script src="/Scripts/controllers/allDeviceMonitorController.js"></script>
+<script src="/Scripts/controllers/genericHistoryDataController.js"></script>
+<script src="/Scripts/controllers/groupHistoryViewController.js"></script>
+<script src="/Scripts/controllers/controlScreenOptimizedWithAlertController.js"></script>
+<script src="/Scripts/controllers/panelOnMapViewController.js"></script>
+<script src="/Scripts/services/getOnDemandData.js"></script>
+<script src="/Scripts/controllers/nodeContoller.js"></script>
+<script src="/LibScripts/excanvas.js"></script>
+<script src="/LibScripts/q-directives.js"></script>
+<script src="/LibScripts/industrial.js"></script>
+
+    <script src="/Scripts/index/control-index.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBwGN_9LkI39lZFhd2SOALb2f4DYhmRrQM&amp;sensor=false"> </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+
+<div ng-controller="dashboardControllers">
+
+	<div>
+		<nav class="navbar navbar-inverse  navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar2">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand"> </a> <a><img
+						class="responsive headerimagesize" src="images/CompanyLogo.png"></a>
+
+				</div>
+				<div id="navbar2" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+
+
+						<li><a href=""><span class=""></span> &nbsp;&nbsp;Cross
+								Field</a></li>
+
+
+						<li class="dropdown"><a class="dropdown-toggle fa fa-user"
+							data-toggle="dropdown" href=""> Cross Field</a>
+							<ul class="dropdown-menu " style="margin-top: 13px">
+
+								<li><a href="#login"><span class="fa fa-sign-out"></span>
+										&nbsp;&nbsp;Sign Out</a></li>
+
+								<li><a href="#login"><span class="fa fa-fw fa-gear"></span>
+										&nbsp;&nbsp;Change Password</a></li>
+
+							</ul></li>
+
+
+						<hr>
+					</ul>
+				</div>
+			</div>
+			<!--/.container-fluid -->
+		</nav>
+	</div>
+
+
+
+
+	<div class="col-md-12" style="margin-top: 70px">
+
+		<div class="col-md-2">
+
+			<div class="sidebar card" style="padding: 1px">
+
+				<div class="vl"></div>
+				<a ng-click="goToMONITORANDCONTROL()" style="margin-top: 19px">
+					<span class="fa fa-th" style="margin-left: 10px"></span>
+					&nbsp;Monitor & Control
+				</a>
+				<hr>
+				<a ng-click="goToHISTORY()"><span class="fa fa-clone"
+					style="margin-left: 10px"></span> &nbsp;&nbsp;History</a>
+				<hr>
+				<a ng-click="goToEVENT()"><span class="fa fa-bell"
+					style="margin-left: 10px"></span> &nbsp;&nbsp;Event</a>
+				<hr>
+
+
+				<a ng-click="goToSWITCHPOINT()"><span class="fa fa-fire"
+					style="margin-left: 10px"></span> &nbsp;&nbsp;Switch pt Summary</a>
+				<hr>
+				<div style="margin-top: 10px">
+					<div data-toggle="collapse" data-placement="bottom"
+						data-target="#reports" data-toggle="tooltip"
+						title="Click to Open/Close">
+						<span class="fa fa-sticky-note"
+							style="margin-left: 18px; padding-bottom: 12px"></span>
+						&nbsp;Reports
+					</div>
+					<div id="reports" class="panel-collapse collapse">
+						<div class="panel-body">
+							<hr>
+							<a ng-click="goToOPERATIONALHOUR()"> <span class="fa fa-edit"
+								style="margin-left: 10px"></span> &nbsp;Operational hour
+							</a>
+						</div>
+					</div>
+				</div>
+
+
+				<hr>
+				<div style="margin-top: 10px">
+					<div data-toggle="collapse" data-placement="bottom"
+						data-target="#collapse" data-toggle="tooltip"
+						title="Click to Open/Close">
+						<span class="fa fa-dashboard"
+							style="margin-left: 18px; padding-bottom: 12px"></span>&nbsp;&nbsp;Configuration
+					</div>
+					<div id="collapse" class="panel-collapse collapse">
+						<div class="panel-body">
+							<hr>
+							<a ng-click="goToDCU()"> <span class="fa fa-edit"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;DCU/RTU
+							</a>
+							<hr>
+							<a ng-click="goToSCHEDULES()"><span class="fa fa-calendar"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;Schedules</a>
+							<hr>
+							<a ng-click="goToUSER()"><span class="fa fa-user"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;Users</a>
+
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div style="margin-top: 10px">
+					<div data-toggle="collapse" data-placement="bottom"
+						data-target="#settings" data-toggle="tooltip"
+						title="Click to Open/Close">
+						<span class="fa fa-wrench"
+							style="margin-left: 18px; padding-bottom: 12px"></span>&nbsp;&nbsp;Settings
+					</div>
+					<div id="settings" class="panel-collapse collapse">
+						<div class="panel-body">
+							<hr>
+							<a ng-click="goToDEFAULT()"> <span class="fa fa-edit"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;Default Settings
+							</a>
+							<hr>
+							<a ng-click="goToFILTER();"><span class="fa fa-calendar"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;Filter</a> 
+								<hr>
+								
+								<a ng-click="goToNODE()"><span class="fa fa-user"
+								style="margin-left: 10px"></span> &nbsp;&nbsp;Node</a>
+						</div>
+					</div>
+				</div>
+				<hr>
+
+			</div>
+		</div>
+
+
+		<div class="col-md-10" style="padding: 20px">
+
+
+			<div ui-view></div>
+
+		</div>
+
+
+
+	</div>
+
+</div>
+

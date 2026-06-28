@@ -1,0 +1,360 @@
+<div class="col-md-12">
+	<div align="left" style="font-size: 20px; color: #6D7993">
+		RTU/DCU information</div>
+	<br>
+	<div class="row">
+<form name="newMeterForm" ng-submit="ok()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
+	
+		<div class="col-md-6 " style="padding: 10px">
+			<div class="panel-body">
+				<!-- <form class="form-horizontal"> -->
+				
+
+
+						<!-- <div class="form-group"
+							ng-class="{'has-error': newNodeForm.CCMSId.$invalid &amp;&amp; (newNodeForm.CCMSId.$dirty || submitted)}">
+							<label class="col-md-4" style="marin-right: 10px" align="left">CCMS
+								panel id</label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength"
+									name="CCMSId" id="CCMSId" placeholder="Enter CCMS panel id"
+									ng-model="dcu.panel_unique_id">
+							</div>
+						</div> -->
+						
+						
+						 <div class="form-group" ng-class="{'has-error': newMeterForm.CCMSId.$invalid &amp;&amp; (newMeterForm.CCMSId.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">CCMS panel id<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="CCMSId" id="CCMSId" placeholder="Enter CCMS panel id" ng-model="dcu.panel_unique_id" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.CCMSId.$error.required &amp;&amp; (newMeterForm.CCMSId.$dirty || submitted)">Please enter CCMS panel id.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.CCMSId.$error.maxlength &amp;&amp; (newMeterForm.CCMSId.$dirty || submitted)">CCMS panel id is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.CCMSId.$error.pattern &amp;&amp; (newMeterForm.CCMSId.$dirty || submitted)">CCMS panel id not contains special symbols.</span>
+                            </div>
+                        </div>
+						
+						
+						
+
+						 <!-- <div class="form-group"
+							ng-class="{'has-error': newNodeForm.NodeName.$invalid &amp;&amp; (newNodeForm.NodeName.$dirty || submitted)}">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Name<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength"
+									name="NodeName" id="NodeName" placeholder="Enter DCU name"
+									ng-model="dcu.name" ng-change="MakePristineTrue()"
+									ng-maxlength="50" maxlength="50"
+									ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-required="true"
+									required="required">
+							</div>
+						</div> -->
+						
+						
+						<div class="form-group" ng-class="{'has-error': newMeterForm.NodeName.$invalid &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">name<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="NodeName" id="NodeName" placeholder="Enter DCU name" ng-model="dcu.name" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.required &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">Please enter name.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.maxlength &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">name is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.pattern &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">name not contains special symbols.</span>
+                            </div>
+                        </div>
+						
+				
+
+						<div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Date</label>
+							<div class="col-md-8">
+								<input date-range-picker name="daterange6" id="daterange6"
+									class="form-control date-picker" type="text"
+									ng-model="dcu.date" options="{singleDatePicker: true}" required />
+							</div>
+						</div>
+						
+						
+						<!-- <div class="form-group"
+							ng-class="{'has-error': newNodeForm.SerialNumber.$invalid &amp;&amp; (newNodeForm.SerialNumber.$dirty || submitted)}">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Serial
+								number<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control"
+									name="SerialNumber" id="SerialNumber"
+									placeholder="Enter serial number"
+									 ng-model="dcu.serial_number">
+							</div>
+						</div> -->
+						
+						
+						<div class="form-group" ng-class="{'has-error': newMeterForm.SerialNumber.$invalid &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">SerialNumber<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="SerialNumber" id="SerialNumber" placeholder="Enter serial number" ng-model="dcu.serial_number" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.required &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">Please enter SerialNumber.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.maxlength &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">SerialNumber is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.pattern &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">SerialNumber not contains special symbols.</span>
+                            </div>
+                        </div>
+						
+						
+
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.ModelNumber.$invalid &amp;&amp; (newNodeForm.ModelNumber.$dirty || submitted)}">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Model<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									ng-model="dcu.model" name="ModelNumber" id="ModelNumber"
+									ng-required="true" required="required">
+									<option>SinglePhaseSingleRelayAutoManualAxiliaryMCB</option>
+									<option>ThreePhaseThreeRelayAutoManualAxiliaryMCB</option>
+
+								</select>
+
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">District</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.distict" ng-change="getMandalOnSelect();"
+									class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">Mondal</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.mondal" class="form-control"
+									ng-change="getGpOnSelect();">
+									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">GP</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.gp" class="form-control"
+									ng-change="getVillageOnSelect();">
+									<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">Scheduler</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.schedules_name" class="form-control">
+									<option ng-repeat="schedules_name in scheduler_data" value="{{schedules_name.schedules_name}}">{{schedules_name.schedules_name}}</option>
+								</select>
+							</div>
+						</div>
+
+						<!--  <div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Connected
+								Load</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="Connected_load"
+									id="connected load" placeholder="Connected Load"
+									ng-model="dcu.connected_load">
+							</div>
+						</div>  -->
+						
+						
+						
+						
+						
+
+
+						<!-- <div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Mobile
+								number</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="MobileNumber"
+									id="MobileNumber" placeholder="Mobile number"
+									ng-model="dcu.mobile_number" ng-pattern="/^[+]?[a-zA-Z0-9 ]+$/"
+									ng-minlength="10" ng-maxlength="20" maxlength="20">
+							</div>
+						</div>  -->
+						
+						
+						
+						<div class="form-group" ng-class="{'has-error': newMeterForm.MobileNumber.$invalid &amp;&amp; (newMeterForm.MobileNumber.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">MobileNumber<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="MobileNumber" id="MobileNumber" placeholder="Enter Mobile number" ng-model="dcu.mobile_number" ng-pattern="/^[0-9._-]+$/" ng-minlength="13" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MobileNumber.$error.required &amp;&amp; (newMeterForm.MobileNumber.$dirty || submitted)">Please enter MobileNumber.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MobileNumber.$error.maxlength &amp;&amp; (newMeterForm.MobileNumber.$dirty || submitted)">MobileNumber is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MobileNumber.$error.pattern &amp;&amp; (newMeterForm.MobileNumber.$dirty || submitted)">MobileNumber not contains special symbols.</span>
+                                 <span class="help-block ng-hide" ng-show="newMeterForm.MobileNumber.$error.minlength &amp;&amp; (newMeterForm.MobileNumber.$dirty || submitted)">Please enter 13 Numbers</span>
+                            </div>
+                        </div>
+						
+						
+						<!-- <div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">
+								Total lights</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="Totallights"
+									id="total lights" placeholder="Total lights"
+									ng-model="dcu.no_of_lights" ng-pattern="/^[0-9._-]+$/"
+									ng-minlength="10" ng-maxlength="20" maxlength="20">
+							</div>
+						</div> -->
+		
+		<div class="form-group" ng-class="{'has-error': newMeterForm.Totallights.$invalid &amp;&amp; (newMeterForm.Totallights.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Total lights<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="Totallights" id="Totallights" placeholder="Enter Total lights" ng-model="dcu.no_of_lights" ng-pattern="/^[0-9._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totallights.$error.required &amp;&amp; (newMeterForm.Totallights.$dirty || submitted)">Please enter Total lights.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totallights.$error.maxlength &amp;&amp; (newMeterForm.Totallights.$dirty || submitted)">Total lights is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totallights.$error.pattern &amp;&amp; (newMeterForm.Totallights.$dirty || submitted)">Total lights not contains special symbols.</span>
+                            </div>
+                        </div>
+		
+						
+						<!-- <div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">
+								Total load(kW)</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="Totalload(kW)"
+									id="total load(" placeholder="Total load(kW)"
+									ng-model=" connected_load" ng-pattern="/^[0-9._-]+$/"
+									ng-minlength="10" ng-maxlength="20" maxlength="20">
+							</div>
+						</div>  -->
+						
+						<div class="form-group" ng-class="{'has-error': newMeterForm.Totalload.$invalid &amp;&amp; (newMeterForm.Totalload.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Total laod(kW)<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="Totalload" id="Totalload" placeholder="Enter Total load(kW)" ng-model="dcu.connected_load" ng-pattern="/^[0-9._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totalload.$error.required &amp;&amp; (newMeterForm.Totalload.$dirty || submitted)">Please enter Total lights.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totalload.$error.maxlength &amp;&amp; (newMeterForm.Totalload.$dirty || submitted)">Total lights is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Totalload.$error.pattern &amp;&amp; (newMeterForm.Totalload.$dirty || submitted)">Total lights not contains special symbols.</span>
+                            </div>
+                        </div>
+		
+						
+						
+						
+						
+						
+			
+		</div>
+		
+</div>
+
+		<input type="hidden" name="NodeType" id="Nodetype"
+			ng-model="newNode.NodeType" value="1"
+			class="ng-pristine ng-untouched ng-valid">
+
+		<div class="col-md-6 " style="padding: 10px">
+			<div class="panel-body">
+				<form class="form-horizontal">
+					
+					<div class="form-group"
+						ng-class="{'has-error': newNodeForm.Description.$invalid &amp;&amp; (newNodeForm.Description.$dirty || submitted)}">
+						<label class="col-md-4" style="marin-right: 10px" align="left">Description</label>
+						<div class="col-md-7">
+							<textarea
+								class="form-control capitalize ng-pristine ng-untouched ng-valid ng-valid-maxlength"
+								id="Description" name="Description"
+								placeholder="Enter description" ng-model="dcu.description"
+								rows="5" ng-change="MakePristineTrue()" ng-maxlength="70"></textarea>
+							<span class="help-block ng-hide"
+								ng-show="newNodeForm.Description.$error.maxlength &amp;&amp; (newNodeForm.Description.$dirty || submitted)">The
+								maximum length of the DCU description should be 70 characters.</span>
+						</div>
+					</div> 
+
+
+
+					 <div class="form-group">
+						<label class="col-md-4 "  align="left">Latitude</label>
+						<div class="col-sm-7">
+							<div class="controls">
+								<input class="form-control"  name="lat" id="lat"
+									placeholder="Latitude" ng-model="dcu.lat" />
+							</div>
+						</div>
+						<br>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 "  align="left">Logitude</label>
+						<div class="col-sm-7" >
+							<div class="controls">
+								<input class="form-control" name="lang" id="long"
+									placeholder="longitude" ng-model="dcu.lang" />
+							</div>
+							<br>
+						</div>
+					</div> 
+
+					
+					
+					
+					
+					
+					
+					
+	
+					<!--- Open Map --->
+					<div class="col-md-7 " align="right">
+					<a type="button"
+						class="btn btn-info btn-sm "
+						ng-click="locatedcuonmap()"> Locate on map </a></div>
+
+					<div class="lightBorder col-md-12 ng-hide" ng-show="showMap">
+						<div class="addNodeMapHeight" id="addNodeMap"></div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="col-sm-7" style="marin-right: 10px" align="left">
+							<div id="map_canvas" style="width: 515px; height: 300px;"></div>
+							<br>
+						</div>
+					</div>
+			</div>
+			<br>
+			
+			
+			
+
+		</div>
+		</form>
+		</div>
+		
+	</div>
+	 <div class="row">
+        <div class="col-xs-12 col-lg-12 col-sm-12">
+        <hr>
+        <br>
+            <div class="pull-left"><span class="compulsaryFieldsColor">*</span>Marked fields are compulsory.</div>
+            <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="close()" ng-disabled="backtoCreateMeterClicked==1">Cancel</button>
+            <input type="button" data-toggle="tooltip" data-placement="bottom" title="Update" class="btn btn-primary pull-right adjusantButtons" ng-click="update()" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" value="Save &amp; proceed" disabled="disabled">
+        
+            
+        </div>
+    </div> 
+
+ <!-- <div class="col-md-12">
+	<br>
+</div>
+<div class="col-md-12">
+	<br>
+</div>
+
+<div align="center">
+	<a type="button" ng-click="update()" class="btn btn-info btn-sm ">Update</a>
+	<a type="button" ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
+</div> -->
+ 

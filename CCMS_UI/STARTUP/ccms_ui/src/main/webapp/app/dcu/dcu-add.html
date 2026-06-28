@@ -1,0 +1,359 @@
+<div class="col-md-12">
+	<div align="left" style="font-size: 20px; color: #6D7993">
+		RTU/DCU information</div>
+	<br>
+	<div class="row">
+		<div class="col-md-6 " style="padding: 10px">
+			<div class="panel-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.CCMSId.$invalid &amp;&amp; (newNodeForm.CCMSId.$dirty || submitted)}">
+							<label class="col-md-4" style="marin-right: 10px" align="left">CCMS
+								panel id</label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength"
+									name="CCMSId" id="CCMSId" placeholder="Enter CCMS panel id"
+									ng-model="dcu.panel_unique_id" >
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Name</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="NodeName"
+									id="NodeName" placeholder="Enter DCU name" ng-model="dcu.name">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Date</label>
+							<div class="col-md-8">
+								<input date-range-picker name="daterange6" id="daterange6"
+									class="form-control date-picker" type="text"
+									ng-model="dcu.date" options="{singleDatePicker: true}" required />
+							</div>
+						</div>
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.SerialNumber.$invalid &amp;&amp; (newNodeForm.SerialNumber.$dirty || submitted)}">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Serial
+								number<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+									name="SerialNumber" id="SerialNumber"
+									placeholder="Enter serial number"
+									ng-change="MakePristineTrue()" ng-model="dcu.serial_number">
+							</div>
+						</div>
+
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.ModelNumber.$invalid &amp;&amp; (newNodeForm.ModelNumber.$dirty || submitted)}">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Model<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									ng-model="dcu.model" name="ModelNumber" id="ModelNumber"
+									ng-required="true" required="required">
+									<option>SinglePhaseSingleRelayAutoManualAxiliaryMCB</option>
+									<option>ThreePhaseThreeRelayAutoManualAxiliaryMCB</option>
+
+								</select>
+
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">District</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.distict" ng-change="getMandalOnSelect();"
+									class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">Mondal</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.mondal" class="form-control"
+									ng-change="getGpOnSelect();">
+									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">GP</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.gp" class="form-control"
+									ng-change="getVillageOnSelect();">
+									<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">Village</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.village" class="form-control">
+									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4" align="left">Scheduler</label>
+							<div class="col-md-8">
+								<select ng-model="dcu.schedules_name" class="form-control">
+									<option ng-repeat="schedules_name in scheduler_data" value="{{schedules_name.schedules_name}}">{{schedules_name.schedules_name}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Total
+								Load (Kwh)</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="Connected_load"
+									id="connected load" placeholder="Connected Load"
+									ng-model="dcu.connected_load">
+							</div>
+						</div>
+						
+							<div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">No Of Lights
+								</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="no_of_lights"
+									id="no_of_lights" placeholder="No Of Lights Connected "
+									ng-model="dcu.no_of_lights">
+							</div>
+						</div>
+						
+						<!-- <div class="form-group">
+							<label class="col-md-4 " style="marin-right: 10px" align="left">Mobile
+								number</label>
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="MobileNumber"
+									id="MobileNumber" placeholder="Mobile number"
+									ng-model="dcu.mobile_number" ng-pattern="/^[+]?[a-zA-Z0-9 ]+$/"
+									ng-minlength="10" ng-maxlength="20" maxlength="20">
+							</div>
+						</div>
+						
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.RFId.$invalid &amp;&amp; (newNodeForm.RFId.$dirty || submitted)}">
+							<label class="col-md-4" style="marin-right: 10px" align="left">RfId</label>
+							<div class="col-md-8">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength ng-valid-required"
+									name="RFId" id="RFId" placeholder="Enter RFId"
+									ng-model="dcu.rfid" ng-pattern="/^[0-9]+$/" maxlength="8"
+									ng-change="MakePristineTrue()" ng-required="false">
+							</div>
+
+						</div> 
+						
+
+						<div class="form-group"
+							ng-class="{'has-error': newNodeForm.TimeZone.$invalid &amp;&amp; (newNodeForm.TimeZone.$dirty || submitted)}">
+							<label class="col-md-4" style="marin-right: 10px" align="left">Time
+								zone<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-8">
+							<select class="form-control ng-pristine ng-untouched ng-valid"
+									ng-model="dcu.time_zone_id" name="TimeZone" id="TimeZone">
+										<option>Dateline Standard Time(UC-12:00)</option>
+										<option>UTC-11(UTC-11:00)</option>
+										<option>Hawaiian Standard Time(UTC-10:00)</option>
+										<option>Alaskan Standard Time(UTC-09:00)</option>
+										<option>Pacific Standard Time (Mexico)(UTC-08:00)</option>
+										<option>Pacific Standard Time(UTC-08:00)</option>
+										<option>US Mountain Standard Time(UTC-07:00)</option>
+										<option>Mountain Standard Time (Mexico)(UTC-07:00)</option>
+										<option>Mountain Standard Time(UTC-07:00)</option>
+										<option>Central America Standard Time(UTC-06:00)</option>
+										<option>Central Standard Time(UTC-06:00)</option>
+										<option>Central Standard Time (Mexico)(UTC-06:00)</option>
+										<option>Canada Central Standard Time(UTC-06:00)</option>
+										<option>SA Pacific Standard Time(UTC-05:00)</option>
+										<option>Eastern Standard Time(UTC-05:00)</option>
+										<option>US Eastern Standard Time(UTC-05:00)</option>
+										<option>Venezuela Standard Time(UTC-04:00)</option>
+										<option>Paraguay Standard Time(UTC-04:00)</option>
+										<option>Atlantic Standard Time(UTC-04:00)</option>
+										<option>Central Brazilian Standard Time(UTC-04:00)</option>
+										<option>SA Western Standard Time(UTC-04:00)</option>
+										<option>Pacific SA Standard Time(UTC-04:00)</option>
+										<option>Newfoundland Standard Time(UTC-03:30)</option>
+										<option>E. South America Standard Time(UTC-03:00)</option>
+										<option>Argentina Standard Time(UTC-03:00)</option>
+										<option>SA Eastern Standard Time(UTC-03:00)</option>
+										<option>Greenland Standard Time(UTC-03:00)</option>
+										<option>Montevideo Standard Time(UTC-03:00)</option>
+										<option>Bahia Standard Time(UTC-03:00)</option>
+										<option>UTC-02(UTC-02:00)</option>
+										<option>Mid-Atlantic Standard Time(UTC-02:00)</option>
+										<option>Azores Standard Time(UTC-01:00)</option>
+										<option>Cape Verde Standard Time(UTC-01:00)</option>
+										<option>Morocco Standard Time(UTC+00:00)</option>
+										<option>UTC</option>
+										<option>GMT Standard Time(UTC+00:00)</option>
+										<option>Greenwich Standard Time(UTC+00:00)</option>
+										<option>W. Europe Standard Time(UTC+01:00)</option>
+										<option>Central Europe Standard Time(UTC+01:00)</option>
+										<option>Romance Standard Time(UTC+01:00)</option>
+										<option>Central European Standard Time(UTC+01:00)</option>
+										<option>W. Central Africa Standard Time(UTC+01:00)</option>
+										<option>Namibia Standard Time(UTC+02:00)</option>
+										<option>GTB Standard Time(UTC+02:00)</option>
+										<option>Middle East Standard Time(UTC+02:00)</option>
+										<option>Egypt Standard Time(UTC+02:00)</option>
+										<option>Syria Standard Time(UTC+02:00)</option>
+										<option>E. Europe Standard Time(UTC+02:00)</option>
+										<option>South Africa Standard Time(UTC+02:00)</option>
+										<option>FLE Standard Time(UTC+02:00)</option>
+										<option>Turkey Standard Time(UTC+03:00)</option>
+										<option>Israel Standard Time(UTC+02:00)</option>
+										<option>Libya Standard Time(UTC+02:00)</option>
+										<option>Jordan Standard Time(UTC+02:00)</option>
+										<option>Arabic Standard Time(UTC+03:00)</option>
+										<option>Kaliningrad Standard Time(UTC+02:00)</option>
+										<option>Arab Standard Time(UTC+03:00)</option>
+										<option>E. Africa Standard Time(UTC+03:00)</option>
+										<option>Iran Standard Time(UTC+03:30)</option>
+										<option>Arabian Standard Time(UTC+04:00)</option>
+										<option>Azerbaijan Standard Time(UTC+04:00)</option>
+										<option>Russian Standard Time(UTC+03:00)</option>
+										<option>Mauritius Standard Time(UTC+04:00)</option>
+										<option>Georgian Standard Time(UTC+04:00)</option>
+										<option>Caucasus Standard Time(UTC+04:00)</option>
+										<option>Afghanistan Standard Time(UTC+04:30)</option>
+										<option>West Asia Standard Time(UTC+05:00)</option>
+										<option>Pakistan Standard Time(UTC+05:00)</option>
+										<option>India Standard Time(UTC+05:30)</option>
+										<option>Sri Lanka Standard Time(UTC+05:30)</option>
+										<option>Nepal Standard Time(UTC+05:45)</option>
+										<option>Central Asia Standard Time(UTC+06:00)</option>
+										<option>Bangladesh Standard Time(UTC+06:00)</option>
+										<option>Ekaterinburg Standard Time(UTC+05:00)</option>
+										<option>Myanmar Standard Time(UTC+06:30)</option>
+										<option>SE Asia Standard Time(UTC+07:00)</option>
+										<option>N. Central Asia Standard Time(UTC+07:00)</option>
+										<option>China Standard Time(UTC+08:00)</option>
+										<option>Time(UTC+07:00)</option>
+										<option>Singapore Standard Time(UTC+08:00)</option>
+										<option>W. Australia Standard Time(UTC+08:00)</option>
+										<option>Taipei Standard Time(UTC+08:00)</option>
+										<option>Ulaanbaatar Standard Time(UTC+08:00)</option>
+										<option>North Asia East Standard Time(UTC+08:00)</option>
+										<option>Tokyo Standard Time(UTC+09:00)</option>
+										<option>Korea Standard Time(UTC+09:00)</option>
+										<option>Cen. Australia Standard Time(UTC+09:30)</option>
+										<option>AUS Central Standard Time(UTC+09:30)</option>
+										<option>E. Australia Standard Time(UTC+10:00)</option>
+										<option>AUS Eastern Standard Time(UTC+10:00)</option>
+										<option>West Pacific Standard Time(UTC+10:00)</option>
+										<option>Tasmania Standard Time(UTC+10:00)</option>
+										<option>Yakutsk Standard Time(UTC+09:00)</option>
+										<option>Central Pacific Standard Time(UTC+11:00)</option>
+										<option>Vladivostok Standard Time(UTC+10:00)</option>
+										<option>New Zealand Standard Time(UTC+12:00)</option>
+										<option>UTC+12(UTC+12:00)</option>
+										<option>Fiji Standard Time(UTC+12:00)</option>
+										<option>Magadan Standard Time(UTC+11:00)</option>
+										<option>Kamchatka Standard Time(UTC+12:00)</option>
+										<option>Tonga Standard Time(UTC+13:00)</option>
+										<option>Samoa Standard Time(UTC+13:00)</option>
+									</select>
+							</div>
+						</div> -->
+
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<input type="hidden" name="NodeType" id="Nodetype"
+			ng-model="newNode.NodeType" value="1"
+			class="ng-pristine ng-untouched ng-valid">
+
+		<div class="col-md-6 " style="padding: 10px">
+			<div class="panel-body">
+				<form class="form-horizontal">
+
+					<!-- <div class="form-group"
+						ng-class="{'has-error': newNodeForm.Description.$invalid &amp;&amp; (newNodeForm.Description.$dirty || submitted)}">
+						<label class="col-md-4" style="marin-right: 10px" align="left">Description</label>
+						<div class="col-md-7">
+							<textarea
+								class="form-control capitalize ng-pristine ng-untouched ng-valid ng-valid-maxlength"
+								id="Description" name="Description"
+								placeholder="Enter description" ng-model="dcu.description"
+								rows="5" ng-change="MakePristineTrue()" ng-maxlength="70"></textarea>
+							<span class="help-block ng-hide"
+								ng-show="newNodeForm.Description.$error.maxlength &amp;&amp; (newNodeForm.Description.$dirty || submitted)">The
+								maximum length of the DCU description should be 70 characters.</span>
+						</div>
+					</div> -->
+
+
+
+					<div class="form-group">
+						<label class="col-md-4 " style="marin-right: 10px" align="left">Latitude</label>
+						<div class="col-sm-7">
+							<div class="controls">
+								<input class="form-control" name="lat" id="lat"
+									placeholder="Latitude" ng-model="dcu.lat" />
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group" style="marin-right: 10px" align="left">
+						<label class="col-md-4 ">Logitude</label>
+						<div class="col-sm-7">
+							<div class="controls">
+								<input class="form-control" name="lang" id="long"
+									placeholder="longitude" ng-model="dcu.long" />
+							</div>
+						</div>
+					</div>
+						<!--- Open Map --->
+					<div class="col-md-7 " align="right">
+					<a type="button"
+						class="btn btn-info btn-sm "
+						ng-click="locatedcuonmap()"> Locate on map </a></div>
+
+					<div class="lightBorder col-md-12 ng-hide" ng-show="showMap">
+						<div class="addNodeMapHeight" id="addNodeMap"></div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="col-sm-7" style="marin-right: 10px" align="left">
+							<div id="map_canvas" style="width: 515px; height: 300px;"></div>
+							<br>
+						</div>
+					</div>
+			</div>
+			<br>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<br>
+</div>
+
+<div align="center">
+	<a type="button" ng-click="ok()" class="btn btn-info btn-sm ">Add</a> <a
+		type="button" ng-click="cancel()" class="btn btn-info btn-sm ">Cancel</a>
+</div>
+

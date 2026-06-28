@@ -1,0 +1,48 @@
+md-fab-speed-dial.md-fab-bottom-right {
+	top: auto;
+	right: 20px;
+	bottom: 20px;
+	left: auto;
+	position: absolute;
+}
+
+.fabSpeedDialdemoBasicUsage .text-capitalize {
+	text-transform: capitalize;
+}
+
+.fabSpeedDialdemoBasicUsage .md-fab:hover, .fabSpeedDialdemoBasicUsage .md-fab.md-focused
+	{
+	background-color: #000 !important;
+}
+
+.fabSpeedDialdemoBasicUsage p.note {
+	font-size: 1.2rem;
+}
+
+.fabSpeedDialdemoBasicUsage .lock-size {
+	min-width: 300px;
+	min-height: 300px;
+	width: 300px;
+	height: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+#thing {
+  margin: 0 25px;
+}
+
+
+.demo md-icon {
+  margin: 20px;
+  margin-top: 0;
+  width: 24px;
+  height: 24px;
+}
+.md-tab > md-icon {
+  margin-bottom: 5px;
+}
+md-pagination-wrapper, md-tabs-canvas {
+  height: 72px;
+}

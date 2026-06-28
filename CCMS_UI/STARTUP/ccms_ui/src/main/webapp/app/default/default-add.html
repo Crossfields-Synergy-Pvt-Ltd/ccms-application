@@ -1,0 +1,1651 @@
+<div class="col-md-12">
+	<!-- <form name="myForm" name="gatewayConfigForm"> -->
+	<br>
+	<div class="col-md-12">
+		<div class="col-md-6" align="left">
+
+			<label style="color: #c8ea4d; font-size: 25px;">Serial
+				number:{{dcu.dcu_id}}</label>
+		</div>
+		<!--                   <div class="col-md-6" align="right"> -->
+		<!--                             <button ng-click="loadDefualtconfigsettings()" data-toggle="tooltip" data-placement="bottom" title="Load default configuration settings" class="btn btn-info btn-sm">Load default configuration settings</button> -->
+		<!--                    </div> -->
+
+	</div>
+	<div class="col-md-12" align="left">
+		<label style="color: #c8ea4d; font-size: 20px;">Device
+			settings</label>
+	</div>
+	<hr>
+
+
+	<div>
+
+		<form class="form-horizontal">
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<!--DCU Id -->
+					<div class="form-group">
+						<label class="col-md-5 control-label ">Serial number</label>
+						<div class="col-md-7">
+							<input type="text" class="form-control"
+								name="gateway_serial_number" placeholder="Serial number"
+								ng-model="dcu.dcu_id" readonly="readonly"></input>
+						</div>
+					</div>
+				</div>
+
+				<!--Change Request Interval -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.change_interval.$invalid &amp;&amp; (gatewayConfigForm.change_interval.$dirty || gatewayConfigForm.change_interval.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Change
+							interval<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								name="change_interval" id="change_interval"
+								placeholder="Change request interval"
+								ng-model="dcu.change_interval" required="required"> <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.change_interval.$error.required &amp;&amp; (gatewayConfigForm.change_interval.$dirty || submitted)">Enter
+								change request interval</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.change_interval.$error.number &amp;&amp; (gatewayConfigForm.change_interval.$dirty || submitted)">Change
+								request interval is not valid</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.change_interval.$error.pattern &amp;&amp; (gatewayConfigForm.change_interval.$dirty || submitted)">Range
+								is between 5 to 255</span>
+						</div>
+					</div>
+				</div>
+
+				<!--Mobile Number -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.mobile_number.$invalid &amp;&amp; (gatewayConfigForm.mobile_number.$dirty || gatewayConfigForm.mobile_number.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+							number</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+								name="MobileNumber" id="MobileNumber"
+								placeholder="Mobile number" ng-model="dcu.mobile_no" disabled="">
+							<span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.mobile_number.$error.required &amp;&amp; (gatewayConfigForm.mobile_number.$dirty || submitted)">Enter
+								Mobile Number</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.mobile_number.$error.maxlength &amp;&amp; (gatewayConfigForm.mobile_number.$dirty || submitted)">Mobile
+								number exceeds maxlength</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.mobile_number.$error.minlength &amp;&amp; (gatewayConfigForm.mobile_number.$dirty || submitted)">Mobile
+								number is too short</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.mobile_number.$error.pattern &amp;&amp; (gatewayConfigForm.mobile_number.$dirty || submitted)">Mobile
+								number not accepts special characters</span>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!--Over Write Data On Flash Full -->
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.overwrite_flash.$invalid &amp;&amp; (gatewayConfigForm.overwrite_flash.$dirty || gatewayConfigForm.overwrite_flash.$pristine|| submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Overwrite
+							flash<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<select
+								class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+								name="overwrite_flash" id="overwrite_flash"
+								ng-model="dcu.overwrite_flash" required="required">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!--Packet Retry Count -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.retry_count.$invalid &amp;&amp; (gatewayConfigForm.retry_count.$dirty || gatewayConfigForm.retry_count.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Retry
+							count<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								name="retry_count" id="retry_count"
+								placeholder="Packet retry count" ng-model="dcu.retry_count"
+								required="required"> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_count.$error.required &amp;&amp; (gatewayConfigForm.retry_count.$dirty || submitted)">Enter
+								packet retry count</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_count.$error.number &amp;&amp; (gatewayConfigForm.retry_count.$dirty || submitted)">Packet
+								retry count is not valid</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_count.$error.pattern &amp;&amp; (gatewayConfigForm.retry_count.$dirty || submitted)">Range
+								is between 5 to 20</span>
+						</div>
+					</div>
+				</div>
+
+
+				<!--Packet Retry Interval -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.retry_interval.$invalid &amp;&amp; (gatewayConfigForm.retry_interval.$dirty || gatewayConfigForm.retry_interval.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Retry
+							interval<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								name="retry_interval" id="retry_interval"
+								placeholder="Packet retry interval"
+								ng-model="dcu.retry_interval" required="required"> <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_interval.$error.required &amp;&amp; (gatewayConfigForm.retry_interval.$dirty || submitted)">Please
+								enter packet retry interval</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_interval.$error.number &amp;&amp; (gatewayConfigForm.retry_interval.$dirty || submitted)">Packet
+								retry interval is not valid</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.retry_interval.$error.pattern &amp;&amp; (gatewayConfigForm.retry_interval.$dirty || submitted)">Range
+								is between 3 to 30</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!--APN Name -->
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.apn_name.$invalid &amp;&amp; (gatewayConfigForm.apn_name.$dirty || gatewayConfigForm.apn_name.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">APN
+							name<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+								name="apn_name" id="apn_name" placeholder="Enter APN name"
+								ng-model="dcu.apn_name" > <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_name.$error.required &amp;&amp; (gatewayConfigForm.APNName.$dirty || submitted)">Please
+								enter APN name</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_name.$error.pattern &amp;&amp; (gatewayConfigForm.APNName.$dirty || submitted)">APN
+								name does not accept numbers and special characters.</span>
+						</div>
+					</div>
+				</div>
+
+				<!--User Name -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.apn_user_name.$invalid &amp;&amp; (gatewayConfigForm.UserName.$dirty || gatewayConfigForm.UserName.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">APN
+							User name</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength"
+								name="apn_user_name" id="UserName"
+								placeholder="Enter APN user name" ng-model="dcu.apn_user_name"
+								> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_user_name.$error.required &amp;&amp; (gatewayConfigForm.apn_user_name.$dirty || submitted)">Please
+								enter User name</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_user_name.$error.maxlength &amp;&amp; (gatewayConfigForm.apn_user_name.$dirty || submitted)">Please
+								enter values less than 16 characters</span> <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_user_name.$error.pattern &amp;&amp; (gatewayConfigForm.apn_user_name.$dirty || submitted)">User
+								name not accept special characters</span>
+						</div>
+					</div>
+				</div>
+
+				<!--Password -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.apn_password.$invalid &amp;&amp; (gatewayConfigForm.apn_password.$dirty || gatewayConfigForm.apn_password.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">APN
+							Password</label>
+						<div class="col-md-7">
+							<input type="password"
+								class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength"
+								name="apn_password" id="apn_password"
+								placeholder="Enter APN password" ng-model="dcu.apn_password"
+								maxlength="16" ng-maxlength="16"> <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_password.$error.required &amp;&amp; (gatewayConfigForm.apn_password.$dirty || submitted)">Please
+								enter Password</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.apn_password.$error.maxlength &amp;&amp; (gatewayConfigForm.apn_password.$dirty || submitted)">Please
+								enter values less than 16 characters</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!--Frequency Band-->
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.frequency_band.$invalid &amp;&amp; (gatewayConfigForm.frequency_band.$dirty || gatewayConfigForm.frequency_band.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Frequency
+							band<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<select
+								class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+								name="FrequencyBand" id="FrequencyBand"
+								ng-model="dcu.frequency_band" required="required">
+								<option value="NONE">NONE</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- Meter polling time -->
+				<div class="col-md-4">
+					<div class="form-group"
+						ng-class="{'has-error': gatewayConfigForm.meter_polling_interval .$invalid &amp;&amp; (gatewayConfigForm.meter_polling_interval.$dirty || gatewayConfigForm.meter_polling_interval.$pristine || submitted)}">
+						<label class="col-md-5 control-label gatewayFormTextWeight">Meter
+							polling interval (Min)<span class="compulsaryFieldsColor">*</span>
+						</label>
+						<div class="col-md-7">
+							<input type="text"
+								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								name="meter_polling_interval" id="meter_polling_interval "
+								placeholder="Enter Meterpollinginterval"
+								ng-model="dcu.meter_polling_interval "
+								> <span
+								class="help-block ng-hide"
+								ng-show="gatewayConfigForm.meter_polling_interval .$error.required &amp;&amp; (gatewayConfigForm.meter_polling_interval.$dirty || submitted)">Please
+								enter polling time</span> <span class="help-block ng-hide"
+								ng-show="gatewayConfigForm.meter_polling_interval.$error.pattern &amp;&amp; (gatewayConfigForm.meter_polling_interval.$dirty || submitted)">Please
+								enter values from 1 min to 60 mins</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--Packet Retry Interval -->
+
+	</div>
+
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+
+
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+				<label style="color: #c8ea4d; font-size: 20px;"> Server
+					parameters</label>
+			</div>
+			<br>
+			<div class="panel-body">
+				<!--Primary Server IP Address -->
+				<form class="form-horizontal">
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.Primary_server_ip.$invalid &amp;&amp; (gatewayConfigForm.PrimaryServerIPAddress.$dirty || gatewayConfigForm.PrimaryServerIPAddress.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Primary
+								server IP<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="PrimaryServerIPAddress" id="Primary_server_ip"
+									placeholder="Enter primary server IP address"
+									ng-model="dcu.primary_server_ip"
+									required="required"> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.Primary_server_ip.$error.required &amp;&amp; (gatewayConfigForm.Primary_server_ip.$dirty || submitted)">Please
+									enter primary server</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.Primary_server_ip.$error.maxlength &amp;&amp; (gatewayConfigForm.Primary_server_ip.$dirty || submitted)">Please
+									enter values less than 64 characters</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.Primary_server_ip.$error.pattern &amp;&amp; (gatewayConfigForm.Primary_server_ip.$dirty || submitted)">Validation
+									error</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Primary Server Port -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.primary_server_port.$invalid &amp;&amp; (gatewayConfigForm.primary_server_port	.$dirty || gatewayConfigForm.primary_server_port.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Primary
+								server port<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="primary_server_port" id="primary_server_port"
+									placeholder="Enter server port"
+									ng-model="dcu.primary_server_port" ng-required="true"
+									required="required"> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.primary_server_port.$error.required &amp;&amp; (gatewayConfigForm.primary_server_port.$dirty || submitted)">Please
+									enter server port</span> <span
+									class="help-block help-block_pattern ng-hide"
+									ng-show="gatewayConfigForm.primary_server_port.$error.pattern &amp;&amp; (gatewayConfigForm.primary_server_port.$dirty || submitted)">Server
+									port is not valid</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Primary DNS Server -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.primary_dns.$invalid &amp;&amp; (gatewayConfigForm.PrimaryDSNServer.$dirty || gatewayConfigForm.PrimaryDSNServer.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Primary
+								DNS<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="primary_dns" id="primary_dns"
+									placeholder="Enter primary DNS server"
+									ng-model="dcu.primary_dns"
+									
+									required="required"> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.primary_dns.$error.required &amp;&amp; (gatewayConfigForm.primary_dns.$dirty || submitted)">Please
+									enter primary DNS server</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.primary_dns.$error.pattern &amp;&amp; (gatewayConfigForm.primary_dns.$dirty || submitted)">Please
+									enter correct DNS address</span>
+							</div>
+						</div>
+					</div>
+
+
+ <div class="col-md-12"><br></div>
+					<!--Secondary Server IP Address -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.secondary_server_ip.$invalid &amp;&amp; (gatewayConfigForm.SecondaryServerIPAddress.$dirty || gatewayConfigForm.SecondaryServerIPAddress.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Secondary
+								server IP<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="secondary_server_ip" id="secondary_server_ip"
+									placeholder="Enter secondary server IP address"
+									ng-model="dcu.secondary_server_ip"
+									> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_ip.$error.required &amp;&amp; (gatewayConfigForm.secondary_server_ip || submitted)">Please
+									enter secondary server</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_ip.$error.maxlength &amp;&amp; (gatewayConfigForm.secondary_server_ip.$dirty  || submitted)">Please
+									enter values less than 64 characters</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_ip.$error.pattern &amp;&amp; (gatewayConfigForm.secondary_server_ip.$dirty || submitted)">Validation
+									error</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Secondary Server Port -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.secondary_server_port.$invalid &amp;&amp; (gatewayConfigForm.secondary_server_port.$dirty || gatewayConfigForm.secondary_server_port.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Secondary
+								server port<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="textf"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="secondary_server_port" id="secondary_server_port"
+									placeholder="Enter server port"
+									ng-model="dcu.secondary_server_port"
+									required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_port.$error.required &amp;&amp; (gatewayConfigForm.secondary_server_port.$dirty || submitted)">Please
+									enter server port</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_port.$error.pattern &amp;&amp; (gatewayConfigForm.secondary_server_port.$dirty || submitted)">Server
+									port is not valid</span> <span
+									class="help-block help-block_pattern1 ng-hide"
+									ng-show="gatewayConfigForm.secondary_server_port.$error.pattern &amp;&amp; (gatewayConfigForm.secondary_server_port.$dirty || submitted)">Server
+									port is not valid</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Secondary DNS Server -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.secondary_dns.$invalid &amp;&amp; (gatewayConfigForm.secondary_dns.$dirty || gatewayConfigForm.secondary_dns.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Secondary
+								DNS<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="secondary_dns" id="secondary_dns"
+									placeholder="Enter secondary DNS server"
+									ng-model="dcu.secondary_dns"
+									required="required"> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_dns.$error.required &amp;&amp; (gatewayConfigForm.secondary_dns.$dirty || submitted)">Please
+									enter secondary DNS server</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.secondary_dns.$error.pattern &amp;&amp; (gatewayConfigForm.secondary_dns.$dirty || submitted)">Please
+									enter correct DNS address</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+				<label style="color: #c8ea4d; font-size: 20px;">RF
+					configuration</label>
+			</div>
+			<br>
+			<div class="panel-body">
+
+				<form class="form-horizontal">
+					<!--PAN Id-->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.pan_id.$invalid &amp;&amp; (gatewayConfigForm.pan_id.$dirty || gatewayConfigForm.pan_id.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">PAN
+								Id<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="pan_id" id="pan_id" placeholder="Enter PAN id"
+									ng-model="dcu.pan_id"
+									required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.pan_id.$error.required &amp;&amp; (gatewayConfigForm.pan_id.$dirty || submitted)">Please
+									enter PAN id</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.pan_id.$error.number &amp;&amp; (gatewayConfigForm.pan_id.$dirty || submitted)">PAN
+									id is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.pan_id.$error.pattern &amp;&amp; (gatewayConfigForm.pan_id.$dirty || submitted)">Range
+									is from 0 to 32767</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Hop Count -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.hop_count.$invalid &amp;&amp; (gatewayConfigForm.HopCount.$dirty || gatewayConfigForm.HopCount.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Hop
+								count<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="hop_count" id="hop_count" placeholder="Enter hop count"
+									ng-model="dcu.hop_count"
+									equired="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.hop_count.$error.required &amp;&amp; (gatewayConfigForm.hop_count.$dirty || submitted)">Please
+									enter hop count</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.hop_count.$error.number &amp;&amp; (gatewayConfigForm.hop_count.$dirty || submitted)">Hop
+									count is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.hop_count.$error.pattern &amp;&amp; (gatewayConfigForm.hop_count.$dirty || submitted)">Range
+									is from 0 to 50</span>
+							</div>
+						</div>
+					</div>
+
+					<!--RF Frequency -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.rf_frequency.$invalid &amp;&amp; (gatewayConfigForm.rf_frequency.$dirty || gatewayConfigForm.rf_frequency.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">RF
+								frequency<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="rf_frequency" id="rf_frequency"
+									ng-model="dcu.rf_frequency" ng-required="true"
+									required="required">
+									<option value="865">865</option>
+									<option value="866">866</option>
+									<option value="867">867</option>
+									<option value="868">868</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Tx Power -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.tx_power.$invalid &amp;&amp; (gatewayConfigForm.tx_power.$dirty || gatewayConfigForm.tx_power.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Tx
+								power<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="TxPower" id="TxPower" ng-model="dcu.tx_power"
+									ng-required="true" required="required">
+									<option value="15">15 dBm</option>
+									<option value="14">14 dBm</option>
+									<option value="13">13 dBm</option>
+									<option value="12">12 dBm</option>
+									<option value="11">11 dBm</option>
+									<option value="10">10 dBm</option>
+									<option value="9">9 dBm</option>
+									<option value="8">8 dBm</option>
+									<option value="7">7 dBm</option>
+									<option value="6">6 dBm</option>
+									<option value="5">5 dBm</option>
+									<option value="4">4 dBm</option>
+									<option value="3">3 dBm</option>
+									<option value="2">2 dBm</option>
+									<option value="1">1 dBm</option>
+									<option value="0">0 dBm</option>
+									<option value="-3">-3 dBm</option>
+									<option value="-6">-6 dBm</option>
+									<option value="-11">-11 dBm</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--RF Idle Timeout -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.rf_idle_timeout.$invalid &amp;&amp; (gatewayConfigForm.rf_idle_timeout.$dirty || gatewayConfigForm.RFIdleTimeout.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">RF
+								idle timeout<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="rf_idle_timeout" id="rf_idle_timeout"
+									placeholder="Enter RF idle timeout"
+									ng-model="dcu.rf_idle_timeout"
+									required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.rf_idle_timeout.$error.required &amp;&amp; (gatewayConfigForm.rf_idle_timeout.$dirty || submitted)">Please
+									enter RF Idle Timeout</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.rf_idle_timeout.$error.number &amp;&amp; (gatewayConfigForm.rf_idle_timeout.$dirty || submitted)">RF
+									Idle Timeout is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.rf_idle_timeout.$error.pattern &amp;&amp; (gatewayConfigForm.rf_idle_timeout.$dirty || submitted)">Range
+									is between 0 to 20</span>
+							</div>
+						</div>
+					</div>
+
+					<!--RF Retry Count -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.rf_retry_count.$invalid &amp;&amp; (gatewayConfigForm.rf_retry_count.$dirty || gatewayConfigForm.rf_retry_count.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">RF
+								retry count<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="RFRetryCount" id="RFRetryCount"
+									placeholder="Enter RF retry count"
+									ng-model="dcu.rf_retry_count"
+									required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.RFRetryCount.$error.required &amp;&amp; (gatewayConfigForm.rf_retry_count.$dirty || submitted)">Please
+									enter RF retry count</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.RFRetryCount.$error.number &amp;&amp; (gatewayConfigForm.rf_retry_count.$dirty || submitted)">RF
+									retry count is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.RFRetryCount.$error.pattern &amp;&amp; (gatewayConfigForm.rf_retry_count.$dirty || submitted)">Range
+									is between 5 to 30</span>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Mod Value -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.ModValue.$invalid &amp;&amp; (gatewayConfigForm.mod_value.$dirty || gatewayConfigForm.ModValue.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mod
+								value<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="mod_value" id="mod_value" placeholder="Enter mod value"
+									ng-model="dcu.mod_value"
+									> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.mod_value.$error.required &amp;&amp; (gatewayConfigForm.mod_value.$dirty || submitted)">Please
+									enter mod value</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.mod_value.$error.number &amp;&amp; (gatewayConfigForm.mod_value.$dirty || submitted)">Mod
+									value is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.mod_value.$error.pattern &amp;&amp; (gatewayConfigForm.mod_value.$dirty || submitted)">Range
+									is between 0 to 255</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+				<label style="color: #c8ea4d; font-size: 20px;"> DCU
+					parameters </label>
+			</div>
+			<br>
+			<div>
+
+				<form class="form-horizontal">
+					<!--Stop Bit 1 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.stop_bit_1.$invalid &amp;&amp; (gatewayConfigForm.stop_bit_1.$dirty || gatewayConfigForm.stop_bit_1.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Stop
+								bit 1<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="stop_bit_1" id="stop_bit_1" ng-model="dcu.stop_bit_1"
+									required="required">
+									<option value="1">1</option>
+									<option value="2">2</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Baud Rate 1 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.baud_rate_1.$invalid &amp;&amp; (gatewayConfigForm.baud_rate_1.$dirty || gatewayConfigForm.baud_rate_1.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Baud
+								rate 1<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="baud_rate_1" id="baud_rate_1" ng-model="dcu.baud_rate_1"
+									ng-required="true" required="required">
+									<option value="300">300</option>
+									<option value="2400">2400</option>
+									<option value="4800">4800</option>
+									<option value="9600">9600</option>
+									<option value="14400">14400</option>
+									<option value="19200">19200</option>
+									<option value="28800">28800</option>
+									<option value="38400">38400</option>
+									<option value="56000">56000</option>
+									<option value="57600">57600</option>
+									<option value="115200">115200</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Parity 1 -->
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-5">Parity 1<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-7">
+								<select class="form-control" name="Parity_1" id="Parity_1"
+									ng-model="dcu.parity_1" required="required">
+									<option value="0">NONE</option>
+									<option value="2">EVEN</option>
+									<option value="1">ODD</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Data Bits 1 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.data_bits_1.$invalid &amp;&amp; (gatewayConfigForm.data_bits_1.$dirty || gatewayConfigForm.data_bits_1.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Data
+								bit 1<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="data_bits_1" id="data_bits_1" ng-selected="value==8"
+									ng-model="dcu.data_bits_1" ng-required="true"
+									required="required">
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Serial Retry Count 1-->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.serial_retry_count_1.$invalid &amp;&amp; (gatewayConfigForm.ParamListSerialRetryCount1.$dirty || gatewayConfigForm.ParamListSerialRetryCount1.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Serial
+								retry count 1<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="ParamListSerialRetryCount1"
+									id="ParamListSerialRetryCount1"
+									placeholder="Enter serial retry count 1"
+									ng-model="dcu.serial_retry_count_1" required="required">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_1.$error.required &amp;&amp; (gatewayConfigForm.serial_retry_count_1.$dirty || submitted)">Please
+									enter Serial Retry Count 1</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_1.$error.number &amp;&amp; (gatewayConfigForm.serial_retry_count_1.$dirty  || submitted)">Serial
+									Retry Count 1 is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_1.$error.pattern &amp;&amp; (gatewayConfigForm.serial_retry_count_1.$dirty || submitted)">Range
+									is between 3 to 10</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Serial Retry Interval 1-->
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-5 control-label">Serial retry
+								interval 1<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="serial_retry_interval_1" id="serial_retry_interval_1"
+									placeholder="Enter serial retry interval 1"
+									ng-model="dcu.serial_retry_interval_1" required="required">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_1.$error.required &amp;&amp; (gatewayConfigForm.serial_retry_interval_1.$dirty || submitted)">Please
+									enter Serial Retry Interval 1</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_1.$error.number &amp;&amp; (gatewayConfigForm.serial_retry_interval_1.$dirty || submitted)">Serial
+									Retry Interval 1 is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_1.$error.pattern &amp;&amp; (gatewayConfigForm.serial_retry_interval_1.$dirty || submitted)">Range
+									is between 100 to 5000</span>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Stop Bit 2 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayconfigform.stop_bits_2.$invalid &amp;&amp; (gatewayConfigForm.stop_bits_2.$dirty || gatewayConfigForm.stop_bits_2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Stop
+								bit 2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="stop_bits_2" id="stop_bits_2" ng-model="dcu.stop_bits_2"
+									ng-required="true" required="required">
+									<option value="1">1</option>
+									<option value="2">2</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Baud Rate 2 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.baud_rate_2.$invalid &amp;&amp; (gatewayConfigForm.baud_rate_2.$dirty || gatewayConfigForm.baud_rate_2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Baud
+								rate 2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="baud_rate_2" id="baud_rate_2" ng-model="dcu.baud_rate_2"
+									ng-required="true" required="required">
+									<option value="300">300</option>
+									<option value="2400">2400</option>
+									<option value="4800">4800</option>
+									<option value="9600">9600</option>
+									<option value="14400">14400</option>
+									<option value="19200">19200</option>
+									<option value="28800">28800</option>
+									<option value="38400">38400</option>
+									<option value="56000">56000</option>
+									<option value="57600">57600</option>
+									<option value="115200">115200</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Parity 2 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.parity_2.$invalid &amp;&amp; (gatewayConfigForm.parity_2.$dirty || gatewayConfigForm.parity_2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Parity
+								2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="parity_2" id="parity_2" ng-model="dcu.parity_2"
+									ng-required="true" required="required">
+									<option value="0">NONE</option>
+									<option value="2">EVEN</option>
+									<option value="1">ODD</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Data Bits 2 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.data_bits_2.$invalid &amp;&amp; (gatewayConfigForm.data_bits_2.$dirty || gatewayConfigForm.data_bits_2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Data
+								bit 2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="data_bits_2" id="data_bits_2" ng-model="dcu.data_bits_2"
+									ng-required="true" required="required">
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!--Serial Retry Count 2-->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.serial_retry_count_2.$invalid &amp;&amp; (gatewayConfigForm.ParamListSerialRetryCount2.$dirty || gatewayConfigForm.ParamListSerialRetryCount2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Serial
+								retry count 2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="serial_retry_count_2" id="serial_retry_count_2"
+									placeholder="Enter serial retry count 2"
+									ng-model="dcu.serial_retry_count_2" required="required">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_2.$error.required &amp;&amp; (gatewayConfigForm.serial_retry_count_2.$dirty || submitted)">Please
+									enter Serial Retry Count 2</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_2.$error.number &amp;&amp; (gatewayConfigForm.serial_retry_count_2.$dirty ||  submitted)">Serial
+									Retry Count 2 is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_count_2.$error.pattern &amp;&amp; (gatewayConfigForm.serial_retry_count_2.$dirty || submitted)">Range
+									is between 3 to 10</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Serial Retry Interval 2-->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.serial_retry_interval_2.$invalid &amp;&amp; (gatewayConfigForm.serial_retry_interval_2.$dirty || gatewayConfigForm.ParamListSerialRetryInterval2.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Serial
+								retry interval 2<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid ng-valid-required"
+									name="ParamListSerialRetryInterval2"
+									id="ParamListSerialRetryInterval2"
+									placeholder="Enter serial retry interval 2"
+									ng-model="dcu.serial_retry_interval_2"
+									required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_2.$error.required &amp;&amp; (gatewayConfigForm.serial_retry_interval_2.$dirty  || submitted)">Please
+									enter Serial Retry Interval 2</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_2.$error.number &amp;&amp; (gatewayConfigForm.serial_retry_interval_2.$dirty  || submitted)">Serial
+									Retry Interval 2 is not valid</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.serial_retry_interval_2.$error.pattern &amp;&amp; (gatewayConfigForm.serial_retry_interval_2.$dirty ||  submitted)">Range
+									is between 100 to 5000</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+
+				<label style="color: #c8ea4d; font-size: 20px;"> Threshold
+					parameters (Phase 1)</label>
+			</div>
+			<br>
+			<div class="panel-body">
+				<form class="form-horizontal">
+
+					<!--Threshold Voltage Min -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.voltage_min.$invalid &amp;&amp; (gatewayConfigForm.RedThresholdVoltageMin.$dirty || gatewayConfigForm.RedThresholdVoltageMin.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+								min<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="RedThresholdVoltageMin" id="voltage_min"
+									placeholder="Enter threshold voltage min"
+									ng-model="dcu.voltage_min" > <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_min.$error.required &amp;&amp; (gatewayConfigForm.voltage_min.$dirty  || submitted)">Please
+									enter threshold voltage min values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_min.$error.maxlength &amp;&amp; (gatewayConfigForm.voltage_min.$dirty || submitted)">Please
+									enter values between 100 to 320 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_min.$error.pattern &amp;&amp; (gatewayConfigForm.voltage_min.$dirty  || submitted)">Please
+									enter values between 100 to 320 </span>
+							</div>
+						</div>
+					</div>
+
+					<!--Threshold Voltage Max -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.voltage_max.$invalid &amp;&amp; (gatewayConfigForm.RedThresholdVoltageMax.$dirty || gatewayConfigForm.RedThresholdVoltageMax.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+								max<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="voltage_max" id="voltage_max"
+									placeholder="Enter threshold voltage max"
+									ng-model="dcu.voltage_max" > <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_max.$invalid.$error.required &amp;&amp; (gatewayConfigForm.voltage_max.$dirty || submitted)">Please
+									enter threshold voltage max values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_max.$invalid.$error.maxlength &amp;&amp; (gatewayConfigForm.voltage_max.$dirty || submitted)">Please
+									enter values between 100 to 320 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.voltage_max.$error.pattern &amp;&amp; (gatewayConfigForm.voltage_max.$dirty || submitted)">Please
+									enter values between 100 to 320 </span>
+							</div>
+						</div>
+					</div>
+
+
+
+
+					<!--Threshold Current Min -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.current_min.$invalid &amp;&amp; (gatewayConfigForm.current_min.$dirty || gatewayConfigForm.current_min.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Current
+								min<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="current_min" id="current_min"
+									placeholder="Enter threshold current min"
+									ng-model="dcu.current_min"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_min.$error.required &amp;&amp; (gatewayConfigForm.current_min.$dirty  || submitted)">Please
+									enter threshold current min values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_min.$error.maxlength &amp;&amp; (gatewayConfigForm.current_min.$dirty || submitted)">Please
+									enter values between 0.01 to 50 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_min.$error.pattern &amp;&amp; (gatewayConfigForm.current_min.$dirty || submitted)">Please
+									enter values between 0.01 to 50 </span>
+							</div>
+						</div>
+					</div>
+
+					<!--Threshold Current Max -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.current_max.$invalid &amp;&amp; (gatewayConfigForm.RedThresholdCurrentMax.$dirty || gatewayConfigForm.RedThresholdCurrentMax.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Current
+								max<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="RedThresholdCurrentMax" id="RedThresholdCurrentMax"
+									placeholder="Enter threshold current max"
+									ng-model="dcu.current_max" required="required"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_max.$error.required &amp;&amp; (gatewayConfigForm.current_max.$dirty || submitted)">Please
+									enter threshold current max values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_max.$error.maxlength &amp;&amp; (gatewayConfigForm.current_max.$dirty || submitted)">Please
+									enter values between 0.01 to 1000 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.current_max.$error.pattern &amp;&amp; (gatewayConfigForm.current_max.$dirty || submitted)">Please
+									enter values between 0.01 to 1000 </span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
+			<form class="form-horizontal">
+				<div class="col-md-12" align="left">
+					<div>
+						<div>
+							<label style="color: #c8ea4d; font-size: 20px;">
+								Threshold parameters (Phase 2)</label>
+						</div>
+						<div class="panel-body">
+
+							<form class="form-horizontal">
+
+								<!--Threshold Voltage Min -->
+								<div class="col-md-4">
+									<div class="form-group"
+										ng-class="{'has-error': gatewayConfigForm.phase_2_voltage_min.$invalid &amp;&amp; (gatewayConfigForm.YellowThresholdVoltageMin.$dirty || gatewayConfigForm.YellowThresholdVoltageMin.$pristine || submitted)}">
+										<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+											min<span class="compulsaryFieldsColor">*</span>
+										</label>
+										<div class="col-md-7">
+											<input type="text"
+												class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+												name="phase_2_voltage_min" id="phase_2_voltage_min"
+												placeholder="Enter threshold voltage min"
+												ng-model="dcu.phase_2_voltage_min"> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_min.$error.required &amp;&amp; (gatewayConfigForm.phase_2_voltage_min.$dirty  || submitted)">Please
+												enter threshold voltage min values</span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_min.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_2_voltage_min.$dirty  || submitted)">Please
+												enter values between 100 to 320</span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_min.$error.pattern &amp;&amp; (gatewayConfigForm.phase_2_voltage_min.$dirty || submitted)">Please
+												enter values between 100 to 320 </span>
+										</div>
+									</div>
+								</div>
+
+								<!--Threshold Voltage Max -->
+								<div class="col-md-4">
+									<div class="form-group"
+										ng-class="{'has-error': gatewayConfigForm.phase_2_voltage_max.$invalid &amp;&amp; (gatewayConfigForm.YellowThresholdVoltageMax.$dirty || gatewayConfigForm.phase_2_voltage_max.$pristine || submitted)}">
+										<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+											max<span class="compulsaryFieldsColor">*</span>
+										</label>
+										<div class="col-md-7">
+											<input type="text"
+												class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+												name="YellowThresholdVoltageMax"
+												id="YellowThresholdVoltageMax"
+												placeholder="Enter threshold voltage max"
+												ng-model="dcu.phase_2_voltage_max"> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_max.$error.required &amp;&amp; (gatewayConfigForm.phase_2_voltage_max.$dirty || submitted)">Please
+												enter threshold voltage max values</span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_max.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_2_voltage_max.$dirty  || submitted)">Please
+												enter values between 100 to 320 </span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_voltage_max.$error.pattern &amp;&amp; (gatewayConfigForm.phase_2_voltage_max.$dirty || submitted)">Please
+												enter values between 100 to 320 </span>
+										</div>
+									</div>
+								</div>
+
+
+
+								<!--Threshold Current Min -->
+								<div class="col-md-4">
+									<div class="form-group"
+										ng-class="{'has-error': gatewayConfigForm.phase_2_current_min.$invalid &amp;&amp; (gatewayConfigForm.YellowThresholdCurrentMin.$dirty || gatewayConfigForm.phase_2_current_min.$pristine || submitted)}">
+										<label class="col-md-5 control-label gatewayFormTextWeight">Current
+											min<span class="compulsaryFieldsColor">*</span>
+										</label>
+										<div class="col-md-7">
+											<input type="text"
+												class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+												name="YellowThresholdCurrentMin" id="phase_2_current_min"
+												placeholder="Enter threshold current min"
+												ng-model="dcu.phase_2_current_min"> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_min.$error.required &amp;&amp; (gatewayConfigForm.phase_2_current_min.$dirty || submitted)">Please
+												enter threshold current min values</span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_min.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_2_current_min.$dirty || submitted)">Please
+												enter values between 0.01 to 50 </span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_min.$error.pattern &amp;&amp; (gatewayConfigForm.phase_2_current_min.$dirty || submitted)">Please
+												enter values between 0.01 to 50 </span>
+										</div>
+									</div>
+								</div>
+
+								<!--Threshold Current Max -->
+								<div class="col-md-4">
+									<div class="form-group"
+										ng-class="{'has-error': gatewayConfigForm.phase_2_current_max.$invalid &amp;&amp; (gatewayConfigForm.YellowThresholdCurrentMax.$dirty || gatewayConfigForm.YellowThresholdCurrentMax.$pristine || submitted)}">
+										<label class="col-md-5 control-label gatewayFormTextWeight">Current
+											max<span class="compulsaryFieldsColor">*</span>
+										</label>
+										<div class="col-md-7">
+											<input type="text"
+												class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+												name="phase_2_current_max.$dirty"
+												id="phase_2_current_max.$dirty"
+												placeholder="Enter threshold current max"
+												ng-model="dcu.phase_2_current_max" required="required">
+											<span class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_max.$error.required &amp;&amp; (gatewayConfigForm.phase_2_current_max.$dirty  || submitted)">Please
+												enter threshold current max values</span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_max.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_2_current_max.$dirty  || submitted)">Please
+												enter values between 0.01 to 1000 </span> <span
+												class="help-block ng-hide"
+												ng-show="gatewayConfigForm.phase_2_current_max.$error.pattern &amp;&amp; (gatewayConfigForm.phase_2_current_max.$dirty.$dirty  || submitted)">Please
+												enter values between 0.01 to 1000 </span>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+
+				<label style="color: #c8ea4d; font-size: 20px;">Threshold
+					parameters (Phase 3) </label>
+			</div>
+			<br>
+			<div class="panel-body">
+
+
+				<form class="form-horizontal">
+					<!--Threshold Voltage Min -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.phase_3_voltage_min.$invalid &amp;&amp; (gatewayConfigForm.BlueThresholdVoltageMin.$dirty || gatewayConfigForm.BlueThresholdVoltageMin.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+								min<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="phase_3_voltage_min" id="phase_3_voltage_min"
+									placeholder="Enter threshold voltage min"
+									ng-model="dcu.phase_3_voltage_min" required="required">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_min.$error.required &amp;&amp; (gatewayConfigForm.phase_3_voltage_min.$dirty || submitted)">Please
+									enter threshold voltage min values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_min.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_3_voltage_min.$dirty || submitted)">Please
+									enter values between 100 to 320 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_min.$error.pattern &amp;&amp; (gatewayConfigForm.phase_3_voltage_min.$dirty  || submitted)">Please
+									enter values between 100 to 320 </span>
+							</div>
+						</div>
+					</div>
+
+					<!--Threshold Voltage Max -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.phase_3_voltage_max.$invalid &amp;&amp; (gatewayConfigForm.BlueThresholdVoltageMax.$dirty || gatewayConfigForm.BlueThresholdVoltageMax.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Voltage
+								max<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="phase_3_voltage_max" id="phase_3_voltage_max"
+									placeholder="Enter threshold voltage max"
+									ng-model="dcu.phase_3_voltage_max" > <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_max.$error.required &amp;&amp; (gatewayConfigForm.phase_3_voltage_max.$dirty || submitted)">Please
+									enter threshold voltage max values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_max.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_3_voltage_max.$dirty  || submitted)">Please
+									enter values between 100 to 320 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_voltage_max.$error.pattern &amp;&amp; (gatewayConfigForm.phase_3_voltage_max.$dirty || submitted)">Please
+									enter values between 100 to 320 </span>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!--Threshold Current Min -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.phase_3_current_min.$invalid &amp;&amp; (gatewayConfigForm.phase_3_current_min.$dirty || gatewayConfigForm.phase_3_current_min.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Current
+								min<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="phase_3_current_min" id="phase_3_current_min"
+									placeholder="Enter threshold current min"
+									ng-model="dcu.phase_3_current_min" > <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_min.$error.required &amp;&amp; (gatewayConfigForm.phase_3_current_min.$dirty || submitted)">Please
+									enter threshold current min values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_min.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_3_current_min.$dirty || submitted)">Please
+									enter values between 0.01 to 50 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_min.$error.pattern &amp;&amp; (gatewayConfigForm.phase_3_current_min.$dirty || submitted)">Please
+									enter values between 0.01 to 50 </span>
+							</div>
+						</div>
+					</div>
+
+					<!--Threshold Current Max -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.phase_3_current_max.$invalid &amp;&amp; (gatewayConfigForm.BlueThresholdCurrentMax.$dirty || gatewayConfigForm.BlueThresholdCurrentMax.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Current
+								max<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="phase_3_current_max" id="phase_3_current_max"
+									placeholder="Enter threshold current max" min="2"
+									ng-model="dcu.phase_3_current_max" > <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_max.$error.required &amp;&amp; (gatewayConfigForm.phase_3_current_max.$dirty ||  submitted)">Please
+									enter threshold current max values</span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_max.$error.maxlength &amp;&amp; (gatewayConfigForm.phase_3_current_max.$dirty || submitted)">Please
+									enter values between 0.01 to 1000 </span> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.phase_3_current_max.$error.pattern &amp;&amp; (gatewayConfigForm.phase_3_current_max.$dirty || submitted)">Please
+									enter values between 0.01 to 1000 </span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+		</div>
+
+
+
+		<div class="col-md-12" align="left">
+			<div>
+				<div>
+					<label style="color: #c8ea4d; font-size: 20px;"> Algorithm
+						parameters </label>
+				</div>
+				<div class="panel-body">
+
+
+					<form class="form-horizontal">
+						<!--Repetitive Alert Timer -->
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': gatewayConfigForm.repetative_alert_timer.$invalid &amp;&amp; (gatewayConfigForm.RepetativeAlertTimer.$dirty || gatewayConfigForm.repetative_alert_timer.$pristine || submitted)}">
+								<label class="col-md-5 control-label gatewayFormTextWeight">Repetitive
+									alert timer (Min) <span class="compulsaryFieldsColor">*</span>
+								</label>
+								<div class="col-md-7">
+									<input type="text"
+										class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+										name="repetative_alert_timer" id="repetative_alert_timer"
+										placeholder="Enter repetative alert timer"
+										ng-model="dcu.repetative_alert_timer"> <span
+										class="help-block ng-hide"
+										ng-show="gatewayConfigForm.repetative_alert_timer.$error.required &amp;&amp; (gatewayConfigForm.repetative_alert_timer.$dirty || submitted)">Please
+										enter repetative alert timer value</span> <span
+										class="help-block ng-hide"
+										ng-show="gatewayConfigForm.repetative_alert_timer.$error.pattern &amp;&amp; (gatewayConfigForm.repetative_alert_timer.$dirty  || submitted)">Please
+										enter values between 120 to 1440 number</span>
+								</div>
+							</div>
+						</div>
+
+						<!--Retry interval for IO recovery -->
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': gatewayConfigForm.retry_interval_for_io_recovery.$invalid &amp;&amp; (gatewayConfigForm.RetryIntervalforIOrecovery.$dirty || gatewayConfigForm.repetative_alert_timer.$pristine || submitted)}">
+								<label class="col-md-5 control-label gatewayFormTextWeight">Retry
+									interval for IO recovery (Min)<span
+									class="compulsaryFieldsColor">*</span>
+								</label>
+								<div class="col-md-7">
+									<input type="text"
+										class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+										name="retry_intravl_for_io_recovery"
+										id="retry_intravl_for_io_recovery"
+										placeholder="Enter retry interval for IO recovery"
+										ng-model="dcu.retry_intravl_for_io_recovery"
+										required="required"> <span class="help-block ng-hide"
+										ng-show="gatewayConfigForm.repetative_alert_timer.$error.required &amp;&amp; (gatewayConfigForm.repetative_alert_timer.$dirty || submitted)">Please
+										enter retry interval for IO recovery value</span> <span
+										class="help-block ng-hide"
+										ng-show="gatewayConfigForm.repetative_alert_timer.$error.pattern &amp;&amp; (gatewayConfigForm.repetative_alert_timer.$dirty || submitted)">Please
+										enter values between 5 to 15 number</span>
+								</div>
+							</div>
+						</div>
+
+
+
+						<!--Retry count for IO recovery -->
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': gatewayConfigForm.retry_count_for_io_recovery.$invalid &amp;&amp; (gatewayConfigForm.retry_count_for_io_recovery.$dirty || gatewayConfigForm.retry_count_for_io_recovery.$pristine || submitted)}">
+								<label class="col-md-5 control-label gatewayFormTextWeight">Retry
+									count for IO recovery (Min)<span class="compulsaryFieldsColor">*</span>
+								</label>
+								<div class="col-md-7">
+									<input type="text"
+										class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+										name="retry_count_for_io_recovery"
+										id="retry_count_for_io_recovery"
+										placeholder="Enter retry count for IO recovery"
+										ng-model="dcu.retry_count_for_io_recovery" required="required">
+									<span class="help-block ng-hide"
+										ng-show="gatewayConfigForm.retry_count_for_io_recovery.$error.required &amp;&amp; (gatewayConfigForm.retry_count_for_io_recovery.$dirty || submitted)">Please
+										enter retry count for IO recovery value</span> <span
+										class="help-block ng-hide"
+										ng-show="gatewayConfigForm.retry_count_for_io_recovery.$error.pattern &amp;&amp; (gatewayConfigForm.retry_count_for_io_recovery.$dirty || submitted)">Please
+										enter values between 1 to 200 number</span>
+								</div>
+							</div>
+						</div>
+
+						<!--Maximum time for IO recovery after max retry count -->
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': gatewayConfigForm.max_time_for_io_recovery_after_max_retry_count.$invalid &amp;&amp; (gatewayConfigForm.MaxTimeforIORecoveryAfterMaxRetryCount.$dirty || gatewayConfigForm.MaxTimeforIORecoveryAfterMaxRetryCount.$pristine || submitted)}">
+								<label class="col-md-5 control-label gatewayFormTextWeight">Maximum
+									time for IO recovery after max retry count (Min)<span
+									class="compulsaryFieldsColor">*</span>
+								</label>
+								<div class="col-md-7">
+									<input type="text"
+										class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+										name="max_time_for_io_recovery_after_max_retry_count"
+										id="max_time_for_io_recovery_after_max_retry_count"
+										placeholder="Enter maximum time forIO recovery after max retry count"
+										ng-model="dcu.max_time_for_io_recovery_after_max_retry_count"
+										required="required"> <span class="help-block ng-hide"
+										ng-show="gatewayConfigForm.max_time_for_io_recovery_after_max_retry_count.$error.required &amp;&amp; (gatewayConfigForm.max_time_for_io_recovery_after_max_retry_count.$dirty ||  submitted)">Please
+										enter maximum time for IO recovery after max retry count value</span>
+									<span class="help-block ng-hide"
+										ng-show="gatewayConfigForm.max_time_for_io_recovery_after_max_retry_count.$error.pattern &amp;&amp; (gatewayConfigForm.max_time_for_io_recovery_after_max_retry_count.$dirty || submitted)">Please
+										enter values between 5 to 180 number</span>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+				<label style="color: #c8ea4d; font-size: 20px;">Power
+					management parameters</label>
+			</div>
+			<br>
+			<div class="panel-body">
+
+
+				<form class="form-horizontal">
+					<!--Power Off GSM Off -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.power_off_gsm_off.$invalid &amp;&amp; (gatewayConfigForm.PowerOffGSMOff.$dirty || gatewayConfigForm.PowerOffGSMOff.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Power
+								off GSM off (Min)<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="power_off_gsm_off" id="power_off_gsm_off"
+									placeholder="Enter power off GSM off"
+									ng-model="dcu.power_off_gsm_off"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.power_off_gsm_off.$error.required &amp;&amp; (gatewayConfigForm.power_off_gsm_off.$dirty || submitted)">Please
+									enter power off GSM off Time</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.power_off_gsm_off.$error.pattern &amp;&amp; (gatewayConfigForm.power_off_gsm_off.$dirty  || submitted)">Please
+									enter values between 2 to 1440 number</span>
+							</div>
+						</div>
+					</div>
+
+					<!--Power Off GSM On -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.PowerOffGSMOn.$invalid &amp;&amp; (gatewayConfigForm.power_off_gsm_on.$dirty || gatewayConfigForm.PowerOffGSMOn.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Power
+								off GSM on (Min)<span class="compulsaryFieldsColor">*</span>
+							</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									name="power_off_gsm_on" id="power_off_gsm_on"
+									placeholder="Enter power off GSM on"
+									ng-model="dcu.power_off_gsm_on"> <span
+									class="help-block ng-hide"
+									ng-show="gatewayConfigForm.power_off_gsm_on.$error.required &amp;&amp; (gatewayConfigForm.power_off_gsm_on.$dirty || submitted)">Please
+									enter power off GSM on Time</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.power_off_gsm_on.$error.pattern &amp;&amp; (gatewayConfigForm.power_off_gsm_on.$dirty || submitted)">Please
+									enter values between 1 to 60 number</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+	<div class="col-md-12" align="left">
+		<div>
+			<div>
+				<label style="color: #c8ea4d; font-size: 20px;">Mobile
+					number configuration</label>
+			</div>
+			<br>
+			<div class="panel-body">
+
+
+				<form class="form-horizontal">
+					<!--Number 1 -->
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+								No.1</label>
+							<div class="col-md-7">
+								<input type="text" class="form-control" name="number_1"
+									id="number_1" placeholder="Enter first mobile no."
+									ng-model="dcu.number_1">
+							</div>
+						</div>
+					</div>
+
+					<!--Number 2 -->
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+								No. 2</label>
+							<div class="col-md-7">
+								<input type="text" class="form-control" name="number_2"
+									id="number_2" placeholder="Enter second mobile no."
+									ng-model="dcu.number_2">
+							</div>
+						</div>
+					</div>
+					<!--Number 3 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.Number3.$invalid &amp;&amp; (gatewayConfigForm.number_3.$dirty || gatewayConfigForm.Number3.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+								No.3</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+									name="number_3" id="number_3"
+									placeholder="Enter third mobile no." ng-model="dcu.number_3">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_3.$error.required &amp;&amp; (gatewayConfigForm.number_3.$dirty || submitted)">Enter
+									third Mobile Number</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_3.$error.maxlength &amp;&amp; (gatewayConfigForm.number_3.$dirty || submitted)">Mobile
+									number exceeds maxlength</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_3.$error.minlength &amp;&amp; (gatewayConfigForm.number_3.$dirty || submitted)">Mobile
+									number is too short</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_3.$error.pattern &amp;&amp; (gatewayConfigForm.number_3.$dirty || submitted)">Mobile
+									number not accepts special characters</span> <span
+									class="help-block help-block_Number3 ng-hide">Same
+									mobile number not allowed</span>
+							</div>
+						</div>
+					</div>
+
+
+					<!--Number 4 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.number_4.$invalid &amp;&amp; (gatewayConfigForm.Number4.$dirty || gatewayConfigForm.Number4.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+								No. 4</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+									name="number_4" id="number_4"
+									placeholder="Enter fourth mobile no." ng-model="dcu.number_4">
+								<span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_4.$error.required &amp;&amp; (gatewayConfigForm.number_4.$dirty || submitted)">Enter
+									fourth Mobile Number</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_4.$error.maxlength &amp;&amp; (gatewayConfigForm.number_4.$dirty || submitted)">Mobile
+									number exceeds maxlength</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_4.$error.minlength &amp;&amp; (gatewayConfigForm.number_4.$dirty || submitted)">Mobile
+									number is too short</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_4.$error.pattern &amp;&amp; (gatewayConfigForm.number_4.$dirty || submitted)">Mobile
+									number not accepts special characters</span> <span
+									class="help-block help-block_Number4 ng-hide">Same
+									mobile number not allowed</span>
+							</div>
+						</div>
+					</div>
+					<!--Number 5 -->
+					<div class="col-md-4">
+						<div class="form-group"
+							ng-class="{'has-error': gatewayConfigForm.number_5.$invalid &amp;&amp; (gatewayConfigForm.Number5.$dirty || gatewayConfigForm.Number5.$pristine || submitted)}">
+							<label class="col-md-5 control-label gatewayFormTextWeight">Mobile
+								No. 5</label>
+							<div class="col-md-7">
+								<input type="text"
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+									name="number_5" id="number_5"
+									placeholder="Enter fifth mobile no." ng-model="dcu.number_5"
+									> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_5.$error.required &amp;&amp; (gatewayConfigForm.number_5.$dirty || submitted)">Enter
+									fifth Mobile Number</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_5.$error.maxlength &amp;&amp; (gatewayConfigForm.number_5.$dirty || submitted)">Mobile
+									number exceeds maxlength</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_5.$error.minlength &amp;&amp; (gatewayConfigForm.number_5.$dirty || submitted)">Mobile
+									number is too short</span> <span class="help-block ng-hide"
+									ng-show="gatewayConfigForm.number_5.$error.pattern &amp;&amp; (gatewayConfigForm.number_5.$dirty || submitted)">Mobile
+									number not accepts special characters</span> <span
+									class="help-block help-block_Number5 ng-hide">Same
+									mobile number not allowed</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<hr>
+	</div>
+
+
+	<div class="col-md-12">
+
+		<div class="col-md-12" align="center">
+			<button type="button" class="btn btn-info btn-sm" id="submitButton"
+				ng-click="apply(dcu)">Apply</button>
+			<button ng-click="close()" class="btn btn-info btn-sm">Cancel</button>
+		</div>
+
+	</div>
+
+
+
+
+
+
+</div>
+
+
+

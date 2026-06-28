@@ -1,0 +1,82 @@
+services:
+  mongodb:
+    image: mongo:3.4
+    container_name: cspl-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongodb:/data/db
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:5.7
+    container_name: cspl-mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./SERVER/ccms
+    container_name: cspl-server
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "${NETTY_PORT}:${NETTY_PORT}"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATA_MONGODB_HOST: ${MONGODB_HOST}
+      SPRING_DATA_MONGODB_PORT: ${MONGODB_PORT}
+      SPRING_DATA_MONGODB_DATABASE: ${MONGODB_DATABASE}
+      SPRING_DATA_MONGODB_USERNAME: ${MONGODB_USERNAME}
+      SPRING_DATA_MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      SERVER_LOG_DIR: ${SERVER_LOG_DIR}
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  ccms_ui:
+    build:
+      context: ./CCMS_UI/STARTUP/ccms_ui
+    container_name: cspl-ccms-ui
+    ports:
+      - "${TOMCAT_PORT}:${TOMCAT_PORT}"
+    volumes:
+      - ./data/dontdelete:/home/data/dontdelete
+    env_file:
+      - .env
+    environment:
+      CATALINA_OPTS: "-Dccms.server.host=${CCMS_SERVER_HOST} -Dmongodb.host=${MONGODB_HOST} -Dmongodb.port=${MONGODB_PORT} -Dmongodb.database=${MONGODB_DATABASE} -Dmysql.database=${MYSQL_DATABASE} -Dmysql.username=root -Dmysql.password=${MYSQL_ROOT_PASSWORD} -Dserver.port=${SERVER_PORT} -Dbackend.http.port=${SERVER_PORT} -Dbackend.http.context=${SERVER_CONTEXT_PATH}"
+    depends_on:
+      - mongodb
+      - mysql
+      - server
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: cspl-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+    environment:
+      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN}
+      LETSENCRYPT_LIVE_DIR: ${LETSENCRYPT_LIVE_DIR}
+    volumes:
+      - letsencrypt_data:/etc/letsencrypt
+    depends_on:
+      - ccms_ui
+    restart: unless-stopped
+
+volumes:
+  letsencrypt_data:

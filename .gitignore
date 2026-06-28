@@ -1,0 +1,40 @@
+# Backup files
+/backups/
+
+# Live database volumes
+/data/
+/data/dontdelete/
+/db_dump/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE files
+.idea/
+*.iml
+.settings/
+.classpath
+.project
+*.iws
+*.ipr
+
+# Build artifacts
+**/target/
+**/build/
+
+# Nested git directories (sub-repos flattened)
+/.git
+**/.git
+
+# Logs
+*.log
+*.log.*
+**/logs/
+/SERVER/ccms/logs/
+/SERVER/ccms/app-frontend.log
+
+# OS / leak artifacts
+Thumbs.db
+.DS_Store

@@ -1,0 +1,223 @@
+<section id="brand" class="row">
+
+	<div class="col-md-12">
+
+		<div class="col-md-4">
+			<h3 class=heading>&nbsp;&nbsp;&nbsp; OPERATIONAL HOURS REPORT</h3>
+		</div>
+		<div class="col-md-10" style="padding-bottom: 15px"></div>
+	</div>
+	
+	<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="collapse"
+					data-placement="bottom" data-target="#collapse1"
+					style="padding: 5px" data-toggle="tooltip"
+					title="Click to Open/Close">
+					Filter <span class="caret"></span>
+				</div>
+				<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body" style="padding: 20px">
+
+						<div class="col-sm-12">
+							<div class="col-sm-2" align="center">
+								<label>District</label> <select ng-model="selecte_distict"
+									ng-change="getMandalOnSelect();" class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+
+							<div class="col-sm-2" align="center">
+								<label for="mondal">Mondal</label> <select
+									ng-model="select_mondal" class="form-control"
+									ng-change="getGpOnSelect();">
+									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2" align="center">
+								<label for="city">GP</label> <select ng-model="select_gp"
+									class="form-control" ng-change="getVillageOnSelect();">
+									<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2" align="center">
+								<label for="city">Village</label> <select
+									ng-model="filter.village" class="form-control">
+									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px">
+							<hr>
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px">
+							<div class="col-sm-12" align="right" style="padding-top: 25px">
+								<a type="button" ng-click="filter();"
+									class="btn btn-info btn-sm" data-toggle="tooltip"
+									title="Click here to filter the records">Filter</a>
+							</div>
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<label class="col-md-2">Data Concentrator Unit</span></label>
+			<div class="col-md-2" align="left">
+				<ui-select tagging tagging-label="('new')"
+					ng-model="selected_dcu.name" style="width: 190px;"
+					theme="bootstrap" title="Choose a DCU"> <ui-select-match
+					theme="bootstrap" placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices
+					repeat="selected_dcu in dcu_data |filter: $select.search"
+					position='down'>
+				<div ng-bind-html="selected_dcu.name | highlight: $select.search"></div>
+				</ui-select-choices> </ui-select>
+
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-md-1 " style="margin-top: 5px; padding-left: 10px">Date
+				range</span>
+			</label>
+			<div class="col-md-2">
+				<input date-range-picker id="daterange3" name="daterange3"
+					class="form-control date-picker" type="text" style="top: 112px; left: 681.583px; right: auto; display: block;"
+					ng-model="datePicker.date" options="opts" required />
+			</div>
+		</div>
+
+		<div class="col-sm-1" align="right">
+			<a type="button" ng-click="showdate(gateway_identifier);"
+				class="btn btn-info btn-sm" ng-model="searchFish"
+				data-toggle="tooltip" title="Click here to filter the records">View</a>
+		</div>
+
+		<div class="col-sm-1" align="right">
+			<a type="button" ng-click="export_operationalhour();"
+				class="btn btn-info btn-sm" data-toggle="tooltip"
+				title="Click to Export the data">Export</a>
+		</div>
+
+	</div>
+
+	<div class="col-md-12" style="margin-top: 20px">
+
+		<table class="table table-bordered">
+
+			<thead>
+				<tr class=table_head>
+
+
+
+					<td align="center" rowspan="2"><a>SI NO</a></td>
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'dcu_id'; sortReverse = !sortReverse">
+							DCU<span ng-show="sortType == 'dcu_id' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'dcu_id' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'node'; sortReverse = !sortReverse"> Node
+							<span ng-show="sortType == 'node' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'node' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'date'; sortReverse = !sortReverse"> Date
+							<span ng-show="sortType == 'date' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'date' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center" colspan="2"><a> Operational Hour<br>
+							<hr> ON Time &nbsp;&nbsp; OFF Time
+
+					</a></td>
+
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'on_hours'; sortReverse = !sortReverse">
+							ON hours <span ng-show="sortType == 'on_hours' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'on_hours' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'cumulative_on_hour'; sortReverse = !sortReverse">
+							Cumilative ON Hours <span
+							ng-show="sortType == 'cumulative_on_hour' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'cumulative_on_hour' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'off_hour_min'; sortReverse = !sortReverse">
+							OFF Hours <span
+							ng-show="sortType == 'off_hour_min' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'off_hour_min' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center" rowspan="2"><a
+						ng-click="sortType = 'cumulative_off_hour'; sortReverse = !sortReverse">
+							Cumulative OFF hour <span
+							ng-show="sortType == 'cumulative_off_hour' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'cumulative_off_hour' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
+					<td align="center">{{ $index + 1 }}</td>
+					<td align="center">{{ obj.dcu_id}}</td>
+					<td align="center">R-Phase</td>
+					<td align="center">{{ obj.date}}</td>
+
+
+					<td align="center">{{ obj.on_hours}}</td>
+					<td align="center">{{ obj.off_hours}}</td>
+
+					<td align="center">{{ obj.on_hour_min }}</td>
+					<td align="center">{{ obj.cumulative_on_hour }}</td>
+					<td align="center">{{ obj.off_hour_min }}</td>
+					<td align="center">{{ obj.cumulative_off_hour }}</td>
+
+
+
+				</tr>
+			</tbody>
+		</table>
+
+
+
+	</div>
+
+	<div class="col-md-12" align="center">
+		<pagination boundary-links="true" max-size="3"
+			items-per-page="itemsPerPage" total-items="todos.length"
+			ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	</div>
+</section>

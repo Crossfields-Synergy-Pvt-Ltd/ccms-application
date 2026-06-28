@@ -1,0 +1,208 @@
+<section id="brand" class="row">
+
+	<div class="col-md-12">
+		<div class="col-md-2" align="left">
+			<h3 class=heading	>&nbsp;&nbsp;&nbsp;
+				HISTORY</h3>
+		</div>
+		<div class="col-md-8"></div>
+	</div>
+	
+	<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="collapse"
+					data-placement="bottom" data-target="#collapse1"
+					style="padding: 5px" data-toggle="tooltip"
+					title="Click to Open/Close">
+					Filter <span class="caret"></span>
+				</div>
+				<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body" style="padding: 20px">
+
+						<div class="col-sm-12">
+							<div class="col-sm-2" align="center">
+								<label>District</label> <select ng-model="selecte_distict"
+									ng-change="getMandalOnSelect();" class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+
+							<div class="col-sm-2" align="center">
+								<label for="mondal">Mondal</label> <select
+									ng-model="select_mondal" class="form-control"
+									ng-change="getGpOnSelect();">
+									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2" align="center">
+								<label for="city">GP</label> <select ng-model="select_gp"
+									class="form-control" ng-change="getVillageOnSelect();">
+									<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2" align="center">
+								<label for="city">Village</label> <select
+									ng-model="filter.village" class="form-control">
+									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px">
+							<hr>
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px">
+							<div class="col-sm-12" align="right" style="padding-top: 25px">
+								<a type="button" ng-click="filter();"
+									class="btn btn-info btn-sm" data-toggle="tooltip"
+									title="Click here to filter the records">Filter</a>
+							</div>
+						</div>
+						<div class="col-sm-12" style="margin-top: 20px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+		<div class="form-group">
+		
+		
+			<div class="col-md-3">
+			<label >Data Concentrator Unit (DCU)</span></label>
+				<ui-select tagging tagging-label="('new')"
+					ng-model="selected_dcu.name" style="width: 200px;" theme="bootstrap"
+					title="Choose a DCU"> <ui-select-match theme="bootstrap"
+					placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices
+					repeat="selected_dcu in dcu_data | filter: $select.search"
+					position='down'>
+				<div ng-bind-html="selected_dcu.name | highlight: $select.search"></div>
+				</ui-select-choices> </ui-select>
+			</div>
+
+		</div>
+
+		<div class="form-group" >
+				<div class="col-md-3">
+			<label>Date range</span></label>
+				<input date-range-picker id="daterange3" name="daterange3"
+					class="form-control date-picker" type="text"
+					ng-model="datePicker.date" options="opts" required />
+
+			</div>
+		</div>
+
+	<div class="col-sm-2" align="right"  style="padding-top: 25px">
+		<a type="button" ng-click="showdate(gateway_identifier);" class="btn btn-info btn-sm"
+			ng-model="searchFish" data-toggle="tooltip"
+			title="Click here to filter the records">View</a>
+	
+		<a type="button" ng-click="export_history(gateway_identifier);" class="btn btn-info btn-sm"
+			data-toggle="tooltip" title="Click here to filter the records">Export</a>
+	</div>
+
+	</div>
+
+
+	<div class="col-md-12" style="margin-top: 10px">
+
+		<table class="table table-bordered">
+
+			<thead>
+				<tr class=table_head>
+
+
+
+					<td align="center"><a>SI NO</a></td>
+					<td align="center"><a
+						ng-click="sortType = 'name'; sortReverse = !sortReverse"> Name
+							<span ng-show="sortType == 'name' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'name' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center"><a
+						ng-click="sortType = 'time_stamp'; sortReverse = !sortReverse">
+							Date Time <span
+							ng-show="sortType == 'time_stamp' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'time_stamp' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center"><a
+						ng-click="sortType = 'r_phase_voltage'; sortReverse = !sortReverse">
+							R-Phase Voltage(V) <span
+							ng-show="sortType == 'r_phase_voltage' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'r_phase_voltage' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center"><a
+						ng-click="sortType = 'r_phase_current'; sortReverse = !sortReverse">
+							R-Phase Current(A) <span
+							ng-show="sortType == 'r_phase_current' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'r_phase_current	' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center"><a
+						ng-click="sortType = 'power_factor'; sortReverse = !sortReverse">
+							Power Factor <span
+							ng-show="sortType == 'power_factor' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'power_factor' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					<td align="center"><a
+						ng-click="sortType = 'kwh_total'; sortReverse = !sortReverse">
+							R-Phase Power (kW) <span
+							ng-show="sortType == 'kwh_total' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'kwh_total' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+					<td align="center"><a
+						ng-click="sortType = 'kwh_total'; sortReverse = !sortReverse">
+							Consumption(kWh) <span
+							ng-show="sortType == 'kwh_total' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'kwh_total' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
+					<td align="center">{{ $index + 1 }}</td>
+					<td align="center">{{ obj.dcu_name }}</td>
+					<td align="center">{{ obj.utc_date }}</td>
+					<td align="center">{{ obj.r_phase_voltage }}</td>
+					<td align="center">{{ obj.current_line_1 }}</td>
+					<td align="center">{{ obj.pf_1 }}</td>
+					<td align="center">{{ obj.kwh_total }}</td>
+					<td align="center">{{ obj.kwh_total }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-12" align="center">
+		<pagination boundary-links="true" max-size="3"
+			items-per-page="itemsPerPage" total-items="todos.length"
+			ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	</div>
+	</div>
+</section>

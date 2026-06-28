@@ -1,0 +1,571 @@
+
+<div class="col-sm-12">
+	<br>
+</div>
+<form name="newMeterForm" class="form-horizontal" ng-submit="ok()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
+<div class="col-sm-12">
+	<div class="col-sm-1"></div>
+	<div class="col-sm-10">
+		<div class="col-sm-12">
+
+			<div class="col-sm-6" align="center">
+				<div>
+					<div style="color: #c8ea4d; font-size: 25px; height: 10px">Credentials
+						details</div>
+					<div class="panel-body">
+
+						<br> <br> <br>
+					
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">First
+									Name:</label>
+								<div class="col-md-8">
+									<input type="text"
+										class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength"
+										name="FirstName" id="firstName" placeholder="Enter First name"
+										ng-model="user.firstName" ng-change="user.fistName"
+										ng-maxlength="50" maxlength="100"
+										ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-required="true"
+										required="required">
+								</div>
+							</div> -->
+							
+							<div class="form-group" ng-class="{'has-error': newMeterForm.FirstName.$invalid &amp;&amp; (newMeterForm.FirstName.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">First Name:<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="FirstName" id="FirstName" placeholder="Enter First Name" ng-model="user.firstName" ng-change="user.fistName" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.FirstName.$error.required &amp;&amp; (newMeterForm.FirstName.$dirty || submitted)">Please enter First Name.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.FirstName.$error.maxlength &amp;&amp; (newMeterForm.FirstName.$dirty || submitted)">First Name is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.FirstName.$error.pattern &amp;&amp; (newMeterForm.FirstName.$dirty || submitted)">First Name not contains special symbols.</span>
+                            </div>
+                        </div> 
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">Last
+									Name:</label>
+								<div class="col-md-8">
+									<input type="text" class="form-control" name="LastName"
+										id="LastName" placeholder="Enter Last name"
+										ng-model="user.lastName" ng-change="user.lastName"
+										ng-maxlength="50" maxlength="100"
+										ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-required="true"
+										required="required">
+								</div>
+							</div> -->
+							<div class="form-group" ng-class="{'has-error': newMeterForm.LastName.$invalid &amp;&amp; (newMeterForm.LastName.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Last Name<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="LastName" id="LastName" placeholder="Enter Last Name" ng-model="user.lastName" ng-change="user.lastName" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.LastName.$error.required &amp;&amp; (newMeterForm.LastName.$dirty || submitted)">Please enter Last Name.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.LastName.$error.maxlength &amp;&amp; (newMeterForm.LastName.$dirty || submitted)">Last Name is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.LastName.$error.pattern &amp;&amp; (newMeterForm.LastName.$dirty || submitted)">Last Name not contains special symbols.</span>
+                            </div>
+                        </div>
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">Email:</label>
+								<div class="col-md-8">
+									<input type="email" class="form-control" name="email"
+										id="email" placeholder="Enter Email." ng-model="user.email">
+								</div>
+							</div> -->
+							
+							
+							
+<div class="form-group" ng-class="{'has-error': newMeterForm.Email.$invalid &amp;&amp; (newMeterForm.Email.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Email<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="Email" id="Email" placeholder="Enter Email" ng-model="user.email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Email.$error.required &amp;&amp; (newMeterForm.Email.$dirty || submitted)">Please enter Email.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Email.$error.maxlength &amp;&amp; (newMeterForm.Email.$dirty || submitted)">Email is too long.</span>
+
+                            </div>
+                        </div>							
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">Password:</label>
+								<div class="col-md-8">
+									<input type="password" class="form-control" name="LastName"
+										id="LastName" placeholder="Enter Password"
+										ng-model="user.password" ng-change="user.last_name"
+										required="required">
+								</div>
+							</div> -->
+							
+							
+							
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label">Mobile Number:</label>
+								<div class="col-md-8">
+									<input type="text" class="form-control" name="mobnum1"
+										id="mobnum1" placeholder="Enter Number"
+										ng-model="user.mobnum1">
+								</div>
+							</div> -->
+<div class="form-group" ng-class="{'has-error': newMeterForm.Password.$invalid &amp;&amp; (newMeterForm.Password.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Password<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="Password" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="Password" id="Password" placeholder="Enter Password" ng-model="user.password" ng-change="user.last_name" ng-pattern="/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Password.$error.required &amp;&amp; (newMeterForm.Password.$dirty || submitted)">Please enter Password.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Password.$error.maxlength &amp;&amp; (newMeterForm.Password.$dirty || submitted)">Password is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Password.$error.pattern &amp;&amp; (newMeterForm.Password.$dirty || submitted)">Password should be at least 8 characters  and should contain one number,one capital and one special character.</span>
+                            </div>
+                        </div>							
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">Role:</label>
+								<div class="col-md-8">
+									<select type="text"
+										class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength"
+										name="LastName" id="LastName" placeholder="Role"
+										ng-model="user.role" ng-change="user.role" ng-maxlength="50"
+										maxlength="100" ng-pattern="/^[a-zA-Z0-9 ._-]+$/"
+										ng-required="true" required="required">
+										<option>ADMIN</option>
+										<option>USER</option>
+									</select>
+								</div>
+							</div> -->
+							
+							<div class="form-group"
+							ng-class="{'has-error': newNodeForm.Role.$invalid &amp;&amp; (newNodeForm.Role.$dirty || submitted)}">
+							<label class="col-md-4 control-label formTextWeight">Role<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select
+									class="form-control ng-pristine ng-untouched ng-valid ng-valid-required"
+									name="Role" id="Role" placeholder="Role"
+									ng-model="user.role" ng-change="user.role" 
+									ng-required="true" required="required">
+									<option>ADMIN</option>
+									<option>USER</option>
+
+								</select>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+
+		
+				<div class="col-sm-6" align="center">
+					<div>
+						<div style="color: #c8ea4d; font-size: 25px; height: 10px">
+							Other Credentials details</div>
+						<div class="panel-body">
+							<br> <br> <br>
+
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label formTextWeight">Address:</label>
+								<div class="col-md-8">
+									<textarea type="text" class="form-control"
+										placeholder="Address" ng-model="user.address"></textarea>
+								</div>
+							</div> -->
+<div class="form-group" ng-class="{'has-error': newMeterForm.Address.$invalid &amp;&amp; (newMeterForm.Address.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">Address<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <textarea  type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="Address" id="Address" placeholder="Enter Address" ng-model="user.address" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required"> </textarea>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Address.$error.required &amp;&amp; (newMeterForm.Address.$dirty || submitted)">Please enter Address.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Address.$error.maxlength &amp;&amp; (newMeterForm.Address.$dirty || submitted)">Address is too long.</span>
+
+                            </div>
+                        </div>							
+
+							<!-- <div class="form-group">
+								<label class="control-label col-md-4"
+									style="font-size: 15px; height: 10px">State:</label>
+								<div class="col-md-8">
+									<select ng-model="user.state" placeholder="State"
+										class="form-control">
+										<option>Andra Pradesh</option>
+										<option>Arunachal Pradesh</option>
+										<option>Assam</option>
+										<option>Bihar</option>
+										<option>Aandra Pradesh</option>
+										<option>Chhattisgarh</option>
+										<option>Goa</option>
+										<option>Gujarat</option>
+										<option>Haryana</option>
+										<option>Himachal Pradesh</option>
+										<option>Jammu and Kashmir</option>
+										<option>Jharkhand</option>
+										<option>Karnatka</option>
+										<option>Kerala</option>
+										<option>Madya Pradesh</option>
+										<option>Maharashtra</option>
+										<option>Manipur</option>
+										<option>Meghalaya</option>
+										<option>Mizoram</option>
+										<option>Nagaland</option>
+										<option>Orissa</option>
+										<option>Punjab</option>
+										<option>Rajasthan</option>
+										<option>Sikkim</option>
+										<option>Tamil Nadu</option>
+										<option>Telagana</option>
+										<option>Tripura</option>
+										<option>Uttaranchal</option>
+										<option>Uttar Pradesh</option>
+										<option>West Bengal</option>
+									</select>
+								</div>
+							</div> -->
+							<div class="form-group"
+							ng-class="{'has-error': newNodeForm.State.$invalid &amp;&amp; (newNodeForm.State.$dirty || submitted)}">
+							<label class="col-md-4 control-label formTextWeight">State<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select ng-model="user.state" placeholder="State"
+										class="form-control">
+									<option>Andra Pradesh</option>
+										<option>Arunachal Pradesh</option>
+										<option>Assam</option>
+										<option>Bihar</option>
+										<option>Aandra Pradesh</option>
+										<option>Chhattisgarh</option>
+										<option>Goa</option>
+										<option>Gujarat</option>
+										<option>Haryana</option>
+										<option>Himachal Pradesh</option>
+										<option>Jammu and Kashmir</option>
+										<option>Jharkhand</option>
+										<option>Karnatka</option>
+										<option>Kerala</option>
+										<option>Madya Pradesh</option>
+										<option>Maharashtra</option>
+										<option>Manipur</option>
+										<option>Meghalaya</option>
+										<option>Mizoram</option>
+										<option>Nagaland</option>
+										<option>Orissa</option>
+										<option>Punjab</option>
+										<option>Rajasthan</option>
+										<option>Sikkim</option>
+										<option>Tamil Nadu</option>
+										<option>Telagana</option>
+										<option>Tripura</option>
+										<option>Uttaranchal</option>
+										<option>Uttar Pradesh</option>
+										<option>West Bengal</option>
+									</select>
+
+							</div>
+						</div>
+
+							<!-- <div class="form-group">
+								<label class="col-md-4" style="padding-right: 80px" align="left">District</label>
+								<div class="col-md-8">
+									<select ng-model="user.dist"
+										ng-change="getMandalOnSelect();" class="form-control">
+										<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+									</select>
+								</div>
+							</div> -->
+							
+							<div class="form-group"
+							ng-class="{'has-error': newNodeForm.District.$invalid &amp;&amp; (newNodeForm.District.$dirty || submitted)}">
+							<label class="col-md-4 control-label formTextWeight">District<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select ng-model="user.dist"
+										ng-change="getMandalOnSelect();" class="form-control">
+										<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+									</select>
+							</div>
+						</div>
+
+							<!-- <div class="form-group">
+								<label class="col-md-4" style="padding-right: 80px" align="left">Mandal</label>
+								<div class="col-md-8">
+									<select ng-model="user.mondal" class="form-control"
+										ng-change="getGpOnSelect();">
+											<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+									</select>
+								</div>
+							</div> -->
+							
+							<div class="form-group"
+							ng-class="{'has-error': newNodeForm.Mandal.$invalid &amp;&amp; (newNodeForm.Mandal.$dirty || submitted)}">
+							<label class="col-md-4 control-label formTextWeight">Mandal<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select ng-model="user.mondal" class="form-control"
+										ng-change="getGpOnSelect();">
+											<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
+									</select>
+							</div>
+						</div>
+
+							<!-- <div class="form-group">
+								<label class="col-md-4" style="padding-right: 80px" align="left">GP</label>
+								<div class="col-md-8">
+									<select ng-model="user.gp" class="form-control"
+										ng-change="getVillageOnSelect();">
+										<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+									</select>
+								</div>
+							</div> -->
+							<div class="form-group"
+							ng-class="{'has-error': newNodeForm.GP.$invalid &amp;&amp; (newNodeForm.GP.$dirty || submitted)}">
+							<label class="col-md-4 control-label formTextWeight">GP<span
+								class="compulsaryFieldsColor">*</span></label>
+							<div class="col-md-8">
+								<select ng-model="user.gp" class="form-control"
+										ng-change="getVillageOnSelect();">
+										<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
+									</select>
+
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+		
+
+		</div>
+
+		<div class="col-sm-12">
+			<hr>
+		</div>
+	
+			<div class="col-sm-12">
+				<div class="col-sm-12" align="center">
+					<label style="color: #c8ea4d; font-size: 25px; height: 20px">Associate
+						Features to an Users</label> <br>
+				</div>
+
+
+				<div class="panel-body">
+
+
+					<div class="col-sm-12">
+						<br> <br> <br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.monitor_and_controller"></md-checkbox>
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">
+							Monitor and controller </label> <br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.history"></md-checkbox>
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">
+							History</label> <br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.event">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Event</label>
+						<br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.switching_point_summary">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style="font-size: 15px; height: 10px">Switching
+							Point Summary</label> <br>
+					</div>
+					<div class="col-sm-12">
+						<br>
+					</div>
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.operational_hour">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Operational Hour</label>
+						<br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.light_status"></md-checkbox>
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">
+							Light Status </label>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.dcu">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">DCU
+							& RTU</label> <br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.schedule">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Schedule</label>
+						<br>
+					</div>
+
+					<div class="col-sm-12">
+						<br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.settings">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Settings</label>
+						<br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.default_settings"></md-checkbox>
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">
+							Default Settings</label> <br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.filter">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Filter</label>
+						<br>
+					</div>
+
+					<div class="col-sm-3">
+						<md-checkbox ng-model="user.node">
+						&nbsp;&nbsp;&nbsp;&nbsp;<label
+							style=" font-size: 15px; height: 10px">Node</label>
+						<br>
+					</div>
+
+					<div class="col-sm-12">
+						<br>
+					</div>
+
+				<div class="col-sm-3"> 
+				<md-checkbox ng-model="user.user" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:660033; font-size: 15px; height: 10px">User</label>
+			<br></div>
+			
+			<!--<div class="col-sm-3">
+				<md-checkbox ng-model="user.subscription" ></md-checkbox>
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Subscription.</label>
+			<br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.subscription_view" ></md-checkbox>
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Subscription View.</label>
+			<br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.subscription_event" ></md-checkbox>
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Subscription Event.</label>
+			<br></div>
+   
+   				
+   
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.customer_feedback" ></md-checkbox>
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Customer Feedback.</label>
+			<br></div>
+			<div class="col-sm-12"><br></div>
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.customer_feedback_action" ></md-checkbox>
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Customer Feedback Action.</label>
+			<br></div>
+    
+   				 <div class="col-sm-3">
+				<md-checkbox ng-model="user.product" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Product .</label>
+			<br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.product_add" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Product Add.</label>
+			<br></div>
+			
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.product_update" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Product Action.</label>
+			<br></div>
+			<div class="col-sm-12"><br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.product_delete" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:660033; font-size: 15px; height: 10px">Product Delete.</label>
+			<br></div>
+  
+   
+               <div class="col-sm-3">
+				<md-checkbox ng-model="user.customer_info" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Customer info.</label>
+			<br></div>
+			
+			
+			
+			 <div class="col-sm-3">
+				<md-checkbox ng-model="user.customer_info_action" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Customer Action.</label>
+			<br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.walet" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Customer Walet.</label>
+			<br></div>
+			<div class="col-sm-12"><br></div>
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.orders" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">Orders.</label>
+			<br></div>
+			
+			<div class="col-sm-3">
+				<md-checkbox ng-model="user.user" >
+				&nbsp;&nbsp;&nbsp;&nbsp;<label style="color:#c8ea4d; font-size: 15px; height: 10px">User.</label>
+			<br></div> 
+			 -->
+
+
+				</div>
+
+			</div>
+	
+
+		<!-- <div align="center">
+			<a type="button" ng-click="update()" class="btn btn-info btn-sm ">Update</a>
+			<a type="button" ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
+		</div> -->
+		 <div class="row">
+        <div class="col-xs-12 col-lg-12 col-sm-12">
+        <hr>
+        <br>
+            <div class="pull-left"><span class="compulsaryFieldsColor">*</span>Marked fields are compulsory.</div>
+            <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="close()" ng-disabled="backtoCreateMeterClicked==1">Cancel</button>
+            <input type="button" data-toggle="tooltip" data-placement="bottom" title="Update" class="btn btn-primary pull-right adjusantButtons" ng-click="update()" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" value="Save &amp; proceed" disabled="disabled">
+        
+            
+        </div>
+    </div> 
+		<div class="col-sm-12">
+			<br>
+		</div>
+
+
+
+
+
+		<div class="col-sm-1"></div>
+	</div>
+	
+
+
+</div>
+</form>
+<!-- <
+				<tr
+					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
+					<td align="center">{{ $index + 1 }}</td> -->
+
+
+

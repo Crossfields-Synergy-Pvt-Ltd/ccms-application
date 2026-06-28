@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xmlns:task="http://www.springframework.org/schema/task"
+
+
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+  	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+  	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+ 	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+
+  	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+
+    ">
+
+	<context:property-placeholder
+		location="classpath:application.properties"
+		systemPropertiesModeName="SYSTEM_PROPERTIES_MODE_OVERRIDE"
+		ignore-unresolvable="true"/>
+
+	<context:component-scan
+		base-package="com.vnetsoft.ccms.controller" />
+
+	<mvc:annotation-driven />
+
+	<mvc:default-servlet-handler />
+
+ <task:annotation-driven/>
+	 <bean id="myAppScheduleJobs" class="com.vnetsoft.ccms.scheduler.ScheduledTasks" />
+
+  <!-- Configure the Mongo Server -->
+    <mongo:mongo id="mongo" host="${mongodb.host}" port="${mongodb.port}"/>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg ref="mongo"/>
+    <constructor-arg name="databaseName" value="${mongodb.database}"/>
+  </bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://mysql:3306/${mysql.database}" />
+		<property name="username" value="${mysql.username}" />
+		<property name="password" value="${mysql.password}" />
+	</bean>
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+
+
+				<value>com.vnetsoft.ccms.pojo.User</value>
+				<value>com.vnetsoft.ccms.pojo.Event</value>
+				<value>com.vnetsoft.ccms.pojo.SchedulerConfiguration</value>
+				<value>com.vnetsoft.ccms.pojo.SystemConfiguration</value>
+				<value>com.vnetsoft.ccms.pojo.DCU</value>
+				<value>com.vnetsoft.ccms.pojo.HandShake</value>
+
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+
+
+	<bean id="UserDao" class="com.vnetsoft.ccms.dao.UserDaoImpl"></bean>
+	<bean id="UserServices"
+		class="com.vnetsoft.ccms.services.UserServicesImpl"></bean>
+
+
+	<bean id="DCUDao" class="com.vnetsoft.ccms.dao.DCUDaoImpl"></bean>
+	<bean id="DCUServices"
+		class="com.vnetsoft.ccms.services.DCUServicesImpl"></bean>
+	<!--
+	<bean id="ModifiedIOPojoDao" class="com.vnetsoft.ccms.dao.ModifiedIOPojoDaoImpl"></bean>
+	<bean id="ModifiedIOPojoServices" class="com.vnetsoft.ccms.services.ModifiedIOPojoServicesImpl"></bean>
+
+		 -->
+	<bean id="NodeDao" class="com.vnetsoft.ccms.dao.NodeDaoImpl"></bean>
+	<bean id="NodeServices"
+		class="com.vnetsoft.ccms.services.NodeServicesImpl"></bean>
+
+
+	<bean id="ControllerDao"
+		class="com.vnetsoft.ccms.dao.ControllerDaoImpl"></bean>
+	<bean id="ControllerServices"
+		class="com.vnetsoft.ccms.services.ControllerServicesImpl"></bean>
+
+
+		<bean id="DashBoardDao"
+		class="com.vnetsoft.ccms.dao.DashBoardDaoImpl"></bean>
+	<bean id="DashBoardServices"
+		class="com.vnetsoft.ccms.services.DashBoardServicesImpl"></bean>
+
+</beans>

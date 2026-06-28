@@ -1,0 +1,148 @@
+<section id="brand" class="row">
+
+	<div class="col-md-12">
+
+		<div class="col-md-6">
+			<h3 class=heading>&nbsp;&nbsp;&nbsp;
+			LIGHT STATUS</h3>
+		</div>
+
+		<div class="col-md-10"></div>
+
+	</div>
+	
+	
+		<div class="col-md-12">
+		<div class="form-group">
+			<label class="col-md-2 " >Data Concentrator Unit (DCU)</span></label>
+			<div class="col-md-2" style="margin-left:5px">
+				<ui-select tagging tagging-label="('new')"
+					ng-model="selected_dcu.name" style="width: 190px;" theme="bootstrap"
+					title="Choose a DCU"> <ui-select-match theme="bootstrap"
+					placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices
+					repeat="selected_dcu in dcu_data |filter: $select.search"
+					position='down'>
+				<div ng-bind-html="selected_dcu.name | highlight: $select.search"></div>
+				</ui-select-choices> </ui-select>
+
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-md-1 " style="margin-top: 5px; padding-left: 10px">Date range</span></label>
+			<div class="col-md-2">
+				<input date-range-picker id="daterange3" name="daterange3"
+					class="form-control date-picker" type="text"
+					ng-model="datePicker.date" options="opts" required />
+
+			</div>
+		</div>
+
+	<div class="col-sm-1" align="right" >
+		<a type="button" ng-click="showdate(gateway_identifier);" class="btn btn-info btn-sm"
+			ng-model="searchFish" data-toggle="tooltip"
+			title="Click here to filter the records">View</a>
+	</div>
+
+	<div class="col-sm-1" align="right" >
+		<a type="button" ng-click="export_operationalhour();" class="btn btn-info btn-sm"
+			data-toggle="tooltip" title="Click to Export the data">Export</a>
+	</div>
+
+	</div>
+
+	<div class="col-md-12" style="margin-top: 20px">
+
+		<table class="table table-bordered">
+
+			<thead>
+				<tr class=table_head>
+
+
+
+					<td align="center" rowspan="2" ><a>SI NO</a></td>
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'dcu_id'; sortReverse = !sortReverse"> DCU<span
+							ng-show="sortType == 'dcu_id' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'dcu_id' && sortReverse" class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'node'; sortReverse = !sortReverse">
+							Node <span
+							ng-show="sortType == 'node' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'node' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+
+
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'date'; sortReverse = !sortReverse">
+							Date <span
+							ng-show="sortType == 'date' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'date' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'opration_type'; sortReverse = !sortReverse">
+							Operation Type <span
+							ng-show="sortType == 'opration_type' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'opration_type' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'opration_value'; sortReverse = !sortReverse">
+							Operation Value <span
+							ng-show="sortType == 'opration_value' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'opration_value' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+					
+					<td align="center" rowspan="2" ><a
+						ng-click="sortType = 'opration_resone'; sortReverse = !sortReverse">
+							Operation Reason <span
+							ng-show="sortType == 'opration_resone' && !sortReverse"
+							class="fa fa-caret-down"></span> <span
+							ng-show="sortType == 'opration_resone' && sortReverse"
+							class="fa fa-caret-up"></span>
+					</a></td>
+		
+				</tr>
+			</thead>
+
+			<tbody >
+				<tr
+					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
+					<td align="center">{{ $index + 1 }}</td>
+					<td align="center">{{ obj.dcu_id}}</td>
+					<td align="center">R-Phase</td>
+					<td align="center">{{ obj.yymmdd }}</td>
+					<td align="center">{{ obj.opration_type }}</td>
+					<td align="center">{{ obj.opration_value }}</td>
+					<td align="center">{{ obj.opration_resone }}</td>
+					
+
+
+				</tr>
+			</tbody>
+		</table>
+
+
+
+	</div>
+
+	<div class="col-md-12" align="center">
+		<pagination boundary-links="true" max-size="3"
+			items-per-page="itemsPerPage" total-items="todos.length"
+			ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	</div>
+</section>

@@ -1,0 +1,89 @@
+<section id="brand" class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-12">
+			<div class="col-sm-4">
+				<h3 class=heading>&nbsp;&nbsp;&nbsp; FILTER</h3>
+			</div>
+
+		</div>
+
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading" style="padding: 5px"
+					data-toggle="tooltip" title="Click to Open/Close">
+					Filter <span class="caret"></span>
+				</div>
+				<div id="collapse1">
+					<div class="panel-body" style="padding: 20px">
+
+						<div class="col-sm-12">
+
+							<div class="col-sm-2" align="center">
+								<label>District</label>
+								 <select ng-model="selecte_distict" class="form-control">
+									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
+								</select>
+							</div>
+							
+							<div class="col-sm-1"></div>
+							
+							<div class="col-sm-2" align="center">
+								<label for="mondal">Mondal</label> 
+								 <select ng-model="select_mondal" class="form-control">
+										<option ng-repeat="x in mandal_list" value="{{x.code}}">{{x.state}}</option>
+									</select>
+								</div>
+								
+							<div class="col-sm-1"></div>
+							
+							<div class="col-sm-2" align="center">
+								<label for="city">GP</label>
+								<select ng-model="select_gp" class="form-control">
+										<option ng-repeat="x in gp_list" value="{{x.code}}">{{x.state}}</option>
+									</select> 
+							</div>
+							<div class="col-sm-1"></div>
+							
+							<div class="col-sm-2" align="center">
+								<label for="city">Village</label> 
+								<select ng-model="filter.village"
+										class="form-control">
+										<option ng-repeat="x in village_list" value="{{x.code}}">{{x.state}}</option>
+									</select>
+							</div>
+
+						</div>
+						<div class="col-sm-12" align="center" style="margin-top: 20px">
+							<div class="col-sm-12" align="right" style="margin-top: 25px">
+								<a type="button" ng-click="filter();"
+									class="btn btn-info btn-sm" data-toggle="tooltip"
+									title="Click here to filter the records">Add</a>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-sm-12" style="margin-top: 20px"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

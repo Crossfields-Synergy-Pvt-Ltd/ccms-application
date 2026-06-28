@@ -1,0 +1,415 @@
+
+<div id="wrapper">
+	<div id="pageLoadProgressDivId" class="pageLoadProgressDiv hidden">
+		<i class="fa fa-spinner fa-pulse fa-4x"></i>
+	</div>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<span class="navbar-brand" href="index.html"> <img
+				class="responsive headerimagesize" src="images/CompanyLogo.png">
+			</span>
+		</div>
+		<div id="config-tool" class="opened defaultHidden defaultShow">
+			<a id="config-tool-cog"> <i class="fa fa-bars"></i>
+			</a>
+		</div>
+
+		<ul class="nav navbar-right top-nav">
+			<li class="customer-name labelText">CrossField</li>
+
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown"> <i class="fa fa-user margin-right-7"></i>
+					Admin <b class="caret margin-left-7"></b>
+			</a>
+				<ul class="dropdown-menu">
+					<li><a id="showModal" onclick="ShowModal()"><i
+							class="fa fa-fw fa-gear"></i>Change Password</a></li>
+					<li><a href="#login" onclick="localStorage.removeItem('ccms_previlage'); localStorage.removeItem('ccms_auth');"><i class="fa fa-fw fa-power-off"></i>
+							Sign Out</a></li>
+				</ul>
+
+				<div class="modal fade" id="ChangePassword" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<form
+						action="/User/ChangePassword/monitorAndControlWithAlertSummary"
+						data-ajax="true" data-ajax-complete="changePasswordComplete"
+						id="form0" method="post" novalidate="novalidate"
+						class="ng-pristine ng-valid">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">�</span>
+									</button>
+									<h4 class="modal-title">Change password</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row-fluid">
+
+										<div class="panel panel-info">
+
+											<div class="panel-body">
+												<div class="form-group">
+													<div class="row">
+														<label class="col-md-4 control-label formTextWeight">Old
+															password<span class="compulsaryFieldsColor">*</span>
+														</label>
+														<div class="col-md-8">
+															<input class="form-control" data-val="true"
+																data-val-required="Current password field is required"
+																id="OldPassword" name="OldPassword"
+																placeholder="Old password" type="password"> <span
+																class="field-validation-valid"
+																data-valmsg-for="OldPassword" data-valmsg-replace="true"></span>
+
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="row">
+
+														<label class="col-md-4 control-label formTextWeight">New
+															password<span class="compulsaryFieldsColor">*</span>
+														</label>
+														<div class="col-md-8">
+															<input class="form-control" data-val="true"
+																data-val-length="New password must be at least 5 characters long."
+																data-val-length-max="100" data-val-length-min="5"
+																data-val-required="New password field is required"
+																id="NewPassword" name="NewPassword"
+																placeholder="New password" type="password"> <span
+																class="field-validation-valid"
+																data-valmsg-for="NewPassword" data-valmsg-replace="true"></span>
+
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="row">
+
+														<label class="col-md-4 control-label formTextWeight">Confirm
+															new password<span class="compulsaryFieldsColor">*</span>
+														</label>
+														<div class="col-md-8">
+															<input class="form-control" data-val="true"
+																data-val-equalto="New password and confirmation password do not match."
+																data-val-equalto-other="*.NewPassword"
+																id="ConfirmPassword" name="ConfirmPassword"
+																placeholder="Confirm new password" type="password">
+															<span class="field-validation-valid"
+																data-valmsg-for="ConfirmPassword"
+																data-valmsg-replace="true"></span>
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<div class="modal-footer">
+
+											<button type="submit" value="Change Passwod"
+												class="btn btn-primary">Change password</button>
+											<button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div></li>
+		</ul>
+
+
+		<div class="collapse navbar-collapse navbar-ex1-collapse"
+			id="sidebar-nav">
+			<div id="brandLogoDiv" class="brandLogo">
+				<img class="responsive headerimagesize" src="images/FooterLogo.png" style="width: 140px" align="left">
+			</div>
+
+			<ul class="nav navbar-nav side-nav defaultHidden defaultShow"
+				id="sidebarNavigation">
+
+				<li id="MapMenu"><a href="#/dashboard" id="MapMenuLink"> <i
+						class="fa fa-fw fa-dashboard imageandtextdifference"></i>
+						Dashboard
+				</a></li>
+
+				<li id="MonitorControlWithAlertSummary"><a ng-show="previlage.monitor_and_controller"
+					href="#/monitorandcontrol" id="MonitorControlWithAlertSummary">
+						<i  class="fa fa-fw fa-th imageandtextdifference"></i> Monitor and
+						control
+				</a></li>
+
+				<li id="ListView"><a   ng-show="previlage.history"
+				href="#/history" id="controlListViewMenuLink"> <i
+						class="fa fa-fw fa-history imageandtextdifference"></i> History
+				</a></li>
+
+				<!-- <li id="MeterListView"><a href="/Control/Index/meterListView"
+					id="MeterListMenuLink"> <i
+						class="fa fa-fw fa-bars imageandtextdifference"></i> List view
+				</a></li> -->
+
+				<li id="alertMenu"><a ng-show="previlage.event" href="#/event"> <i
+						class="fa fa-fw fa-bell imageandtextdifference"></i> Events
+				</a></li>
+
+
+				<li id="SinglePhaseSwitchPointSummary"><a  ng-show="previlage.switching_point_summary" href="#/switchpoint"
+					id="NodeSummaryLink"> <i
+						class="fa fa-fw fa-picture-o imageandtextdifference"></i> Switch
+						pt. summary
+				</a></li>
+
+
+
+				<!-- <li id="AnalyticsViewMenu"><a href="/Graph/Index/meteringGraph"
+					id="AnalyticsViewMenuLink"> <i
+						class="fa fa-area-chart imageandtextdifference"></i> Trends
+				</a></li> -->
+
+				<!----ComboBox-reports------>
+				<li id="reportDropDownMenu" class="dropdown menuDropDownHeader">
+					<a data-target="#" data-toggle="dropdown" class="dropdown-toggle ">
+						Reports <i class="fa fa-angle-right drop-icon"></i>
+				</a>
+					<ul class="dropdown-menu">
+						<li id="schedulewiseReportOerationalMenu"><a ng-show="previlage.operational_hour"
+							href="#/operationalhour" id=""> <i
+								class="fa fa-fw fa-area-chart imageandtextdifference"></i>
+								Operational hours
+						</a></li>
+
+						<li id="UtilityMenu" class=""><a
+							href="#/modified_operationalhour" id="UtilityMenuLink"> <i ng-show="previlage.light_status"
+								class="fa fa-fw fa-area-chart imageandtextdifference"></i> Light
+								States
+						</a></li>
+
+						<!-- <li id="reportDCUConnectionStatusMenu"><a
+							href="/Report/DCUConnectionReport" id=""> <i
+								class="fa fa-fw fa-area-chart imageandtextdifference"></i> DCU
+								connection status
+						</a></li> -->
+					</ul> <!----/-ComboBox-reports------>
+				</li>
+
+				<!----comboBox-ConfigMenu---->
+				<li id="configDropDownMenu" class="dropdown menuDropDownHeader">
+					<a data-toggle="dropdown" class="dropdown-toggle ">
+						Configuration<i class="fa fa-angle-right drop-icon"></i>
+				</a>
+					<ul class="dropdown-menu">
+
+
+						<!---/-comboBox-ConfigMenu---->
+						<li id="nodeMenu"><a ng-show="previlage.dcu" href="#/dcu"> <i
+								class="fa fa-fw fa-edit imageandtextdifference"></i> RTU/DCU
+						</a></li>
+
+						<li id="schedulemenu"><a ng-show="previlage.schedule" href="#/schedules"
+							id="schedulemenuLink"> <i class="fa fa-fw fa-calendar"></i>
+								Schedule
+						</a></li>
+
+						<li id="userMenu"><a ng-show="previlage.user"  href="#/user"> <i
+								class="fa fa-fw fa-user imageandtextdifference"></i> Users
+						</a></li>
+
+					</ul>
+				</li>
+				<!----comboBox-Upload node---->
+				<li id="uploadDropDownMenu" class="dropdown menuDropDownHeader ">
+					<a data-toggle="dropdown" class="dropdown-toggle "> Setings<i
+						class="fa fa-angle-right drop-icon"></i>
+				</a>
+					<ul class="dropdown-menu">
+
+						<li id="TagStringImportMenu"><a  ng-show="previlage.dcu" href="#/default"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Default
+								DCU Config
+						</a></li>
+
+						<li id="TagStringImportMenu"><a ng-show="previlage.filter" href="#/filter_add"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa-fw fa-wrench imageandtextdifference"></i>
+								&nbsp;Filter
+						</a></li>
+						<li id="TagStringImportMenu"><a ng-show="previlage.node" href="#/node"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Node
+						</a></li>
+
+
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+
+
+		<div class="iconNotDisplay" id="iconDND">
+			<!-- icons for sidebar-->
+			<ul class="defaultHidden margin-top-7" id="iconsNavigation">
+
+				<!---Diagnostics invalid DCU config List-->
+				<li id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
+					data-placement="right" title="Monitor and control" class="active">
+					<a href="#/dashboard"
+					id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
+					data-placement="right" title="Dashboard"> <i
+						class="fa fa-fw fa-dashboard  spaceBetweenIcons"></i>
+				</a>
+				</li>
+
+				<li id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
+					data-placement="right" title="Monitor and control" >
+					<a ng-show="previlage.monitor_and_controller" href="#/monitorandcontrol"
+					id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
+					data-placement="right" title="Monitor and control"> <i
+						class="fa fa-fw fa-th imageandtextdifference spaceBetweenIcons"></i>
+				</a>
+				</li>
+
+
+				<li id="ListView"><a ng-show="previlage.history" href="#/history" id="ListViewMenuLink"
+					data-toggle="tooltip" data-placement="right" title="History"> <i
+						class="fa fa-fw fa-history imageandtextdifference spaceBetweenIcons"></i>
+				</a></li>
+
+				<!-- <li id="MeterListView"><a href="/Control/Index/meterListView"
+					id="MeterListMenuLink" data-toggle="tooltip" data-placement="right"
+					title="List view"> <i
+						class="fa fa-fw fa-bars imageandtextdifference spaceBetweenIcons"></i>
+				</a></li> -->
+
+				<li id="alertMenu"><a ng-show="previlage.event" href="#/event" data-toggle="tooltip"
+					data-placement="right" title="Events"> <i
+						class="fa fa-fw fa-bell imageandtextdifference spaceBetweenIcons"></i>
+				</a></li>
+
+
+
+
+				<li id="SinglePhaseSwitchPointSummary"><a ng-show="previlage.event" href="#/switchpoint"
+					id="NodeSummary" data-toggle="tooltip" data-placement="right"
+					title="Switch Pt summary"> <i
+						class="fa fa-fw fa-picture-o imageandtextdifference spaceBetweenIcons"></i>
+				</a></li>
+
+
+				<li id="MapScreenMenu"><a  href="#/dashboard"
+					id="MapScreenMenuLink" data-toggle="tooltip" data-placement="right"
+					title="Dashboard"> <i
+						class="fa fa-fw fa-map-marker imageandtextdifference"></i>
+				</a></li>
+
+				<!------Submenu-report-dropdown------->
+				<li id="reportDropDownMenu" class="dropdown menuOnlyDropDown">
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle"> <i
+						class="fa fa-fw fa-line-chart imageandtextdifference"
+						data-toggle="tooltip" data-placement="bottom" title="Reports"></i>
+				</a>
+
+					<ul class="dropdown-menu sub-menu">
+
+						<li id="schedulewiseReportSubMenuOperation"><a ng-show="previlage.operational_hour" href="#/history"
+							href="#/operationalhour" id="reportSubMenuOperationalLink"
+							data-toggle="tooltip" data-placement="bottom"
+							title="Operational hours"> <i
+								class="fa fa-fw fa-area-chart imageandtextdifference "></i>
+								Operational hours
+						</a></li>
+
+
+
+						<li id="schedulewiseReportSubMenuOperation"><a  ng-show="previlage.light_status"
+							href="#/modified_operationalhour"
+							id="reportSubMenuOperationalLink" data-toggle="tooltip"
+							data-placement="bottom" title="Utility"> <i
+								class="fa fa-fw fa-area-chart imageandtextdifference "></i>
+								Light States
+						</a></li>
+
+					</ul>
+
+				</li>
+
+				<!----/-Submenu-report-dropdown------->
+				<li id="configDropDownMenu" class="dropdown menuOnlyDropDown">
+					<!----Submenu-ConfigMenu----> <a href="#" data-toggle="dropdown"
+					class="dropdown-toggle"> <i
+						class="fa fa-fw fa-dashboard imageandtextdifference"
+						data-toggle="tooltip" data-placement="top" title="Configuration"></i>
+				</a>
+
+					<ul class="dropdown-menu sub-menu">
+
+						<li id="nodeMenu"><a  ng-show="previlage.dcu" href="#/dcu"> <i
+								class="fa fa-fw fa-edit imageandtextdifference spaceBetweenIcons"></i>
+								RTU/DCU
+						</a></li>
+
+
+						<li id="scheduleSubmenu"><a  ng-show="previlage.schedule" href="#/schedules"
+							data-toggle="tooltip" data-placement="right" title="Schedule">
+								<i class="fa fa-fw fa-calendar"></i> Schedule
+						</a></li>
+
+						<li id="userMenu"><a  ng-show="previlage.user" href="#/user"> <i
+								class="fa fa-fw fa-user imageandtextdifference spaceBetweenIcons"></i>
+								Users
+						</a></li>
+
+
+					</ul> <!----Submenu-ConfigMenu---->
+				</li>
+				<!----comboBox-Upload node---->
+				<li id="uploadDropDownMenu" class="dropdown menuOnlyDropDown">
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle "
+					title="Settings"> <i class="fa fa-cloud-upload"></i>
+				</a>
+					<ul class="dropdown-menu sub-menu">
+						<li id="TagStringImportMenu"><a ng-show="previlage.default_settings" href="#/default"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Default
+								DCU Config
+						</a></li>
+
+						<li id="TagStringImportMenu"><a ng-show="previlage.filter" href="#/filter"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Filter
+						</a></li>
+
+						<li id="TagStringImportMenu"><a ng-show="previlage.node" href="#/node"
+							id="TagStringImportMenuLink"> <i
+								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Node
+						</a></li>
+					</ul>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+
+
+	<div id="page-wrapper" class="pageAlignment appBody">
+
+		<!-- <!-- 	ngView:  -->
+		<!-- <div ng-view="" class="ng-scope">
+			<div class="row ng-scope"></div>
+ -->
+		<div ui-view style="padding-left: 10px; padding-right: 10px"></div>
+	</div>
+
+</div>

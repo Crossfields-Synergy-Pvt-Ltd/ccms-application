@@ -1,0 +1,72 @@
+
+<style>
+.hero-image {
+	background-image: url("images/background.jpg");
+	background-color: #cccccc;
+	height: 654px;
+	background-position: top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+	padding-top: 90px
+}
+
+.hero-text {
+	text-align: center;
+	color: white;
+}
+</style>
+
+
+		<div class="hero-image" ng-controller="loginControllers">
+		<div class="hero-text">
+			<div class="col-sm-12" >
+				<div class="col-sm-8"></div>
+				<div class="ccms-login-width" align="right">
+					<div class="ccms-login-panel">
+						<div class="ccms-login-heading" align="left"> <span class="fa fa-lock"></span>&nbsp;Login</div>
+						<br>
+						<div class="panel-body">
+							<form class="form-horizontal">
+								<div class="form-group">
+									<label class="col-md-4 " style="padding-right:47px" align="left"><b>User
+										Id</b> </label>
+									<div class="col-md-8">
+										<input type="text" class="form-control" placeholder="User Id"
+											ng-model="user.name" required="required">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-4 " style="padding-right:30px"><b>Password</b></label>
+									<div class="col-md-8">
+										<input type="password" required name="password" class="form-control"
+											placeholder="Password" ng-model="user.password"
+											required="required">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-6">
+										<md-checkbox ng-model="user.node">
+										&nbsp;&nbsp;&nbsp;&nbsp;<label
+											style= font-size: 15px; height: 8px"><b>Remember
+											me</b></label> <br>
+									</div>
+									<div class="col-sm-5">
+										<div align="right" style="padding-right: 10px">
+											<a type="button" ng-click="login();"
+												class="btn btn-info btn-sm">&nbsp;SIGN IN&nbsp;</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<br>
+								</div>
+							</form>
+						</div>
+						<div class="panel-footer" align="left" style="border-color: #8bc34a">Forgot password? Click here</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

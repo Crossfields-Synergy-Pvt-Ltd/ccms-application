@@ -1,0 +1,196 @@
+<div class="col-md-12">
+
+<form name="newMeterForm" ng-submit="ok()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
+    <!-------meter-creat/update-view------->
+   
+            
+    <div align="left" style="font-size: 20px; color: #6D7993">
+		Meter information  &nbsp;&nbsp;{{gateway_serial_number}}</div>
+	<br>
+       
+            <input type="hidden" id="Metertypes" value="Gateway">
+            <div class="row">
+                <div class="col-md-6">
+                  
+                    
+                     <div class="form-group" ng-class="{'has-error': newMeterForm.NodeName.$invalid &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Meter name<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength" name="NodeName" id="NodeName" placeholder="Enter meter name" ng-model="meter.name" ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-maxlength="50" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.required &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">Please enter meter name.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.maxlength &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">Meter name is too long.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeName.$error.pattern &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)">Meter name not contains special symbols.</span>
+                            </div>
+                        </div>
+                    
+                    
+                     <div class="form-group" ng-class="{'has-error': newMeterForm.SerialNumber.$invalid &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Serial number<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control allCapitalCharaters ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="SerialNumber" id="SerialNumber" placeholder="Enter serial number" ng-model="meter.serial_number" ng-pattern="/^[a-zA-Z0-9]+$/" ng-minlength="4" ng-maxlength="20" maxlength="16" ng-required="true" required="required">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.required &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">Please enter serial number</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.maxlength &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">Please enter 16 characters</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.minlength &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">Please enter 4 characters</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.SerialNumber.$error.pattern &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)">Please enter correct serial number.</span>
+                            </div>
+                        </div>
+                    
+                    
+                    
+                     <div class="form-group">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Installation date</label>
+                            <div class="col-md-8">
+                                <input date-range-picker name="daterange6" id="daterange6"
+									class="form-control date-picker" type="text"
+									ng-model="meter.date" options="{singleDatePicker: true}" required />
+                            </div>
+                        </div>  
+                 
+                     
+                     
+                       <div class="form-group">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Type<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <select class="form-control ng-pristine ng-untouched ng-valid" ng-model="meter.type" ng-change="onMeterTypeChanged()" name="NodeType">
+                                     <option>RS485_1</option>
+								        <option>RS485_2</option>
+								         <option>RF</option>
+                                </select>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.NodeType.$error.required">Please select node type</span>
+                            </div>
+                        </div>
+                    
+                    
+                       <div class="form-group" ng-class="{'has-error': newMeterForm.RFId.$invalid &amp;&amp; (newMeterForm.RFId.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;RFId<span class="compulsaryFieldsColor">*</span></label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength ng-valid-required" name="RFId" id="RFId" placeholder="Enter RFId" ng-model="meter.rf_id" ng-minlength="1" ng-maxlength="8" ng-pattern="/^[0-9]+$/" maxlength="8" ng-required="newMeter.NodeType == 3" ng-disabled="newMeter.NodeType != 3" disabled="disabled">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.RFId.$error.required &amp;&amp; (newMeterForm.RFId.$dirty || submitted)">Please enter RF Id.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.RFId.$error.pattern &amp;&amp; (newMeterForm.RFId.$dirty || submitted)">Please enter correct RF Id.</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.RFId.$error.minlength &amp;&amp; (newMeterForm.RFId.$dirty || submitted)">RF Id min value is 1 digits</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.RFId.$error.maxlength &amp;&amp; (newMeterForm.RFId.$dirty || submitted)">RF Id min value is 8 digits</span>
+                            </div>
+                        </div>
+                    
+                      <div class="form-group" ng-class="{'has-error': newMeterForm.SlaveId.$invalid &amp;&amp; (newMeterForm.SlaveId.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Slave Id</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" name="SlaveId" id="SlaveId" placeholder="Enter slave Id" ng-model="meter.slave_id" ng-pattern="/^([1-9]|[0-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/" ng-minlength="1" ng-maxlength="3">
+                                <span class="help-block ng-hide" ng-show="(newMeterForm.SlaveId.$error.pattern || newMeterForm.SlaveId.$error.minlength || newMeterForm.SlaveId.$error.maxlength) &amp;&amp; (newMeterForm.SlaveId.$dirty || submitted)">Acceptable value is between 1 - 255</span>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                         <div >
+                            <div class="col-md-4"></div>
+                            <div class="col-md-8 phaseSelection">
+                                <!--Single phase meter-->
+
+                                <div class="customRadio">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios-R" value="R" ng-model="meter.red" class="ng-pristine ng-untouched ng-valid">
+                                    <label for="optionsRadios-R">
+                                        Red
+                                    </label>
+                                </div>
+                                <div class="customRadio">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios-Y" value="Y" ng-model="meter.yellow" class="ng-pristine ng-untouched ng-valid">
+                                    <label for="optionsRadios-Y">
+                                        Yellow
+                                    </label>
+                                </div>
+                                <div class="customRadio">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios-B" value="B" ng-model="meter.blue" class="ng-pristine ng-untouched ng-valid">
+                                    <label for="optionsRadios-B">
+                                        Blue
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+  
+   <div class="form-group" ng-class="{'has-error': newMeterForm.InitialReading.$invalid &amp;&amp; (newMeterForm.InitialReading.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Initial reading</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern" name="InitialReading" id="InitialReading" placeholder="Enter initial meter reading" ng-model="meter.initial_reading" ng-pattern="/^[0-9]+(\.[0-9]+)?$/">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.InitialReading.$error.pattern &amp;&amp; (newMeterForm.InitialReading.$dirty || submitted)">Please enter correct initial reading</span>
+                            </div>
+                        </div>
+  
+   <div class="form-group" ng-class="{'has-error': newMeterForm.MultiplicationFactor.$invalid &amp;&amp; (newMeterForm.MultiplicationFactor.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Multiplication factor</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength" name="MultiplicationFactor" id="MultiplicationFactor" placeholder="Enter multiplication factor" ng-model="meter.multiplication_factor" ng-pattern="/^[0-9]+(\.[0-9]{1,20})?$/" ng-maxlength="20">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MultiplicationFactor.$error.pattern &amp;&amp; (newMeterForm.MultiplicationFactor.$dirty || submitted)">Please enter correct multiplication factor</span>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MultiplicationFactor.$error.maxlength &amp;&amp; (newMeterForm.MultiplicationFactor.$dirty || submitted)">Multiplication factor exceeds maxlength</span>
+                              </div>
+                        </div>
+  
+  
+  
+  <div class="form-group" ng-class="{'has-error': newMeterForm.AdditionFactor.$invalid &amp;&amp; (newMeterForm.AdditionFactor.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Addition factor</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern" name="AdditionFactor" id="AdditionFactor" placeholder="Enter addition factor" ng-model="meter.addition_factor" ng-pattern="/^-?[0-9]+(\.[0-9]+)?$/">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.AdditionFactor.$error.pattern &amp;&amp; (newMeterForm.AdditionFactor.$dirty || submitted)">Please enter correct addition factor</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': newMeterForm.ResetValue.$invalid &amp;&amp; (newMeterForm.ResetValue.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Reset value</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern" name="ResetValue" id="ResetValue" placeholder="Enter reset value" ng-model="meter.reset_value" ng-pattern="/^[0-9]+(\.[0-9]+)?$/">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.ResetValue.$error.pattern &amp;&amp; (newMeterForm.ResetValue.$dirty || submitted)">Please enter correct reset factor</span>
+                            </div>
+                        </div>
+  
+  
+  	</div>
+  	  <div class="col-md-6">
+  	  
+  	  
+  	  <div class="form-group" ng-class="{'has-error': newMeterForm.MeterDescription.$invalid &amp;&amp; (newMeterForm.MeterDescription.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Description</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control capitalize ng-pristine ng-untouched ng-valid ng-valid-maxlength" id="MeterDescription" name="MeterDescription" placeholder="Enter description" ng-model="meter.description" rows="5" ng-maxlength="100"></textarea>
+                                <span class="help-block ng-hide" ng-show="newMeterForm.MeterDescription.$error.maxlength &amp;&amp; (newMeterForm.MeterDescription.$dirty || submitted)">Description is too long.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': newMeterForm.Latitude.$invalid &amp;&amp; (newMeterForm.Latitude.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Latitude</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern" name="Latitude" id="Latitude" placeholder="Enter latitude" ng-model="meter.latitude" ng-pattern="/^-?([1-8]?[1-9]|[1-9]0)(\.{1}\d{1,20})?$/">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Latitude.$error.pattern &amp;&amp; (newMeterForm.Latitude.$dirty || submitted)">Please enter correct latitude and restrict digits to 20 after decimal point</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-class="{'has-error': newMeterForm.Longitude.$invalid &amp;&amp; (newMeterForm.Longitude.$dirty || submitted)}">
+                            <label class="col-md-4 control-label formTextWeight">&nbsp;&nbsp;&nbsp;&nbsp;Longitude</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern" name="Longitude" id="Longitude" placeholder="Enter longitude" ng-model="meter.longitude" ng-pattern="/^-?([1]?[0-7][0-9]|[1]?[1-8][0]|[1-9]?[0-9])(\.{1}\d{1,20})?$/">
+                                <span class="help-block ng-hide" ng-show="newMeterForm.Longitude.$error.pattern &amp;&amp; (newMeterForm.Longitude.$dirty || submitted)">Please enter correct longitude and restrict digits to 20 after decimal point</span>
+                            </div>
+                        </div>
+  
+ 						 <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="locatedcuonmap()">
+                            Locate on map
+                        </button>
+  
+		</div>
+		</div>
+		
+		<div class="row">
+        <div class="col-xs-12 col-lg-12 col-sm-12">
+        <hr>
+        <br>
+            <div class="pull-left"><span class="compulsaryFieldsColor">*</span>Marked fields are compulsory.</div>
+            <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="cancel()" ng-disabled="backtoCreateMeterClicked==1">Cancel</button>
+            <input type="button" data-toggle="tooltip" data-placement="bottom" title="Save and proceed" class="btn btn-primary pull-right adjusantButtons" ng-click="proceedToNextStep('/calibrationScreen')" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" value="Save &amp; proceed" disabled="disabled">
+            <button type="submit" id="Submit" data-toggle="tooltip" data-placement="bottom" title="Submit" class="btn btn-primary pull-right adjusantButtons" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" disabled="disabled">Save</button>
+            
+        </div>
+    </div>
+	
+</form>
+</div>

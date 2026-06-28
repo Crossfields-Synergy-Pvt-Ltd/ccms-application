@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html ng-app="demoapp">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0,
+                minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="description"
+	content="Cross Fields : CCMS">
+
+<meta name="keywords"
+	content="Cross Fields : CCMS">
+
+<meta name="author" content="vnetsoft.com">
+
+<meta name="language" content="english">
+
+<meta name="robots" content="works, follow">
+
+<meta name="copyright" content="vnetsoft.com">
+
+<meta name="googlebot" content="works">
+
+<title>CROSSFIELDS SYNERGY - CCMS</title>
+
+<meta http-equiv="refresh" content="900000">
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css"></link>
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css"
+	rel="stylesheet" data-semver="4.5.0" data-require="font-awesome@*" />
+<link href="vendor/autocomplete_dropdown/angucomplete.css">
+<script src="vendor/angular1.4.8/angular.min.js"></script>
+<script src="vendor/jquery/jquery-2.1.3.js"></script>
+
+<!-- <script src="vendor/jquery/jquery-2.1.4.js"></script> -->
+<script src="vendor/jquery/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="vendor/jquery/jquery-ui-1.10.0.custom.min.css"></link>
+<script src="vendor/jquery/jquery-ui-1.11.3.js"></script>
+<script src="vendor/jquery/jquery.dataTables.js"></script>
+<script src="vendor/jquery/jquery.signalR-2.2.0.js"></script>
+<script src="vendor/jquery/jquery.unobtrusive-ajax.js"></script>
+<script src="vendor/jquery/jquery.validate.js"></script>
+<script src="vendor/jquery/jquery.validate.unobtrusive.js"></script>
+<script src="vendor/jquery/jquery.knob.js"></script>
+
+<script src="vendor/slider/slider.js"></script>
+<!-- 
+<link rel="stylesheet" type="text/css" href="vendor/jquery/jquery-ui-1.10.0.custom.min.css"></link> -->
+
+
+<script src="vendor/angular1.4.8/angular-resource.js"></script>
+<script src="vendor/angular1.4.8/angular-sanitize.js"></script>
+<script src="vendor/angular1.4.8/angular-ui-router.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/bootstrap/js/ui-bootstrap-tpls-0.13.4.js"></script>
+<script src="vendor/autocomplete_dropdown/angucomplete.js"></script>
+
+
+<link rel="stylesheet" href="vendor/materials/angular-material.min.css">
+
+<script src="vendor/materials/angular-animate.min.js"></script>
+<script src="vendor/materials/angular-aria.min.js"></script>
+<script src="vendor/materials/angular-messages.min.js"></script>
+<script src="vendor/materials/angular-material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="vendor/ext/alert//angular-inform.min.css" />
+<script src="vendor/ext/alert//angular-inform.min.js"></script>
+<script src="vendor/ext/alert/angular-showdown.js"></script>
+
+
+<link rel="stylesheet" href="vendor/nouislider/nouislider.css" />
+<script src="vendor/nouislider/nouislider.js"></script>
+<script src="vendor/nouislider/wNumb.js"></script>
+ 
+<script src="vendor/highchart/highcharts.js"></script>
+<script src="vendor/highchart/exporting.js"></script>
+<script src="vendor/ngchart/highcharts-ng.js"></script>
+
+<script src="app/navi/Util.js"></script>
+
+
+<link href="vendor/select2/select2.min.css" rel="stylesheet" />
+<script src="vendor/select2/select2.min.js"></script>
+
+
+<!-- Map Related  -->
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyBwGN_9LkI39lZFhd2SOALb2f4DYhmRrQM"></script>
+
+<!-- Ui - Select drop down related -->
+
+  <!-- ui-select files -->
+  <script src="vendor/uiselect/select.min.js"></script>
+  <link rel="stylesheet" href="vendor/uiselect/select.min.css" />
+  <link rel="stylesheet" href="vendor/uiselect/selectize.default.css" />
+
+<script src="vendor/moment/moment.min.js"></script>
+
+ <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.min.css"></link>
+  <script src="vendor/daterangepicker/daterangepicker.min.js"></script> 
+  <script src="vendor/daterangepicker/angular-daterangepicker.min.js"></script> 
+  
+  
+   <script src="vendor/slider/ui_slider.js"></script> 
+  
+  
+ 
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+<link rel="stylesheet" type="text/css" href="vendor/style/AdminLTE.css"></link>
+<link rel="stylesheet" href="vendor/style/angular-ui-tree.min.css" />
+<link rel="stylesheet" type="text/css" href="vendor/style/Default.less"></link>
+<link rel="stylesheet" type="text/css" href="vendor/style/sidebar-theme.less"></link>
+<link rel="stylesheet" type="text/css" href="vendor/style/app.css"></link>
+
+</head>
+
+<body style="background-color: #ffffff">
+
+	<script src="app/dcu/dcu-controllers.js"></script>
+	<script src="app/dcu/dcu-factory.js"></script>
+
+
+	<script src="app/schedules/schedules-controllers.js"></script>
+	<script src="app/schedules/schedules-factory.js"></script>
+
+	<script src="app/event/event-controllers.js"></script>
+	<script src="app/event/event-factory.js"></script>
+
+	<script src="app/default/default-controllers.js"></script>
+	<script src="app/default/default-factory.js"></script>
+
+	<script src="app/map/map-controller.js"></script>
+	<script src="app/map/map-factory.js"></script>
+
+	<script src="app/monitorandcontrol/monitorandcontrol-controllers.js"></script>
+	<script src="app/monitorandcontrol/monitorandcontrol-factory.js"></script>
+
+	<script src="app/switchpoint/switchpoint-controllers.js"></script>
+	<script src="app/switchpoint/switchpoint-factory.js"></script>
+
+	<script src="app/meter/meter-controllers.js"></script>
+	<script src="app/meter/meter-factory.js"></script>
+
+	<script src="app/history/history-controllers.js"></script>
+	<script src="app/history/history-factory.js"></script>
+
+	<script src="app/filter/filter-controllers.js"></script>
+	<script src="app/filter/filter-factory.js"></script>
+
+
+	<script src="app/user/user-controllers.js"></script>
+	<script src="app/user/user-factory.js"></script>
+	
+	<script src="app/node/node-controllers.js"></script>
+	<script src="app/node/node-factory.js"></script>
+	
+	
+	<script src="app/operationalhours/operationalhours-controllers.js"></script>
+	<script src="app/operationalhours/operationalhours-factory.js"></script>
+
+<script src="app/modified_operationalhours/modified_operationalhours-controllers.js"></script>
+	<script src="app/modified_operationalhours/modified_operationalhours-factory.js"></script>
+
+	<script src="app/login/login-controller.js"></script>
+	<script src="app/login/login-factory.js"></script>
+		
+	<script src="app/dashboard/dashboard-controller.js"></script>
+	<script src="app/dashboard/dashboard-factory.js"></script>
+
+
+	<script src="app/app.js"></script>
+<script src="app/navi/navibar-controllers.js"></script>
+
+	<div ui-view style="background-color: #FFFFFF;"></div>
+
+
+	<!-- 	<div ng-include="'app/navi/footer.html'"></div> -->
+
+</body>
+
+</html>
