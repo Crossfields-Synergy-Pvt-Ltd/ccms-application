@@ -1,16 +1,16 @@
 # CCMS production stack.
 #
-# Custom images are pulled from GitHub Container Registry (ghcr.io):
+# CCMS production stack — fully self-contained for YAML-only paste.
+#
+# All seed data is baked into the ccms-seed image. All persistent
+# data uses named Docker volumes (no host bind mounts required).
+#
+# Custom images are built by .github/workflows/build-images.yml on
+# every push to main and published to GitHub Container Registry:
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-server
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed
-# These are built and published by .github/workflows/build-images.yml
-# on every push to main.
-#
-# To pin to a specific version instead of :latest, replace the tag
-# with a short commit SHA (visible in the Actions run output).
-# To force re-pulling, run `docker compose pull` before `docker compose up -d`.
 #
 # HOSTINGER VPS DEPLOYMENT:
 #   Paste this entire file into Hostinger's YAML editor.
@@ -46,7 +46,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-employee_db}
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./db/seeds/mysql:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
@@ -62,8 +61,6 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-    volumes:
-      - ./db/seeds:/seeds:ro
     environment:
       MONGO_HOST: ${MONGODB_HOST:-mongodb}
       MONGO_PORT: ${MONGODB_PORT:-27017}
@@ -109,7 +106,7 @@ services:
     container_name: cspl-ccms-ui
     ports: []
     volumes:
-      - ./data/dontdelete:/home/data/dontdelete
+      - historical_data:/home/data/dontdelete
     environment:
       CCMS_SERVER_HOST: ${CCMS_SERVER_HOST:-server}
       MONGODB_HOST: ${MONGODB_HOST:-mongodb}
@@ -162,3 +159,4 @@ services:
 volumes:
   mongodb_data:
   mysql_data:
+  historical_data:

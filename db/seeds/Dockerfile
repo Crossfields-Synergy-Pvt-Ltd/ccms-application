@@ -16,4 +16,8 @@ WORKDIR /
 COPY seed.sh /seed.sh
 RUN chmod +x /seed.sh
 
+# Bake seed data into the image (no bind mount needed for YAML-only paste)
+COPY mongo.archive /seeds/mongo.archive
+COPY mysql/ /seeds/mysql/
+
 ENTRYPOINT ["/seed.sh"]

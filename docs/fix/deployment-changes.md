@@ -57,6 +57,34 @@ Changes made to enable Hostinger VPS deployment with Docker Compose (no `.env` f
 
 All `image:` references updated from `ghcr.io/askamoghb-rgb/*` to `ghcr.io/crossfields-synergy-pvt-ltd/*` for all four custom images:
 
+### `db/seeds/Dockerfile`
+
+- Added `COPY mongo.archive /seeds/mongo.archive` and `COPY mysql/ /seeds/mysql/` — seed data is now baked into the image
+- Removes dependency on `./db/seeds:/seeds:ro` bind mount
+
+### `CCMS_UI/STARTUP/ccms_ui/Dockerfile`
+
+- Added `RUN mkdir -p /home/data/dontdelete` — creates the historical CSV directory inside the image
+- The `./data/dontdelete` bind mount was replaced with a named volume (`historical_data`)
+
+### `docker-compose.yml` (bind mounts → named volumes)
+
+| Change | Details |
+|---|---|
+| `./db/seeds/mysql:/docker-entrypoint-initdb.d:ro` removed | MySQL schema is applied by the seed container instead |
+| `./db/seeds:/seeds:ro` removed from seed | `mongo.archive` and `mysql/` are baked into the seed image |
+| `./data/dontdelete:/home/data/dontdelete` → `historical_data:/home/data/dontdelete` | Named volume for historical CSV data — no host path needed |
+
+The stack no longer requires **any** bind mount to function. All persistent data uses named Docker volumes.
+
+## Volumes Summary
+
+| Volume | Mount | Purpose |
+|---|---|---|
+| `mongodb_data` | `/data/db` | MongoDB data files |
+| `mysql_data` | `/var/lib/mysql` | MySQL data files |
+| `historical_data` | `/home/data/dontdelete` | Historical CSV data |
+
 ## How SSL Can Be Added Later
 
 When a domain is obtained:

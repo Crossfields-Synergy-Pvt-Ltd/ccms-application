@@ -72,9 +72,8 @@ Git push ──► GitHub ──► Hostinger pulls from Git repo
 
 | Path | Purpose | Persistence |
 |---|---|---|
-| `db/seeds/mongo.archive` | MongoDB seed snapshot (Git-tracked) | Read-only |
-| `db/seeds/mysql/01-schema.sql` | MySQL schema (Git-tracked) | Read-only |
-| `./data/dontdelete/` | Historical CSV data (host bind mount) | Survives container restart |
+| `db/seeds/mongo.archive` | MongoDB seed snapshot (Git-tracked, baked into seed image) | Read-only |
+| `db/seeds/mysql/` | MySQL schema (Git-tracked, baked into seed image) | Read-only |
 
 ### Docker Volumes (Survive container recreation)
 
@@ -82,6 +81,7 @@ Git push ──► GitHub ──► Hostinger pulls from Git repo
 |---|---|---|
 | `mongodb_data` | `/data/db` | MongoDB data files |
 | `mysql_data` | `/var/lib/mysql` | MySQL data files |
+| `historical_data` | `/home/data/dontdelete` | Historical CSV data |
 
 ## Environment Variables
 
@@ -128,26 +128,11 @@ All environment variables are set in Hostinger's Environment Variables section. 
 - `SMOKE_ADMIN_PASSWORD` must match the password in USERS_JSON
 - Existing users are never overwritten (skip-if-exists)
 
-## Deployment Steps
+## Deployment Steps (YAML-Only Paste)
 
-### 1. GitHub Repository
+The stack is designed for Hostinger's YAML editor — no Git repository URL required.
 
-Push the project to a GitHub repository. Ensure the following files are tracked (they contain no secrets):
-
-```
-docker-compose.yml
-.env.example
-nginx/
-SERVER/ccms/Dockerfile
-SERVER/ccms/docker-entrypoint.sh
-SERVER/ccms/conf/
-CCMS_UI/STARTUP/ccms_ui/Dockerfile
-CCMS_UI/STARTUP/ccms_ui/docker-entrypoint.sh
-CCMS_UI/STARTUP/ccms_ui/conf/
-db/seeds/
-```
-
-### 2. Hostinger VPS
+### 1. Hostinger VPS
 
 1. Create a Hostinger VPS
 2. Open ports in firewall:
@@ -156,16 +141,28 @@ db/seeds/
    - **22** (TCP) — SSH (optional, for admin access)
 3. Close all other ports (3306, 27017, 8080, 8102 are internal only)
 
-### 3. Hostinger Docker Compose Deployment
+### 2. Hostinger Docker Compose Deployment
 
 1. Create a new Docker Compose deployment in Hostinger
-2. Point it to your GitHub repository URL
-3. In the Environment Variables section, paste all required variables
+2. Paste the **entire** `docker-compose.yml` file into the YAML editor
+3. In the Environment Variables section, paste all required variables:
+   - `MYSQL_ROOT_PASSWORD` (required)
+   - `USERS_JSON` (recommended — without quotes)
 4. Click Deploy
 
 Hostinger will:
 - Pull all pre-built images from GHCR
 - Run `docker compose up -d`
+
+### 3. Verify Deployment
+
+Check that all containers start successfully:
+
+```
+http://<VPS-IP>/
+```
+
+This should load the CCMS login page through nginx.
 
 ### 4. Verify Deployment
 
@@ -232,7 +229,7 @@ The nginx Dockerfile already has certbot pre-installed. The nginx template has t
 | MongoDB | Named volume `mongodb_data` | `docker compose down`, container restart |
 | MySQL | Named volume `mysql_data` | `docker compose down`, container restart |
 | Let's Encrypt certs | Named volume (when SSL is active) | `docker compose down`, container restart |
-| Historical CSVs | Host bind mount `./data/dontdelete/` | Container restart |
+| Historical CSVs | Named volume `historical_data` | Container restart |
 
 To wipe everything and re-seed:
 ```bash

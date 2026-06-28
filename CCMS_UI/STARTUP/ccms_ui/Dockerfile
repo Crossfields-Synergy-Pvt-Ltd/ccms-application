@@ -16,6 +16,9 @@ COPY --from=builder /build/target/CCMS.war /usr/local/tomcat/webapps/CCMS.war
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# Create data directory for historical CSV files (survives without bind mount)
+RUN mkdir -p /home/data/dontdelete
+
 EXPOSE 8080
 
 ENTRYPOINT ["docker-entrypoint.sh"]
