@@ -1,13 +1,15 @@
-FROM alpine:3.18
+FROM mongo:3.4
 
-# Install both clients in one layer.
-#   - mysql-client: for applying the MySQL schema
-#   - mongodb-tools: for mongorestore (not bundled in the mongo:3.4 official image we used previously)
-# Use bash for /dev/tcp support in the seed.sh wait_for helper.
-RUN apk add --no-cache \
-        bash \
-        mysql-client \
-        mongodb-tools
+# bash for /dev/tcp in seed.sh wait_for(); mysql-client for the MySQL
+# schema step.  The mongo shell + mongorestore come from the base image.
+#
+# The mongo:3.4 image is built on Ubuntu 16.04 with an apt repo for
+# MongoDB 3.4 packages whose GPG key has expired.  Remove that repo
+# before running apt-get update.
+RUN rm -f /etc/apt/sources.list.d/mongodb-org.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends bash mysql-client \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 

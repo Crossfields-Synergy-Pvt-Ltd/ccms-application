@@ -5,9 +5,10 @@
 # Usage: bash scripts/api-smoke-test.sh [base_url]
 # Default base_url: http://localhost:8080/CCMS
 #
-# Loads .env from the project root for credentials. Override
-# SMOKE_ADMIN_EMAIL / SMOKE_ADMIN_PASSWORD in the environment
-# to test with a different account.
+# Loads .env from the project root. Reads USERS_JSON to pick the
+# first SUPER ADMIN (or the first user) for login credentials.
+# Override SMOKE_ADMIN_EMAIL / SMOKE_ADMIN_PASSWORD in the
+# environment to test with a different account.
 # =============================================================
 
 # Load .env from project root if present
@@ -18,6 +19,33 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
     # shellcheck disable=SC1091
     . "$PROJECT_ROOT/.env"
     set +a
+fi
+
+# If USERS_JSON is set, try to extract the first SUPER ADMIN's
+# email and password as the smoke-test credentials. Falls back to
+# SMOKE_ADMIN_EMAIL / SMOKE_ADMIN_PASSWORD if extraction fails.
+if [ -n "$USERS_JSON" ]; then
+    if command -v python3 >/dev/null 2>&1; then
+        _extracted=$(printf '%s' "$USERS_JSON" | python3 -c '
+import json, sys
+try:
+    data = json.loads(sys.stdin.read())
+except Exception:
+    sys.exit(0)
+admin = next((u for u in data if u.get("role") == "SUPER ADMIN"), None)
+if admin is None and data:
+    admin = data[0]
+if admin:
+    print(admin.get("email", ""))
+    print(admin.get("password", ""))
+' 2>/dev/null)
+        if [ -n "$_extracted" ]; then
+            _extracted_email=$(echo "$_extracted" | sed -n '1p')
+            _extracted_password=$(echo "$_extracted" | sed -n '2p')
+            [ -n "$_extracted_email" ] && SMOKE_ADMIN_EMAIL="$_extracted_email"
+            [ -n "$_extracted_password" ] && SMOKE_ADMIN_PASSWORD="$_extracted_password"
+        fi
+    fi
 fi
 
 : "${SMOKE_ADMIN_EMAIL:=admin@example.com}"

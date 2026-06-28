@@ -20,10 +20,19 @@
 > | Password | `Cspl@1234` (plaintext, in the BSON dump) |
 > | Role | `SUPER ADMIN` |
 >
-> **Action required on first deploy:** log in with the above
-> credentials, then change the password via the UI. If you do not
-> intend to keep the seed data, set `SEED_DATA=false` in `.env` and
-> start with empty databases.
+> Users are now defined in `.env` as a JSON array under `USERS_JSON`
+> (see `Deployment_Guide.md` for the format). The `seed` service
+> syncs this list into MongoDB on every run with **skip-if-exists**
+> semantics — any users already in MongoDB (including the legacy
+> archive admin) are left untouched, and the env adds only the new
+> users it specifies.
+>
+> **Action required on first deploy:**
+> 1. Edit `.env` and set a strong password in `USERS_JSON` (or change it
+>    after first login via the UI — UI changes are preserved across
+>    restarts).
+> 2. If you do not intend to keep the seed data, set `SEED_DATA=false`
+>    in `.env` and start with empty databases.
 
 ---
 
@@ -40,8 +49,9 @@ open http://localhost:8080/CCMS/
 ```
 
 The `seed` service automatically runs on first start and populates both
-databases from `db/seeds/`. See `Deployment_Guide.md` for the full
-first-run flow, troubleshooting, and the per-component reference.
+databases from `db/seeds/` and from the `USERS_JSON` env var. See
+`Deployment_Guide.md` for the full first-run flow, troubleshooting,
+and the per-component reference.
 
 ---
 

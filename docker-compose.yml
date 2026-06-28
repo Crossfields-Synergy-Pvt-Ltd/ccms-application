@@ -67,6 +67,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       SEED_DATA: ${SEED_DATA:-true}
+      USERS_JSON: ${USERS_JSON:-[]}
     restart: "no"
 
   server:

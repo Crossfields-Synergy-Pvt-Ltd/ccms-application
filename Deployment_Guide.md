@@ -48,6 +48,7 @@ substitution). The Spring XML configs read environment values through JVM
 | `LETSENCRYPT_LIVE_DIR` | `/etc/letsencrypt/live/ccms.yourdomain.com` | nginx | Let's Encrypt cert path |
 | `SERVER_LOG_DIR` | `/home/CCMS/roadmap/logs` | SERVER, log4j2 | SERVER log directory |
 | `SEED_DATA` | `true` | `seed` service, `mysql` | Whether to auto-seed databases on first start |
+| `USERS_JSON` | `[{"email":"admin@…",…}]` | `seed` service | JSON array of users to sync into `ccms_user_details` on every seed run (skip-if-exists) |
 
 > Never commit `.env`. Only `.env.example` is tracked.
 
@@ -112,6 +113,61 @@ docker exec cspl-mongodb \
 git add db/seeds/mongo.archive
 git commit -m "Update MongoDB seed snapshot"
 ```
+
+---
+
+## User Management (USERS_JSON)
+
+Users are defined in `.env` as a JSON array under `USERS_JSON`. The
+`seed` service syncs this list into MongoDB on every run, using
+**skip-if-exists** semantics — existing users (including any
+passwords changed via the UI) are preserved.
+
+### Format
+
+```json
+[
+  {
+    "email": "admin@example.com",
+    "password": "ChangeMe123!",
+    "role": "SUPER ADMIN",
+    "first_name": "Admin",
+    "last_name": "User",
+    "dist": "ALL",
+    "mondal": "ALL",
+    "gp": "ALL",
+    "all_privileges": true
+  },
+  {
+    "email": "operator@example.com",
+    "password": "...",
+    "role": "USER",
+    "dist": "YSR Kadapa"
+  }
+]
+```
+
+| Field | Required | Default | Notes |
+|---|---|---|---|
+| `email` | yes | — | Becomes the MongoDB `_id`; unique |
+| `password` | yes | — | Stored plaintext (current app behavior) |
+| `role` | no | `USER` | Free-form; recognized values: `SUPER ADMIN`, `USER` |
+| `first_name`, `last_name` | no | empty | |
+| `dist`, `mondal`, `gp` | no | `ALL` | Geographic scope |
+| `all_privileges` | no | `false` | If `true`, all 13 UI permissions are granted |
+
+### Common operations
+
+| Goal | How |
+|---|---|
+| Add a new operator | Append their entry to `USERS_JSON`, then `docker compose up -d` (the `seed` container re-runs and adds the new user) |
+| Change a password via env | First delete the user from MongoDB (UI → User management, or `docker exec cspl-mongodb mongo ccms --eval "db.ccms_user_details.deleteOne({_id: 'user@...'})"`), then update the env entry, then `docker compose up -d` |
+| Change a password via UI | Use the UI; the change is preserved across restarts because the seed uses skip-if-exists |
+| Remove a user | Delete them from MongoDB (env cannot remove users) |
+| Reset all users to env state | `docker compose down -v && docker compose up -d --build` (wipes all volumes, re-runs the seed from scratch) |
+
+The first `SUPER ADMIN` in `USERS_JSON` is automatically picked by
+`scripts/api-smoke-test.sh` as the login credential.
 
 ---
 
