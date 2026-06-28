@@ -14,7 +14,7 @@ Changes made to enable Hostinger VPS deployment with Docker Compose (no `.env` f
 | `ccms_ui` environment refactored | Replaced inline `CATALINA_OPTS` string with individual env vars. Entrypoint constructs `CATALINA_OPTS` from these. |
 | Healthchecks added | `server` (HTTP endpoint), `ccms_ui` (Tomcat index), `nginx` (port 80) |
 | `ccms_ui` ports | Changed to `ports: []` — no longer exposed directly (nginx proxies to it) |
-| nginx | Changed to `build: context: ./nginx` (picks up local Dockerfile + config). Port 443 removed (HTTP-only). `LETSENCRYPT_LIVE_DIR` removed. |
+| nginx | Changed to `image:` only (no `build:` section — for YAML-only pasting). Port 443 removed (HTTP-only). `LETSENCRYPT_LIVE_DIR` removed. |
 | `depends_on` updated | `ccms_ui` now waits for `server: condition: service_healthy` |
 | Default fallbacks added | All `${VARIABLE}` references now use `:-default` syntax where safe. Only `MYSQL_ROOT_PASSWORD` has no default. |
 

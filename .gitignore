@@ -1,6 +1,9 @@
 # Backup files
 /backups/
 
+# Deployment plan (not part of the app)
+deployment-plan.md
+
 # Live database volumes
 /data/
 /data/dontdelete/

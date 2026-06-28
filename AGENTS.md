@@ -164,8 +164,7 @@ db/seeds/
 4. Click Deploy
 
 Hostinger will:
-- Clone the repository
-- Run `docker compose build` (or pull pre-built images from GHCR)
+- Pull all pre-built images from GHCR
 - Run `docker compose up -d`
 
 ### 4. Verify Deployment

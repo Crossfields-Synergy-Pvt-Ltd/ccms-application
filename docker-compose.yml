@@ -12,8 +12,14 @@
 # with a short commit SHA (visible in the Actions run output).
 # To force re-pulling, run `docker compose pull` before `docker compose up -d`.
 #
-# Environment variables are injected by Hostinger's Environment section.
-# No .env file is used on the server.
+# HOSTINGER VPS DEPLOYMENT:
+#   Paste this entire file into Hostinger's YAML editor.
+#   Set environment variables in Hostinger's Environment section.
+#   No .env file is needed.
+#
+# LOCAL DEVELOPMENT:
+#   Copy .env.example to .env in the project root. Docker Compose
+#   reads it automatically for ${VARIABLE} substitution.
 
 services:
   mongodb:
@@ -137,8 +143,6 @@ services:
     restart: unless-stopped
 
   nginx:
-    build:
-      context: ./nginx
     image: ghcr.io/askamoghb-rgb/ccms-nginx:latest
     container_name: cspl-nginx
     ports:
