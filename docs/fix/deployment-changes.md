@@ -45,6 +45,18 @@ Changes made to enable Hostinger VPS deployment with Docker Compose (no `.env` f
 - Added defensive quote-stripping for `USERS_JSON`: strips leading/trailing `'` or `"` if present
 - This protects against Hostinger or Docker Compose passing JSON with surrounding quotes
 
+### `.github/workflows/build-images.yml`
+
+| Change | Details |
+|---|---|
+| GHCR owner updated | `askamoghb-rgb` → `crossfields-synergy-pvt-ltd` (matches new repo org) |
+| Matrix name bug fixed | `name: ccms-nginx` → `name: nginx`, `name: ccms-seed` → `name: seed` — was producing double `ccms-ccms-` tag prefix |
+| Action version updated | `docker/build-push-action@v5` → `@v6` (Node 24 compatibility — Node 20 is deprecated on GitHub runners) |
+
+### `docker-compose.yml` (image tags)
+
+All `image:` references updated from `ghcr.io/askamoghb-rgb/*` to `ghcr.io/crossfields-synergy-pvt-ltd/*` for all four custom images:
+
 ## How SSL Can Be Added Later
 
 When a domain is obtained:

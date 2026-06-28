@@ -185,10 +185,10 @@ The CI pipeline (`.github/workflows/build-images.yml`) builds and pushes these i
 
 | Image | Source |
 |---|---|
-| `ghcr.io/askamoghb-rgb/ccms-server:latest` | `SERVER/ccms/Dockerfile` |
-| `ghcr.io/askamoghb-rgb/ccms-ui:latest` | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` |
-| `ghcr.io/askamoghb-rgb/ccms-nginx:latest` | `nginx/Dockerfile` |
-| `ghcr.io/askamoghb-rgb/ccms-seed:latest` | `db/seeds/Dockerfile` |
+| `ghcr.io/crossfields-synergy-pvt-ltd/ccms-server:latest` | `SERVER/ccms/Dockerfile` |
+| `ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui:latest` | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` |
+| `ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx:latest` | `nginx/Dockerfile` |
+| `ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed:latest` | `db/seeds/Dockerfile` |
 
 For local changes, `docker compose build` uses the `build: context:` directives.
 

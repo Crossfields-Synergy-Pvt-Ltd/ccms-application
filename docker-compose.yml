@@ -1,10 +1,10 @@
 # CCMS production stack.
 #
 # Custom images are pulled from GitHub Container Registry (ghcr.io):
-#   - ghcr.io/askamoghb-rgb/ccms-server
-#   - ghcr.io/askamoghb-rgb/ccms-ui
-#   - ghcr.io/askamoghb-rgb/ccms-nginx
-#   - ghcr.io/askamoghb-rgb/ccms-seed
+#   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-server
+#   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui
+#   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx
+#   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed
 # These are built and published by .github/workflows/build-images.yml
 # on every push to main.
 #
@@ -55,7 +55,7 @@ services:
     restart: unless-stopped
 
   seed:
-    image: ghcr.io/askamoghb-rgb/ccms-seed:latest
+    image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed:latest
     container_name: cspl-seed
     depends_on:
       mongodb:
@@ -76,7 +76,7 @@ services:
     restart: "no"
 
   server:
-    image: ghcr.io/askamoghb-rgb/ccms-server:latest
+    image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-server:latest
     container_name: cspl-server
     ports:
       - "${SERVER_PORT:-8102}:${SERVER_PORT:-8102}"
@@ -105,7 +105,7 @@ services:
     restart: unless-stopped
 
   ccms_ui:
-    image: ghcr.io/askamoghb-rgb/ccms-ui:latest
+    image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui:latest
     container_name: cspl-ccms-ui
     ports: []
     volumes:
@@ -143,7 +143,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: ghcr.io/askamoghb-rgb/ccms-nginx:latest
+    image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx:latest
     container_name: cspl-nginx
     ports:
       - "80:80"

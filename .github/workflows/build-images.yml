@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  OWNER: askamoghb-rgb
+  OWNER: crossfields-synergy-pvt-ltd
 
 jobs:
   build:
@@ -26,11 +26,11 @@ jobs:
         include:
           - name: server
             context: ./SERVER/ccms
-          - name: ccms-ui
+          - name: ui
             context: ./CCMS_UI/STARTUP/ccms_ui
-          - name: ccms-nginx
+          - name: nginx
             context: ./nginx
-          - name: ccms-seed
+          - name: seed
             context: ./db/seeds
     steps:
       - name: Checkout
@@ -51,7 +51,7 @@ jobs:
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
           push: true
