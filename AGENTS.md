@@ -211,7 +211,7 @@ All long-running services have healthchecks:
 | mysql | `mysqladmin ping -uroot -p${MYSQL_ROOT_PASSWORD}` | — |
 | server | `wget --spider http://localhost:8102/user/push/hafe_open_connections` | 30s |
 | ccms_ui | `wget -qO- http://localhost:8080/CCMS/` | 60s |
-| nginx | `wget --spider http://localhost:80/` | — |
+| nginx | `wget --spider http://localhost:80/CCMS/` | — |
 
 ## Adding SSL Later (When Domain Is Available)
 

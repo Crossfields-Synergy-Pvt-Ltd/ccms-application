@@ -150,7 +150,7 @@ services:
       ccms_ui:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80/"]
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80/CCMS/"]
       interval: 10s
       timeout: 5s
       retries: 10

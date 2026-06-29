@@ -15,6 +15,10 @@ http {
         }
 
         location / {
+            return 302 /CCMS/;
+        }
+
+        location /CCMS/ {
             proxy_pass http://ccms_ui/CCMS/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;

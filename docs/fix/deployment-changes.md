@@ -12,7 +12,7 @@ Changes made to enable Hostinger VPS deployment with Docker Compose (no `.env` f
 | Named volumes added | `mongodb_data:/data/db` replaces `./data/mongodb:/data/db`, `mysql_data:/var/lib/mysql` replaces `./data/mysql:/var/lib/mysql` |
 | Missing env vars added to `server` | `SERVER_PORT`, `SERVER_CONTEXT_PATH`, `NETTY_PORT` (were only in port mappings) |
 | `ccms_ui` environment refactored | Replaced inline `CATALINA_OPTS` string with individual env vars. Entrypoint constructs `CATALINA_OPTS` from these. |
-| Healthchecks added | `server` (HTTP endpoint), `ccms_ui` (Tomcat index), `nginx` (port 80) |
+| Healthchecks added | `server` (HTTP endpoint), `ccms_ui` (Tomcat index), `nginx` (`/CCMS/` endpoint) |
 | `ccms_ui` ports | Changed to `ports: []` — no longer exposed directly (nginx proxies to it) |
 | nginx | Changed to `image:` only (no `build:` section — for YAML-only pasting). Port 443 removed (HTTP-only). `LETSENCRYPT_LIVE_DIR` removed. |
 | `depends_on` updated | `ccms_ui` now waits for `server: condition: service_healthy` |
@@ -23,6 +23,8 @@ Changes made to enable Hostinger VPS deployment with Docker Compose (no `.env` f
 - Removed the HTTPS server block (port 443 with SSL)
 - HTTP server block now proxies directly to `http://ccms_ui/CCMS/` instead of redirecting
 - Added `location /.well-known/acme-challenge/` block for future certbot SSL enablement
+- `location /` changed to `return 302 /CCMS/;` — redirects root to `/CCMS/`
+- Added `location /CCMS/` block with proxy_pass to `http://ccms_ui/CCMS/`
 
 ### `nginx/docker-entrypoint.sh`
 
