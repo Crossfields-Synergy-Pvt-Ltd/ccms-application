@@ -94,6 +94,12 @@ The stack no longer requires **any** bind mount to function. All persistent data
 - Returns `status: "00"` gracefully for invalid credentials instead of 500 NPE
 - Other controller endpoints (`/create`, `/list`, `/delete`) still use MongoDB as before
 
+### `docker-compose.yml` (nginx port)
+
+| Change | Details |
+|---|---|
+| `"80:80"` → `"8080:80"` | Nginx Proxy Manager on the host handles public 443, forwards to host port 8080 → nginx container port 80. CCMS still listens on port 80 internally. |
+
 ## Volumes Summary
 
 | Volume | Mount | Purpose |

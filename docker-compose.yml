@@ -143,7 +143,7 @@ services:
     image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx:latest
     container_name: cspl-nginx
     ports:
-      - "80:80"
+      - "8080:80"
     environment:
       PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:-ccms.example.com}
     depends_on:

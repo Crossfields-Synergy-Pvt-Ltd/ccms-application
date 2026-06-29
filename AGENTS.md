@@ -25,7 +25,7 @@ Internet ──► Hostinger VPS
 
 | Component | Internal Port | Public | Purpose |
 |---|---|---|---|
-| nginx | 80 | ✅ Port 80 | Reverse proxy to UI |
+| nginx | 80 | ❌ Internal (host port 8080 → container 80) | Reverse proxy to UI |
 | ccms_ui | 8080 | ❌ Internal | Tomcat web app |
 | server | 8102, 9100 | ❌ 8102 internal, ✅ 9100 public | Spring Boot REST + Netty TCP |
 | mongodb | 27017 | ❌ Internal | Document database |
