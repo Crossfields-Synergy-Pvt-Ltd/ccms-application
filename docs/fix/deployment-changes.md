@@ -84,6 +84,16 @@ All `image:` references updated from `ghcr.io/askamoghb-rgb/*` to `ghcr.io/cross
 
 The stack no longer requires **any** bind mount to function. All persistent data uses named Docker volumes.
 
+### `UserController.java` — hardcoded login credentials
+
+- Removed MongoDB dependency from login — replaced with hardcoded `authenticateHardcoded()` method
+- Login no longer requires MongoDB, seed container, or `USERS_JSON` to be set
+- Two hardcoded users:
+  - `admin@example.com` / `admin123` → role `ADMIN`, all privileges
+  - `user@example.com` / `user123` → role `USER`, limited privileges
+- Returns `status: "00"` gracefully for invalid credentials instead of 500 NPE
+- Other controller endpoints (`/create`, `/list`, `/delete`) still use MongoDB as before
+
 ## Volumes Summary
 
 | Volume | Mount | Purpose |

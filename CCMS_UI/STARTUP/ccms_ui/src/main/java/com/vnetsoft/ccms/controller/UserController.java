@@ -66,45 +66,59 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public @ResponseBody User login(@RequestParam("name") String name,
-			@RequestParam("password") String password/*
-													 * , @RequestHeader(
-													 * "Authorization") String
-													 * basicAuth
-													 */
+			@RequestParam("password") String password) {
 
-	) {
-;
+		System.out.println("LOGIN REQUEST RECIVED : " + name + " | " + password);
 
-		System.out
-				.println("LOGIN REQUEST RECIVED : " + name + " | " + password);
+		User user = authenticateHardcoded(name, password);
 
-		User user = null;
-		
-		try {
-			user = userServices.getEntityById(name);
-
-			if(logger.isDebugEnabled()) {
-				 logger.debug(user.getEmail() + " | " + user.getPassword());
-			}
-System.out.println(user);
-			if ((user.getEmail().equals(name))
-					&& (user.getPassword().equals(password))) {
-				user.setStatus("100");
-
-				user.setPassword(password);
-				if(logger.isDebugEnabled()) {
-					 logger.debug(user.getPassword());
-				}
-			} else {
-				user.setStatus("00");
-			}
-
-		} catch (Exception e) {
-			System.out.println("Exception : " + e);
-			e.printStackTrace();
+		if (user == null) {
+			user = new User();
+			user.setEmail(name);
+			user.setStatus("00");
+		} else {
+			user.setStatus("100");
 		}
 		user.setPassword("");
 		return user;
+	}
+
+	private User authenticateHardcoded(String name, String password) {
+		if ("admin@example.com".equals(name) && "admin123".equals(password)) {
+			return createHardcodedUser("admin@example.com", "Admin", "User", "ADMIN", true);
+		}
+		if ("user@example.com".equals(name) && "user123".equals(password)) {
+			return createHardcodedUser("user@example.com", "Regular", "User", "USER", false);
+		}
+		return null;
+	}
+
+	private User createHardcodedUser(String email, String firstName,
+			String lastName, String role, boolean allPrivileges) {
+		User u = new User();
+		u.setEmail(email);
+		u.setFirstName(firstName);
+		u.setLastName(lastName);
+		u.setFull_name(firstName + " " + lastName);
+		u.setRole(role);
+		u.setPassword("");
+		u.setDist("ALL");
+		u.setMondal("ALL");
+		u.setGp("ALL");
+		u.setMonitor_and_controller(allPrivileges);
+		u.setHistory(allPrivileges);
+		u.setEvent(allPrivileges);
+		u.setSwitching_point_summary(allPrivileges);
+		u.setOperational_hour(allPrivileges);
+		u.setLight_status(allPrivileges);
+		u.setSchedule(allPrivileges);
+		u.setSettings(allPrivileges);
+		u.setDefault_settings(allPrivileges);
+		u.setFilter(allPrivileges);
+		u.setNode(allPrivileges);
+		u.setDcu(allPrivileges);
+		u.setUser(allPrivileges);
+		return u;
 	}
 
 	/*private String getAuthKey(String name, String password) {

@@ -35,71 +35,51 @@ public class UserControllerTest extends AbstractControllerTest {
         configureController(controller);
     }
 
-    // --- login ---
+    // --- login (hardcoded, no MongoDB dependency) ---
 
     @Test
-    public void testLogin_ValidCredentials_ReturnsUserWithStatus100() throws Exception {
-        User mockUser = new User();
-        mockUser.setEmail("admin@example.com");
-        mockUser.setPassword("Test@1234");
-        mockUser.setRole("SUPER ADMIN");
-        mockUser.setStatus("100");
-        mockUser.setDist("ALL");
-        mockUser.setMondal("ALL");
-        mockUser.setGp("ALL");
-        mockUser.setMonitor_and_controller(true);
-        mockUser.setHistory(true);
-        mockUser.setEvent(true);
-        mockUser.setSchedule(true);
-
-        when(userServices.getEntityById("admin@example.com")).thenReturn(mockUser);
-
-        performGet("/superadmin/user/login?name=admin@example.com&password=Test@1234")
+    public void testLogin_AdminValidCredentials_ReturnsUserWithStatus100() throws Exception {
+        performGet("/superadmin/user/login?name=admin@example.com&password=admin123")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is("100")))
             .andExpect(jsonPath("$.email", is("admin@example.com")))
-            .andExpect(jsonPath("$.role", is("SUPER ADMIN")))
-            .andExpect(jsonPath("$.monitor_and_controller", is(true)));
+            .andExpect(jsonPath("$.role", is("ADMIN")))
+            .andExpect(jsonPath("$.monitor_and_controller", is(true)))
+            .andExpect(jsonPath("$.history", is(true)));
+    }
+
+    @Test
+    public void testLogin_UserValidCredentials_ReturnsUserWithStatus100() throws Exception {
+        performGet("/superadmin/user/login?name=user@example.com&password=user123")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is("100")))
+            .andExpect(jsonPath("$.email", is("user@example.com")))
+            .andExpect(jsonPath("$.role", is("USER")))
+            .andExpect(jsonPath("$.monitor_and_controller", is(false)))
+            .andExpect(jsonPath("$.history", is(false)));
     }
 
     @Test
     public void testLogin_InvalidPassword_ReturnsUserWithStatus00() throws Exception {
-        User mockUser = new User();
-        mockUser.setEmail("admin@example.com");
-        mockUser.setPassword("Test@1234");
-
-        when(userServices.getEntityById("admin@example.com")).thenReturn(mockUser);
-
         performGet("/superadmin/user/login?name=admin@example.com&password=wrong")
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status", is("00")));
+            .andExpect(jsonPath("$.status", is("00")))
+            .andExpect(jsonPath("$.email", is("admin@example.com")));
     }
 
     @Test
     public void testLogin_PasswordClearedInResponse() throws Exception {
-        User mockUser = new User();
-        mockUser.setEmail("test@test.com");
-        mockUser.setPassword("secret123");
-
-        when(userServices.getEntityById("test@test.com")).thenReturn(mockUser);
-
-        performGet("/superadmin/user/login?name=test@test.com&password=secret123")
+        performGet("/superadmin/user/login?name=admin@example.com&password=admin123")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.password", is("")));
     }
 
-    @Test(expected = Exception.class)
-    public void testLogin_UserNotFound_ReturnsServerError() throws Exception {
-        when(userServices.getEntityById("unknown@test.com")).thenReturn(null);
-
-        performGet("/superadmin/user/login?name=unknown@test.com&password=test");
-    }
-
-    @Test(expected = Exception.class)
-    public void testLogin_ServiceThrowsException_ReturnsServerError() throws Exception {
-        when(userServices.getEntityById("error@test.com")).thenThrow(new RuntimeException("DB Error"));
-
-        performGet("/superadmin/user/login?name=error@test.com&password=test");
+    @Test
+    public void testLogin_UnknownUser_ReturnsStatus00() throws Exception {
+        performGet("/superadmin/user/login?name=unknown@test.com&password=test")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is("00")))
+            .andExpect(jsonPath("$.password", is("")));
     }
 
     // --- create user ---
