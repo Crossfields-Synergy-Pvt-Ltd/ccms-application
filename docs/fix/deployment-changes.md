@@ -67,6 +67,11 @@ All `image:` references updated from `ghcr.io/askamoghb-rgb/*` to `ghcr.io/cross
 - Added `RUN mkdir -p /home/data/dontdelete` — creates the historical CSV directory inside the image
 - The `./data/dontdelete` bind mount was replaced with a named volume (`historical_data`)
 
+### `nginx/Dockerfile`
+
+- Added `wget` to `apk add` — nginx healthcheck was failing because `nginx:alpine` does not include `wget` by default. The healthcheck `CMD wget --spider ...` silently failed, causing nginx to never become healthy.
+- Now: `RUN apk add --no-cache certbot certbot-nginx wget`
+
 ### `docker-compose.yml` (bind mounts → named volumes)
 
 | Change | Details |

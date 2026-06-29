@@ -57,7 +57,7 @@ Git push ──► GitHub ──► Hostinger pulls from Git repo
 | File | Purpose |
 |---|---|
 | `docker-compose.yml` | Service definitions, volumes, healthchecks |
-| `nginx/Dockerfile` | nginx image with certbot pre-installed |
+| `nginx/Dockerfile` | nginx image with certbot + wget pre-installed |
 | `nginx/nginx.conf.template` | nginx reverse proxy config template |
 | `nginx/docker-entrypoint.sh` | Renders nginx config via envsubst |
 | `SERVER/ccms/Dockerfile` | Spring Boot server image |

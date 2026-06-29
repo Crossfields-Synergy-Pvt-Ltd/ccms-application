@@ -1,5 +1,5 @@
 FROM nginx:alpine
-RUN apk add --no-cache certbot certbot-nginx
+RUN apk add --no-cache certbot certbot-nginx wget
 EXPOSE 80 443
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
