@@ -186,7 +186,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
         }
     }
     $scope.selectedDistrict = '';
-	 $scope.districtts = config.districts; 
+	 $scope.districts = config.districts; 
 	
 	 $scope.district = (($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL');
 	 $scope.mandal = (($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL');

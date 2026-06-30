@@ -63,7 +63,7 @@ public class HierarchyControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetMandal_ValidDistrict_ReturnsList() throws Exception {
-        when(userServices.getMondalByDistrict("Guntur")).thenReturn(Arrays.asList("Tenali", "Guntur Rural"));
+        when(userServices.getMandalByDistrict("Guntur")).thenReturn(Arrays.asList("Tenali", "Guntur Rural"));
 
         performGet("/filter/get_mandal?district=Guntur")
             .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class HierarchyControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetMandal_EmptyDistrict_ReturnsEmptyList() throws Exception {
-        when(userServices.getMondalByDistrict("")).thenReturn(Collections.emptyList());
+        when(userServices.getMandalByDistrict("")).thenReturn(Collections.emptyList());
 
         performGet("/filter/get_mandal?district=")
             .andExpect(status().isOk())
@@ -81,7 +81,7 @@ public class HierarchyControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetMandal_NonexistentDistrict_ReturnsEmpty() throws Exception {
-        when(userServices.getMondalByDistrict("NONEXISTENT")).thenReturn(Collections.emptyList());
+        when(userServices.getMandalByDistrict("NONEXISTENT")).thenReturn(Collections.emptyList());
 
         performGet("/filter/get_mandal?district=NONEXISTENT")
             .andExpect(status().isOk())
