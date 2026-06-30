@@ -9,7 +9,7 @@ import com.vnetsoft.ccms.pojo.DCU;
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.Event;
 import com.vnetsoft.ccms.pojo.HandShake;
-import com.vnetsoft.ccms.pojo.HerarchyDetails;
+import com.vnetsoft.ccms.pojo.HierarchyDetails;
 import com.vnetsoft.ccms.pojo.IOPojo;
 import com.vnetsoft.ccms.pojo.DeviceMeterConfigurations;
 import com.vnetsoft.ccms.pojo.MeterData;
@@ -161,21 +161,21 @@ public class DCUServicesImpl implements DCUServices {
 	}
 
 	@Override
-	public boolean addHerachy(HerarchyDetails obj) throws Exception {
+	public boolean addHierarchy(HierarchyDetails obj) throws Exception {
 		
-		return dcuDao.addHerachy(obj);
+		return dcuDao.addHierarchy(obj);
 	}
 
 	@Override
-	public List<HerarchyDetails> getHerarchyDetailsList() throws Exception {
+	public List<HierarchyDetails> getHierarchyDetailsList() throws Exception {
 		
-		return dcuDao.getHerarchyDetailsList();
+		return dcuDao.getHierarchyDetailsList();
 	}
 
 	@Override
-	public List<String> getMondalByDistrict(String distrtict) throws Exception {
+	public List<String> getMandalByDistrict(String district) throws Exception {
 		
-		return dcuDao.getMondalByDistrict(distrtict);
+		return dcuDao.getMandalByDistrict(district);
 	}
 
 	@Override

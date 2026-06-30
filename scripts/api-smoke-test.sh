@@ -121,11 +121,11 @@ test_endpoint "Login missing password" GET "${BASE}/superadmin/user/login?name=$
 echo "" | tee -a "$LOGFILE"
 echo "--- DASHBOARD (5 tests) ---" | tee -a "$LOGFILE"
 test_endpoint "Dashboard counts" GET \
-    "$BASE/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL" 200 ""
+    "$BASE/dashboard/count?district=ALL&mandal=ALL&gp=ALL" 200 ""
 test_endpoint "Map data" GET \
-    "$BASE/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL" 200 ""
+    "$BASE/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL" 200 ""
 test_endpoint "Map data empty filter" GET \
-    "$BASE/dashboard/map_data?distrtict=&mandal=&gp=" 200 ""
+    "$BASE/dashboard/map_data?district=&mandal=&gp=" 200 ""
 test_endpoint "Instant data by ID" GET \
     "$BASE/dashboard/instant_data_id/0" 200 ""
 test_endpoint "Instant data nonexistent" GET \
@@ -135,12 +135,12 @@ echo "" | tee -a "$LOGFILE"
 echo "--- DCU (5 tests) ---" | tee -a "$LOGFILE"
 test_endpoint "DCU list" GET "$BASE/dcu/list" 200 ""
 test_endpoint "DCU handshake list" GET \
-    "$BASE/dcu/handshake_list?distrtict=ALL&mandal=ALL&gp=ALL" 200 ""
+    "$BASE/dcu/handshake_list?district=ALL&mandal=ALL&gp=ALL" 200 ""
 test_endpoint "DCU name list" GET \
-    "$BASE/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL" 200 ""
+    "$BASE/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL" 200 ""
 test_endpoint "DCU IO list" GET "$BASE/dcu/io_list" 200 ""
 test_endpoint "DCU handshake info by id" GET \
-    "$BASE/dcu/handshake_info_by_id?distrtict=ALL&mandal=ALL&gp=ALL&name=DCU001" 200 ""
+    "$BASE/dcu/handshake_info_by_id?district=ALL&mandal=ALL&gp=ALL&name=DCU001" 200 ""
 
 echo "" | tee -a "$LOGFILE"
 echo "--- EVENTS (4 tests) ---" | tee -a "$LOGFILE"
@@ -155,7 +155,7 @@ test_endpoint "Events missing params" GET \
 echo "" | tee -a "$LOGFILE"
 echo "--- FILTER (4 tests) ---" | tee -a "$LOGFILE"
 test_endpoint "Filter list" GET "$BASE/filter/list" 200 ""
-test_endpoint "Get mandal ALL" GET "$BASE/filter/get_mandal?distrtict=ALL" 200 ""
+test_endpoint "Get mandal ALL" GET "$BASE/filter/get_mandal?district=ALL" 200 ""
 test_endpoint "Get gp ALL" GET "$BASE/filter/get_gp?mandal=ALL" 200 ""
 test_endpoint "Get village" GET "$BASE/filter/get_vilage?gp=ALL" 200 ""
 

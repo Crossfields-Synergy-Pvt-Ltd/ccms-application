@@ -9,7 +9,7 @@ filterCntl.controller('filterListControllers', function($scope, $state,$statePar
 	  $scope.sortReverse  = false;  // set the default sort order
 	  $scope.searchFish   = '';     // set the default search/filter term
 	  
- $scope.selecte_distict = '';
+ $scope.selectedDistrict = '';
  $scope.districts = config.districts; 
 	/*  
  $scope.districts = [ {
@@ -57,13 +57,13 @@ filterCntl.controller('filterListControllers', function($scope, $state,$statePar
 	  
 	 
 	  $scope.getMandalOnSelect = function() {
-			filterFactory.getByMondal($scope.selecte_distict).then(function(data) {
+			filterFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		}
 
 		$scope.getGponSelect = function() {
-			filterFactory.getByGp($scope.select_mondal).then(function(data) {
+			filterFactory.getByGp($scope.selectedMandal).then(function(data) {
 				$scope.gp_list = data.data;
 			});
 		}

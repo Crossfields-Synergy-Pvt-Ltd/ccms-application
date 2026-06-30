@@ -108,9 +108,9 @@ public class ScheduledTasks {
     		dcu_obj.setMobile_number(tmp.getMobile_number());
     		dcu_obj.setHs_time_stamp(tmp.getHs_time_stamp());
     		dcu_obj.setVillage(tmp.getVillage());
-    		dcu_obj.setMondal(tmp.getMondal());
+    		dcu_obj.setMandal(tmp.getMandal());
     		dcu_obj.setGp(tmp.getGp());
-    		dcu_obj.setDistict(tmp.getDistict());
+    		dcu_obj.setDistrict(tmp.getDistrict());
     		dcu_obj.setConnected_load(tmp.getConnected_load());
     	
     		

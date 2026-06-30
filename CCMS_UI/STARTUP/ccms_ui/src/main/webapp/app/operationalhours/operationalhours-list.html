@@ -21,7 +21,7 @@
 
 						<div class="col-sm-12">
 							<div class="col-sm-2" align="center">
-								<label>District</label> <select ng-model="selecte_distict"
+								<label>District</label> <select ng-model="selectedDistrict"
 									ng-change="getMandalOnSelect();" class="form-control">
 									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 								</select>
@@ -29,8 +29,8 @@
 							<div class="col-sm-1"></div>
 
 							<div class="col-sm-2" align="center">
-								<label for="mondal">Mondal</label> <select
-									ng-model="select_mondal" class="form-control"
+								<label for="mandal">Mandal</label> <select
+									ng-model="selectedMandal" class="form-control"
 									ng-change="getGpOnSelect();">
 									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 								</select>

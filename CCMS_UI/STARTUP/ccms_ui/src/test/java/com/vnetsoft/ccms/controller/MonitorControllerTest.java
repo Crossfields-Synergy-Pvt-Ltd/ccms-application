@@ -24,13 +24,13 @@ import com.vnetsoft.ccms.pojo.DCUInstantData;
 import com.vnetsoft.ccms.pojo.ui.MapData;
 import com.vnetsoft.ccms.services.DashBoardServices;
 
-public class MontorControllerTest extends AbstractControllerTest {
+public class MonitorControllerTest extends AbstractControllerTest {
 
     @Mock
     private DashBoardServices dashBpardService;
 
     @InjectMocks
-    private MontorController controller;
+    private MonitorController controller;
 
     @Before
     @Override
@@ -54,7 +54,7 @@ public class MontorControllerTest extends AbstractControllerTest {
 
         when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL")).thenReturn(counts);
 
-        performGet("/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.total_devices", is(100)))
             .andExpect(jsonPath("$.total_lights_connected", is(500)))
@@ -68,7 +68,7 @@ public class MontorControllerTest extends AbstractControllerTest {
     public void testGetDashBoardCounts_EmptyFilter_ReturnsNull() throws Exception {
         when(dashBpardService.getDahsBoardCountstats("", "", "")).thenReturn(null);
 
-        performGet("/dashboard/count?distrtict=&mandal=&gp=")
+        performGet("/dashboard/count?district=&mandal=&gp=")
             .andExpect(status().isOk());
     }
 
@@ -77,7 +77,7 @@ public class MontorControllerTest extends AbstractControllerTest {
         when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL"))
             .thenThrow(new RuntimeException("DB Error"));
 
-        performGet("/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk());
     }
 
@@ -87,7 +87,7 @@ public class MontorControllerTest extends AbstractControllerTest {
 
         when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL")).thenReturn(counts);
 
-        performGet("/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.total_devices", is(0)));
     }
@@ -121,7 +121,7 @@ public class MontorControllerTest extends AbstractControllerTest {
         when(dashBpardService.getMapData("ALL", "ALL", "ALL"))
             .thenReturn(Arrays.asList(hs1, hs2));
 
-        performGet("/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", not(empty())));
     }
@@ -131,7 +131,7 @@ public class MontorControllerTest extends AbstractControllerTest {
         when(dashBpardService.getMapData("ALL", "ALL", "ALL"))
             .thenReturn(Collections.emptyList());
 
-        performGet("/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -141,7 +141,7 @@ public class MontorControllerTest extends AbstractControllerTest {
         when(dashBpardService.getMapData("ALL", "ALL", "ALL"))
             .thenThrow(new RuntimeException("DB Error"));
 
-        performGet("/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -187,7 +187,7 @@ public class MontorControllerTest extends AbstractControllerTest {
     @Test
     public void testGetInstantDataFilter_ValidParams() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .post("/dashboard/instant_data_filter?distrtict=ALL&mandal=ALL&gp=ALL&page=1&size=10")
+                .post("/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10")
                 .header("Authorization", "dGVzdDp0ZXN0"))
             .andExpect(status().isOk());
     }
@@ -195,7 +195,7 @@ public class MontorControllerTest extends AbstractControllerTest {
     @Test
     public void testGetInstantDataFilter_MissingPage_Defaults() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .post("/dashboard/instant_data_filter?distrtict=ALL&mandal=ALL&gp=ALL")
+                .post("/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL")
                 .header("Authorization", "dGVzdDp0ZXN0"))
             .andExpect(status().isOk());
     }

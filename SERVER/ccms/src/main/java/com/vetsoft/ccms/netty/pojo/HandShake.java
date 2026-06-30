@@ -13,7 +13,7 @@ public class HandShake {
 	private int protocol_version;
 	private int flag;
 	private int dsn;
-	private int command_identifire;
+	private int command_identifier;
 	private int payload_length;
 	private String gateway_serial_number;
 	private int gateway_firmware_type; //0x00: Single phase feeder panel gateway 
@@ -55,9 +55,9 @@ public class HandShake {
 	
 
 	private String village;
-	private String mondal;
+	private String mandal;
 	private String gp;
-	private String distict;
+	private String district;
 	private int connected_load;
 	private String schedules_name	;
 	
@@ -66,7 +66,7 @@ public class HandShake {
 	
 	
 	private int light_status; // 0 - OFF, 1 - ON 
-	private long lignt_time_stamp;
+	private long light_time_stamp;
 	
 	
 	private int mcb_trip; // 0 - Resolved , 1 - Occured
@@ -112,11 +112,11 @@ public class HandShake {
 	public void setVillage(String village) {
 		this.village = village;
 	}
-	public String getMondal() {
-		return mondal;
+	public String getMandal() {
+		return mandal;
 	}
-	public void setMondal(String mondal) {
-		this.mondal = mondal;
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
 	}
 	public String getGp() {
 		return gp;
@@ -124,11 +124,11 @@ public class HandShake {
 	public void setGp(String gp) {
 		this.gp = gp;
 	}
-	public String getDistict() {
-		return distict;
+	public String getDistrict() {
+		return district;
 	}
-	public void setDistict(String distict) {
-		this.distict = distict;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 	public int getConnected_load() {
 		return connected_load;
@@ -154,11 +154,11 @@ public class HandShake {
 	public void setLight_status(int light_status) {
 		this.light_status = light_status;
 	}
-	public long getLignt_time_stamp() {
-		return lignt_time_stamp;
+	public long getLight_time_stamp() {
+		return light_time_stamp;
 	}
-	public void setLignt_time_stamp(long lignt_time_stamp) {
-		this.lignt_time_stamp = lignt_time_stamp;
+	public void setLight_time_stamp(long light_time_stamp) {
+		this.light_time_stamp = light_time_stamp;
 	}
 	public int getMcb_trip() {
 		return mcb_trip;
@@ -361,10 +361,10 @@ public class HandShake {
 		this.dsn = dsn;
 	}
 	public int getCommand_identifire() {
-		return command_identifire;
+		return command_identifier;
 	}
-	public void setCommand_identifire(int command_identifire) {
-		this.command_identifire = command_identifire;
+	public void setCommand_identifire(int command_identifier) {
+		this.command_identifier = command_identifier;
 	}
 	public int getPayload_length() {
 		return payload_length;
@@ -479,8 +479,8 @@ public class HandShake {
 	public String toString() {
 		return "HandShake [id=" + id + ", gateway_identifier="
 				+ gateway_identifier + ", protocol_version=" + protocol_version
-				+ ", flag=" + flag + ", dsn=" + dsn + ", command_identifire="
-				+ command_identifire + ", payload_length=" + payload_length
+				+ ", flag=" + flag + ", dsn=" + dsn + ", command_identifier="
+				+ command_identifier + ", payload_length=" + payload_length
 				+ ", gateway_serial_number=" + gateway_serial_number
 				+ ", gateway_firmware_type=" + gateway_firmware_type
 				+ ", firmware_version=" + firmware_version
@@ -499,10 +499,10 @@ public class HandShake {
 				+ ", mobile_number=" + mobile_number + ", hs_time_stamp="
 				+ hs_time_stamp + ", connection_status=" + connection_status
 				+ ", yymmddhhmm=" + yymmddhhmm + ", village=" + village
-				+ ", mondal=" + mondal + ", gp=" + gp + ", distict=" + distict
+				+ ", mandal=" + mandal + ", gp=" + gp + ", district=" + district
 				+ ", connected_load=" + connected_load + ", schedules_name="
 				+ schedules_name + ", light_status=" + light_status
-				+ ", lignt_time_stamp=" + lignt_time_stamp + ", mcb_trip="
+				+ ", light_time_stamp=" + light_time_stamp + ", mcb_trip="
 				+ mcb_trip + ", mcb_trip_time_stamp=" + mcb_trip_time_stamp
 				+ ", door_status=" + door_status + ", door_time_stamp="
 				+ door_time_stamp + ", cnt_status=" + cnt_status

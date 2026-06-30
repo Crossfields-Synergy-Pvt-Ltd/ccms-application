@@ -31,7 +31,7 @@
 				<ul class="dropdown-menu">
 					<li><a id="showModal" onclick="ShowModal()"><i
 							class="fa fa-fw fa-gear"></i>Change Password</a></li>
-					<li><a href="#login" onclick="localStorage.removeItem('ccms_previlage'); localStorage.removeItem('ccms_auth');"><i class="fa fa-fw fa-power-off"></i>
+					<li><a href="#login" onclick="localStorage.removeItem('ccms_privilege'); localStorage.removeItem('ccms_auth');"><i class="fa fa-fw fa-power-off"></i>
 							Sign Out</a></li>
 				</ul>
 
@@ -143,13 +143,13 @@
 						Dashboard
 				</a></li>
 
-				<li id="MonitorControlWithAlertSummary"><a ng-show="previlage.monitor_and_controller"
+				<li id="MonitorControlWithAlertSummary"><a ng-show="privilege.monitor_and_controller"
 					href="#/monitorandcontrol" id="MonitorControlWithAlertSummary">
 						<i  class="fa fa-fw fa-th imageandtextdifference"></i> Monitor and
 						control
 				</a></li>
 
-				<li id="ListView"><a   ng-show="previlage.history"
+				<li id="ListView"><a   ng-show="privilege.history"
 				href="#/history" id="controlListViewMenuLink"> <i
 						class="fa fa-fw fa-history imageandtextdifference"></i> History
 				</a></li>
@@ -159,12 +159,12 @@
 						class="fa fa-fw fa-bars imageandtextdifference"></i> List view
 				</a></li> -->
 
-				<li id="alertMenu"><a ng-show="previlage.event" href="#/event"> <i
+				<li id="alertMenu"><a ng-show="privilege.event" href="#/event"> <i
 						class="fa fa-fw fa-bell imageandtextdifference"></i> Events
 				</a></li>
 
 
-				<li id="SinglePhaseSwitchPointSummary"><a  ng-show="previlage.switching_point_summary" href="#/switchpoint"
+				<li id="SinglePhaseSwitchPointSummary"><a  ng-show="privilege.switching_point_summary" href="#/switchpoint"
 					id="NodeSummaryLink"> <i
 						class="fa fa-fw fa-picture-o imageandtextdifference"></i> Switch
 						pt. summary
@@ -183,14 +183,14 @@
 						Reports <i class="fa fa-angle-right drop-icon"></i>
 				</a>
 					<ul class="dropdown-menu">
-						<li id="schedulewiseReportOerationalMenu"><a ng-show="previlage.operational_hour"
+						<li id="schedulewiseReportOerationalMenu"><a ng-show="privilege.operational_hour"
 							href="#/operationalhour" id=""> <i
 								class="fa fa-fw fa-area-chart imageandtextdifference"></i>
 								Operational hours
 						</a></li>
 
 						<li id="UtilityMenu" class=""><a
-							href="#/modified_operationalhour" id="UtilityMenuLink"> <i ng-show="previlage.light_status"
+							href="#/modified_operationalhour" id="UtilityMenuLink"> <i ng-show="privilege.light_status"
 								class="fa fa-fw fa-area-chart imageandtextdifference"></i> Light
 								States
 						</a></li>
@@ -212,16 +212,16 @@
 
 
 						<!---/-comboBox-ConfigMenu---->
-						<li id="nodeMenu"><a ng-show="previlage.dcu" href="#/dcu"> <i
+						<li id="nodeMenu"><a ng-show="privilege.dcu" href="#/dcu"> <i
 								class="fa fa-fw fa-edit imageandtextdifference"></i> RTU/DCU
 						</a></li>
 
-						<li id="schedulemenu"><a ng-show="previlage.schedule" href="#/schedules"
+						<li id="schedulemenu"><a ng-show="privilege.schedule" href="#/schedules"
 							id="schedulemenuLink"> <i class="fa fa-fw fa-calendar"></i>
 								Schedule
 						</a></li>
 
-						<li id="userMenu"><a ng-show="previlage.user"  href="#/user"> <i
+						<li id="userMenu"><a ng-show="privilege.user"  href="#/user"> <i
 								class="fa fa-fw fa-user imageandtextdifference"></i> Users
 						</a></li>
 
@@ -234,18 +234,18 @@
 				</a>
 					<ul class="dropdown-menu">
 
-						<li id="TagStringImportMenu"><a  ng-show="previlage.dcu" href="#/default"
+						<li id="TagStringImportMenu"><a  ng-show="privilege.dcu" href="#/default"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Default
 								DCU Config
 						</a></li>
 
-						<li id="TagStringImportMenu"><a ng-show="previlage.filter" href="#/filter_add"
+						<li id="TagStringImportMenu"><a ng-show="privilege.filter" href="#/filter_add"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa-fw fa-wrench imageandtextdifference"></i>
 								&nbsp;Filter
 						</a></li>
-						<li id="TagStringImportMenu"><a ng-show="previlage.node" href="#/node"
+						<li id="TagStringImportMenu"><a ng-show="privilege.node" href="#/node"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Node
 						</a></li>
@@ -274,7 +274,7 @@
 
 				<li id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
 					data-placement="right" title="Monitor and control" >
-					<a ng-show="previlage.monitor_and_controller" href="#/monitorandcontrol"
+					<a ng-show="privilege.monitor_and_controller" href="#/monitorandcontrol"
 					id="MonitorControlWithAlertSummarySub" data-toggle="tooltip"
 					data-placement="right" title="Monitor and control"> <i
 						class="fa fa-fw fa-th imageandtextdifference spaceBetweenIcons"></i>
@@ -282,7 +282,7 @@
 				</li>
 
 
-				<li id="ListView"><a ng-show="previlage.history" href="#/history" id="ListViewMenuLink"
+				<li id="ListView"><a ng-show="privilege.history" href="#/history" id="ListViewMenuLink"
 					data-toggle="tooltip" data-placement="right" title="History"> <i
 						class="fa fa-fw fa-history imageandtextdifference spaceBetweenIcons"></i>
 				</a></li>
@@ -293,7 +293,7 @@
 						class="fa fa-fw fa-bars imageandtextdifference spaceBetweenIcons"></i>
 				</a></li> -->
 
-				<li id="alertMenu"><a ng-show="previlage.event" href="#/event" data-toggle="tooltip"
+				<li id="alertMenu"><a ng-show="privilege.event" href="#/event" data-toggle="tooltip"
 					data-placement="right" title="Events"> <i
 						class="fa fa-fw fa-bell imageandtextdifference spaceBetweenIcons"></i>
 				</a></li>
@@ -301,7 +301,7 @@
 
 
 
-				<li id="SinglePhaseSwitchPointSummary"><a ng-show="previlage.event" href="#/switchpoint"
+				<li id="SinglePhaseSwitchPointSummary"><a ng-show="privilege.event" href="#/switchpoint"
 					id="NodeSummary" data-toggle="tooltip" data-placement="right"
 					title="Switch Pt summary"> <i
 						class="fa fa-fw fa-picture-o imageandtextdifference spaceBetweenIcons"></i>
@@ -323,7 +323,7 @@
 
 					<ul class="dropdown-menu sub-menu">
 
-						<li id="schedulewiseReportSubMenuOperation"><a ng-show="previlage.operational_hour" href="#/history"
+						<li id="schedulewiseReportSubMenuOperation"><a ng-show="privilege.operational_hour" href="#/history"
 							href="#/operationalhour" id="reportSubMenuOperationalLink"
 							data-toggle="tooltip" data-placement="bottom"
 							title="Operational hours"> <i
@@ -333,7 +333,7 @@
 
 
 
-						<li id="schedulewiseReportSubMenuOperation"><a  ng-show="previlage.light_status"
+						<li id="schedulewiseReportSubMenuOperation"><a  ng-show="privilege.light_status"
 							href="#/modified_operationalhour"
 							id="reportSubMenuOperationalLink" data-toggle="tooltip"
 							data-placement="bottom" title="Utility"> <i
@@ -355,18 +355,18 @@
 
 					<ul class="dropdown-menu sub-menu">
 
-						<li id="nodeMenu"><a  ng-show="previlage.dcu" href="#/dcu"> <i
+						<li id="nodeMenu"><a  ng-show="privilege.dcu" href="#/dcu"> <i
 								class="fa fa-fw fa-edit imageandtextdifference spaceBetweenIcons"></i>
 								RTU/DCU
 						</a></li>
 
 
-						<li id="scheduleSubmenu"><a  ng-show="previlage.schedule" href="#/schedules"
+						<li id="scheduleSubmenu"><a  ng-show="privilege.schedule" href="#/schedules"
 							data-toggle="tooltip" data-placement="right" title="Schedule">
 								<i class="fa fa-fw fa-calendar"></i> Schedule
 						</a></li>
 
-						<li id="userMenu"><a  ng-show="previlage.user" href="#/user"> <i
+						<li id="userMenu"><a  ng-show="privilege.user" href="#/user"> <i
 								class="fa fa-fw fa-user imageandtextdifference spaceBetweenIcons"></i>
 								Users
 						</a></li>
@@ -380,18 +380,18 @@
 					title="Settings"> <i class="fa fa-cloud-upload"></i>
 				</a>
 					<ul class="dropdown-menu sub-menu">
-						<li id="TagStringImportMenu"><a ng-show="previlage.default_settings" href="#/default"
+						<li id="TagStringImportMenu"><a ng-show="privilege.default_settings" href="#/default"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Default
 								DCU Config
 						</a></li>
 
-						<li id="TagStringImportMenu"><a ng-show="previlage.filter" href="#/filter"
+						<li id="TagStringImportMenu"><a ng-show="privilege.filter" href="#/filter"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Filter
 						</a></li>
 
-						<li id="TagStringImportMenu"><a ng-show="previlage.node" href="#/node"
+						<li id="TagStringImportMenu"><a ng-show="privilege.node" href="#/node"
 							id="TagStringImportMenuLink"> <i
 								class="fa fa fa-lightbulb-o imageandtextdifference"></i> Node
 						</a></li>

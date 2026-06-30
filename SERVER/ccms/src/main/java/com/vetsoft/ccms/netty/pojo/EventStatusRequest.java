@@ -6,7 +6,7 @@ public class EventStatusRequest {
 	private int flag;
 	private int gateway_identifier;
 	private int dsn;
-	private int command_identifire;
+	private int command_identifier;
 	private int payload_length;
 	
 	private String device_serial_number;
@@ -52,10 +52,10 @@ public class EventStatusRequest {
 		this.dsn = dsn;
 	}
 	public int getCommand_identifire() {
-		return command_identifire;
+		return command_identifier;
 	}
-	public void setCommand_identifire(int command_identifire) {
-		this.command_identifire = command_identifire;
+	public void setCommand_identifire(int command_identifier) {
+		this.command_identifier = command_identifier;
 	}
 	public int getPayload_length() {
 		return payload_length;
@@ -163,8 +163,8 @@ public class EventStatusRequest {
 	public String toString() {
 		return "EventStatusRequest [protocol_version=" + protocol_version
 				+ ", flag=" + flag + ", gateway_identifier="
-				+ gateway_identifier + ", dsn=" + dsn + ", command_identifire="
-				+ command_identifire + ", payload_length=" + payload_length
+				+ gateway_identifier + ", dsn=" + dsn + ", command_identifier="
+				+ command_identifier + ", payload_length=" + payload_length
 				+ ", device_serial_number=" + device_serial_number
 				+ ", transaction_id=" + transaction_id + ", file_type="
 				+ file_type + ", file_version=" + file_version

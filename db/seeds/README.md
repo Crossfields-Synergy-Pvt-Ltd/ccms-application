@@ -60,8 +60,8 @@ preserved across restarts.
     "role": "SUPER ADMIN",              // default "USER"
     "first_name": "Admin",              // default ""
     "last_name": "User",                // default ""
-    "dist": "ALL",                      // district scope
-    "mondal": "ALL",                    // mandal scope
+    "district": "ALL",                  // district scope
+    "mandal": "ALL",                    // mandal scope
     "gp": "ALL",                        // gp scope
     "all_privileges": true              // grants all 13 UI permissions
   },
@@ -69,7 +69,7 @@ preserved across restarts.
     "email": "operator@example.com",
     "password": "...",
     "role": "USER",
-    "dist": "YSR Kadapa"
+    "district": "YSR Kadapa"
   }
 ]
 ```

@@ -41,18 +41,18 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		
 		Query query = new Query();
 		 if(district.equals("5_districts")){ 
-			query.addCriteria(Criteria.where("distict").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
+			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
 		} else if(district.equals("ALL")){ 
 				;
 		}else if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		}else {
 		
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
@@ -192,19 +192,19 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	}
 
 /*
-	private long getTotalDevice(String distrtict, String mandal, String gp) {
+	private long getTotalDevice(String district, String mandal, String gp) {
 		Query query = new Query();
 		
-		 if(distrtict.equals("ALL")){ 
+		 if(district.equals("ALL")){ 
 			;
 		} else if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else {
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -216,25 +216,25 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getSpdFailureCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("spd_status").is(1))
 		;
 	
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
+			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("spd_status").is(1));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("spd_status").is(1));
 		} else if(district.equals("ALL")){ 
 			query.addCriteria(Criteria.where("spd_status").is(1));
 		}else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			.addCriteria(Criteria.where("spd_status").is(1))
 			;
@@ -246,23 +246,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getMainSupplyStatus(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("main_supply_status").is(1))
 		;
 	
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else if(district.equals("ALL")){ 
 			;
 		}else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 			
 			;
@@ -275,23 +275,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getGoodGprsCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("csq").gt(15))
 		;
 	
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		}else if(district.equals("ALL")){ 
 			;
 		} else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -303,23 +303,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getDorrOpenCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("door_status").is(1))
 		;
 
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		}else if(district.equals("ALL")){ 
 			;
 		} else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -331,23 +331,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getLightOnCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("light_status").is(1))
 		;
 	
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		}else if(district.equals("ALL")){ 
 			;
 		} else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -359,22 +359,22 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getLightsOffCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("light_status").is(0))
 		;
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else if(district.equals("ALL")){ 
 			;
 		}else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -388,22 +388,22 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	private long getManuvalModeCount(String district, String mandal, String gp) {
 
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("manual_mode_status").is(1))
 		;
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else if(district.equals("ALL")){ 
 			;
 		}else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -416,23 +416,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	private long getMCBTripCount(String district, String mandal, String gp) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("distict").is(district))
-		.addCriteria(Criteria.where("mondal").is(mandal))
+		query.addCriteria(Criteria.where("district").is(district))
+		.addCriteria(Criteria.where("mandal").is(mandal))
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("mcb_trip").is(1))
 		;
 	
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else if(district.equals("ALL")){ 
 			;
 		}else {
-			query.addCriteria(Criteria.where("distict").is(district))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
 			
 			;
@@ -444,23 +444,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 */
 	@Override
-	public List<HandShake> getMapData(String distrtict, String mandal, String gp)
+	public List<HandShake> getMapData(String district, String mandal, String gp)
 			throws Exception {
 		Query query = new Query();
 		 
-		if(distrtict.equals("5_districts")){ 
-			query.addCriteria(Criteria.where("distict").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-		} else if(distrtict.equals("ALL")){ 
+		if(district.equals("5_districts")){ 
+			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
+		} else if(district.equals("ALL")){ 
 				;
 		} else if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else {
 		
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
@@ -470,25 +470,25 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 
 	@Override
-	public List<HandShake> getAllHandShakeData(String distrtict, String mandal, String gp) throws Exception {
+	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp) throws Exception {
 
 		Query query = new Query();
 		
 		
-		 if(distrtict.equals("5_districts")){ 
-			query.addCriteria(Criteria.where("distict").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-		} else if(distrtict.equals("ALL")){ 
+		 if(district.equals("5_districts")){ 
+			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
+		} else if(district.equals("ALL")){ 
 			;
 		}
 		 else if(gp.equals("ALL") && mandal.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict));
+			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal));
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal));
 		}  else {
 		
-			query.addCriteria(Criteria.where("distict").is(distrtict))
-			.addCriteria(Criteria.where("mondal").is(mandal))
+			query.addCriteria(Criteria.where("district").is(district))
+			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
@@ -510,27 +510,27 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 
 	@Override
-	public List<HandShake> getHandShakeByIDWithFilter(String distrtict, String mandal, String gp, String dcu_name) throws Exception {
+	public List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name) throws Exception {
 
 		try {
 			
 			Query query = new Query();
 			
 			
-			 if(distrtict.equals("5_districts")){ 
-				query.addCriteria(Criteria.where("distict").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-			} else if(distrtict.equals("ALL")){ 
+			 if(district.equals("5_districts")){ 
+				query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
+			} else if(district.equals("ALL")){ 
 				;
 			}
 			 else if(gp.equals("ALL") && mandal.equals("ALL")){
-				query.addCriteria(Criteria.where("distict").is(distrtict));
+				query.addCriteria(Criteria.where("district").is(district));
 			} else if(gp.equals("ALL")){
-				query.addCriteria(Criteria.where("distict").is(distrtict))
-				.addCriteria(Criteria.where("mondal").is(mandal));
+				query.addCriteria(Criteria.where("district").is(district))
+				.addCriteria(Criteria.where("mandal").is(mandal));
 			}  else {
 			
-				query.addCriteria(Criteria.where("distict").is(distrtict))
-				.addCriteria(Criteria.where("mondal").is(mandal))
+				query.addCriteria(Criteria.where("district").is(district))
+				.addCriteria(Criteria.where("mandal").is(mandal))
 				.addCriteria(Criteria.where("gp").is(gp));
 			}
 			query.addCriteria(Criteria.where("name").regex(dcu_name+ '*'));

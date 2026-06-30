@@ -20,10 +20,10 @@ operationalCntl.controller('operationalListControllers', function($scope, $state
 	  $scope.selected_dcu = {};
 
 	  $scope.filter = function() {
-		var dist = $scope.selecte_distict || 'ALL';
-		var mondal = $scope.select_mondal || 'ALL';
+		var dist = $scope.selectedDistrict || 'ALL';
+		var mandal = $scope.selectedMandal || 'ALL';
 		var gp = $scope.select_gp || 'ALL';
-		var qs = '?distrtict='+dist+ '&mandal='+mondal+'&gp='+gp;
+		var qs = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
 		operationalFactory.getAllDcuNames(qs).then(function(data) {
 			$scope.dcu_data = data.data;
 		});
@@ -126,18 +126,18 @@ operationalCntl.controller('operationalListControllers', function($scope, $state
 		
 	}
 
-		$scope.selecte_distict = '';
+		$scope.selectedDistrict = '';
 		$scope.districts = config.districts;
 
-		$scope.getMandalOnSelect = function(selecte_distict) {
-			operationalFactory.getByMondal($scope.selecte_distict).then(
+		$scope.getMandalOnSelect = function(selectedDistrict) {
+			operationalFactory.getByMandal($scope.selectedDistrict).then(
 					function(data) {
 						$scope.mandal_list = data.data;
 					});
 		}
 
-		$scope.getGpOnSelect = function(select_mondal) {
-			operationalFactory.getByGp($scope.select_mondal).then(
+		$scope.getGpOnSelect = function(selectedMandal) {
+			operationalFactory.getByGp($scope.selectedMandal).then(
 					function(data) {
 						$scope.gp_list = data.data;
 

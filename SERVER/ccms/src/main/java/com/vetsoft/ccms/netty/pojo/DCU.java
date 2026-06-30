@@ -26,7 +26,7 @@ public class DCU {
 	private int protocol_version;
 	private int flag;
 	private int dsn;
-	private int command_identifire;
+	private int command_identifier;
 	private int payload_length;
 	private String gateway_serial_number;
 	private int gateway_firmware_type; //0x00: Single phase feeder panel gateway 
@@ -144,10 +144,10 @@ public class DCU {
 		this.dsn = dsn;
 	}
 	public int getCommand_identifire() {
-		return command_identifire;
+		return command_identifier;
 	}
-	public void setCommand_identifire(int command_identifire) {
-		this.command_identifire = command_identifire;
+	public void setCommand_identifire(int command_identifier) {
+		this.command_identifier = command_identifier;
 	}
 	public int getPayload_length() {
 		return payload_length;
@@ -279,7 +279,7 @@ public class DCU {
 				+ ", latitude=" + latitude + ", longitude=" + longitude
 				+ ", gateway_identifier=" + gateway_identifier
 				+ ", protocol_version=" + protocol_version + ", flag=" + flag
-				+ ", dsn=" + dsn + ", command_identifire=" + command_identifire
+				+ ", dsn=" + dsn + ", command_identifier=" + command_identifier
 				+ ", payload_length=" + payload_length
 				+ ", gateway_serial_number=" + gateway_serial_number
 				+ ", gateway_firmware_type=" + gateway_firmware_type

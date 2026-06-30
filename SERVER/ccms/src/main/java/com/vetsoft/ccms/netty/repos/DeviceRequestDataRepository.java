@@ -54,7 +54,7 @@ public class DeviceRequestDataRepository {
 		update.set("protocol_version", user.getProtocol_version());
 		update.set("flag", user.getFlag());
 		update.set("dsn", user.getDsn());
-		update.set("command_identifire", user.getCommand_identifire());
+		update.set("command_identifier", user.getCommand_identifire());
 		update.set("payload_length", user.getPayload_length());
 		update.set("gateway_serial_number", user.getGateway_serial_number());
 		update.set("gateway_firmware_type", user.getGateway_firmware_type());
@@ -121,15 +121,15 @@ public class DeviceRequestDataRepository {
 			
 			if(user.getEvent_id() == 304){// light off
 				update.set("light_status", 0);
-				update.set("lignt_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
 				isRequiredAlert = true;
 			} else if(user.getEvent_id() == 303){ // lights on
 				update.set("light_status", 1);
-				update.set("lignt_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
 				isRequiredAlert = true;
 			}else if(user.getEvent_id() == 305){ // lights dim
 				update.set("light_status", 2);
-				update.set("lignt_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
 				isRequiredAlert = true;
 			}
 			

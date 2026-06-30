@@ -26,24 +26,24 @@ describe('dashboardControllers', function() {
         };
         mockStateParams = {};
 
-        $rootScope.previlage = {
-            dist: 'ALL',
-            mondal: 'ALL',
+        $rootScope.privilege = {
+            district: 'ALL',
+            mandal: 'ALL',
             gp: 'ALL',
             monitor_and_controller: true,
             history: true,
             event: true
         };
 
-        $httpBackend.whenGET('/CCMS/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
             .respond({ total_devices: 100, light_on: 80, light_off: 20 });
-        $httpBackend.whenGET('/CCMS/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ lat: '16.4792', lang: '80.5469', light_status: 1 }]);
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?distrtict=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
             .respond([]);
-        $httpBackend.whenGET('/CCMS/filter/get_mandal?distrtict=ALL')
+        $httpBackend.whenGET('/CCMS/filter/get_mandal?district=ALL')
             .respond(['Tenali', 'Guntur Rural']);
         $httpBackend.whenGET('/CCMS/filter/get_gp?mandal=ALL')
             .respond(['GP1', 'GP2']);
@@ -84,7 +84,7 @@ describe('dashboardControllers', function() {
             expect($scope.districts).toEqual(mockConfig.districts);
         });
 
-        it('should set initial distric from previlage', function() {
+        it('should set initial district from privilege', function() {
             $controller('dashboardControllers', {
                 $scope: $scope, $rootScope: $rootScope,
                 dashboardFactory: dashboardFactory, config: mockConfig,
@@ -94,11 +94,11 @@ describe('dashboardControllers', function() {
                 $modal: mockModal
             });
             $httpBackend.flush();
-            expect($scope.distric).toBe('ALL');
+            expect($scope.district).toBe('ALL');
         });
 
-        it('should handle missing previlage gracefully', function() {
-            $rootScope.previlage = null;
+        it('should handle missing privilege gracefully', function() {
+            $rootScope.privilege = null;
             $controller('dashboardControllers', {
                 $scope: $scope, $rootScope: $rootScope,
                 dashboardFactory: dashboardFactory, config: mockConfig,
@@ -108,8 +108,8 @@ describe('dashboardControllers', function() {
                 $modal: mockModal
             });
             $httpBackend.flush();
-            expect($scope.distric).toBe('ALL');
-            expect($scope.mondal).toBe('ALL');
+            expect($scope.district).toBe('ALL');
+            expect($scope.mandal).toBe('ALL');
             expect($scope.gp).toBe('ALL');
         });
     });
@@ -125,17 +125,17 @@ describe('dashboardControllers', function() {
                 $modal: mockModal
             });
             $httpBackend.flush();
-            $scope.selecte_distict = 'ALL';
-            $scope.select_mondal = 'ALL';
+            $scope.selectedDistrict = 'ALL';
+            $scope.selectedMandal = 'ALL';
             $scope.select_gp = 'ALL';
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
             $scope.search();
-            expect($scope.qs_params).toBe('?distrtict=ALL&mandal=ALL&gp=ALL');
+            expect($scope.qs_params).toBe('?district=ALL&mandal=ALL&gp=ALL');
         });
 
         it('should update qs_params with selected filters', function() {
@@ -148,17 +148,17 @@ describe('dashboardControllers', function() {
                 $modal: mockModal
             });
             $httpBackend.flush();
-            $scope.selecte_distict = 'Guntur-17';
-            $scope.select_mondal = 'Tenali';
+            $scope.selectedDistrict = 'Guntur-17';
+            $scope.selectedMandal = 'Tenali';
             $scope.select_gp = 'GP1';
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?distrtict=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/CCMS/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?distrtict=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond([]);
 
             $scope.search();
-            expect($scope.qs_params).toBe('?distrtict=Guntur-17&mandal=Tenali&gp=GP1');
+            expect($scope.qs_params).toBe('?district=Guntur-17&mandal=Tenali&gp=GP1');
         });
     });
 });

@@ -80,7 +80,7 @@ public class DCUControllerTest extends AbstractControllerTest {
         when(dashboardService.getMapData("ALL", "ALL", "ALL"))
             .thenReturn(Arrays.asList(new HandShake()));
 
-        performGet("/dcu/handshake_list?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dcu/handshake_list?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)));
     }
@@ -90,7 +90,7 @@ public class DCUControllerTest extends AbstractControllerTest {
         when(dashboardService.getMapData("", "", ""))
             .thenReturn(Collections.emptyList());
 
-        performGet("/dcu/handshake_list?distrtict=&mandal=&gp=")
+        performGet("/dcu/handshake_list?district=&mandal=&gp=")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -106,7 +106,7 @@ public class DCUControllerTest extends AbstractControllerTest {
         when(dashboardService.getMapData("ALL", "ALL", "ALL"))
             .thenReturn(Arrays.asList(hs));
 
-        performGet("/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL")
+        performGet("/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)));
     }
@@ -176,7 +176,7 @@ public class DCUControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetHandShakeInfoById_ValidParams() throws Exception {
-        performGet("/dcu/handshake_info_by_id?distrtict=ALL&mandal=ALL&gp=ALL&name=DCU001")
+        performGet("/dcu/handshake_info_by_id?district=ALL&mandal=ALL&gp=ALL&name=DCU001")
             .andExpect(status().isOk());
     }
 }

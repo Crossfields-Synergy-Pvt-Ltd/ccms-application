@@ -9,10 +9,10 @@ historyCntl.controller('historyListControllers', function($scope, $state,$stateP
 	  $scope.searchFish   = '';     // set the default search/filter term
 	  
 	  $scope.selected_dcu = {};
-	  var dist = ($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL';
-	  var mondal = ($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL';
-	  var gp = ($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL';
-	  $scope.qs_params = '?distrtict='+dist+ '&mandal='+mondal+'&gp='+gp;
+	  var dist = ($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL';
+	  var mandal = ($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL';
+	  var gp = ($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL';
+	  $scope.qs_params = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
 
 	  $scope.dcu_data = [];
 	  historyFactory.getAllDcuNames($scope.qs_params).then(function(data){
@@ -20,10 +20,10 @@ historyCntl.controller('historyListControllers', function($scope, $state,$stateP
 	  });
 
 	  $scope.filter = function() {
-		var dist = $scope.selecte_distict || 'ALL';
-		var mondal = $scope.select_mondal || 'ALL';
+		var dist = $scope.selectedDistrict || 'ALL';
+		var mandal = $scope.selectedMandal || 'ALL';
 		var gp = $scope.select_gp || 'ALL';
-		var qs = '?distrtict='+dist+ '&mandal='+mondal+'&gp='+gp;
+		var qs = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
 		historyFactory.getAllDcuNames(qs).then(function(data) {
 			$scope.dcu_data = data.data;
 		});
@@ -129,19 +129,19 @@ historyCntl.controller('historyListControllers', function($scope, $state,$stateP
 				
 			}
 		        
-		        $scope.selecte_distict = '';
+		        $scope.selectedDistrict = '';
 		        $scope.districts = config.districts;
 
 		       	  
 		       	 
-		       	  $scope.getMandalOnSelect = function(selecte_distict) {
-		       		historyFactory.getByMondal($scope.selecte_distict).then(function(data) {
+		       	  $scope.getMandalOnSelect = function(selectedDistrict) {
+		       		historyFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 		       				$scope.mandal_list = data.data;
 		       			});
 		       		}
 
-		       		$scope.getGpOnSelect = function(select_mondal) {
-		       			historyFactory.getByGp($scope.select_mondal).then(function(data) {
+		       		$scope.getGpOnSelect = function(selectedMandal) {
+		       			historyFactory.getByGp($scope.selectedMandal).then(function(data) {
 		       				$scope.gp_list = data.data;
 		       				
 		       			});

@@ -29,12 +29,12 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	  $scope.goodgprsconnectivity_check = true;
 	  $scope.poorgprsconnectivity_check = true;
 	  
-	  $scope.selecte_distict = ($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL';
-	  $scope.select_mondal = ($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL';
-	  $scope.select_gp = ($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL';
+	  $scope.selectedDistrict = ($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL';
+	  $scope.selectedMandal = ($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL';
+	  $scope.select_gp = ($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL';
 	  $scope.districts = config.districts;
 	  
-	  $scope.qs_params = '?distrtict=' + $scope.selecte_distict + '&mandal=' + $scope.select_mondal + '&gp=' + $scope.select_gp;
+	  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
 	  
 	  $scope.loadPage = function(page) {
 		  if ($scope.loading) return;
@@ -134,7 +134,7 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	  $scope.loadPage(0);
 	  
 	  $scope.search = function() {
-		  $scope.qs_params = '?distrtict=' + $scope.selecte_distict + '&mandal=' + $scope.select_mondal + '&gp=' + $scope.select_gp;
+		  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
 		  monitorandcontrolFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.count_stats = data.data;
 		        $scope.totalRecords = data.data.total_devices || 0;
@@ -215,21 +215,21 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
      	 $state.go('dashboard.dcu_edit', {dcu : $scope.dcu});
      }
 	  
-	  $scope.getMandalOnSelect = function(selecte_distict) {
-			monitorandcontrolFactory.getByMondal($scope.selecte_distict).then(function(data) {
+	  $scope.getMandalOnSelect = function(selectedDistrict) {
+			monitorandcontrolFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		}
 
-		$scope.getGpOnSelect = function(select_mondal) {
-				monitorandcontrolFactory.getByGp($scope.select_mondal).then(function(data) {
+		$scope.getGpOnSelect = function(selectedMandal) {
+				monitorandcontrolFactory.getByGp($scope.selectedMandal).then(function(data) {
 				$scope.gp_list = data.data;
 				
 			});
 		}
 		
-		$scope.getMandalOnSelect($scope.selecte_distict);
-		$scope.getGpOnSelect($scope.select_mondal);
+		$scope.getMandalOnSelect($scope.selectedDistrict);
+		$scope.getGpOnSelect($scope.selectedMandal);
 	
 })
 

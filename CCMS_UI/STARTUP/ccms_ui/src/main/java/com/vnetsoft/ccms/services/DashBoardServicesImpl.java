@@ -22,16 +22,16 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 	}
 
 	@Override
-	public List<HandShake> getMapData(String distrtict, String mandal, String gp)
+	public List<HandShake> getMapData(String district, String mandal, String gp)
 			throws Exception {
 		// TODO Auto-generated method stub
-		return dashBoardDao.getMapData(distrtict, mandal, gp);
+		return dashBoardDao.getMapData(district, mandal, gp);
 	}
 
 	@Override
-	public List<HandShake> getAllHandShakeData(String distrtict, String mandal, String gp) throws Exception {
+	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp) throws Exception {
 		// TODO Auto-generated method stub
-		return dashBoardDao.getAllHandShakeData(distrtict, mandal, gp);
+		return dashBoardDao.getAllHandShakeData(district, mandal, gp);
 	}
 
 	@Override
@@ -41,9 +41,9 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 	}
 
 	@Override
-	public  List<HandShake> getHandShakeByIDWithFilter(String distrtict, String mandal, String gp, String dcu_name) throws Exception {
+	public  List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name) throws Exception {
 		// TODO Auto-generated method stub
-		return dashBoardDao.getHandShakeByIDWithFilter(distrtict, mandal, gp, dcu_name);
+		return dashBoardDao.getHandShakeByIDWithFilter(district, mandal, gp, dcu_name);
 	}
 
 	@Override

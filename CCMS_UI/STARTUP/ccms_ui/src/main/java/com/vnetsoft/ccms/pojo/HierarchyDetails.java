@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "herarchy_details")
-public class HerarchyDetails {
+public class HierarchyDetails {
 
 	@Id
 	private long id;
@@ -53,7 +53,7 @@ public class HerarchyDetails {
 	}
 	@Override
 	public String toString() {
-		return "HerarchyDetails [district=" + district + ", mandal=" + mandal
+		return "HierarchyDetails [district=" + district + ", mandal=" + mandal
 				+ ", gp=" + gp + ", village=" + village + "]";
 	}
 	

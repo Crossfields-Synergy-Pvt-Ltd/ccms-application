@@ -54,8 +54,8 @@ app.factory('dcuFactory', ['$http', function($http) {
 			        return $http.get(serviceBase + '/conf/update_dcu_conf/'+ dcu_id );
 			    }
 			
-			 obj.getByMondal = function(qs_params) {
-					return $http.get(serviceBase+ '/filter/get_mandal?distrtict=' + qs_params);
+			 obj.getByMandal = function(qs_params) {
+					return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
 				}
 				
 				obj.getByGp = function(qs_params) {

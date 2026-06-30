@@ -133,8 +133,8 @@ passwords changed via the UI) are preserved.
     "role": "SUPER ADMIN",
     "first_name": "Admin",
     "last_name": "User",
-    "dist": "ALL",
-    "mondal": "ALL",
+    "district": "ALL",
+    "mandal": "ALL",
     "gp": "ALL",
     "all_privileges": true
   },
@@ -142,7 +142,7 @@ passwords changed via the UI) are preserved.
     "email": "operator@example.com",
     "password": "...",
     "role": "USER",
-    "dist": "YSR Kadapa"
+    "district": "YSR Kadapa"
   }
 ]
 ```
@@ -153,7 +153,7 @@ passwords changed via the UI) are preserved.
 | `password` | yes | — | Stored plaintext (current app behavior) |
 | `role` | no | `USER` | Free-form; recognized values: `SUPER ADMIN`, `USER` |
 | `first_name`, `last_name` | no | empty | |
-| `dist`, `mondal`, `gp` | no | `ALL` | Geographic scope |
+| `district`, `mandal`, `gp` | no | `ALL` | Geographic scope |
 | `all_privileges` | no | `false` | If `true`, all 13 UI permissions are granted |
 
 ### Common operations

@@ -102,8 +102,8 @@ public class UserController {
 		u.setFull_name(firstName + " " + lastName);
 		u.setRole(role);
 		u.setPassword("");
-		u.setDist("ALL");
-		u.setMondal("ALL");
+		u.setDistrict("ALL");
+		u.setMandal("ALL");
 		u.setGp("ALL");
 		u.setMonitor_and_controller(allPrivileges);
 		u.setHistory(allPrivileges);

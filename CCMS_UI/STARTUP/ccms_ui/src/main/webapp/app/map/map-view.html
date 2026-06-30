@@ -32,11 +32,11 @@
 					<div class="col-md-1" align="right"
 						style="padding-right: 5px; color: #fff;">District</div>
 					<div class="col-md-2">
-						<!-- <select class="form-control select2" id = "mySelect2" ng-model="dashboard.distict" ng-change="getMandalOnSelect();">
+						<!-- <select class="form-control select2" id = "mySelect2" ng-model="dashboard.district" ng-change="getMandalOnSelect();">
 						<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 					</select> -->
 
-						<select ng-model="selecte_distict"
+						<select ng-model="selectedDistrict"
 							ng-change="getMandalOnSelect();" class="form-control">
 							<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 						</select>
@@ -48,12 +48,12 @@
 					<div class="col-md-1" align="right"
 						style="padding-right: 5px; color: #fff;">Mondal</div>
 					<div class="col-md-2">
-						<!-- <select ng-model="dashboard.mondal" id = "mySelect" ng-change="getGpOnSelect();"
+						<!-- <select ng-model="dashboard.mandal" id = "mySelect" ng-change="getGpOnSelect();"
 						class="form-control select2">
 						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 					</select> -->
 
-						<select ng-model="select_mondal" class="form-control"
+						<select ng-model="selectedMandal" class="form-control"
 							ng-change="getGpOnSelect();">
 							<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 						</select>

@@ -50,16 +50,16 @@ userCntl.controller('userListControllers', function($scope, $state,$stateParams,
 
 userCntl.controller('userAddControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, userFactory, config) 	{
 	
-	$scope.selecte_distict = '';
+	$scope.selectedDistrict = '';
 	 $scope.districts = config.districts; 
-   	  $scope.getMandalOnSelect = function(dist) {
-   		userFactory.getByMondal($scope.user.dist).then(function(data) {
+   	  $scope.getMandalOnSelect = function(district) {
+   		userFactory.getByMandal($scope.user.district).then(function(data) {
    				$scope.mandal_list = data.data;
    			});
    		}
 
-   		$scope.getGpOnSelect = function(mondal) {
-   			userFactory.getByGp($scope.user.mondal).then(function(data) {
+   		$scope.getGpOnSelect = function(mandal) {
+   			userFactory.getByGp($scope.user.mandal).then(function(data) {
    				$scope.gp_list = data.data;
    				
    			});
@@ -87,32 +87,32 @@ userCntl.controller('userAddControllers', function($scope, $state,$stateParams, 
       
 userCntl.controller('userUpdateControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, userFactory, config) 	{
 	$scope.user = $stateParams.user;
-	$scope.selecte_distict = '';
+	$scope.selectedDistrict = '';
 	 $scope.districts = config.districts; 
   
   	  
 	
-	userFactory.getByMondal($scope.user.dist).then(function(data) {
+	userFactory.getByMandal($scope.user.district).then(function(data) {
 			$scope.mandal_list = data.data;
 		});
 	
-		userFactory.getByGp($scope.user.mondal).then(function(data) {
+		userFactory.getByGp($scope.user.mandal).then(function(data) {
 			$scope.gp_list = data.data;
 			
 		});
 	
 			
 	
-    $scope.getMandalOnSelect = function(dist) {
+    $scope.getMandalOnSelect = function(district) {
     	
-   		userFactory.getByMondal($scope.user.dist).then(function(data) {
+   		userFactory.getByMandal($scope.user.district).then(function(data) {
    				$scope.mandal_list = data.data;
    				console.log($scope.mandal_list)
    			});
    		}
 
-   		$scope.getGpOnSelect = function(mondal) {
-   			userFactory.getByGp($scope.user.mondal).then(function(data) {
+   		$scope.getGpOnSelect = function(mandal) {
+   			userFactory.getByGp($scope.user.mandal).then(function(data) {
    				$scope.gp_list = data.data;
    				
    			});

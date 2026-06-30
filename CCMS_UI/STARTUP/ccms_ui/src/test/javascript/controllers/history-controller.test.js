@@ -20,15 +20,15 @@ describe('historyControllers', function() {
         mockConfig = { districts: [{ state: 'Guntur-17', code: 'Guntur-17' }] };
         mockStateParams = {};
 
-        $rootScope.previlage = {
-            dist: 'ALL',
-            mondal: 'ALL',
+        $rootScope.privilege = {
+            district: 'ALL',
+            mandal: 'ALL',
             gp: 'ALL',
             history: true,
             event: true
         };
 
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
         $httpBackend.whenGET('/CCMS/meter/meter_data_list')
             .respond([]);
@@ -72,11 +72,11 @@ describe('historyControllers', function() {
             expect($scope.districts).toEqual(mockConfig.districts);
         });
 
-        it('should handle null previlage gracefully', function() {
-            $rootScope.previlage = null;
+        it('should handle null privilege gracefully', function() {
+            $rootScope.privilege = null;
             createController();
             $httpBackend.flush();
-            expect($scope.qs_params).toBe('?distrtict=ALL&mandal=ALL&gp=ALL');
+            expect($scope.qs_params).toBe('?district=ALL&mandal=ALL&gp=ALL');
         });
     });
 });
