@@ -31,7 +31,7 @@ app.constant('config', {
     appName: 'CCMS - VNETSOFT HUBLI',
     appVersion: 1.0,
     serviceBase: '',
-    publicLoginUrl: 'http://crossfieldssmart.com/#/login',
+    publicLoginUrl: '',
     districts: [ {
    		state : "--Select--",
    		code : "--Select--"
