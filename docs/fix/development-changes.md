@@ -30,7 +30,8 @@ This caused the **YSR Kadapa filter bug**: selecting "YSR Kadapa" in the UI sent
 
 ### Phase 1 — Data Migration (MongoDB)
 
-_Not tracked in Git — run on production before code deployment._
+> ⚠️ **CRITICAL**: Run on the LIVE MongoDB **before** deploying the new code.
+> The old code reads `distict`/`mondal` — deploying new code first will find nothing.
 
 ```javascript
 // 1. Fix Kadapa value in herarchy_details
@@ -38,15 +39,23 @@ db.herarchy_details.updateMany(
   {"district": "Kadapa"}, {$set: {"district": "YSR Kadapa"}}
 )
 
-// 2. Rename fields in handshake_info
+// 2. Rename fields in handshake_info (string values — simple $rename works)
 db.handshake_info.updateMany(
   {}, {$rename: {"distict": "district", "mondal": "mandal"}}
 )
 
-// 3. Rename fields in dcu_details
-db.dcu_details.updateMany(
-  {}, {$rename: {"distict": "district", "mondal": "mandal"}}
-)
+// 3. Rename + convert types in dcu_details (int→String — $rename alone is NOT enough)
+//    distict and mondal are stored as integers (0) but code now expects strings.
+//    MongoDB 3.4 doesn't support $toString in updates, so use forEach.
+db.dcu_details.find({distict: {$exists: true}}).forEach(function(doc) {
+  db.dcu_details.updateOne(
+    {_id: doc._id},
+    {$set: {
+      district: String(doc.distict),
+      mandal: String(doc.mandal)
+    }, $unset: {distict: "", mondal: ""}}
+  )
+})
 
 // 4. Rename fields in ccms_user_details
 db.ccms_user_details.updateMany(
@@ -54,10 +63,27 @@ db.ccms_user_details.updateMany(
 )
 ```
 
-After migration, rebuild `mongo.archive`:
+**Verify migration:**
+```javascript
+// All should return 0
+db.handshake_info.count({distict: {$exists: true}})
+db.dcu_details.count({distict: {$exists: true}})
+db.ccms_user_details.count({dist: {$exists: true}})
+
+// All should equal total document count
+db.handshake_info.count({district: {$exists: true}})
+db.dcu_details.count({district: {$exists: true}})
+db.ccms_user_details.count({district: {$exists: true}})
+
+// Confirm dcu_details district is now a string
+db.dcu_details.findOne({},{district:1, _id:0})
+// Expected: { "district" : "0" }  (string, not number)
+```
+
+After migration, rebuild `mongo.archive` for fresh deployments:
 ```bash
 docker compose exec mongodb mongodump --db=ccms --archive=/tmp/mongo.archive
-docker cp <container>:/tmp/mongo.archive db/seeds/mongo.archive
+docker cp cspl-mongodb:/tmp/mongo.archive db/seeds/mongo.archive
 ```
 
 ### Phase 2 — Code Changes
@@ -197,25 +223,102 @@ All assertions updated for renamed scope variables.
 
 **Note:** MongoDB collection name `herarchy_details` was preserved (not renamed to `hierarchy_details`) to maintain backward compatibility with existing data.
 
+### Phase 4 — Startup Auto-Migration (Java `@PostConstruct`)
+
+> Added as a safety net so the migration auto-runs on container start.
+> Makes Phase 1 data migration in the MongoDB shell **optional** for new deployments.
+
+Two `HandshakeFieldMigration.java` classes were added — one for SERVER, one for CCMS_UI.
+Both run on application startup via `@PostConstruct` and are **idempotent** (check `$exists` before acting).
+
+| File | Change |
+|---|---|
+| `SERVER/.../netty/migration/HandshakeFieldMigration.java` | **New** — startup migration using `MainBootApp.context.getBean("mongoTemplate")` |
+| `CCMS_UI/.../migration/HandshakeFieldMigration.java` | **New** — startup migration using `@Autowired MongoTemplate` |
+| `CCMS_UI/.../conf/spring-config-docker.xml` | Added `<bean id="handshakeFieldMigration">` — component-scan doesn't cover migration package |
+
+In addition to field renames on `handshake_info` and `dcu_details`, both migrations also fix the `herarchy_details` district value mismatch:
+- `herarchy_details` stores YSR Kadapa as `"Kadapa"` (old name) — this is the collection the filter dropdowns query
+- `handshake_info` stores it as `"YSR Kadapa"` (canonical name) — this is what the UI sends in queries
+- The migration runs `$set` to update `"Kadapa"` → `"YSR Kadapa"` in `herarchy_details`
+
+#### SERVER: `SERVER/ccms/src/main/java/.../netty/migration/HandshakeFieldMigration.java`
+
+- Uses `MainBootApp.context.getBean("mongoTemplate", MongoTemplate.class)` instead of `@Autowired`
+- **Why**: SERVER loads two Spring contexts — an XML context (`FileSystemXmlApplicationContext` from `applicationContext-docker.xml`) that creates a `mongoTemplate` bean with NO auth, and a Boot auto-configured context that reads `spring.data.mongodb.*` properties. `SPRING_DATA_MONGODB_USERNAME=""` in docker-compose causes Boot's `MongoTemplate` to attempt authentication with empty credentials against a no-auth MongoDB, which fails. The XML context's bean is unaffected and works correctly.
+
+#### CCMS_UI: `CCMS_UI/STARTUP/ccms_ui/src/main/java/.../migration/HandshakeFieldMigration.java`
+
+- Uses `@Autowired MongoTemplate` (works fine — no dual-context auth issue)
+- `CCMS_UI/STARTUP/ccms_ui/conf/spring-config-docker.xml` — added explicit bean definition because `component-scan` only covers `com.vnetsoft.ccms.controller`:
+  ```xml
+  <bean id="handshakeFieldMigration"
+        class="com.vnetsoft.ccms.migration.HandshakeFieldMigration" />
+  ```
+
+#### How the migration works
+
+Both classes use `DBCollection.updateMulti()` with `BasicDBObject` (raw MongoDB driver API, not Spring Data's `Update`):
+
+**`handshake_info` — `$rename`** (preserves original string values):
+```java
+mongoTemplate.getCollection("handshake_info").updateMulti(
+    new BasicDBObject("distict", new BasicDBObject("$exists", true)),
+    new BasicDBObject("$rename", new BasicDBObject("distict", "district"))
+);
+```
+
+**`dcu_details` — `$unset` + `$set`** (int `0` → `"Unknown"` string):
+```java
+BasicDBObject update = new BasicDBObject("$unset", new BasicDBObject("distict", ""))
+    .append("$set", new BasicDBObject("district", "Unknown"));
+mongoTemplate.getCollection("dcu_details").updateMulti(query, update);
+```
+- `dcu_details` stored `distict`/`mondal` as integers (`0`), not strings
+- `$rename` was insufficient because the type differs (int → string)
+- `$set` writes `"Unknown"` as default string value
+
+#### Why raw `DBCollection` / `BasicDBObject` instead of Spring Data `Update`?
+
+| Approach | Problem |
+|---|---|
+| `Update.rename()` | Doesn't exist in Spring Data MongoDB 1.10.9 (Ingalls release) |
+| Iteration (find + batch-save each doc) | ~55k individual saves → ~46 minutes → Docker healthcheck kills container |
+| `DBCollection.updateMulti()` with `$rename` / `$unset`+`$set` | **Works** — all 4 operations complete in ~4 seconds |
+
+#### Execution log (SERVER, 30 Jun 2026):
+```
+10:23:40 - Checking for typo'd field names in MongoDB...
+10:23:40 - Renamed distict -> district in 17448 handshake_info docs
+10:23:41 - Renamed mondal -> mandal in 17448 handshake_info docs
+10:23:42 - Migrated distict -> district (Unknown) in 10170 dcu_details docs
+10:23:43 - Migrated mondal -> mandal (Unknown) in 10170 dcu_details docs
+10:23:43 - Updated Kadapa -> YSR Kadapa in 514 herarchy_details docs
+10:23:43 - Field name migration complete
+```
+
 ## Deployment Sequence
 
-**Required — data migration must precede code deployment.**
+**With the startup auto-migration, Phase 1 (manual MongoDB shell) is now optional.**
+The migration runs automatically on first container start (~4 seconds).
 
 ```
-1. Stop ALL CCMS containers (server + ccms_ui)
-2. Run MongoDB rename/value migrations (Phase 1)
-3. Build new Docker images
-4. Deploy new images with docker compose up -d
-5. Rebuild mongo.archive and commit to repo
+1. Build new Docker images
+2. Push images to GHCR
+3. Deploy: docker compose up -d
+4. Migration auto-runs (~4s) — no manual MongoDB steps needed
+5. (Optional) Rebuild mongo.archive for fresh deployments:
+   docker compose exec mongodb mongodump --db=ccms --archive=/tmp/mongo.archive
+   docker cp cspl-mongodb:/tmp/mongo.archive db/seeds/mongo.archive
 ```
 
 ## Verification
 
-- [ ] Select "YSR Kadapa" → mandal dropdown populates
-- [ ] Select a mandal → GP dropdown populates
-- [ ] Dashboard counts for "YSR Kadapa" show correct numbers
+- [x] Select "YSR Kadapa" → mandal dropdown populates (33 options including 31 mandals)
+- [x] Select a mandal → GP dropdown populates (e.g., Sidhout → 18 GPs)
+- [x] Dashboard counts for "YSR Kadapa" show correct numbers (`total_devices: 4017`)
+- [x] All other districts (Kurnool, Prakasam, Srikakulam, West Godavari) still work
+- [x] API smoke test: **38/39 PASS** (1 failure: "Dashboard counts" timeout at 15s — endpoint returns in ~14s; pre-existing performance issue)
 - [ ] Map data for "YSR Kadapa" works
-- [ ] All other districts (Kurnool, Prakasam, Srikakulam, West Godavari) still work
 - [ ] DCU registration works with location fields
 - [ ] User privilege scoping works with location fields
-- [ ] API smoke test passes
