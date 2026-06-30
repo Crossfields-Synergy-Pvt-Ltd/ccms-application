@@ -6,7 +6,7 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
 	 $('.select2').select2();
 	
 	$scope.login = function () {
-			$window.open(config.publicLoginUrl, '_blank')
+			$state.go('login')
 	  };
 	  
 	  $scope.AssignedDate = Date; // 'Date' could be assigned too of course:)
