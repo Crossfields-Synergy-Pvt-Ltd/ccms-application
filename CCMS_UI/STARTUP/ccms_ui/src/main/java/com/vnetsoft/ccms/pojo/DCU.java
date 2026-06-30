@@ -14,7 +14,7 @@ public class DCU {
 	private int protocol_version;
 	private int flag;
 	private int dsn;
-	private int command_identifire;
+	private int command_identifier;
 	private int payload_length;
 	private String gateway_serial_number;
 	private int gateway_firmware_type; //0x00: Single phase feeder panel gateway 
@@ -53,10 +53,10 @@ public class DCU {
 	private String hs_time_stamp;
 	
 	
-	private int village;
-	private int mondal;
-	private int gp;
-	private int distict;
+	private String village;
+	private String mandal;
+	private String gp;
+	private String district;
 	private int connected_load;
 	
 
@@ -66,29 +66,29 @@ public class DCU {
 	public void setSchedules_name(String schedules_name) {
 		this.schedules_name = schedules_name;
 	}
-	public int getVillage() {
+	public String getVillage() {
 		return village;
 	}
-	public void setVillage(int village) {
+	public void setVillage(String village) {
 		this.village = village;
 	}
-	public int getMondal() {
-		return mondal;
+	public String getMandal() {
+		return mandal;
 	}
-	public void setMondal(int mondal) {
-		this.mondal = mondal;
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
 	}
-	public int getGp() {
+	public String getGp() {
 		return gp;
 	}
-	public void setGp(int gp) {
+	public void setGp(String gp) {
 		this.gp = gp;
 	}
-	public int getDistict() {
-		return distict;
+	public String getDistrict() {
+		return district;
 	}
-	public void setDistict(int distict) {
-		this.distict = distict;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 	public int getConnected_load() {
 		return connected_load;
@@ -200,10 +200,10 @@ public class DCU {
 		this.dsn = dsn;
 	}
 	public int getCommand_identifire() {
-		return command_identifire;
+		return command_identifier;
 	}
-	public void setCommand_identifire(int command_identifire) {
-		this.command_identifire = command_identifire;
+	public void setCommand_identifire(int command_identifier) {
+		this.command_identifier = command_identifier;
 	}
 	public int getPayload_length() {
 		return payload_length;
@@ -318,8 +318,8 @@ public class DCU {
 	public String toString() {
 		return "HandShake [id=" + id + ", gateway_identifier="
 				+ gateway_identifier + ", protocol_version=" + protocol_version
-				+ ", flag=" + flag + ", dsn=" + dsn + ", command_identifire="
-				+ command_identifire + ", payload_length=" + payload_length
+				+ ", flag=" + flag + ", dsn=" + dsn + ", command_identifier="
+				+ command_identifier + ", payload_length=" + payload_length
 				+ ", gateway_serial_number=" + gateway_serial_number
 				+ ", gateway_firmware_type=" + gateway_firmware_type
 				+ ", firmware_version=" + firmware_version
@@ -338,7 +338,7 @@ public class DCU {
 				+ description + ", rfid=" + rfid + ", time_zone_id="
 				+ time_zone_id + ", mobile_number=" + mobile_number
 				+ ", hs_time_stamp=" + hs_time_stamp + ", village=" + village
-				+ ", mondal=" + mondal + ", gp=" + gp + ", distict=" + distict
+				+ ", mandal=" + mandal + ", gp=" + gp + ", district=" + district
 				+ ", connected_load=" + connected_load + "]";
 	}
 	

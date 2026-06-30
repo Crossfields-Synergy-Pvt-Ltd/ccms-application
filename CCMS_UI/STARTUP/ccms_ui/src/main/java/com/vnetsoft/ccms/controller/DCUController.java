@@ -104,7 +104,7 @@ public class DCUController {
 	
 	
 	@RequestMapping(value = "/handshake_list", method = RequestMethod.GET)
-	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("distrtict") String distrtict,
+	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp
 			) {
@@ -116,7 +116,7 @@ public class DCUController {
 		List<HandShake> userList = null;
 		try {
 			//userList = userServices.getHandShakeList();
-			userList = dashboardService.getMapData(distrtict, mandal, gp);
+			userList = dashboardService.getMapData(district, mandal, gp);
 			/*if(logger.isDebugEnabled()) {
 				 logger.debug(userList);
 			}*/
@@ -131,7 +131,7 @@ public class DCUController {
 	
 	
 	@RequestMapping(value = "/handshake_info_by_id", method = RequestMethod.GET)
-	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("distrtict") String distrtict,
+	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp, 
 			@RequestParam("name") String name
@@ -144,7 +144,7 @@ public class DCUController {
 		List<HandShake> userList = null;
 		try {
 			//userList = userServices.getHandShakeList();
-			userList = dashboardService.getHandShakeByIDWithFilter(distrtict, mandal, gp, name);
+			userList = dashboardService.getHandShakeByIDWithFilter(district, mandal, gp, name);
 			/*if(logger.isDebugEnabled()) {
 				 logger.debug(userList);
 			}*/
@@ -317,13 +317,13 @@ public class DCUController {
 	
 	
 	@RequestMapping(value = "/dcu_name_list", method = RequestMethod.GET)
-	public @ResponseBody List<DCUDropDown> getAllDcuName(@RequestParam("distrtict") String distrtict,
+	public @ResponseBody List<DCUDropDown> getAllDcuName(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp
 			) {
 
 		if(logger.isDebugEnabled()){
-			logger.debug("DIST : "+ distrtict +" MANDAL : "+ mandal + " GP : "+ gp);
+			logger.debug("DIST : "+ district +" MANDAL : "+ mandal + " GP : "+ gp);
 		}
 		
 		
@@ -335,7 +335,7 @@ public class DCUController {
 		
 		List<HandShake> userList = null;
 		try {
-			userList = dashboardService.getMapData(distrtict, mandal, gp);
+			userList = dashboardService.getMapData(district, mandal, gp);
 			
 			for(HandShake tmp : userList){
 				

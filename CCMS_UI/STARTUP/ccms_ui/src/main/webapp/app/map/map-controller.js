@@ -35,15 +35,15 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
 	  // Our markers
 	  markers1 = [ ];
 
-	  $scope.distric = 'ALL';
-	  $scope.mondal = 'ALL';
+	  $scope.district = 'ALL';
+	  $scope.mandal = 'ALL';
 	  $scope.gp = 'ALL';
-  $scope.selecte_distict = $scope.distric;
-  $scope.select_mondal =  $scope.mondal;
+  $scope.selectedDistrict = $scope.district;
+  $scope.selectedMandal =  $scope.mandal;
   $scope.select_gp =  $scope.gp;
-  $scope.districts = config.districts;
+  $scope.districtts = config.districts;
 
-  $scope.qs_params = '?distrtict=' + $scope.selecte_distict + '&mandal=' + $scope.select_mondal + '&gp=' + $scope.select_gp;
+  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
 	
 	  console.log($scope.qs_params)
 		mapViewFactory.getAllCount($scope.qs_params).then(function(data){
@@ -188,7 +188,7 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
 		}
 		gmarkers1 = [];
 		markers1 = [];
-		$scope.qs_params = '?distrtict='+$scope.selecte_distict+ '&mandal='+$scope.select_mondal+'&gp='+$scope.select_gp;
+		$scope.qs_params = '?district='+$scope.selectedDistrict+ '&mandal='+$scope.selectedMandal+'&gp='+$scope.select_gp;
 		
 		 mapViewFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;
@@ -256,21 +256,21 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
 		  }
 
 	 
-	 $scope.getMandalOnSelect = function(selecte_distict) {
-		 mapViewFactory.getByMondal($scope.selecte_distict).then(function(data) {
+	 $scope.getMandalOnSelect = function(selectedDistrict) {
+		 mapViewFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		}
 
-		$scope.getGpOnSelect = function(select_mondal) {
-			mapViewFactory.getByGp($scope.select_mondal).then(function(data) {
+		$scope.getGpOnSelect = function(selectedMandal) {
+			mapViewFactory.getByGp($scope.selectedMandal).then(function(data) {
 				$scope.gp_list = data.data;
 				
 			});
 		}
-		$scope.getMandalOnSelect($scope.selecte_distict);
-		$scope.getGpOnSelect($scope.select_mondal);
-	/*$scope.districts = [{
+		$scope.getMandalOnSelect($scope.selectedDistrict);
+		$scope.getGpOnSelect($scope.selectedMandal);
+	/*$scope.districtts = [{
    		state : "Srikakulam-11",
    		code : "Srikakulam-11"
    	},
@@ -309,17 +309,17 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
    	}];*/
 	  
 	 /* $('#mySelect2').on('select2:select', function (e) {
-		    $scope.distric = e.params.data;
-		    console.log($scope.distric.id);
-		    mapViewFactory.getByMondal($scope.distric.id).then(function(data) {
+		    $scope.district = e.params.data;
+		    console.log($scope.district.id);
+		    mapViewFactory.getByMandal($scope.district.id).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		});
 	 
 	 $('#mySelect').on('select2:select', function (e) {
-		    $scope.mondal = e.params.data;
-		    console.log($scope.mondal.id);
-		    mapViewFactory.getByGp($scope.mondal.id).then(function(data) {
+		    $scope.mandal = e.params.data;
+		    console.log($scope.mandal.id);
+		    mapViewFactory.getByGp($scope.mandal.id).then(function(data) {
 				$scope.gp_list = data.data;
 			});
 		    

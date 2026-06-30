@@ -65,31 +65,31 @@ describe('loginControllers', function() {
             expect(mockInform.add).toHaveBeenCalled();
         });
 
-        it('should store previlage in localStorage on success', function() {
+        it('should store privilege in localStorage on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
             $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
-                .respond({ status: '100', email: 'admin@test.com', dist: 'ALL', mondal: 'ALL', gp: 'ALL' });
+                .respond({ status: '100', email: 'admin@test.com', district: 'ALL', mandal: 'ALL', gp: 'ALL' });
             $scope.login();
             $httpBackend.flush();
-            expect(localStorage.setItem).toHaveBeenCalledWith('ccms_previlage', jasmine.any(String));
+            expect(localStorage.setItem).toHaveBeenCalledWith('ccms_privilege', jasmine.any(String));
         });
 
         it('should store auth in localStorage on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
             $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
-                .respond({ status: '100', email: 'admin@test.com', dist: 'ALL', mondal: 'ALL', gp: 'ALL' });
+                .respond({ status: '100', email: 'admin@test.com', district: 'ALL', mandal: 'ALL', gp: 'ALL' });
             $scope.login();
             $httpBackend.flush();
             expect(localStorage.setItem).toHaveBeenCalledWith('ccms_auth', jasmine.any(String));
         });
 
-        it('should set $rootScope.previlage on success', function() {
+        it('should set $rootScope.privilege on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
             $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com' });
             $scope.login();
             $httpBackend.flush();
-            expect($rootScope.previlage).toBeDefined();
+            expect($rootScope.privilege).toBeDefined();
         });
 
         it('should not go to dashboard on login failure', function() {

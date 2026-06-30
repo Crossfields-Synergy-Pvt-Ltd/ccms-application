@@ -24,27 +24,27 @@ import com.vnetsoft.ccms.util.DateUtils;
 
 @Controller
 @RequestMapping("/dashboard")
-public class MontorController {
+public class MonitorController {
 	@Autowired
 	DashBoardServices dashBpardService;
 
 
-	static final Logger logger = Logger.getLogger(MontorController.class);
+	static final Logger logger = Logger.getLogger(MonitorController.class);
 	
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
-	public @ResponseBody MonitorControlCount getDashBoardCounts(@RequestParam("distrtict") String distrtict,
+	public @ResponseBody MonitorControlCount getDashBoardCounts(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp
 			) {
 	
 		if(logger.isDebugEnabled()){
-			logger.debug("DIST : "+ distrtict +" MANDAL : "+ mandal + " GP : "+ gp);
+			logger.debug("DIST : "+ district +" MANDAL : "+ mandal + " GP : "+ gp);
 		}
 		
 		try {
 			
-			return dashBpardService.getDahsBoardCountstats(distrtict, mandal, gp);
+			return dashBpardService.getDahsBoardCountstats(district, mandal, gp);
 		} catch (Exception e) {
 			logger.error("Exception : " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -55,18 +55,18 @@ public class MontorController {
 	
 	
 	@RequestMapping(value = "/map_data", method = RequestMethod.GET)
-	public @ResponseBody List<MapData> getDashBoardMapData(@RequestParam("distrtict") String distrtict,
+	public @ResponseBody List<MapData> getDashBoardMapData(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp
 			) {
 	
 		if(logger.isDebugEnabled()){
-			logger.debug("DIST : "+ distrtict +" MANDAL : "+ mandal + " GP : "+ gp);
+			logger.debug("DIST : "+ district +" MANDAL : "+ mandal + " GP : "+ gp);
 		}
 		
 		List<MapData> update_list = new ArrayList<MapData>();
 		try {
-			List<HandShake> tmp_list = dashBpardService.getMapData(distrtict, mandal, gp);
+			List<HandShake> tmp_list = dashBpardService.getMapData(district, mandal, gp);
 			
 			for(HandShake tmp : tmp_list){
 				MapData obj = new MapData();
@@ -212,7 +212,7 @@ public class MontorController {
 
 	@RequestMapping(value = "/instant_data_filter", method = RequestMethod.POST)
 	public @ResponseBody List<DCUInstantData> getAllDevicesInstantDataByFilter(
-			@RequestParam("distrtict") String distrtict,
+			@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
 			@RequestParam(value = "page", defaultValue = "0") int page,
@@ -232,7 +232,7 @@ public class MontorController {
 				 logger.debug("INSTANT DATA REQUEST");
 			}
 			
-			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(distrtict, mandal, gp);
+			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp);
 			
 			int start = page * size;
 			int end = Math.min(start + size, dcu_list.size());

@@ -28,8 +28,8 @@ app.factory('monitorandcontrolFactory', ['$http', function($http) {
 			        return $http.get(serviceBase + '/dashboard/meter_data_by_id/' + gateway_serial_number);
 			    }
 			
-			 obj.getByMondal = function(qs_params) {
-					return $http.get(serviceBase+ '/filter/get_mandal?distrtict=' + qs_params);
+			 obj.getByMandal = function(qs_params) {
+					return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
 				}
 				
 				obj.getByGp = function(qs_params) {

@@ -8,10 +8,10 @@ dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $
 	  $scope.sortType     = 'id'; // set the default sort type
 	  $scope.sortReverse  = false;  // set the default sort order
 	$scope.searchFish = $rootScope.searchFish || '';     // set the default search/filter term
-	  var dist = ($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL';
-	  var mondal = ($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL';
-	  var gp = ($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL';
-	  $scope.qs_params = '?distrtict='+dist+ '&mandal='+mondal+'&gp='+gp;
+	  var dist = ($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL';
+	  var mandal = ($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL';
+	  var gp = ($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL';
+	  $scope.qs_params = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
 		 
 	
 		  $rootScope.searchFish = $scope.searchFish;
@@ -193,7 +193,7 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
 	   $scope.scheduler_data = data.data;
 	    });
 	
-	  /*$scope.selecte_distict = '';
+	  /*$scope.selectedDistrict = '';
 		$scope.districts = ["Srikakulam-11" ,"Visakhapatnam-13" ,"Prakasam-18" ,"Nellore-19" ,"Kadapa-20", "Kurnool-21"];
 		 $scope.searchTerm;
 	    $scope.clearSearchTerm = function() {
@@ -203,19 +203,19 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
 	        ev.stopPropagation();
 	    });*/
 	  
-	$scope.selecte_distict = '';
+	$scope.selectedDistrict = '';
 	$scope.districts = config.districts; 
 	 
    	  
    	 
-    $scope.getMandalOnSelect = function(distict) {
-   		dcuFactory.getByMondal($scope.dcu.distict).then(function(data) {
+    $scope.getMandalOnSelect = function(district) {
+   		dcuFactory.getByMandal($scope.dcu.district).then(function(data) {
    				$scope.mandal_list = data.data;
    			});
    		}
 
-   		$scope.getGpOnSelect = function(mondal) {
-   			dcuFactory.getByGp($scope.dcu.mondal).then(function(data) {
+   		$scope.getGpOnSelect = function(mandal) {
+   			dcuFactory.getByGp($scope.dcu.mandal).then(function(data) {
    				$scope.gp_list = data.data;
    				
    			});
@@ -285,27 +285,27 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
 	    });
 	  
 	
-	   		dcuFactory.getByMondal($scope.dcu.distict).then(function(data) {
+	   		dcuFactory.getByMandal($scope.dcu.district).then(function(data) {
 	   				$scope.mandal_list = data.data;
 	   			});
 	   		
-	   			dcuFactory.getByGp($scope.dcu.mondal).then(function(data) {
+	   			dcuFactory.getByGp($scope.dcu.mandal).then(function(data) {
 	   				$scope.gp_list = data.data;
 	   				
 	   			});
 	   		
-	$scope.selecte_distict = '';
+	$scope.selectedDistrict = '';
 	 $scope.districts = config.districts; 
    	  
    	 
-   	  $scope.getMandalOnSelect = function(distict) {
-   		dcuFactory.getByMondal($scope.dcu.distict).then(function(data) {
+   	  $scope.getMandalOnSelect = function(district) {
+   		dcuFactory.getByMandal($scope.dcu.district).then(function(data) {
    				$scope.mandal_list = data.data;
    			});
    		}
 
-   		$scope.getGpOnSelect = function(mondal) {
-   			dcuFactory.getByGp($scope.dcu.mondal).then(function(data) {
+   		$scope.getGpOnSelect = function(mandal) {
+   			dcuFactory.getByGp($scope.dcu.mandal).then(function(data) {
    				$scope.gp_list = data.data;
    				
    			});

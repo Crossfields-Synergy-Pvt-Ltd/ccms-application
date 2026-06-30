@@ -27,7 +27,7 @@ public class User {
 
 	private String taluq;
 
-	private String dist;
+	private String district;
 
 	private String state;
 
@@ -35,7 +35,7 @@ public class User {
 
 	private String village;
 	
-	private String mondal;
+	private String mandal;
 	
 	private String gp;
 	
@@ -135,12 +135,12 @@ public class User {
 		this.taluq = taluq;
 	}
 
-	public String getDist() {
-		return dist;
+	public String getDistrict() {
+		return district;
 	}
 
-	public void setDist(String dist) {
-		this.dist = dist;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 	public String getState() {
@@ -167,12 +167,12 @@ public class User {
 		this.village = village;
 	}
 
-	public String getMondal() {
-		return mondal;
+	public String getMandal() {
+		return mandal;
 	}
 
-	public void setMondal(String mondal) {
-		this.mondal = mondal;
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
 	}
 
 	public String getGp() {
@@ -293,9 +293,9 @@ public class User {
 				+ ", password=" + password + ", mobnum1=" + mobnum1
 				+ ", email=" + email + ", role=" + role + ", status=" + status
 				+ ", full_name=" + full_name + ", address=" + address
-				+ ", taluq=" + taluq + ", dist=" + dist + ", state=" + state
+				+ ", taluq=" + taluq + ", district=" + district + ", state=" + state
 				+ ", pin_code=" + pin_code + ", village=" + village
-				+ ", mondal=" + mondal + ", gp=" + gp
+				+ ", mandal=" + mandal + ", gp=" + gp
 				+ ", monitor_and_controller=" + monitor_and_controller
 				+ ", history=" + history + ", event=" + event
 				+ ", switching_point_summary=" + switching_point_summary

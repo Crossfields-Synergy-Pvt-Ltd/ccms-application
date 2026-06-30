@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vnetsoft.ccms.pojo.HerarchyDetails;
+import com.vnetsoft.ccms.pojo.HierarchyDetails;
 import com.vnetsoft.ccms.pojo.Status;
 import com.vnetsoft.ccms.services.DCUServices;
 
 @Controller
 @RequestMapping("/filter")
-public class HerarchyController {
+public class HierarchyController {
 
 	@Autowired
 	DCUServices userServices;
 
-	static final Logger logger = Logger.getLogger(HerarchyController.class);
+	static final Logger logger = Logger.getLogger(HierarchyController.class);
 	
 	
 	public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class HerarchyController {
 				fileBufferReader = new BufferedReader(new FileReader(file_name));
 				String buffer;
 				while ((buffer = fileBufferReader.readLine()) != null) {
-					HerarchyDetails ui_obj = new HerarchyDetails();
+					HierarchyDetails ui_obj = new HierarchyDetails();
 					
 					 //System.out.println(buffer);
 					 if(buffer.length() > 20){
@@ -78,7 +78,7 @@ public class HerarchyController {
 	
 	
 	@RequestMapping(value = "/generate_db", method = RequestMethod.GET)
-	public @ResponseBody String genrateHerarchyDataFromFile() {
+	public @ResponseBody String generateHierarchyDataFromFile() {
 		//String file_name = "/home/ccms/dontdelete/FinalMasterDataFile.txt";
 		String file_name = "/home/cspl19/FinalMasterDataFile.txt";
 		 BufferedReader fileBufferReader = null;
@@ -91,7 +91,7 @@ public class HerarchyController {
 				fileBufferReader = new BufferedReader(new FileReader(file_name));
 				String buffer;
 				while ((buffer = fileBufferReader.readLine()) != null) {
-					HerarchyDetails ui_obj = new HerarchyDetails();
+					HierarchyDetails ui_obj = new HierarchyDetails();
 					
 					 //System.out.println(buffer);
 					 if(buffer.length() > 20){
@@ -104,7 +104,7 @@ public class HerarchyController {
 						
 					
 						System.out.println(ui_obj);
-						userServices.addHerachy(ui_obj);
+						userServices.addHierarchy(ui_obj);
 					 }
 				}
 
@@ -122,7 +122,7 @@ public class HerarchyController {
 		return "DONE";
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Status add(@RequestBody HerarchyDetails obj) {
+	public @ResponseBody Status add(@RequestBody HierarchyDetails obj) {
 
 		try {
 			
@@ -130,7 +130,7 @@ public class HerarchyController {
 				 logger.debug(obj);
 			}
 			
-			userServices.addHerachy(obj);
+			userServices.addHierarchy(obj);
 			return new Status(200, "Success");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
@@ -140,17 +140,17 @@ public class HerarchyController {
 	
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public @ResponseBody List<HerarchyDetails> getAll() {
+	public @ResponseBody List<HierarchyDetails> getAll() {
 
 
 		if(logger.isDebugEnabled()) {
 			 logger.debug("GET ALL REQUEST RECIVED");
 		}
 		
-		List<HerarchyDetails> userList = null;
+		List<HierarchyDetails> userList = null;
 		try {
 		
-			userList = userServices.getHerarchyDetailsList();
+			userList = userServices.getHierarchyDetailsList();
 			if(logger.isDebugEnabled()) {
 				 logger.debug(userList);
 			}
@@ -167,11 +167,11 @@ public class HerarchyController {
 	
 	
 	@RequestMapping(value = "/get_mandal", method = RequestMethod.GET)
-	public @ResponseBody List<String> getMandalList(@RequestParam("distrtict") String distrtict) {
+	public @ResponseBody List<String> getMandalList(@RequestParam("district") String district) {
 		List<String> obj = null;
 
 		try {
-			obj  = userServices.getMondalByDistrict(distrtict);
+			obj  = userServices.getMandalByDistrict(district);
 			obj.add("ALL");
 			obj.add("Other");
 			

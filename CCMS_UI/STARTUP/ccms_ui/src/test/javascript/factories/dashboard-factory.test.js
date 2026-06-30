@@ -17,19 +17,19 @@ describe('dashboardFactory', function() {
 
     describe('getAllCount', function() {
         it('should call /CCMS/dashboard/count with params', function() {
-            $httpBackend.expectGET('/CCMS/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.expectGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({ total_devices: 100 });
 
-            dashboardFactory.getAllCount('?distrtict=ALL&mandal=ALL&gp=ALL');
+            dashboardFactory.getAllCount('?district=ALL&mandal=ALL&gp=ALL');
         });
 
         it('should return count data', function() {
             var responseData = { total_devices: 50, light_on: 40, light_off: 10 };
-            $httpBackend.whenGET('/CCMS/dashboard/count?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond(responseData);
 
             var result;
-            dashboardFactory.getAllCount('?distrtict=ALL&mandal=ALL&gp=ALL')
+            dashboardFactory.getAllCount('?district=ALL&mandal=ALL&gp=ALL')
                 .then(function(data) { result = data.data; });
             $httpBackend.flush();
 
@@ -37,10 +37,10 @@ describe('dashboardFactory', function() {
         });
 
         it('should handle empty response', function() {
-            $httpBackend.whenGET('/CCMS/dashboard/count?distrtict=&mandal=&gp=')
+            $httpBackend.whenGET('/CCMS/dashboard/count?district=&mandal=&gp=')
                 .respond({});
 
-            dashboardFactory.getAllCount('?distrtict=&mandal=&gp=');
+            dashboardFactory.getAllCount('?district=&mandal=&gp=');
         });
 
         it('should handle server error', function() {
@@ -53,19 +53,19 @@ describe('dashboardFactory', function() {
 
     describe('getAllMapDashboardData', function() {
         it('should call /CCMS/dashboard/map_data with params', function() {
-            $httpBackend.expectGET('/CCMS/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.expectGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
-            dashboardFactory.getAllMapDashboardData('?distrtict=ALL&mandal=ALL&gp=ALL');
+            dashboardFactory.getAllMapDashboardData('?district=ALL&mandal=ALL&gp=ALL');
         });
 
         it('should return map data array', function() {
             var mapData = [{ lat: '16.4792', lang: '80.5469', light_status: 1 }];
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond(mapData);
 
             var result;
-            dashboardFactory.getAllMapDashboardData('?distrtict=ALL&mandal=ALL&gp=ALL')
+            dashboardFactory.getAllMapDashboardData('?district=ALL&mandal=ALL&gp=ALL')
                 .then(function(data) { result = data.data; });
             $httpBackend.flush();
 
@@ -73,37 +73,37 @@ describe('dashboardFactory', function() {
         });
 
         it('should handle empty map data', function() {
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
-            dashboardFactory.getAllMapDashboardData('?distrtict=ALL&mandal=ALL&gp=ALL');
+            dashboardFactory.getAllMapDashboardData('?district=ALL&mandal=ALL&gp=ALL');
         });
     });
 
     describe('getAllDcuNames', function() {
         it('should call /CCMS/dcu/dcu_name_list with params', function() {
-            $httpBackend.expectGET('/CCMS/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.expectGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
                 .respond([{ name: 'DCU-001' }]);
 
-            dashboardFactory.getAllDcuNames('?distrtict=ALL&mandal=ALL&gp=ALL');
+            dashboardFactory.getAllDcuNames('?district=ALL&mandal=ALL&gp=ALL');
         });
     });
 
-    describe('getByMondal', function() {
+    describe('getByMandal', function() {
         it('should call /CCMS/filter/get_mandal with district', function() {
-            $httpBackend.expectGET('/CCMS/filter/get_mandal?distrtict=Guntur-17')
+            $httpBackend.expectGET('/CCMS/filter/get_mandal?district=Guntur-17')
                 .respond(['Tenali', 'Guntur Rural']);
 
-            dashboardFactory.getByMondal('Guntur-17');
+            dashboardFactory.getByMandal('Guntur-17');
         });
 
         it('should return mandal list', function() {
             var mandals = ['Tenali', 'Guntur Rural'];
-            $httpBackend.whenGET('/CCMS/filter/get_mandal?distrtict=Guntur-17')
+            $httpBackend.whenGET('/CCMS/filter/get_mandal?district=Guntur-17')
                 .respond(mandals);
 
             var result;
-            dashboardFactory.getByMondal('Guntur-17')
+            dashboardFactory.getByMandal('Guntur-17')
                 .then(function(data) { result = data.data; });
             $httpBackend.flush();
 

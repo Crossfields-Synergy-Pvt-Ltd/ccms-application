@@ -6,7 +6,7 @@ import com.vnetsoft.ccms.pojo.DCU;
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.Event;
 import com.vnetsoft.ccms.pojo.HandShake;
-import com.vnetsoft.ccms.pojo.HerarchyDetails;
+import com.vnetsoft.ccms.pojo.HierarchyDetails;
 import com.vnetsoft.ccms.pojo.IOPojo;
 import com.vnetsoft.ccms.pojo.DeviceMeterConfigurations;
 import com.vnetsoft.ccms.pojo.MeterData;
@@ -68,9 +68,9 @@ public interface DCUDao {
 	
 	
 	
-	public boolean addHerachy(HerarchyDetails obj) throws Exception;
-	public List<HerarchyDetails> getHerarchyDetailsList()  throws Exception;
-	public List<String> getMondalByDistrict(String distrtict) throws Exception;
+	public boolean addHierarchy(HierarchyDetails obj) throws Exception;
+	public List<HierarchyDetails> getHierarchyDetailsList()  throws Exception;
+	public List<String> getMandalByDistrict(String district) throws Exception;
 	public List<String> getGPByMandal(String mandal) throws Exception;
 	public List<String> getVilageByGP(String gp) throws Exception;
 	

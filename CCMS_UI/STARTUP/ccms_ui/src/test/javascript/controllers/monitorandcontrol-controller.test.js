@@ -20,9 +20,9 @@ describe('monitorandcontrolControllers', function() {
         mockConfig = { districts: [{ state: 'Guntur-17', code: 'Guntur-17' }] };
         mockStateParams = {};
 
-        $rootScope.previlage = {
-            dist: 'ALL',
-            mondal: 'ALL',
+        $rootScope.privilege = {
+            district: 'ALL',
+            mandal: 'ALL',
             gp: 'ALL',
             monitor_and_controller: true,
             history: true,
@@ -39,9 +39,9 @@ describe('monitorandcontrolControllers', function() {
             user: true
         };
 
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?distrtict=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?distrtict=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
             .respond([]);
     }));
 

@@ -16,33 +16,33 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.vnetsoft.ccms.pojo.HerarchyDetails;
+import com.vnetsoft.ccms.pojo.HierarchyDetails;
 import com.vnetsoft.ccms.services.DCUServices;
 
-public class HerarchyControllerTest extends AbstractControllerTest {
+public class HierarchyControllerTest extends AbstractControllerTest {
 
     @Mock
     private DCUServices userServices;
 
     @InjectMocks
-    private HerarchyController herarchyController;
+    private HierarchyController hierarchyController;
 
     @Before
     @Override
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        configureController(herarchyController);
+        configureController(hierarchyController);
     }
 
     // --- filter/list ---
 
     @Test
     public void testGetFilterList_ReturnsList() throws Exception {
-        HerarchyDetails hd = new HerarchyDetails();
+        HierarchyDetails hd = new HierarchyDetails();
         hd.setDistrict("Guntur");
         hd.setMandal("Tenali");
 
-        when(userServices.getHerarchyDetailsList()).thenReturn(Arrays.asList(hd));
+        when(userServices.getHierarchyDetailsList()).thenReturn(Arrays.asList(hd));
 
         performGet("/filter/list")
             .andExpect(status().isOk())
@@ -52,7 +52,7 @@ public class HerarchyControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetFilterList_Empty_ReturnsEmptyArray() throws Exception {
-        when(userServices.getHerarchyDetailsList()).thenReturn(Collections.emptyList());
+        when(userServices.getHierarchyDetailsList()).thenReturn(Collections.emptyList());
 
         performGet("/filter/list")
             .andExpect(status().isOk())
@@ -65,7 +65,7 @@ public class HerarchyControllerTest extends AbstractControllerTest {
     public void testGetMandal_ValidDistrict_ReturnsList() throws Exception {
         when(userServices.getMondalByDistrict("Guntur")).thenReturn(Arrays.asList("Tenali", "Guntur Rural"));
 
-        performGet("/filter/get_mandal?distrtict=Guntur")
+        performGet("/filter/get_mandal?district=Guntur")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
     }
@@ -74,7 +74,7 @@ public class HerarchyControllerTest extends AbstractControllerTest {
     public void testGetMandal_EmptyDistrict_ReturnsEmptyList() throws Exception {
         when(userServices.getMondalByDistrict("")).thenReturn(Collections.emptyList());
 
-        performGet("/filter/get_mandal?distrtict=")
+        performGet("/filter/get_mandal?district=")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -83,7 +83,7 @@ public class HerarchyControllerTest extends AbstractControllerTest {
     public void testGetMandal_NonexistentDistrict_ReturnsEmpty() throws Exception {
         when(userServices.getMondalByDistrict("NONEXISTENT")).thenReturn(Collections.emptyList());
 
-        performGet("/filter/get_mandal?distrtict=NONEXISTENT")
+        performGet("/filter/get_mandal?district=NONEXISTENT")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -144,12 +144,12 @@ public class HerarchyControllerTest extends AbstractControllerTest {
 
     @Test
     public void testCreateFilter_ValidData_ReturnsStatus() throws Exception {
-        HerarchyDetails hd = new HerarchyDetails();
+        HierarchyDetails hd = new HierarchyDetails();
         hd.setDistrict("Guntur");
         hd.setMandal("Tenali");
         hd.setGp("GP1");
 
-        when(userServices.addHerachy(any(HerarchyDetails.class))).thenReturn(true);
+        when(userServices.addHierarchy(any(HierarchyDetails.class))).thenReturn(true);
 
         performPost("/filter/create", toJson(hd))
             .andExpect(status().isOk());

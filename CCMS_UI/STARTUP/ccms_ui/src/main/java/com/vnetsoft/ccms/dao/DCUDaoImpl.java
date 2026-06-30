@@ -21,7 +21,7 @@ import com.vnetsoft.ccms.pojo.DCU;
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.Event;
 import com.vnetsoft.ccms.pojo.HandShake;
-import com.vnetsoft.ccms.pojo.HerarchyDetails;
+import com.vnetsoft.ccms.pojo.HierarchyDetails;
 import com.vnetsoft.ccms.pojo.IOPojo;
 import com.vnetsoft.ccms.pojo.DeviceMeterConfigurations;
 import com.vnetsoft.ccms.pojo.MeterData;
@@ -325,30 +325,30 @@ public class DCUDaoImpl implements DCUDao {
 	}
 
 	@Override
-	public boolean addHerachy(HerarchyDetails obj) throws Exception {
+	public boolean addHierarchy(HierarchyDetails obj) throws Exception {
 		mongoTemplate.save(obj, "herarchy_details");
 		return true;
 	}
 
 	@Override
-	public List<HerarchyDetails> getHerarchyDetailsList() throws Exception {
-		return mongoTemplate.findAll(HerarchyDetails.class);
+	public List<HierarchyDetails> getHierarchyDetailsList() throws Exception {
+		return mongoTemplate.findAll(HierarchyDetails.class);
 	}
 
 	@Override
-	public List<String> getMondalByDistrict(String distrtict) throws Exception {
+	public List<String> getMandalByDistrict(String district) throws Exception {
 		Set<String> ret_list = new LinkedHashSet<String>();
 		
-		List<HerarchyDetails> list = new ArrayList<HerarchyDetails>();
+		List<HierarchyDetails> list = new ArrayList<HierarchyDetails>();
 		
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("district").is(distrtict));
+			query.addCriteria(Criteria.where("district").is(district));
 			
-			list = mongoTemplate.find(query, HerarchyDetails.class);
+			list = mongoTemplate.find(query, HierarchyDetails.class);
 			
 			
-			for(HerarchyDetails tmp : list){
+			for(HierarchyDetails tmp : list){
 				ret_list.add(tmp.getMandal());
 			}
 			
@@ -366,16 +366,16 @@ public class DCUDaoImpl implements DCUDao {
 
 		Set<String> ret_list = new LinkedHashSet<String>();
 		
-		List<HerarchyDetails> list = new ArrayList<HerarchyDetails>();
+		List<HierarchyDetails> list = new ArrayList<HierarchyDetails>();
 		
 		try {
 		Query query = new Query();
 			query.addCriteria(Criteria.where("mandal").is(mandal));
 			
-			list = mongoTemplate.find(query, HerarchyDetails.class);
+			list = mongoTemplate.find(query, HierarchyDetails.class);
 			
 			
-			for(HerarchyDetails tmp : list){
+			for(HierarchyDetails tmp : list){
 				ret_list.add(tmp.getGp());
 			}
 			
@@ -393,16 +393,16 @@ public class DCUDaoImpl implements DCUDao {
 	@Override
 	public List<String> getVilageByGP(String gp) throws Exception {
 		Set<String> ret_list = new LinkedHashSet<String>();		
-		List<HerarchyDetails> list = new ArrayList<HerarchyDetails>();
+		List<HierarchyDetails> list = new ArrayList<HierarchyDetails>();
 		
 		try {
 		Query query = new Query();
 			query.addCriteria(Criteria.where("gp").is(gp));
 			
-			list = mongoTemplate.find(query, HerarchyDetails.class);
+			list = mongoTemplate.find(query, HierarchyDetails.class);
 			
 			
-			for(HerarchyDetails tmp : list){
+			for(HierarchyDetails tmp : list){
 				ret_list.add(tmp.getVillage());
 			}
 			  ArrayList<String> listWithoutDuplicates = new ArrayList<String>(ret_list);

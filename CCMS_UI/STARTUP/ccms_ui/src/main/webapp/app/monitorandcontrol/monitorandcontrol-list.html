@@ -114,7 +114,7 @@
 					<label>District &nbsp;</label>
 				</div>
 				<div class="col-sm-8" align="center">
-					<select ng-model="selecte_distict" ng-change="getMandalOnSelect();"
+					<select ng-model="selectedDistrict" ng-change="getMandalOnSelect();"
 						class="form-control">
 						<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 					</select>
@@ -124,11 +124,11 @@
 
 			<div class="col-sm-3">
 				<div class="col-sm-4" align="center">
-					<label for="mondal">Mondal&nbsp;</label>
+					<label for="mandal">Mandal&nbsp;</label>
 				</div>
 
 				<div class="col-sm-8" align="center">
-					<select ng-model="select_mondal" class="form-control"
+					<select ng-model="selectedMandal" class="form-control"
 						ng-change="getGpOnSelect();">
 						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 					</select>

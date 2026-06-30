@@ -24,8 +24,8 @@ app.factory('userFactory', ['$http', function($http) {
 			    });
 			}
 			
-			 obj.getByMondal = function(qs_params) {
-					return $http.get(serviceBase+ '/filter/get_mandal?distrtict=' + qs_params);
+			 obj.getByMandal = function(qs_params) {
+					return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
 				}
 				
 				obj.getByGp = function(qs_params) {

@@ -17,9 +17,9 @@ var app = angular.module('demoapp', [ 'ngResource', 'ui.router', 'inform','ngSan
 ])
 
 app.run(function($rootScope, $http) {
-    var storedPrevilage = localStorage.getItem('ccms_previlage');
-    if (storedPrevilage) {
-        $rootScope.previlage = JSON.parse(storedPrevilage);
+    var storedPrivilege = localStorage.getItem('ccms_privilege');
+    if (storedPrivilege) {
+        $rootScope.privilege = JSON.parse(storedPrivilege);
     }
     var storedAuth = localStorage.getItem('ccms_auth');
     if (storedAuth) {
@@ -83,7 +83,7 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 		abstract : true,
 		templateUrl : 'app/navi/leftnavi.html',
 		controller: function($scope, $rootScope) {
-			$scope.previlage = $rootScope.previlage;
+			$scope.privilege = $rootScope.privilege;
 		},
 		ncyBreadcrumb : {
 			skip : true

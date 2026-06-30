@@ -19,8 +19,8 @@ app.factory('historyFactory', ['$http', function($http) {
 		        return $http.get(serviceBase + '/dcu/dcu_name_list' + qs_params);
 		    }
 		    
-		    obj.getByMondal = function(qs_params) {
-				return $http.get(serviceBase+ '/filter/get_mandal?distrtict=' + qs_params);
+		    obj.getByMandal = function(qs_params) {
+				return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
 			}
 			
 			obj.getByGp = function(qs_params) {

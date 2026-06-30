@@ -71,7 +71,7 @@
 						<div class="form-group">
 							<label class="col-md-4" align="left">District</label>
 							<div class="col-md-8">
-								<select ng-model="dcu.distict" ng-change="getMandalOnSelect();"
+								<select ng-model="dcu.district" ng-change="getMandalOnSelect();"
 									class="form-control">
 									<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 								</select>
@@ -81,7 +81,7 @@
 						<div class="form-group">
 							<label class="col-md-4" align="left">Mondal</label>
 							<div class="col-md-8">
-								<select ng-model="dcu.mondal" class="form-control"
+								<select ng-model="dcu.mandal" class="form-control"
 									ng-change="getGpOnSelect();">
 									<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 								</select>

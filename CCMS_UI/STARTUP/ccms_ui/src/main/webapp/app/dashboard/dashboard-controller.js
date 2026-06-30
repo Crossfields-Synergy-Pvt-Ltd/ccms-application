@@ -3,7 +3,7 @@ var mapCntl = angular.module('dashboardControllers', []);
 
 mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams, $modal,$location, $http,inform,$rootScope,  dashboardFactory, config ) {
 
-	 $scope.qs_params = '?distrtict='+(($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL')+ '&mandal='+(($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL')+'&gp='+(($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL');
+	 $scope.qs_params = '?district='+(($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL')+ '&mandal='+(($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL')+'&gp='+(($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
 	 $rootScope.searchFish = '';
 		
 			
@@ -56,7 +56,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
     
 	  
 
-		//$scope.qs_params = '?distrtict='+$scope.distric.id+ '&mandal='+$scope.mondal.id+'&gp='+$scope.gp.id;
+		//$scope.qs_params = '?district='+$scope.district.id+ '&mandal='+$scope.mandal.id+'&gp='+$scope.gp.id;
 		console.log($scope.qs_params)
 		dashboardFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;
@@ -185,46 +185,46 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
             }
         }
     }
-    $scope.selecte_distict = '';
-	 $scope.districts = config.districts; 
+    $scope.selectedDistrict = '';
+	 $scope.districtts = config.districts; 
 	
-	 $scope.distric = (($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL');
-	 $scope.mondal = (($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL');
-	 $scope.gp = (($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL');
+	 $scope.district = (($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL');
+	 $scope.mandal = (($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL');
+	 $scope.gp = (($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
 	 
 	 
-	 $scope.selecte_distict = (($rootScope.previlage && $rootScope.previlage.dist) ? $rootScope.previlage.dist : 'ALL');
-	 $scope.select_mondal = (($rootScope.previlage && $rootScope.previlage.mondal) ? $rootScope.previlage.mondal : 'ALL');
-	 $scope.select_gp = (($rootScope.previlage && $rootScope.previlage.gp) ? $rootScope.previlage.gp : 'ALL');
+	 $scope.selectedDistrict = (($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL');
+	 $scope.selectedMandal = (($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL');
+	 $scope.select_gp = (($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
 	 
-	 $scope.getMandalOnSelect = function(selecte_distict) {
-		 dashboardFactory.getByMondal($scope.selecte_distict).then(function(data) {
+	 $scope.getMandalOnSelect = function(selectedDistrict) {
+		 dashboardFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		}
 
-		$scope.getGpOnSelect = function(select_mondal) {
-			dashboardFactory.getByGp($scope.select_mondal).then(function(data) {
+		$scope.getGpOnSelect = function(selectedMandal) {
+			dashboardFactory.getByGp($scope.selectedMandal).then(function(data) {
 				$scope.gp_list = data.data;
 				
 			});
 		}
-		$scope.getMandalOnSelect($scope.selecte_distict);
-		$scope.getGpOnSelect($scope.select_mondal);
+		$scope.getMandalOnSelect($scope.selectedDistrict);
+		$scope.getGpOnSelect($scope.selectedMandal);
 	/* $('#mySelect2').on('select2:select', function (e) {
-		    $scope.distric = e.params.data;
-		    console.log($scope.distric.id);
-		    dashboardFactory.getByMondal($scope.distric.id).then(function(data) {
+		    $scope.district = e.params.data;
+		    console.log($scope.district.id);
+		    dashboardFactory.getByMandal($scope.district.id).then(function(data) {
 				$scope.mandal_list = data.data;
 			});
 		});
-	 $('#mySelect2').val($scope.distric);
+	 $('#mySelect2').val($scope.district);
 	 
 	 
 	 $('#mySelect').on('select2:select', function (e) {
-		    $scope.mondal = e.params.data;
-		    console.log($scope.mondal.id);
-		    dashboardFactory.getByGp($scope.mondal.id).then(function(data) {
+		    $scope.mandal = e.params.data;
+		    console.log($scope.mandal.id);
+		    dashboardFactory.getByGp($scope.mandal.id).then(function(data) {
 				$scope.gp_list = data.data;
 			});
 		    
@@ -243,7 +243,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 		}
 		gmarkers1 = [];
 		markers1 = [];
-		$scope.qs_params = '?distrtict='+$scope.selecte_distict+ '&mandal='+$scope.select_mondal+'&gp='+$scope.select_gp;
+		$scope.qs_params = '?district='+$scope.selectedDistrict+ '&mandal='+$scope.selectedMandal+'&gp='+$scope.select_gp;
 		console.log($scope.qs_params)
 		dashboardFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;

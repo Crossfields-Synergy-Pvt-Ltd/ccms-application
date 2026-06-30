@@ -14,8 +14,8 @@ app.factory('mapViewFactory', ['$http', 'inform', function($http, inform) {
 	        return $http.get(serviceBase + '/om/get_essl_list');
 	    };
 	    
-	    obj.getByMondal = function(qs_params) {
-			return $http.get(serviceBase+ '/filter/get_mandal?distrtict=' + qs_params);
+	    obj.getByMandal = function(qs_params) {
+			return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
 		}
 		
 		obj.getByGp = function(qs_params) {
