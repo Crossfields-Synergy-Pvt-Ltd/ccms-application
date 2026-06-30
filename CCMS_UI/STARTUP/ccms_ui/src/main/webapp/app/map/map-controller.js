@@ -41,7 +41,7 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
   $scope.selectedDistrict = $scope.district;
   $scope.selectedMandal =  $scope.mandal;
   $scope.select_gp =  $scope.gp;
-  $scope.districtts = config.districts;
+  $scope.districts = config.districts;
 
   $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
 	
@@ -270,7 +270,7 @@ mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$in
 		}
 		$scope.getMandalOnSelect($scope.selectedDistrict);
 		$scope.getGpOnSelect($scope.selectedMandal);
-	/*$scope.districtts = [{
+	/*$scope.districts = [{
    		state : "Srikakulam-11",
    		code : "Srikakulam-11"
    	},
