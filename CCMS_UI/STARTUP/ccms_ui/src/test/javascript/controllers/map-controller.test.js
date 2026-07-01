@@ -21,13 +21,13 @@ describe('mapControllers', function() {
         mockConfig = { districts: [{ state: 'Guntur-17', code: 'Guntur-17' }] };
         mockStateParams = {};
 
-        $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
             .respond({ total_devices: 100 });
-        $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
             .respond([]);
-        $httpBackend.whenGET('/CCMS/filter/get_mandal?district=ALL')
+        $httpBackend.whenGET('/filter/get_mandal?district=ALL')
             .respond(['Tenali']);
-        $httpBackend.whenGET('/CCMS/filter/get_gp?mandal=ALL')
+        $httpBackend.whenGET('/filter/get_gp?mandal=ALL')
             .respond(['GP1']);
     }));
 
@@ -76,9 +76,9 @@ describe('mapControllers', function() {
             $scope.selectedMandal = 'Tenali';
             $scope.select_gp = 'GP1';
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond([]);
 
             $scope.search();
@@ -88,9 +88,9 @@ describe('mapControllers', function() {
         it('should reload data after search', function() {
             createController();
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({ total_devices: 50 });
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
             $scope.search();
@@ -99,9 +99,9 @@ describe('mapControllers', function() {
 
         it('should handle empty API response gracefully', function() {
             createController();
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
             $scope.search();
         });
@@ -110,7 +110,7 @@ describe('mapControllers', function() {
     describe('$scope.getMandalOnSelect', function() {
         it('should call factory to get mandals', function() {
             createController();
-            $httpBackend.whenGET('/CCMS/filter/get_mandal?district=Guntur-17')
+            $httpBackend.whenGET('/filter/get_mandal?district=Guntur-17')
                 .respond(['Tenali', 'Guntur Rural']);
 
             $scope.selectedDistrict = 'Guntur-17';
@@ -123,7 +123,7 @@ describe('mapControllers', function() {
     describe('$scope.getGpOnSelect', function() {
         it('should call factory to get GPs', function() {
             createController();
-            $httpBackend.whenGET('/CCMS/filter/get_gp?mandal=Tenali')
+            $httpBackend.whenGET('/filter/get_gp?mandal=Tenali')
                 .respond(['GP1', 'GP2']);
 
             $scope.selectedMandal = 'Tenali';

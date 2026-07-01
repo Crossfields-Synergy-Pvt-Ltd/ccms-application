@@ -15,8 +15,8 @@ describe('monitorandcontrolFactory', function() {
     });
 
     describe('turnOnLights', function() {
-        it('should call /CCMS/device_conf/lights_on with serial and identifier', function() {
-            $httpBackend.expectGET('/CCMS/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
+        it('should call /device_conf/lights_on with serial and identifier', function() {
+            $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
             monitorandcontrolFactory.turnOnLights('?device_serial_number=1905HY1P1C009534&device_identifier=2043');
@@ -24,7 +24,7 @@ describe('monitorandcontrolFactory', function() {
 
         it('should return status response', function() {
             var response = { code: 200, message: 'success' };
-            $httpBackend.whenGET('/CCMS/device_conf/lights_on?device_serial_number=X&device_identifier=Y')
+            $httpBackend.whenGET('/device_conf/lights_on?device_serial_number=X&device_identifier=Y')
                 .respond(response);
 
             var result;
@@ -36,14 +36,14 @@ describe('monitorandcontrolFactory', function() {
         });
 
         it('should handle empty params', function() {
-            $httpBackend.expectGET('/CCMS/device_conf/lights_on?device_serial_number=&device_identifier=')
+            $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=&device_identifier=')
                 .respond({ code: 200 });
 
             monitorandcontrolFactory.turnOnLights('?device_serial_number=&device_identifier=');
         });
 
         it('should handle server error', function() {
-            $httpBackend.whenGET('/CCMS/device_conf/lights_on?device_serial_number=X&device_identifier=Y')
+            $httpBackend.whenGET('/device_conf/lights_on?device_serial_number=X&device_identifier=Y')
                 .respond(500);
 
             monitorandcontrolFactory.turnOnLights('?device_serial_number=X&device_identifier=Y');
@@ -51,8 +51,8 @@ describe('monitorandcontrolFactory', function() {
     });
 
     describe('turnOffLights', function() {
-        it('should call /CCMS/device_conf/lights_off with serial and identifier', function() {
-            $httpBackend.expectGET('/CCMS/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043')
+        it('should call /device_conf/lights_off with serial and identifier', function() {
+            $httpBackend.expectGET('/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
             monitorandcontrolFactory.turnOffLights('?device_serial_number=1905HY1P1C009534&device_identifier=2043');
@@ -60,7 +60,7 @@ describe('monitorandcontrolFactory', function() {
 
         it('should return status response', function() {
             var response = { code: 200, message: 'success' };
-            $httpBackend.whenGET('/CCMS/device_conf/lights_off?device_serial_number=X&device_identifier=Y')
+            $httpBackend.whenGET('/device_conf/lights_off?device_serial_number=X&device_identifier=Y')
                 .respond(response);
 
             var result;
@@ -72,7 +72,7 @@ describe('monitorandcontrolFactory', function() {
         });
 
         it('should handle empty params', function() {
-            $httpBackend.expectGET('/CCMS/device_conf/lights_off?device_serial_number=&device_identifier=')
+            $httpBackend.expectGET('/device_conf/lights_off?device_serial_number=&device_identifier=')
                 .respond({ code: 200 });
 
             monitorandcontrolFactory.turnOffLights('?device_serial_number=&device_identifier=');
@@ -80,8 +80,8 @@ describe('monitorandcontrolFactory', function() {
     });
 
     describe('getAllHandShake', function() {
-        it('should call /CCMS/dashboard/instant_data_filter with params', function() {
-            $httpBackend.expectGET('/CCMS/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+        it('should call /dashboard/instant_data_filter with params', function() {
+            $httpBackend.expectGET('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
                 .respond([]);
 
             monitorandcontrolFactory.getAllHandShake('?district=ALL&mandal=ALL&gp=ALL', 1, 10);

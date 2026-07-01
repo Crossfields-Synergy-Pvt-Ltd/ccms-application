@@ -3,7 +3,7 @@ app = angular.module('userFactory', [])
 
 app.factory('userFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    obj.getAll = function(){
 		        return $http.get(serviceBase + '/superadmin/user/list');

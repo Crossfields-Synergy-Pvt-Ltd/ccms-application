@@ -3,7 +3,7 @@ app = angular.module('dcuFactory', [])
 
 app.factory('dcuFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    obj.getAll = function(){
 		        return $http.get(serviceBase + '/dcu/list/');

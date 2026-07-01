@@ -35,17 +35,17 @@ describe('dashboardControllers', function() {
             event: true
         };
 
-        $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
             .respond({ total_devices: 100, light_on: 80, light_off: 20 });
-        $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ lat: '16.4792', lang: '80.5469', light_status: 1 }]);
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+        $httpBackend.whenGET('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
             .respond([]);
-        $httpBackend.whenGET('/CCMS/filter/get_mandal?district=ALL')
+        $httpBackend.whenGET('/filter/get_mandal?district=ALL')
             .respond(['Tenali', 'Guntur Rural']);
-        $httpBackend.whenGET('/CCMS/filter/get_gp?mandal=ALL')
+        $httpBackend.whenGET('/filter/get_gp?mandal=ALL')
             .respond(['GP1', 'GP2']);
     }));
 
@@ -129,9 +129,9 @@ describe('dashboardControllers', function() {
             $scope.selectedMandal = 'ALL';
             $scope.select_gp = 'ALL';
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
             $scope.search();
@@ -152,9 +152,9 @@ describe('dashboardControllers', function() {
             $scope.selectedMandal = 'Tenali';
             $scope.select_gp = 'GP1';
 
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond({});
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1')
+            $httpBackend.whenGET('/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1')
                 .respond([]);
 
             $scope.search();

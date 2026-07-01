@@ -3,7 +3,7 @@ app = angular.module('monitorandcontrolFactory', [])
 
 app.factory('monitorandcontrolFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    
 			 obj.getAllCount = function(qs_params){

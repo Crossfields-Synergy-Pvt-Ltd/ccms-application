@@ -3,7 +3,7 @@ app = angular.module('switchpointFactory', [])
 
 app.factory('switchpointFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    
 		    obj.getByID = function(gateway_serial_number){

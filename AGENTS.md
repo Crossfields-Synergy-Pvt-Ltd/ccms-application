@@ -15,7 +15,7 @@ Internet
                                       │
                                       ▼
                             cspl-ccms-ui (Tomcat :8080)
-                              serves CCMS at /CCMS/
+                              serves app at root /
                                       │
                     ┌─────────────────┼─────────────────┐
                     │                 │                 │
@@ -26,7 +26,6 @@ Internet
               └───────────┘   └─────────────┘   └───────────┘
 ```
 
-> **Note:** `cspl-nginx` exists in docker-compose.yml but is **exited** (not running).
 > NPM (Nginx Proxy Manager) is the sole active reverse proxy.
 
 | Component | Container Name | Internal Port | Host-Published | Purpose |
@@ -37,7 +36,6 @@ Internet
 | server (Netty) | `cspl-server` | 9100 | Yes (DCU devices) | Netty TCP for real-time DCU data |
 | mongodb | `cspl-mongodb` | 27017 | No (internal) | Document database |
 | mysql | `cspl-mysql` | 3306 | No (internal) | Relational database |
-| nginx | `cspl-nginx` | 80 | 8080 | **INACTIVE** — exited, superseded by NPM |
 | seed | `cspl-seed` | — | No | One-shot database seeder |
 
 ---
@@ -77,7 +75,6 @@ NPM runs as a **separate container** (not in this docker-compose stack) and is t
 | Scheme | `http` |
 | Forward hostname | `cspl-ccms-ui` |
 | Forward port | `8080` |
-| Redirect rule | `/` → `/CCMS/` (301) |
 | SSL | Enabled |
 
 ### Critical: Shared Docker Network
@@ -114,9 +111,6 @@ docker network connect <ccms_network_name> <npm_container_name>
 | File | Purpose |
 |---|---|
 | `docker-compose.yml` | Service definitions, volumes, healthchecks |
-| `nginx/Dockerfile` | nginx image (cspl-nginx — **inactive**) |
-| `nginx/nginx.conf.template` | nginx reverse proxy config (cspl-nginx — **inactive**) |
-| `nginx/docker-entrypoint.sh` | Renders nginx config via envsubst (cspl-nginx — **inactive**) |
 | `SERVER/ccms/Dockerfile` | Spring Boot server image |
 | `SERVER/ccms/docker-entrypoint.sh` | Converts env vars to JVM -D properties |
 | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` | Tomcat UI image |
@@ -172,7 +166,6 @@ All environment variables are set in Hostinger's Environment Variables section. 
 | `SMOKE_ADMIN_EMAIL` | `admin@example.com` | Test admin login |
 | `SMOKE_ADMIN_PASSWORD` | (match USERS_JSON) | Test admin password |
 | `USERS_JSON` | `[]` | JSON array of users |
-| `PUBLIC_DOMAIN` | `ccms.example.com` | nginx server_name (cspl-nginx — inactive) |
 | `SERVER_LOG_DIR` | `/home/CCMS/roadmap/logs` | SERVER log directory |
 | `SEED_DATA` | `true` | Enable/disable database seeding |
 
@@ -250,7 +243,6 @@ The CI pipeline (`.github/workflows/build-images.yml`) builds and pushes these i
 |---|---|
 | `ghcr.io/crossfields-synergy-pvt-ltd/ccms-server:latest` | `SERVER/ccms/Dockerfile` |
 | `ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui:latest` | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` |
-| `ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx:latest` | `nginx/Dockerfile` |
 | `ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed:latest` | `db/seeds/Dockerfile` |
 
 For local changes, `docker compose build` uses the `build: context:` directives.
@@ -280,12 +272,7 @@ All long-running services have healthchecks:
 | mongodb | `mongo --eval "db.adminCommand('ping').ok"` | — |
 | mysql | `mysqladmin ping -uroot -p${MYSQL_ROOT_PASSWORD}` | — |
 | server | `wget --spider http://localhost:8102/user/push/hafe_open_connections` | 30s |
-| ccms_ui | `wget -qO- http://localhost:8080/CCMS/` | 60s |
-| nginx (cspl-nginx) | `wget --spider http://localhost:80/` | — |
-
-> **Note:** cspl-nginx healthcheck in deployed VPS uses `http://localhost:80/` (no `/CCMS/` path).
-> The repo version uses `http://localhost:80/CCMS/` which is a more thorough end-to-end check.
-> cspl-nginx is currently **exited** — this healthcheck is inactive.
+| ccms_ui | `wget -qO- http://localhost:8080/` | 60s |
 
 ---
 
@@ -309,7 +296,6 @@ docker compose up -d
 
 ### View Logs
 ```bash
-docker compose logs -f nginx
 docker compose logs -f ccms_ui
 docker compose logs -f server
 ```
@@ -405,7 +391,6 @@ The following files and values are **infra-critical**. Modifying them without un
 | `cspl-mongodb` | docker-compose.yml service names, Docker DNS |
 | `cspl-mysql` | docker-compose.yml service names, Docker DNS |
 | `cspl-seed` | docker-compose.yml `depends_on` |
-| `cspl-nginx` | docker-compose.yml (inactive) |
 | `npm_proxy_manager` | External — not in this repo |
 
 ### Port Numbers (Never Change Without Updating All References)
@@ -422,7 +407,7 @@ The following files and values are **infra-critical**. Modifying them without un
 
 | Path | Service | Where Referenced |
 |---|---|---|
-| `/CCMS/` | ccms_ui | NPM redirect rule, nginx.conf.template, ccms_ui healthcheck, web.xml |
+| `/` (root) | ccms_ui | NPM forward target, ccms_ui healthcheck, web.xml |
 | `/user` | server | docker-compose.yml `SERVER_CONTEXT_PATH`, application.properties, Spring XML |
 
 ### Files — NEVER Edit Without Approval
@@ -432,14 +417,11 @@ The following files and values are **infra-critical**. Modifying them without un
 | `docker-compose.yml` | Deployment contract — service definitions, ports, healthchecks, depends_on, volumes |
 | `SERVER/ccms/Dockerfile` | Build logic, exposed ports (8102, 9100), entrypoint |
 | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` | Build logic, exposed port (8080), entrypoint, copies spring-config-docker.xml |
-| `nginx/Dockerfile` | nginx image build (cspl-nginx — inactive but don't break it) |
 | `db/seeds/Dockerfile` | Seed image build, baked-in mongo.archive |
 | `SERVER/ccms/docker-entrypoint.sh` | Env var → JVM -D property mapping for server |
 | `CCMS_UI/STARTUP/ccms_ui/docker-entrypoint.sh` | Env var → JVM -D property mapping for ccms_ui |
-| `nginx/docker-entrypoint.sh` | envsubst rendering for nginx config |
 | `db/seeds/seed.sh` | Database seeding orchestrator |
-| `.github/workflows/build-images.yml` | CI/CD pipeline — builds and pushes all 4 Docker images |
-| `nginx/nginx.conf.template` | Internal reverse proxy routing (cspl-nginx — inactive) |
+| `.github/workflows/build-images.yml` | CI/CD pipeline — builds and pushes all 3 Docker images |
 | `SERVER/ccms/conf/*` | Docker-deployed config overrides (application.properties, Spring XML, log4j, netty) |
 | `CCMS_UI/STARTUP/ccms_ui/conf/*` | Docker-deployed Spring MVC config (spring-config-docker.xml) |
 | `db/seeds/mongo.archive` | MongoDB seed data (~98 MB) — regenerating requires mongodump from live DB |
@@ -452,7 +434,6 @@ The following files and values are **infra-critical**. Modifying them without un
 | Domain | `apgp.crossfields.in` | Changing requires new SSL cert |
 | Forward hostname | `cspl-ccms-ui` | Must match container name exactly |
 | Forward port | `8080` | Must match Tomcat port |
-| Redirect | `/` → `/CCMS/` | Must match UI context path |
 | SSL | Enabled | Never disable in production |
 
 ---
@@ -521,13 +502,13 @@ The following files are safe for team members to modify without affecting deploy
 3. **USERS_JSON without quotes** — Do not wrap JSON values in single or double quotes.
 4. **SMOKE_ADMIN_PASSWORD must match USERS_JSON** — The smoke test login uses this password.
 5. **Only expose ports 80, 443, and 9100 publicly** — All other ports are internal only.
-6. **NPM is the only public reverse proxy** — cspl-nginx is inactive; do not re-enable without removing NPM.
+6. **NPM is the only public reverse proxy** — Handle SSL and routing externally.
 7. **Container names are fixed** — `cspl-ccms-ui`, `cspl-server`, `cspl-mongodb`, `cspl-mysql` must not change (NPM and Docker DNS depend on them).
-8. **Context paths are fixed** — `/CCMS/` for UI, `/user` for SERVER. Changing these breaks NPM routing and all API calls.
+8. **Context paths are fixed** — `/` for UI (root), `/user` for SERVER. Changing these breaks NPM routing and all API calls.
 9. **Tomcat port 8080 is fixed** — NPM forwards here. Changing it breaks the NPM proxy host.
 10. **Netty port 9100 is fixed** — DCU devices connect externally to VPS:9100.
 11. **Data survives container restarts** via named Docker volumes.
-12. **SSL is handled by NPM** — Not by cspl-nginx. Do not enable SSL inside the CCMS containers.
+12. **SSL is handled by NPM** — Do not enable SSL inside the CCMS containers.
 13. **Network requirement** — NPM and the CCMS stack must share the same Docker network for NPM to resolve `cspl-ccms-ui` by container name.
 14. **Conf/ directories are Docker-deployed overrides** — `SERVER/ccms/conf/*` and `CCMS_UI/.../conf/*` are copied into Docker images at build time. They are NOT the same as `src/main/resources/*`. Edit them only if you understand the env var → JVM -D → Spring ${} chain.
 15. **Seed data is baked into the image** — `db/seeds/mongo.archive` and `db/seeds/mysql/` are read-only at runtime. To update seed data, you must rebuild the `ccms-seed` image.

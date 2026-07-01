@@ -39,9 +39,9 @@ describe('monitorandcontrolControllers', function() {
             user: true
         };
 
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+        $httpBackend.whenGET('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
             .respond([]);
     }));
 
@@ -75,7 +75,7 @@ describe('monitorandcontrolControllers', function() {
                 }
             };
 
-            $httpBackend.expectGET('/CCMS/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
+            $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
             $scope.turn_on_light(obj);
@@ -91,7 +91,7 @@ describe('monitorandcontrolControllers', function() {
                 }
             };
 
-            $httpBackend.expectGET('/CCMS/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043')
+            $httpBackend.expectGET('/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
             $scope.turn_on_light(obj);
@@ -115,7 +115,7 @@ describe('monitorandcontrolControllers', function() {
                 }
             };
 
-            $httpBackend.expectGET('/CCMS/device_conf/lights_on?device_serial_number=&device_identifier=')
+            $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=&device_identifier=')
                 .respond({ code: 200, message: 'success' });
 
             $scope.turn_on_light(obj);

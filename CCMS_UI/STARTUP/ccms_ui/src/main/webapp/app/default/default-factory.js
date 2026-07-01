@@ -3,7 +3,7 @@ app = angular.module('defaultFactory', [])
 
 app.factory('defaultFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    
 		    obj.getByID = function(customerID){

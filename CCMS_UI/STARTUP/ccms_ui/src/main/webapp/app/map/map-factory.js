@@ -4,7 +4,7 @@ app = angular.module('mapFactory', [])
 app.factory('mapViewFactory', ['$http', 'inform', function($http, inform) {
 
 	
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		  
 	  var obj = {};

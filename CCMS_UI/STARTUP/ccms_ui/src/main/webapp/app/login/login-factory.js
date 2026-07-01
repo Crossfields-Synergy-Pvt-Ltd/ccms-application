@@ -4,7 +4,7 @@ app.factory('loginFactory', [
 		'$http',
 		function($http, $rootScope) {
 
-			var serviceBase = '/CCMS'
+			var serviceBase = ''
 				
 			var obj = {};
 			

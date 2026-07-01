@@ -28,8 +28,6 @@ jobs:
             context: ./SERVER/ccms
           - name: ui
             context: ./CCMS_UI/STARTUP/ccms_ui
-          - name: nginx
-            context: ./nginx
           - name: seed
             context: ./db/seeds
     steps:

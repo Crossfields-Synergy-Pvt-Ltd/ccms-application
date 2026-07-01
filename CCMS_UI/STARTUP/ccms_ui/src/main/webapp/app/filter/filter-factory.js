@@ -4,7 +4,7 @@ app.factory('filterFactory', [
 		'$http',
 		function($http) {
 
-			var serviceBase = '/CCMS'
+			var serviceBase = ''
 				 var obj = {};
 
 			obj.getByMandal = function(qs_params) {

@@ -2,7 +2,7 @@ app = angular.module('dashboardFactory', [])
 
 app.factory('dashboardFactory', [ '$http', 'inform', function($http, inform) {
 
-	var serviceBase = '/CCMS';
+	var serviceBase = '';
 	var obj = {};
 	obj.getAll = function() {
 		return $http.get(serviceBase + '/dld_server/list');
