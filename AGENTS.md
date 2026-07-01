@@ -339,7 +339,7 @@ docker compose up -d
 
 ## Installation Date Migration
 
-See [`docs/installation_date_migration.md`](docs/installation_date_migration.md) for full documentation.
+See [`docs/fix/installation_date_migration.md`](docs/fix/installation_date_migration.md) for full documentation.
 
 Quick reference:
 - **Migration class:** `CCMS_UI/.../migration/InstallationDateMigration.java`
