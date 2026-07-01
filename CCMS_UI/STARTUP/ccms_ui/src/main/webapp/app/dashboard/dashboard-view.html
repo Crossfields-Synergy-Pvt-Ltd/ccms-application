@@ -1,10 +1,10 @@
 <section id="brand" class="row" ng-controller="dashboardControllers">
 	<div class="col-md-12">
 		<div class="panel-heading"
-			style="padding-bottom: 35px; background-color: #fff;">
+			style="padding-bottom: 30px; background-color: #333333;">
 			<div class="form-group">
 				<div class="col-md-1" align="right"
-					style="padding-right: 5px;">District</div>
+					style="padding-right: 5px; color: #fff;">District</div>
 				<div class="col-md-2">
 					<!-- <select class="form-control select2" id = "mySelect2" ng-model="dashboard.district" ng-change="getMandalOnSelect();">
 						<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
@@ -19,13 +19,13 @@
 
 			<div class="form-group">
 				<div class="col-md-1" align="right"
-					style="padding-right: 5px;">Mondal</div>
-				<div class="col-md-2">
+					style="padding-right: 5px; color: #fff;">Mondal</div>
+				<div class="col-md-1">
 					<!-- <select ng-model="dashboard.mandal" id = "mySelect" ng-change="getGpOnSelect();"
 						class="form-control select2">
 						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
 					</select> -->
-					
+
 					<select ng-model="selectedMandal" class="form-control"
 						ng-change="getGpOnSelect();">
 						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
@@ -35,8 +35,8 @@
 
 			<div class="form-group">
 				<div class="col-md-1" align="right"
-					style="padding-right: 5px;">GP</div>
-				<div class="col-md-2">
+					style="padding-right: 5px; color: #fff;">GP</div>
+				<div class="col-md-1">
 					<!-- <select ng-model="dashboard.gp" id = "my" ng-select="getVillageOnSelect();"
 						class="form-control select2">
 						<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
@@ -45,12 +45,13 @@
 						ng-change="getVillageOnSelect();">
 						<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
 					</select>
+
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-md-1" align="right"
-					style="padding-right: 5px;">Install Date</div>
+					style="padding-right: 5px; color: #fff;">Installation Date</div>
 				<div class="col-md-2">
 					<input date-range-picker id="daterange_dashboard" name="daterange_dashboard"
 						class="form-control date-picker" type="text"
@@ -58,7 +59,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-1" align="right">
+			<div class="col-sm-1" align="right">
 				<a type="button" ng-click="search();" class="btn btn-info btn-sm"
 					data-toggle="tooltip" title="Click here to filter the records">Search</a>
 			</div>
