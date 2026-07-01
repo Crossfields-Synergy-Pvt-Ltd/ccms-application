@@ -77,7 +77,7 @@ public class DCUControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetHandShakeList_ReturnsData() throws Exception {
-        when(dashboardService.getMapData("ALL", "ALL", "ALL"))
+        when(dashboardService.getMapData("ALL", "ALL", "ALL", null, null))
             .thenReturn(Arrays.asList(new HandShake()));
 
         performGet("/dcu/handshake_list?district=ALL&mandal=ALL&gp=ALL")
@@ -87,7 +87,7 @@ public class DCUControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetHandShakeList_EmptyFilter_ReturnsData() throws Exception {
-        when(dashboardService.getMapData("", "", ""))
+        when(dashboardService.getMapData("", "", "", null, null))
             .thenReturn(Collections.emptyList());
 
         performGet("/dcu/handshake_list?district=&mandal=&gp=")
@@ -103,7 +103,7 @@ public class DCUControllerTest extends AbstractControllerTest {
         hs.setGateway_serial_number("1905HY1P1C009534");
         hs.setName("Test DCU");
 
-        when(dashboardService.getMapData("ALL", "ALL", "ALL"))
+        when(dashboardService.getMapData("ALL", "ALL", "ALL", null, null))
             .thenReturn(Arrays.asList(hs));
 
         performGet("/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL")

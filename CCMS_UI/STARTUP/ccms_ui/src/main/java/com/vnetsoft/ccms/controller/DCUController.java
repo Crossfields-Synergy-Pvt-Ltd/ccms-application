@@ -107,20 +107,19 @@ public class DCUController {
 	@RequestMapping(value = "/handshake_list", method = RequestMethod.GET)
 	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
-			@RequestParam("gp") String gp
+			@RequestParam("gp") String gp,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
-
 
 		if(logger.isDebugEnabled()) {
 			 logger.debug("GET ALL HandShake REQUEST RECIVED");
 		}
 		List<HandShake> userList = null;
 		try {
-			//userList = userServices.getHandShakeList();
-			userList = dashboardService.getMapData(district, mandal, gp);
-			/*if(logger.isDebugEnabled()) {
-				 logger.debug(userList);
-			}*/
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
 		} catch (Exception e) {
 			System.out.println("Exception : " + e);
 			e.printStackTrace();
@@ -132,23 +131,22 @@ public class DCUController {
 	
 	
 	@RequestMapping(value = "/handshake_info_by_id", method = RequestMethod.GET)
-	public @ResponseBody List<HandShake> getAllHandShake(@RequestParam("district") String district,
+	public @ResponseBody List<HandShake> getAllHandShakeById(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp, 
-			@RequestParam("name") String name
+			@RequestParam("name") String name,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
-
 
 		if(logger.isDebugEnabled()) {
 			 logger.debug("GET ALL HandShake REQUEST RECIVED");
 		}
 		List<HandShake> userList = null;
 		try {
-			//userList = userServices.getHandShakeList();
-			userList = dashboardService.getHandShakeByIDWithFilter(district, mandal, gp, name);
-			/*if(logger.isDebugEnabled()) {
-				 logger.debug(userList);
-			}*/
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			userList = dashboardService.getHandShakeByIDWithFilter(district, mandal, gp, name, startDate, endDate);
 		} catch (Exception e) {
 			System.out.println("Exception : " + e);
 			e.printStackTrace();

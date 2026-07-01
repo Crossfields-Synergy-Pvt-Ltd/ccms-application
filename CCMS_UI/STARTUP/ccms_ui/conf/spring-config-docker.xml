@@ -116,4 +116,7 @@
 	<bean id="handshakeFieldMigration"
 		class="com.vnetsoft.ccms.migration.HandshakeFieldMigration" />
 
+	<bean id="installationDateMigration"
+		class="com.vnetsoft.ccms.migration.InstallationDateMigration" />
+
 </beans>

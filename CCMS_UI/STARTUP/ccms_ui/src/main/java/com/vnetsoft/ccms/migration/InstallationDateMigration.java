@@ -2,6 +2,7 @@ package com.vnetsoft.ccms.migration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -12,8 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
-
-import com.mongodb.BasicDBObject;
 
 @Component
 public class InstallationDateMigration {
@@ -28,13 +27,11 @@ public class InstallationDateMigration {
         logger.info("Checking installation_date field in handshake_info...");
 
         try {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("installation_date").exists(false));
-            query.addCriteria(Criteria.where("date").exists(true));
-            query.addCriteria(Criteria.where("date").ne(""));
-            query.addCriteria(Criteria.where("date").ne(null));
+            Query checkQuery = new Query();
+            checkQuery.addCriteria(Criteria.where("installation_date").exists(false));
+            checkQuery.addCriteria(Criteria.where("date").exists(true).ne("").ne(null));
 
-            long pendingCount = mongoTemplate.count(query, "handshake_info");
+            long pendingCount = mongoTemplate.count(checkQuery, "handshake_info");
 
             if (pendingCount == 0) {
                 logger.info("installation_date already present on all documents, skipping migration");
@@ -47,21 +44,25 @@ public class InstallationDateMigration {
             int successCount = 0;
             int failCount = 0;
 
-            BasicDBObject findQuery = new BasicDBObject("installation_date", new BasicDBObject("$exists", false));
-            findQuery.append("date", new BasicDBObject("$exists", true));
+            Query fetchQuery = new Query();
+            fetchQuery.addCriteria(Criteria.where("installation_date").exists(false));
+            fetchQuery.addCriteria(Criteria.where("date").exists(true).ne("").ne(null));
+            fetchQuery.fields().include("_id").include("date");
 
-            for (BasicDBObject doc : mongoTemplate.getCollection("handshake_info").find(findQuery)) {
-                String dateStr = doc.getString("date");
+            List<com.vnetsoft.ccms.pojo.HandShake> docs = mongoTemplate.find(fetchQuery, com.vnetsoft.ccms.pojo.HandShake.class, "handshake_info");
+
+            for (com.vnetsoft.ccms.pojo.HandShake doc : docs) {
+                String dateStr = doc.getDate();
                 if (dateStr == null || dateStr.isEmpty()) continue;
 
                 try {
                     Date parsedDate = sdf.parse(dateStr);
-                    BasicDBObject docQuery = new BasicDBObject("_id", doc.getString("_id"));
-                    BasicDBObject update = new BasicDBObject("$set", new BasicDBObject("installation_date", parsedDate));
-                    mongoTemplate.getCollection("handshake_info").updateOne(docQuery, update);
+                    Query docQuery = new Query(Criteria.where("_id").is(doc.getId()));
+                    Update update = new Update().set("installation_date", parsedDate);
+                    mongoTemplate.updateFirst(docQuery, update, "handshake_info");
                     successCount++;
                 } catch (Exception e) {
-                    logger.warn("Failed to parse date: '" + dateStr + "' for document " + doc.getString("_id"));
+                    logger.warn("Failed to parse date: '" + dateStr + "' for document " + doc.getId());
                     failCount++;
                 }
             }
