@@ -105,7 +105,41 @@
 
  <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.min.css"></link>
   <script src="vendor/daterangepicker/daterangepicker.min.js"></script> 
-  <script src="vendor/daterangepicker/angular-daterangepicker.min.js"></script> 
+  <script src="vendor/daterangepicker/angular-daterangepicker.min.js"></script>
+  <style>
+    /* Custom Range layout: ranges on top, calendars below, From/To side by side */
+    .daterangepicker .ranges ul {
+      width: 100% !important;
+    }
+    .daterangepicker .ranges {
+      float: none !important;
+      display: block !important;
+      width: 100% !important;
+    }
+    .daterangepicker .drp-calendar {
+      float: none !important;
+      display: inline-block !important;
+      vertical-align: top;
+    }
+    .daterangepicker .drp-calendar.left {
+      clear: none !important;
+      padding-right: 0;
+    }
+    .daterangepicker .drp-calendar.right {
+      padding-left: 0;
+    }
+    .daterangepicker .drp-calendar.left .calendar-table {
+      border-right: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+    }
+    .daterangepicker .drp-calendar.right .calendar-table {
+      border-left: none;
+      border-radius: 0 4px 4px 0;
+    }
+    .daterangepicker .drp-buttons {
+      clear: both;
+    }
+  </style> 
   
   
    <script src="vendor/slider/ui_slider.js"></script> 
