@@ -16,7 +16,7 @@ Changes made to serve the CCMS UI at root `/` instead of `/CCMS/` and remove the
 | File | Change |
 |---|---|
 | `CCMS_UI/STARTUP/ccms_ui/pom.xml` | `artifactId`: `CCMS` → `ROOT`, `name`: `CCMS` → `ROOT`, `context.path`: `CCMS` → `ROOT` |
-| `CCMS_UI/STARTUP/ccms_ui/Dockerfile` | `CCMS.war` → `ROOT.war` |
+| `CCMS_UI/STARTUP/ccms_ui/Dockerfile` | `CCMS.war` → `ROOT.war`, added `RUN rm -rf` to remove default Tomcat ROOT webapp |
 | 16 factory JS files | `var serviceBase = '/CCMS'` → `var serviceBase = ''` |
 | 11 test files (84 occurrences) | All `/CCMS/` prefixed mock URLs updated to `/` |
 | `docker-compose.yml` | Healthcheck: `http://localhost:8080/CCMS/` → `http://localhost:8080/` |
@@ -32,6 +32,12 @@ Changes made to serve the CCMS UI at root `/` instead of `/CCMS/` and remove the
 | `.github/workflows/build-images.yml` | Removed nginx from build matrix |
 | `.env.example` | Removed `PUBLIC_DOMAIN` variable |
 | `AGENTS.md` | Updated all nginx references |
+
+### 3. Local Build Support
+
+| File | Change |
+|---|---|
+| `docker-compose.yml` | Added `build:` directives to `seed`, `server`, `ccms_ui` services |
 
 ## URLs Before & After
 
@@ -77,6 +83,7 @@ No data migration required. This is a pure URL/deployment change.
 
 To revert, restore the previous values:
 - `pom.xml`: artifactId/name back to `CCMS`, context.path back to `CCMS`
-- `Dockerfile`: `ROOT.war` back to `CCMS.war`
+- `Dockerfile`: `ROOT.war` back to `CCMS.war`, remove `RUN rm -rf` line
 - Factory files: `serviceBase = ''` back to `serviceBase = '/CCMS'`
 - Re-add nginx service to `docker-compose.yml` and restore `nginx/` directory
+- Remove `build:` directives from docker-compose.yml

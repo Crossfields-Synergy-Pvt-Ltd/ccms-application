@@ -323,6 +323,47 @@ docker compose up -d
 
 ---
 
+## Local Development (Build from Source)
+
+The `docker-compose.yml` includes `build:` directives for all three custom services. Use these commands to build locally instead of pulling pre-built images from GHCR.
+
+### Build Commands
+
+| Service | Build Command | Source Dockerfile |
+|---|---|---|
+| `ccms_ui` | `docker compose build ccms_ui` | `CCMS_UI/STARTUP/ccms_ui/Dockerfile` |
+| `server` | `docker compose build server` | `SERVER/ccms/Dockerfile` |
+| `seed` | `docker compose build seed` | `db/seeds/Dockerfile` |
+
+### Build and Run All Services from Source
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+### Rebuild a Single Service
+
+```bash
+docker compose build ccms_ui
+docker compose up -d ccms_ui
+```
+
+### How It Works
+
+- `image:` — the tag pushed to GHCR (used for `docker compose pull` in production)
+- `build:` — the local Dockerfile context (used for `docker compose build` in development)
+- When both are present, `docker compose build` creates the image locally and tags it with the `image:` name
+- In production (Hostinger), only `image:` is used — no `build:` directive needed
+
+### Important Notes
+
+- The `mongodb` and `mysql` services use public images (`mongo:3.4`, `mysql:5.7`) — no local build needed
+- CI/CD (`.github/workflows/build-images.yml`) builds and pushes all three custom images on every push to `main`
+- Local builds do not affect the GHCR images — they only create local Docker images
+
+---
+
 ## Installation Date Migration
 
 See [`docs/fix/installation_date_migration.md`](docs/fix/installation_date_migration.md) for full documentation.

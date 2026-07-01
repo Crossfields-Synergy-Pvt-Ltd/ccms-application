@@ -9,6 +9,7 @@ RUN mvn clean package -DskipTests
 
 FROM tomcat:7-jre8
 
+RUN rm -rf /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/ROOT.war
 COPY --from=builder /build/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Entrypoint that forwards .env-derived environment variables to Tomcat as
