@@ -46,12 +46,7 @@
 				<div class="form-group">
 					<div class="col-md-1" align="right"
 						style="padding-right: 5px; color: #fff;">Mondal</div>
-					<div class="col-md-2">
-						<!-- <select ng-model="dashboard.mandal" id = "mySelect" ng-change="getGpOnSelect();"
-						class="form-control select2">
-						<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
-					</select> -->
-
+					<div class="col-md-1">
 						<select ng-model="selectedMandal" class="form-control"
 							ng-change="getGpOnSelect();">
 							<option ng-repeat="x in mandal_list" value="{{x}}">{{x}}</option>
@@ -62,11 +57,7 @@
 				<div class="form-group">
 					<div class="col-md-1" align="right"
 						style="padding-right: 5px; color: #fff;">GP</div>
-					<div class="col-md-2">
-						<!-- <select ng-model="dashboard.gp" id = "my" ng-select="getVillageOnSelect();"
-						class="form-control select2">
-						<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
-					</select> -->
+					<div class="col-md-1">
 						<select ng-model="select_gp" class="form-control"
 							ng-change="getVillageOnSelect();">
 							<option ng-repeat="x in gp_list" value="{{x}}">{{x}}</option>
@@ -75,13 +66,22 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<div class="col-md-1" align="right"
+						style="padding-right: 5px; color: #fff;">Install Date</div>
+					<div class="col-md-2">
+						<input date-range-picker id="daterange_public" name="daterange_public"
+							class="form-control date-picker" type="text"
+							ng-model="datePicker.date" options="opts" />
+					</div>
+				</div>
+
 				<div class="col-sm-1" align="right">
 					<a type="button" ng-click="search();" class="btn btn-info btn-sm"
 						data-toggle="tooltip" title="Click here to filter the records"
 						style="background-color: #EAEDED; border-color: #EAEDED; color: #000000;">Search</a>
 				</div>
-				<div class="col-xs-0"></div>
-				<div class="col-sm-2" style="color: #fff" align="right">
+				<div class="col-sm-1" style="color: #fff" align="right">
 					<b>{{AssignedDate.now() | date:' EEE dd MMMM yyyy HH:mm:ss'}}</b>
 				</div>
 			</div>
