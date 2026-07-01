@@ -1,6 +1,8 @@
 package com.vnetsoft.ccms.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,7 +37,9 @@ public class MonitorController {
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public @ResponseBody MonitorControlCount getDashBoardCounts(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
-			@RequestParam("gp") String gp
+			@RequestParam("gp") String gp,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
 	
 		if(logger.isDebugEnabled()){
@@ -43,8 +47,9 @@ public class MonitorController {
 		}
 		
 		try {
-			
-			return dashBpardService.getDahsBoardCountstats(district, mandal, gp);
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, startDate, endDate);
 		} catch (Exception e) {
 			logger.error("Exception : " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -57,7 +62,9 @@ public class MonitorController {
 	@RequestMapping(value = "/map_data", method = RequestMethod.GET)
 	public @ResponseBody List<MapData> getDashBoardMapData(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
-			@RequestParam("gp") String gp
+			@RequestParam("gp") String gp,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
 	
 		if(logger.isDebugEnabled()){
@@ -66,7 +73,9 @@ public class MonitorController {
 		
 		List<MapData> update_list = new ArrayList<MapData>();
 		try {
-			List<HandShake> tmp_list = dashBpardService.getMapData(district, mandal, gp);
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			List<HandShake> tmp_list = dashBpardService.getMapData(district, mandal, gp, startDate, endDate);
 			
 			for(HandShake tmp : tmp_list){
 				MapData obj = new MapData();
@@ -176,6 +185,16 @@ public class MonitorController {
 	}
 
 
+	private Date parseDateParam(String dateStr) {
+		if (dateStr == null || dateStr.isEmpty()) return null;
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+		} catch (Exception e) {
+			logger.warn("Failed to parse date: " + dateStr);
+			return null;
+		}
+	}
+
 	@RequestMapping(value = "/instant_data_id/{id}", method = RequestMethod.GET)
 	public @ResponseBody DCUInstantData getDevicesInstantDataByID(@PathVariable("id") String id) {
 
@@ -215,6 +234,8 @@ public class MonitorController {
 			@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "50") int size,
 			
@@ -232,7 +253,9 @@ public class MonitorController {
 				 logger.debug("INSTANT DATA REQUEST");
 			}
 			
-			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp);
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp, startDate, endDate);
 			
 			int start = page * size;
 			int end = Math.min(start + size, dcu_list.size());

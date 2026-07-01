@@ -1,5 +1,6 @@
 package com.vetsoft.ccms.netty.repos;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -74,6 +75,7 @@ public class DeviceRequestDataRepository {
 		update.set("crc", user.getCrc());
 		update.set("csq", user.getCsq());
 		update.set("hs_time_stamp", user.getHs_time_stamp());
+		update.setOnInsert("installation_date", new Date());
 		update.set("device_time_yymmddhhmm", BaseUtil.getCurrentYYMMDD());
 		mongoTemplate.upsert(query, update, HandShake.class);
 

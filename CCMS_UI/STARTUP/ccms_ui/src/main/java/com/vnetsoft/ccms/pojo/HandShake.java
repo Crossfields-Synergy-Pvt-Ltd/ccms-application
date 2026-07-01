@@ -1,5 +1,7 @@
 package com.vnetsoft.ccms.pojo;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -38,6 +40,7 @@ public class HandShake {
 	private String panel_unique_id;
 	private String name;
 	private String date;
+	private Date installation_date;
 	private String serial_number = "00000000";
 	private String model;
 	private String description;
@@ -139,6 +142,12 @@ public class HandShake {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public Date getInstallation_date() {
+		return installation_date;
+	}
+	public void setInstallation_date(Date installation_date) {
+		this.installation_date = installation_date;
 	}
 	public String getSerial_number() {
 		return serial_number;
@@ -345,7 +354,7 @@ public class HandShake {
 				+ gateway_serial_number + ", iccid_number=" + iccid_number
 				+ ", lat=" + lat + ", lang=" + lang + ", crc=" + crc + ", csq="
 				+ csq + ", panel_unique_id=" + panel_unique_id + ", name="
-				+ name + ", date=" + date + ", serial_number=" + serial_number
+				+ name + ", date=" + date + ", installation_date=" + installation_date + ", serial_number=" + serial_number
 				+ ", model=" + model + ", description=" + description
 				+ ", mobile_number=" + mobile_number + ", hs_time_stamp="
 				+ hs_time_stamp + ", connection_status=" + connection_status

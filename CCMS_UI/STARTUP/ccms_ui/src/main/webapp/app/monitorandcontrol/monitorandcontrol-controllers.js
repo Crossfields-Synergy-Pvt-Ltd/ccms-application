@@ -34,6 +34,18 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	  $scope.select_gp = ($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL';
 	  $scope.districts = config.districts;
 	  
+	  $scope.datePicker = { date: { startDate: null, endDate: null } };
+	  $scope.opts = {
+		  locale: { applyClass: 'btn-green', applyLabel: "Apply", fromLabel: "From", format: "YYYY-MM-DD", toLabel: "To", cancelLabel: 'Cancel', customRangeLabel: 'Custom range' },
+		  ranges: {
+			  'Today': [moment(), moment()],
+			  'Yesterday': [moment().subtract(1, 'days'), moment()],
+			  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			  'This Month': [moment().startOf('month'), moment().endOf('month')],
+			  'Last Month': [moment().subtract(29, 'days'), moment()]
+		  }
+	  };
+	  
 	  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
 	  
 	  $scope.loadPage = function(page) {
@@ -134,7 +146,13 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	  $scope.loadPage(0);
 	  
 	  $scope.search = function() {
-		  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
+		  var dateParams = '';
+		  if ($scope.datePicker && $scope.datePicker.date && $scope.datePicker.date.startDate && $scope.datePicker.date.endDate) {
+			  var startDate = moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');
+			  var endDate = moment($scope.datePicker.date.endDate).format('YYYY-MM-DD');
+			  dateParams = '&start_date=' + startDate + '&end_date=' + endDate;
+		  }
+		  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp + dateParams;
 		  monitorandcontrolFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.count_stats = data.data;
 		        $scope.totalRecords = data.data.total_devices || 0;
