@@ -54,6 +54,8 @@ services:
 
   seed:
     image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed:latest
+    build:
+      context: ./db/seeds
     container_name: cspl-seed
     depends_on:
       mongodb:
@@ -73,6 +75,8 @@ services:
 
   server:
     image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-server:latest
+    build:
+      context: ./SERVER/ccms
     container_name: cspl-server
     ports:
       - "${SERVER_PORT:-8102}:${SERVER_PORT:-8102}"
@@ -102,6 +106,8 @@ services:
 
   ccms_ui:
     image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui:latest
+    build:
+      context: ./CCMS_UI/STARTUP/ccms_ui
     container_name: cspl-ccms-ui
     ports: []
     volumes:
