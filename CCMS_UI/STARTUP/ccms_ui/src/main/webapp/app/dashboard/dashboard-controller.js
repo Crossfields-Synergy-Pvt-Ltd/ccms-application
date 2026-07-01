@@ -5,6 +5,18 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 
 	 $scope.qs_params = '?district='+(($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL')+ '&mandal='+(($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL')+'&gp='+(($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
 	 $rootScope.searchFish = '';
+
+	 $scope.datePicker = { date: { startDate: null, endDate: null } };
+	 $scope.opts = {
+		 locale: { applyClass: 'btn-green', applyLabel: "Apply", fromLabel: "From", format: "YYYY-MM-DD", toLabel: "To", cancelLabel: 'Cancel', customRangeLabel: 'Custom range' },
+		 ranges: {
+			 'Today': [moment(), moment()],
+			 'Yesterday': [moment().subtract(1, 'days'), moment()],
+			 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			 'This Month': [moment().startOf('month'), moment().endOf('month')],
+			 'Last Month': [moment().subtract(29, 'days'), moment()]
+		 }
+	 };
 		
 			
 	dashboardFactory.getAllDcuNames($scope.qs_params).then(function(data){
@@ -243,7 +255,13 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 		}
 		gmarkers1 = [];
 		markers1 = [];
-		$scope.qs_params = '?district='+$scope.selectedDistrict+ '&mandal='+$scope.selectedMandal+'&gp='+$scope.select_gp;
+		var dateParams = '';
+		if ($scope.datePicker && $scope.datePicker.date && $scope.datePicker.date.startDate && $scope.datePicker.date.endDate) {
+			var startDate = moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');
+			var endDate = moment($scope.datePicker.date.endDate).format('YYYY-MM-DD');
+			dateParams = '&start_date=' + startDate + '&end_date=' + endDate;
+		}
+		$scope.qs_params = '?district='+$scope.selectedDistrict+ '&mandal='+$scope.selectedMandal+'&gp='+$scope.select_gp + dateParams;
 		console.log($scope.qs_params)
 		dashboardFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;
