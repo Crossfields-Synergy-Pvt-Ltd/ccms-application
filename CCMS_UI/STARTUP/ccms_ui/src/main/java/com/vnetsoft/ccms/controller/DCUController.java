@@ -4,6 +4,7 @@ package com.vnetsoft.ccms.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -316,10 +317,23 @@ public class DCUController {
 	}
 	
 	
+
+	private Date parseDateParam(String dateStr) {
+		if (dateStr == null || dateStr.isEmpty()) return null;
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+		} catch (Exception e) {
+			logger.warn("Failed to parse date: " + dateStr);
+			return null;
+		}
+	}
+
 	@RequestMapping(value = "/dcu_name_list", method = RequestMethod.GET)
 	public @ResponseBody List<DCUDropDown> getAllDcuName(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
-			@RequestParam("gp") String gp
+			@RequestParam("gp") String gp,
+			@RequestParam(value = "start_date", required = false) String startDateStr,
+			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
 
 		if(logger.isDebugEnabled()){
@@ -335,7 +349,9 @@ public class DCUController {
 		
 		List<HandShake> userList = null;
 		try {
-			userList = dashboardService.getMapData(district, mandal, gp);
+			Date startDate = parseDateParam(startDateStr);
+			Date endDate = parseDateParam(endDateStr);
+			userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
 			
 			for(HandShake tmp : userList){
 				

@@ -1,5 +1,6 @@
 package com.vnetsoft.ccms.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,7 +36,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
-			String mandal, String gp) throws Exception {
+			String mandal, String gp, Date startDate, Date endDate) throws Exception {
 	
 		MonitorControlCount obj = new MonitorControlCount();
 		
@@ -54,6 +55,9 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
+		}
+		if (startDate != null && endDate != null) {
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 		
@@ -444,8 +448,8 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 */
 	@Override
-	public List<HandShake> getMapData(String district, String mandal, String gp)
-			throws Exception {
+	public List<HandShake> getMapData(String district, String mandal, String gp,
+			Date startDate, Date endDate) throws Exception {
 		Query query = new Query();
 		 
 		if(district.equals("5_districts")){ 
@@ -463,6 +467,9 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
+		if (startDate != null && endDate != null) {
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
 		return list;
@@ -470,7 +477,8 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 
 	@Override
-	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp) throws Exception {
+	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
+			Date startDate, Date endDate) throws Exception {
 
 		Query query = new Query();
 		
@@ -491,6 +499,9 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
+		if (startDate != null && endDate != null) {
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
 		return list;
@@ -510,7 +521,8 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 
 	@Override
-	public List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name) throws Exception {
+	public List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name,
+			Date startDate, Date endDate) throws Exception {
 
 		try {
 			
@@ -532,6 +544,9 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				query.addCriteria(Criteria.where("district").is(district))
 				.addCriteria(Criteria.where("mandal").is(mandal))
 				.addCriteria(Criteria.where("gp").is(gp));
+			}
+			if (startDate != null && endDate != null) {
+				query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
 			}
 			query.addCriteria(Criteria.where("name").regex(dcu_name+ '*'));
 

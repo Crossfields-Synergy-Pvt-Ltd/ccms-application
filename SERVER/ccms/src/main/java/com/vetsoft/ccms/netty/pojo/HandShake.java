@@ -1,5 +1,7 @@
 package com.vetsoft.ccms.netty.pojo;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -43,6 +45,7 @@ public class HandShake {
 	private int panel_unique_id;
 	private String name;
 	private String date;
+	private Date installation_date;
 	private String serial_number = "00000000";
 	private String model;
 	private String description;
@@ -287,6 +290,12 @@ public class HandShake {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public Date getInstallation_date() {
+		return installation_date;
+	}
+	public void setInstallation_date(Date installation_date) {
+		this.installation_date = installation_date;
+	}
 	
 	public String getModel() {
 		return model;
@@ -494,7 +503,7 @@ public class HandShake {
 				+ ", iccid_number=" + iccid_number + ", lat=" + lat + ", lang="
 				+ lang + ", crc=" + crc + ", csq=" + csq + ", panel_unique_id="
 				+ panel_unique_id + ", name=" + name + ", date=" + date
-				+ ", model=" + model + ", description=" + description
+				+ ", installation_date=" + installation_date + ", model=" + model + ", description=" + description
 				+ ", rfid=" + rfid + ", time_zone_id=" + time_zone_id
 				+ ", mobile_number=" + mobile_number + ", hs_time_stamp="
 				+ hs_time_stamp + ", connection_status=" + connection_status

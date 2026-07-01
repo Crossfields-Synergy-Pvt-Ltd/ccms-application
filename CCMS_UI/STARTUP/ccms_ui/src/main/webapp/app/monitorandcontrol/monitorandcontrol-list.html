@@ -149,21 +149,28 @@
 
 			</div>
 			<div class="col-sm-3">
-			<div class="col-sm-2"></div>
-				 <div class="col-sm-6 " align="center">
+				<div class="col-sm-4" align="center">
+					<label>Installation Date</label>
+				</div>
+				<div class="col-sm-8" align="center">
+					<input date-range-picker id="daterange_install" name="daterange_install"
+						class="form-control date-picker" type="text"
+						ng-model="datePicker.date" options="opts" />
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12" style="padding-top: 10px;">
+			<div class="col-sm-3">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-6" align="center">
 					<input class="form-control" ng-model="searchFish" />
-				</div> 
-				
+				</div>
 				<div class="col-sm-4" align="center">
 					<div>
 						<a type="button" ng-click="search();" class="btn btn-info btn-sm">&nbsp;SEARCH&nbsp;</a>
 					</div>
 				</div>
-				
-				
-				
 			</div>
-
 		</div>
 
 	</div>

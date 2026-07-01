@@ -1,5 +1,6 @@
 package com.vnetsoft.ccms.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,38 +18,35 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 	
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
-			String mandal, String gp) throws Exception {
-		return dashBoardDao.getDahsBoardCountstats(district, mandal, gp);
+			String mandal, String gp, Date startDate, Date endDate) throws Exception {
+		return dashBoardDao.getDahsBoardCountstats(district, mandal, gp, startDate, endDate);
 	}
 
 	@Override
-	public List<HandShake> getMapData(String district, String mandal, String gp)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return dashBoardDao.getMapData(district, mandal, gp);
+	public List<HandShake> getMapData(String district, String mandal, String gp,
+			Date startDate, Date endDate) throws Exception {
+		return dashBoardDao.getMapData(district, mandal, gp, startDate, endDate);
 	}
 
 	@Override
-	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp) throws Exception {
-		// TODO Auto-generated method stub
-		return dashBoardDao.getAllHandShakeData(district, mandal, gp);
+	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
+			Date startDate, Date endDate) throws Exception {
+		return dashBoardDao.getAllHandShakeData(district, mandal, gp, startDate, endDate);
 	}
 
 	@Override
 	public InstantMeterData getInstantMeterData(String device_serial_number) throws Exception {
-		// TODO Auto-generated method stub
 		return dashBoardDao.getInstantMeterData(device_serial_number);
 	}
 
 	@Override
-	public  List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name) throws Exception {
-		// TODO Auto-generated method stub
-		return dashBoardDao.getHandShakeByIDWithFilter(district, mandal, gp, dcu_name);
+	public  List<HandShake> getHandShakeByIDWithFilter(String district, String mandal, String gp, String dcu_name,
+			Date startDate, Date endDate) throws Exception {
+		return dashBoardDao.getHandShakeByIDWithFilter(district, mandal, gp, dcu_name, startDate, endDate);
 	}
 
 	@Override
 	public HandShake getHandShakeByID(String id) throws Exception {
-		// TODO Auto-generated method stub
 		return dashBoardDao.getHandShakeByID(id);
 	}
 
