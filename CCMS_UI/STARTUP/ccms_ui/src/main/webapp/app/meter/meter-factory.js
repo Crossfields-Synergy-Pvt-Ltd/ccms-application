@@ -3,7 +3,7 @@ app = angular.module('meterFactory', [])
 
 app.factory('meterFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		  /*  obj.getAllMeterByDeviceID = function(id){
 		        return $http.get(serviceBase + '/meter_conf/meter_list_by_id');

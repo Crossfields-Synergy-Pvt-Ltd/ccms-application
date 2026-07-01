@@ -3,7 +3,7 @@ app = angular.module('nodeFactory', [])
 
 app.factory('nodeFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    obj.getAllNode = function(){
 		        return $http.get(serviceBase + '/node/list/');

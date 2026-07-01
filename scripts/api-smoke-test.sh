@@ -52,7 +52,7 @@ fi
 : "${SMOKE_ADMIN_PASSWORD:=changeme}"
 : "${SERVER_PORT:=8102}"
 
-BASE="${1:-http://localhost:8080/CCMS}"
+BASE="${1:-http://localhost:8080}"
 SERVER="http://localhost:${SERVER_PORT}"
 PASS=0
 FAIL=0
@@ -186,7 +186,7 @@ echo "" | tee -a "$LOGFILE"
 echo "--- MISC (5 tests) ---" | tee -a "$LOGFILE"
 test_endpoint "Default DCU config" POST "$BASE/conf/get_dcu_defult_conf" 200 ""
 test_endpoint "System config list" GET "$BASE/cloudsms/sym_list" 200 ""
-test_endpoint "CCMS index page" GET "http://localhost:8080/CCMS/" 200 ""
+test_endpoint "CCMS index page" GET "http://localhost:8080/" 200 ""
 test_endpoint "IO by ID" GET "$BASE/io/get_io_details/0" 200 ""
 test_endpoint "IO data between dates" GET \
     "$BASE/io/io_data_between_date?id=0&start_date=2024-01-01&end_date=2024-12-31" 200 ""

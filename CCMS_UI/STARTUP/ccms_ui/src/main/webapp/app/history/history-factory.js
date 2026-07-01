@@ -3,7 +3,7 @@ app = angular.module('historyFactory', [])
 
 app.factory('historyFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 			
 		    obj.getAll = function(){

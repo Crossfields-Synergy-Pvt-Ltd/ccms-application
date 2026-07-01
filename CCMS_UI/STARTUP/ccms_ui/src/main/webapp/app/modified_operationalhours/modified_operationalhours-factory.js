@@ -3,7 +3,7 @@ app = angular.module('modified_operationalFactory', [])
 
 app.factory('modified_operationalFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    obj.getAllById = function(dcu_id){
 		        return $http.get(serviceBase + '/modified_io/modified_io_list/' +  dcu_id);

@@ -41,7 +41,7 @@ describe('loginControllers', function() {
     describe('$scope.login', function() {
         it('should call loginFactory.login_user with query params', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
-            $httpBackend.expectGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
+            $httpBackend.expectGET('/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com', role: 'SUPER ADMIN' });
             $scope.login();
             $httpBackend.flush();
@@ -49,7 +49,7 @@ describe('loginControllers', function() {
 
         it('should navigate to dashboard on successful login', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
+            $httpBackend.whenGET('/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com' });
             $scope.login();
             $httpBackend.flush();
@@ -58,7 +58,7 @@ describe('loginControllers', function() {
 
         it('should show warning and stay on login when status != 100', function() {
             $scope.user = { name: 'bad@test.com', password: 'wrong' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=bad@test.com&password=wrong')
+            $httpBackend.whenGET('/superadmin/user/login?name=bad@test.com&password=wrong')
                 .respond({ status: '00', email: 'bad@test.com' });
             $scope.login();
             $httpBackend.flush();
@@ -67,7 +67,7 @@ describe('loginControllers', function() {
 
         it('should store privilege in localStorage on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
+            $httpBackend.whenGET('/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com', district: 'ALL', mandal: 'ALL', gp: 'ALL' });
             $scope.login();
             $httpBackend.flush();
@@ -76,7 +76,7 @@ describe('loginControllers', function() {
 
         it('should store auth in localStorage on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
+            $httpBackend.whenGET('/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com', district: 'ALL', mandal: 'ALL', gp: 'ALL' });
             $scope.login();
             $httpBackend.flush();
@@ -85,7 +85,7 @@ describe('loginControllers', function() {
 
         it('should set $rootScope.privilege on success', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=admin@test.com&password=pass123')
+            $httpBackend.whenGET('/superadmin/user/login?name=admin@test.com&password=pass123')
                 .respond({ status: '100', email: 'admin@test.com' });
             $scope.login();
             $httpBackend.flush();
@@ -94,7 +94,7 @@ describe('loginControllers', function() {
 
         it('should not go to dashboard on login failure', function() {
             $scope.user = { name: 'bad@test.com', password: 'wrong' };
-            $httpBackend.whenGET('/CCMS/superadmin/user/login?name=bad@test.com&password=wrong')
+            $httpBackend.whenGET('/superadmin/user/login?name=bad@test.com&password=wrong')
                 .respond({ status: '00' });
             $scope.login();
             $httpBackend.flush();

@@ -28,9 +28,9 @@ describe('historyControllers', function() {
             event: true
         };
 
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/meter/meter_data_list')
+        $httpBackend.whenGET('/meter/meter_data_list')
             .respond([]);
     }));
 

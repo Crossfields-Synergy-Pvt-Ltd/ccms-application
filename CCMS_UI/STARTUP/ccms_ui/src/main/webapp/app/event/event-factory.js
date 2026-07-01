@@ -3,7 +3,7 @@ app = angular.module('eventFactory', [])
 
 app.factory('eventFactory', ['$http', function($http) {
 
-	 var serviceBase = '/CCMS'
+	 var serviceBase = ''
 		    var obj = {};
 		    obj.getAll = function(){
 		        return $http.get(serviceBase + '/events/event_list');

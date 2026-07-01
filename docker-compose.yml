@@ -9,7 +9,6 @@
 # every push to main and published to GitHub Container Registry:
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-server
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-ui
-#   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx
 #   - ghcr.io/crossfields-synergy-pvt-ltd/ccms-seed
 #
 # HOSTINGER VPS DEPLOYMENT:
@@ -132,28 +131,11 @@ services:
       seed:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/CCMS/"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 60s
-    restart: unless-stopped
-
-  nginx:
-    image: ghcr.io/crossfields-synergy-pvt-ltd/ccms-nginx:latest
-    container_name: cspl-nginx
-    ports:
-      - "8080:80"
-    environment:
-      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:-ccms.example.com}
-    depends_on:
-      ccms_ui:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80/CCMS/"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
     restart: unless-stopped
 
 volumes:

@@ -16,8 +16,8 @@ describe('dashboardFactory', function() {
     });
 
     describe('getAllCount', function() {
-        it('should call /CCMS/dashboard/count with params', function() {
-            $httpBackend.expectGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+        it('should call /dashboard/count with params', function() {
+            $httpBackend.expectGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond({ total_devices: 100 });
 
             dashboardFactory.getAllCount('?district=ALL&mandal=ALL&gp=ALL');
@@ -25,7 +25,7 @@ describe('dashboardFactory', function() {
 
         it('should return count data', function() {
             var responseData = { total_devices: 50, light_on: 40, light_off: 10 };
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
                 .respond(responseData);
 
             var result;
@@ -37,14 +37,14 @@ describe('dashboardFactory', function() {
         });
 
         it('should handle empty response', function() {
-            $httpBackend.whenGET('/CCMS/dashboard/count?district=&mandal=&gp=')
+            $httpBackend.whenGET('/dashboard/count?district=&mandal=&gp=')
                 .respond({});
 
             dashboardFactory.getAllCount('?district=&mandal=&gp=');
         });
 
         it('should handle server error', function() {
-            $httpBackend.whenGET('/CCMS/dashboard/count?bad=param')
+            $httpBackend.whenGET('/dashboard/count?bad=param')
                 .respond(500);
 
             dashboardFactory.getAllCount('?bad=param');
@@ -52,8 +52,8 @@ describe('dashboardFactory', function() {
     });
 
     describe('getAllMapDashboardData', function() {
-        it('should call /CCMS/dashboard/map_data with params', function() {
-            $httpBackend.expectGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+        it('should call /dashboard/map_data with params', function() {
+            $httpBackend.expectGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
             dashboardFactory.getAllMapDashboardData('?district=ALL&mandal=ALL&gp=ALL');
@@ -61,7 +61,7 @@ describe('dashboardFactory', function() {
 
         it('should return map data array', function() {
             var mapData = [{ lat: '16.4792', lang: '80.5469', light_status: 1 }];
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond(mapData);
 
             var result;
@@ -73,7 +73,7 @@ describe('dashboardFactory', function() {
         });
 
         it('should handle empty map data', function() {
-            $httpBackend.whenGET('/CCMS/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
+            $httpBackend.whenGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')
                 .respond([]);
 
             dashboardFactory.getAllMapDashboardData('?district=ALL&mandal=ALL&gp=ALL');
@@ -81,8 +81,8 @@ describe('dashboardFactory', function() {
     });
 
     describe('getAllDcuNames', function() {
-        it('should call /CCMS/dcu/dcu_name_list with params', function() {
-            $httpBackend.expectGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
+        it('should call /dcu/dcu_name_list with params', function() {
+            $httpBackend.expectGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
                 .respond([{ name: 'DCU-001' }]);
 
             dashboardFactory.getAllDcuNames('?district=ALL&mandal=ALL&gp=ALL');
@@ -90,8 +90,8 @@ describe('dashboardFactory', function() {
     });
 
     describe('getByMandal', function() {
-        it('should call /CCMS/filter/get_mandal with district', function() {
-            $httpBackend.expectGET('/CCMS/filter/get_mandal?district=Guntur-17')
+        it('should call /filter/get_mandal with district', function() {
+            $httpBackend.expectGET('/filter/get_mandal?district=Guntur-17')
                 .respond(['Tenali', 'Guntur Rural']);
 
             dashboardFactory.getByMandal('Guntur-17');
@@ -99,7 +99,7 @@ describe('dashboardFactory', function() {
 
         it('should return mandal list', function() {
             var mandals = ['Tenali', 'Guntur Rural'];
-            $httpBackend.whenGET('/CCMS/filter/get_mandal?district=Guntur-17')
+            $httpBackend.whenGET('/filter/get_mandal?district=Guntur-17')
                 .respond(mandals);
 
             var result;
@@ -112,8 +112,8 @@ describe('dashboardFactory', function() {
     });
 
     describe('getByGp', function() {
-        it('should call /CCMS/filter/get_gp with mandal', function() {
-            $httpBackend.expectGET('/CCMS/filter/get_gp?mandal=Tenali')
+        it('should call /filter/get_gp with mandal', function() {
+            $httpBackend.expectGET('/filter/get_gp?mandal=Tenali')
                 .respond(['GP1', 'GP2']);
 
             dashboardFactory.getByGp('Tenali');

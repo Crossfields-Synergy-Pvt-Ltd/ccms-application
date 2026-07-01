@@ -29,11 +29,11 @@ describe('eventControllers', function() {
             event: true
         };
 
-        $httpBackend.whenGET('/CCMS/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
             .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/CCMS/events/event_counts')
+        $httpBackend.whenGET('/events/event_counts')
             .respond({ total: 50, mcb_trip: 5, high_current: 3 });
-        $httpBackend.whenGET('/CCMS/events/events_between_date?id=ALL&start_date=&end_date=')
+        $httpBackend.whenGET('/events/events_between_date?id=ALL&start_date=&end_date=')
             .respond([]);
     }));
 
@@ -90,7 +90,7 @@ describe('eventControllers', function() {
             $scope.start_date = '2024-01-01';
             $scope.end_date = '2024-12-31';
 
-            $httpBackend.whenGET('/CCMS/events/events_between_date?id=DCU001&start_date=2024-01-01&end_date=2024-12-31')
+            $httpBackend.whenGET('/events/events_between_date?id=DCU001&start_date=2024-01-01&end_date=2024-12-31')
                 .respond([{ id: 'event1' }]);
 
             $scope.showdate();
@@ -102,7 +102,7 @@ describe('eventControllers', function() {
             $scope.start_date = '';
             $scope.end_date = '';
 
-            $httpBackend.whenGET('/CCMS/events/events_between_date?id=ALL&start_date=&end_date=')
+            $httpBackend.whenGET('/events/events_between_date?id=ALL&start_date=&end_date=')
                 .respond([]);
 
             $scope.showdate();

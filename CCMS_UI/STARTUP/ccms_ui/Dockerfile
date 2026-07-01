@@ -9,7 +9,7 @@ RUN mvn clean package -DskipTests
 
 FROM tomcat:7-jre8
 
-COPY --from=builder /build/target/CCMS.war /usr/local/tomcat/webapps/CCMS.war
+COPY --from=builder /build/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Entrypoint that forwards .env-derived environment variables to Tomcat as
 # -D system properties so Spring XML ${...} placeholders resolve.
