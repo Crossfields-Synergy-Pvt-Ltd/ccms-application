@@ -337,58 +337,17 @@ docker compose up -d
 
 ---
 
-## Installation Date Migration (One-Time)
+## Installation Date Migration
 
-A new field `installation_date` (BSON `Date` type) was added to the `handshake_info` collection in MongoDB to enable date-based filtering of CCMS boxes by installation date alongside district/mandal/gp.
+See [`docs/installation_date_migration.md`](docs/installation_date_migration.md) for full documentation.
 
-### What Changed
-
-| Collection | New Field | Type | Source | Example |
-|---|---|---|---|---|
-| `handshake_info` | `installation_date` | BSON Date | Converted from existing `date` string (`DD-MM-YYYY HH:mm`) | `ISODate("2019-07-11T00:00:00Z")` |
-
-The existing `date` string field is **preserved untouched**. The migration only adds, never removes or modifies existing data.
-
-### How the Migration Runs
-
-**File:** `CCMS_UI/STARTUP/ccms_ui/src/main/java/com/vnetsoft/ccms/migration/InstallationDateMigration.java`
-
-Runs **automatically** via `@PostConstruct` when `cspl-ccms-ui` (Tomcat) container starts:
-
-1. Checks if any document in `handshake_info` is missing `installation_date` but has a non-empty `date` string
-2. If found, parses `"DD-MM-YYYY HH:mm"` → `java.util.Date` and writes to `installation_date`
-3. If all documents already have the field, logs "skipping" and does nothing
-4. The migration is **idempotent** — safe to run on every startup
-
-### How New Boxes Get Auto-Captured
-
-**File:** `SERVER/ccms/src/main/java/com/vetsoft/ccms/netty/repos/DeviceRequestDataRepository.java` (line 77)
-
-The Netty handshake upsert now includes `$setOnInsert: { installation_date: new Date() }`, so the first-ever handshake from a new CCMS box auto-sets its installation date. Subsequent handshakes never overwrite it.
-
-### Deployment Impact
-
-- **No manual steps** — migration runs on container startup
-- **No downtime** beyond normal container restart
-- **No env vars to configure**
-- Build new Docker images, deploy with `docker compose up -d`
-
-### Files Modified
-
-| File | Change |
-|---|---|
-| `CCMS_UI/.../pojo/HandShake.java` | Added `private Date installation_date;` + getter/setter |
-| `SERVER/.../pojo/HandShake.java` | Added `private Date installation_date;` + getter/setter |
-| `CCMS_UI/.../migration/InstallationDateMigration.java` | **NEW** — one-time migration class |
-| `SERVER/.../repos/DeviceRequestDataRepository.java` | Added `update.setOnInsert("installation_date", new Date())` |
-| `CCMS_UI/.../dao/DashBoardDao.java` | Added `startDate`/`endDate` params to interface methods |
-| `CCMS_UI/.../dao/DashBoardDaoImpl.java` | Added `installation_date` date range criteria to queries |
-| `CCMS_UI/.../services/DashBoardServices.java` | Updated interface with date params |
-| `CCMS_UI/.../services/DashBoardServicesImpl.java` | Updated impl with date params |
-| `CCMS_UI/.../controller/DCUController.java` | Added `start_date`/`end_date` request params + `parseDateParam()` |
-| `CCMS_UI/.../controller/MonitorController.java` | Added `start_date`/`end_date` request params + `parseDateParam()` |
-| `CCMS_UI/.../webapp/app/monitorandcontrol/monitorandcontrol-list.html` | Added date range picker to filter section |
-| `CCMS_UI/.../webapp/app/monitorandcontrol/monitorandcontrol-controllers.js` | Added date picker init + date params in `search()` |
+Quick reference:
+- **Migration class:** `CCMS_UI/.../migration/InstallationDateMigration.java`
+- **Auto-capture:** `SERVER/.../repos/DeviceRequestDataRepository.java` (`$setOnInsert`)
+- **Bean must be declared in** `spring-config-docker.xml` (component-scan is controller-only)
+- **Frontend date pickers:** Monitor & Control page + Public Monitor (`/public_monitor`) map page
+- **API params:** `start_date` / `end_date` (format: `YYYY-MM-DD`)
+- **Migration result:** 17,442 documents migrated, 1 failed, 7 skipped
 
 ---
 
