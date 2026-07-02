@@ -372,7 +372,7 @@ Quick reference:
 - **Migration class:** `CCMS_UI/.../migration/InstallationDateMigration.java`
 - **Auto-capture:** `SERVER/.../repos/DeviceRequestDataRepository.java` (`$setOnInsert`)
 - **Bean must be declared in** `spring-config-docker.xml` (component-scan is controller-only)
-- **Frontend date pickers:** Monitor & Control page + Public Monitor (`/public_monitor`) map page
+- **Frontend date pickers:** Dashboard page + Monitor & Control page + Public Monitor (`/public_monitor`) map page
 - **API params:** `start_date` / `end_date` (format: `YYYY-MM-DD`)
 - **Migration result:** 17,442 documents migrated, 1 failed, 7 skipped
 
