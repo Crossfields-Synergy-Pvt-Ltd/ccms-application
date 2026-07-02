@@ -70,10 +70,11 @@ If `start_date` or `end_date` is missing or unparseable, `null` is used and no d
 
 ## Frontend
 
-Date range pickers are available on two pages:
+Date range pickers are available on three pages:
 
 | Page | Route | File |
 |---|---|---|
+| Dashboard | `/dashboard` | `dashboard-view.html` + `dashboard-controller.js` |
 | Monitor & Control | `/monitorandcontrol` | `monitorandcontrol-list.html` + `monitorandcontrol-controllers.js` |
 | Public Monitor (Map) | `/public_monitor` | `map-view.html` + `map-controller.js` |
 
