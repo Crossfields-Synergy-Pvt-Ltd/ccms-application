@@ -186,7 +186,7 @@ dcuCntl.controller('viewModelCntroler_updated', ['$scope','$modalInstance', 'dcu
 	    }
 }]);
 
-dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, config) 	{
+dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, inform, config) 	{
 	
 	 $scope.selected_scheduler = {};
 	  dcuFactory.getAllScheduler("schedule_1").then(function(data){
@@ -256,13 +256,13 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
   		    google.maps.event.addDomListener(window, "load", initialize());
   		    
   	  };
-				$scope.ok = function (schedules_name) {	
-				$scope.schedules_name=schedules_name;
-				alert($scope.schedules_name)
-				$scope.dcu;
-				dcuFactory.add($scope.dcu);
-				$state.reload();
-				$state.go('dashboard.dcu');
+				$scope.ok = function () {	
+				dcuFactory.add($scope.dcu).then(function (response) {
+					inform.add("DCU saved successfully", {ttl: 3000, type: "success"});
+					$state.go('dashboard.dcu');
+				}, function (error) {
+					inform.add("Failed to save DCU: " + (error.data || error.statusText), {ttl: 5000, type: "danger"});
+				});
 		};
 
 				$scope.cancel = function () {
@@ -271,7 +271,7 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
 		
 })
       
-dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,dcuFactory, config) 	{
+dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,dcuFactory, inform, config) 	{
 	
 	$scope.dcu = $stateParams.gateway_serial_number;
 	console.log($scope.dcu)
@@ -354,10 +354,12 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
 }    
 				
 				$scope.update=function(){
-				$scope.dcu;
-				dcuFactory.add($scope.dcu);
-				$state.reload();
-				$state.go('dashboard.dcu');
+				dcuFactory.add($scope.dcu).then(function (response) {
+					inform.add("DCU updated successfully", {ttl: 3000, type: "success"});
+					$state.go('dashboard.dcu');
+				}, function (error) {
+					inform.add("Failed to update DCU: " + (error.data || error.statusText), {ttl: 5000, type: "danger"});
+				});
 		};
 		
 				$scope.close = function () {

@@ -32,8 +32,8 @@ public class HandShake {
 	private String mobile_no ;
 	private String imsi_number;
 	private String iccid_number;
-	private float lat;
-	private float lang;
+	private String lat;
+	private String lang;
 	private int crc;
 	private int csq;
 	
@@ -466,16 +466,16 @@ public class HandShake {
 		this.iccid_number = iccid_number;
 	}
 	
-	public float getLat() {
+	public String getLat() {
 		return lat;
 	}
-	public void setLat(float lat) {
+	public void setLat(String lat) {
 		this.lat = lat;
 	}
-	public float getLang() {
+	public String getLang() {
 		return lang;
 	}
-	public void setLang(float lang) {
+	public void setLang(String lang) {
 		this.lang = lang;
 	}
 	public int getCrc() {

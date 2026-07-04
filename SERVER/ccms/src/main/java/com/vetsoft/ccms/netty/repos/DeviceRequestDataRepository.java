@@ -72,6 +72,8 @@ public class DeviceRequestDataRepository {
 		update.set("imsi_number", user.getImsi_number());
 		update.set("iccid_number", user.getIccid_number());
 	
+		update.setOnInsert("lat", user.getLat());
+		update.setOnInsert("lang", user.getLang());
 		update.set("crc", user.getCrc());
 		update.set("csq", user.getCsq());
 		update.set("hs_time_stamp", user.getHs_time_stamp());
