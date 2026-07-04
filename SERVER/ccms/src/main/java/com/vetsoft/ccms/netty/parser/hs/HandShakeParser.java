@@ -99,12 +99,12 @@ public class HandShakeParser extends BaseUtil {
 					.substring(index, (index + 30))));
 			index += 30;
 
-			hand_shake_request.setLat(Integer.parseInt(
-					buffer.substring(index, (index + 8)), 16));
+			hand_shake_request.setLat(String.valueOf(Integer.parseInt(
+					buffer.substring(index, (index + 8)), 16)));
 			index += 8;
 
-			hand_shake_request.setLang(Integer.parseInt(
-					buffer.substring(index, (index + 8)), 16));
+			hand_shake_request.setLang(String.valueOf(Integer.parseInt(
+					buffer.substring(index, (index + 8)), 16)));
 			index += 8;
 
 			hand_shake_request.setCrc(Integer.parseInt(
