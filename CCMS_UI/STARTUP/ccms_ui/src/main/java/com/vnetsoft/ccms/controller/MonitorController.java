@@ -39,7 +39,8 @@ public class MonitorController {
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
 			@RequestParam(value = "start_date", required = false) String startDateStr,
-			@RequestParam(value = "end_date", required = false) String endDateStr
+			@RequestParam(value = "end_date", required = false) String endDateStr,
+			@RequestParam(value = "search", required = false) String search
 			) {
 	
 		if(logger.isDebugEnabled()){
@@ -49,7 +50,7 @@ public class MonitorController {
 		try {
 			Date startDate = parseDateParam(startDateStr);
 			Date endDate = parseDateParam(endDateStr);
-			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, startDate, endDate);
+			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, startDate, endDate, search);
 		} catch (Exception e) {
 			logger.error("Exception : " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -238,6 +239,7 @@ public class MonitorController {
 			@RequestParam(value = "end_date", required = false) String endDateStr,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "50") int size,
+			@RequestParam(value = "search", required = false) String search,
 			
 			   @RequestHeader(
 			  "Authorization") String
@@ -255,7 +257,7 @@ public class MonitorController {
 			
 			Date startDate = parseDateParam(startDateStr);
 			Date endDate = parseDateParam(endDateStr);
-			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp, startDate, endDate);
+			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp, startDate, endDate, search);
 			
 			int start = page * size;
 			int end = Math.min(start + size, dcu_list.size());

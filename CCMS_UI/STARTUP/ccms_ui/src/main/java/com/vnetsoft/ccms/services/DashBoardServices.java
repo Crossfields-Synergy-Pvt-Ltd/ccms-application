@@ -9,11 +9,11 @@ import com.vnetsoft.ccms.pojo.SinglePhaseMeterData;
 import com.vnetsoft.ccms.pojo.server.InstantMeterData;
 
 public interface DashBoardServices {
-	public MonitorControlCount getDahsBoardCountstats(String district, String mandal, String gp, Date startDate, Date endDate) throws Exception;
+	public MonitorControlCount getDahsBoardCountstats(String district, String mandal, String gp, Date startDate, Date endDate, String search) throws Exception;
 
 	public List<HandShake> getMapData(String district, String mandal, String gp, Date startDate, Date endDate)  throws Exception;
 	
-	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp, Date startDate, Date endDate)  throws Exception;
+	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp, Date startDate, Date endDate, String search)  throws Exception;
 	
 	public InstantMeterData getInstantMeterData(String device_serial_number)  throws Exception;
 

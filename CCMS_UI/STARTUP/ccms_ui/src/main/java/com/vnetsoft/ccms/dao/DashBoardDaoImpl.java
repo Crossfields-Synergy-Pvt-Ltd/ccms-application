@@ -36,7 +36,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
-			String mandal, String gp, Date startDate, Date endDate) throws Exception {
+			String mandal, String gp, Date startDate, Date endDate, String search) throws Exception {
 	
 		MonitorControlCount obj = new MonitorControlCount();
 		
@@ -58,6 +58,13 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		}
 		if (startDate != null && endDate != null) {
 			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+		}
+		if (search != null && !search.isEmpty()) {
+			query.addCriteria(new Criteria().orOperator(
+				Criteria.where("name").regex(search, "i"),
+				Criteria.where("gateway_serial_number").regex(search, "i"),
+				Criteria.where("_id").regex(search, "i")
+			));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 		
@@ -478,7 +485,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	@Override
 	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
-			Date startDate, Date endDate) throws Exception {
+			Date startDate, Date endDate, String search) throws Exception {
 
 		Query query = new Query();
 		
@@ -501,6 +508,13 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		}
 		if (startDate != null && endDate != null) {
 			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+		}
+		if (search != null && !search.isEmpty()) {
+			query.addCriteria(new Criteria().orOperator(
+				Criteria.where("name").regex(search, "i"),
+				Criteria.where("gateway_serial_number").regex(search, "i"),
+				Criteria.where("_id").regex(search, "i")
+			));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
@@ -548,7 +562,11 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			if (startDate != null && endDate != null) {
 				query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
 			}
-			query.addCriteria(Criteria.where("name").regex(dcu_name+ '*'));
+			query.addCriteria(new Criteria().orOperator(
+				Criteria.where("name").regex(dcu_name, "i"),
+				Criteria.where("gateway_serial_number").regex(dcu_name, "i"),
+				Criteria.where("_id").regex(dcu_name, "i")
+			));
 
 			List<HandShake> list = mongoTemplate.find(query,
 					HandShake.class);

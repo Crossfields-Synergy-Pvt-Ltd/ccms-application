@@ -536,6 +536,59 @@ The following files are safe for team members to modify without affecting deploy
 
 ---
 
+## Pull Requests
+
+When creating PRs with `gh pr create`, use this exact format:
+
+### Title
+
+```
+<branch-type>: <issue-title-lowercased-hyphens>
+```
+
+- Extract the branch type prefix from the branch name (`feat`, `fix`, `chore`, `docs`, `refactor`, etc.)
+- Use the issue title, lowercased, with spaces replaced by hyphens
+- No special characters — strip anything that is not `a-z`, `0-9`, `-`, or `:`
+
+**Examples:**
+
+```
+feat: tool-get-operation-progress
+fix: resolve-null-pointer-in-scheduler
+chore: update-dependencies
+```
+
+### Body
+
+```
+Closes #<issue-number>
+
+## <issue title>
+
+<brief description of what the issue addresses>
+
+## What was implemented
+- <bullet list of changes made>
+
+## Verification
+- [ ] <acceptance criterion 1>
+- [ ] <acceptance criterion 2>
+
+## Notes
+- <any additional context, gotchas, or follow-up items>
+```
+
+**Rules:**
+
+1. First line is always the issue reference: `Closes #N` or `Addresses #N`
+2. Followed by the issue title as an `##` heading
+3. A brief one-liner describing what the issue addresses
+4. `## What was implemented` — bullet points of actual changes
+5. `## Verification` — checklist of acceptance criteria fulfilled (copied from the issue)
+6. `## Notes` — additional context, gotchas, or follow-ups (omit if empty)
+
+---
+
 ## Rules
 
 1. **No secrets in Git** — Secrets go in Hostinger's Environment Variables, never in `.env` or any committed file.

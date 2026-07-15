@@ -53,7 +53,9 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 		  $scope.loading = true;
 		  $scope.currentPage = page;
 		  
-		  monitorandcontrolFactory.getAllHandShake($scope.qs_params, page, $scope.pageSize).then(function(data){
+		  var searchParam = ($scope.searchFish && $scope.searchFish.length >= 3) ? $scope.searchFish : null;
+		  
+		  monitorandcontrolFactory.getAllHandShake($scope.qs_params, page, $scope.pageSize, searchParam).then(function(data){
 		        var newData = data.data;
 		        if (page === 0) {
 			        $scope.handshake_Data = newData;
@@ -93,8 +95,8 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	  for (var i = 0; i < $scope.handshake_Data.length; i++) {
 		  var item = $scope.handshake_Data[i];
 		  
-		  // Text search
-		  if (searchText) {
+		  // Text search (frontend-only for short queries; backend handles >= 3 chars)
+		  if (searchText && searchText.length < 3) {
 			  var textMatch = false;
 			  if (item.device_name && item.device_name.toLowerCase().indexOf(searchText) !== -1) textMatch = true;
 			  if (item.id && item.id.toLowerCase().indexOf(searchText) !== -1) textMatch = true;
@@ -138,7 +140,7 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 		  $scope.applyFilters();
 	  });
 	  
-	  monitorandcontrolFactory.getAllCount($scope.qs_params).then(function(data){
+	  monitorandcontrolFactory.getAllCount($scope.qs_params, null).then(function(data){
 	        $scope.count_stats = data.data;
 	        $scope.totalRecords = data.data.total_devices || 0;
 	  });
@@ -153,7 +155,8 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 			  dateParams = '&start_date=' + startDate + '&end_date=' + endDate;
 		  }
 		  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp + dateParams;
-		  monitorandcontrolFactory.getAllCount($scope.qs_params).then(function(data){
+		  var searchParam = ($scope.searchFish && $scope.searchFish.length >= 3) ? $scope.searchFish : null;
+		  monitorandcontrolFactory.getAllCount($scope.qs_params, searchParam).then(function(data){
 		        $scope.count_stats = data.data;
 		        $scope.totalRecords = data.data.total_devices || 0;
 		  });
