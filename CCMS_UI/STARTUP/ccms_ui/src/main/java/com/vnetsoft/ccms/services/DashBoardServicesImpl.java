@@ -18,8 +18,8 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 	
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
-			String mandal, String gp, Date startDate, Date endDate) throws Exception {
-		return dashBoardDao.getDahsBoardCountstats(district, mandal, gp, startDate, endDate);
+			String mandal, String gp, Date startDate, Date endDate, String search) throws Exception {
+		return dashBoardDao.getDahsBoardCountstats(district, mandal, gp, startDate, endDate, search);
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 
 	@Override
 	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
-			Date startDate, Date endDate) throws Exception {
-		return dashBoardDao.getAllHandShakeData(district, mandal, gp, startDate, endDate);
+			Date startDate, Date endDate, String search) throws Exception {
+		return dashBoardDao.getAllHandShakeData(district, mandal, gp, startDate, endDate, search);
 	}
 
 	@Override

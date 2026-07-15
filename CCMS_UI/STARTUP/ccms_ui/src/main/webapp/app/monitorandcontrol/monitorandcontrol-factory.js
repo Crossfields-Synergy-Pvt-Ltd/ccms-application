@@ -6,12 +6,16 @@ app.factory('monitorandcontrolFactory', ['$http', function($http) {
 	 var serviceBase = ''
 		    var obj = {};
 		    
-			 obj.getAllCount = function(qs_params){
-			        return $http.get(serviceBase + '/dashboard/count'+ qs_params);
+			 obj.getAllCount = function(qs_params, search){
+			        var url = serviceBase + '/dashboard/count'+ qs_params;
+			        if (search && search.length > 0) url += '&search=' + encodeURIComponent(search);
+			        return $http.get(url);
 			    }
 	 
-		    obj.getAllHandShake = function(qs_params, page, size){
-		        return $http.post(serviceBase + '/dashboard/instant_data_filter'+ qs_params + '&page=' + page + '&size=' + size);
+		    obj.getAllHandShake = function(qs_params, page, size, search){
+		        var url = serviceBase + '/dashboard/instant_data_filter'+ qs_params + '&page=' + page + '&size=' + size;
+		        if (search && search.length > 0) url += '&search=' + encodeURIComponent(search);
+		        return $http.post(url);
 		    }
     
 		    obj.getAllDcuNames = function(){
