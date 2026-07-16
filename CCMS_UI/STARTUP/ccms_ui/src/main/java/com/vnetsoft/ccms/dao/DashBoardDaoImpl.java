@@ -89,13 +89,22 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				 if(tmp.getManual_mode_status() == 1)
 					 manual_mode++;
 				 
-				 if(tmp.getLight_status() == 1) {
-					 light_on += tmp.getNo_of_lights();
-					 ccms_on++;
-				 }  else {
-					 light_off += tmp.getNo_of_lights();
+		 if(tmp.getLight_status() == 1) {
+				 light_on += tmp.getNo_of_lights();
+			 }  else {
+				 light_off += tmp.getNo_of_lights();
+			 }
+
+			 try {
+				 long hs = Long.valueOf(tmp.getHs_time_stamp());
+				 if((System.currentTimeMillis() - hs) > 900000) {
 					 ccms_off++;
+				 } else {
+					 ccms_on++;
 				 }
+			 } catch (Exception e) {
+				 ccms_off++;
+			 }
 				 if(tmp.getDoor_status() == 1)
 					 door_open++;
 				 

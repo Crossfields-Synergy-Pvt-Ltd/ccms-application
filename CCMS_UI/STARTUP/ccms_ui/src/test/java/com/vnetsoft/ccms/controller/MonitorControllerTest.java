@@ -51,6 +51,8 @@ public class MonitorControllerTest extends AbstractControllerTest {
         counts.light_off = 100;
         counts.online_ccms = 80;
         counts.offline_ccms = 20;
+        counts.ccms_on = 75;
+        counts.ccms_off = 25;
 
         when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null, null)).thenReturn(counts);
 
@@ -61,7 +63,9 @@ public class MonitorControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.mcb_trip_count", is(5)))
             .andExpect(jsonPath("$.light_on", is(400)))
             .andExpect(jsonPath("$.online_ccms", is(80)))
-            .andExpect(jsonPath("$.offline_ccms", is(20)));
+            .andExpect(jsonPath("$.offline_ccms", is(20)))
+            .andExpect(jsonPath("$.ccms_on", is(75)))
+            .andExpect(jsonPath("$.ccms_off", is(25)));
     }
 
     @Test
