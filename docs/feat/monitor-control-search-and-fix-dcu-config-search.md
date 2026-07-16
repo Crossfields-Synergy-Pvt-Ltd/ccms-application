@@ -48,6 +48,7 @@ Additionally, the search was limited to the `name` field only. DCUs are often re
 | 5 | `CCMS_UI/.../controller/MonitorController.java` | Accepted `search` query param in `/count` and `/instant_data_filter`; forwarded to service |
 | 6 | `CCMS_UI/.../app/monitorandcontrol/monitorandcontrol-factory.js` | Added `search` argument to `getAllCount()` and `getAllHandShake()`; appended `&search=` to URLs |
 | 7 | `CCMS_UI/.../app/monitorandcontrol/monitorandcontrol-controllers.js` | Passed `searchFish` (>= 3 chars) to factory; frontend-only filtering kept for < 3 char queries |
+| 8 | `CCMS_UI/.../controller/MonitorControllerTest.java` | Updated `getDahsBoardCountstats` mock calls from 5 to 6 params to match new `search` parameter |
 
 ### 1. DashBoardDao.java
 
@@ -171,6 +172,23 @@ This changes the DCU Configuration search from a single-field malformed regex to
 ```
 
 Queries of 3+ characters are now handled by the backend. Queries of 1-2 characters still use the existing frontend-only filter on the loaded page (to avoid heavy backend regex queries on extremely short strings).
+
+### 8. MonitorControllerTest.java — Test Signature Fix
+
+When `getDahsBoardCountstats()` gained the 6th `search` parameter, the unit test `MonitorControllerTest.java` was not updated, causing **test compilation failure** (even with `-DskipTests`, Maven still compiles test sources):
+
+```
+[ERROR] method getDahsBoardCountstats in interface DashBoardServices cannot be applied to given types;
+  required: java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String
+  found: java.lang.String,java.lang.String,java.lang.String,<nulltype>,<nulltype>
+```
+
+**Fix:** Added a 6th `null` argument for `search` to all 5 mock calls in `MonitorControllerTest.java` (lines 55, 69, 77, 88, 122).
+
+```diff
+- when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null))
++ when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null, null))
+```
 
 ## Search Behavior
 

@@ -52,7 +52,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
         counts.online_ccms = 80;
         counts.offline_ccms = 20;
 
-        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null)).thenReturn(counts);
+        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null, null)).thenReturn(counts);
 
         performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
@@ -66,7 +66,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetDashBoardCounts_EmptyFilter_ReturnsNull() throws Exception {
-        when(dashBpardService.getDahsBoardCountstats("", "", "", null, null)).thenReturn(null);
+        when(dashBpardService.getDahsBoardCountstats("", "", "", null, null, null)).thenReturn(null);
 
         performGet("/dashboard/count?district=&mandal=&gp=")
             .andExpect(status().isOk());
@@ -74,7 +74,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetDashBoardCounts_ServiceThrows_ReturnsNull() throws Exception {
-        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null))
+        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null, null))
             .thenThrow(new RuntimeException("DB Error"));
 
         performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
@@ -85,7 +85,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
     public void testGetDashBoardCounts_AllCountsZero() throws Exception {
         MonitorControlCount counts = new MonitorControlCount();
 
-        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null)).thenReturn(counts);
+        when(dashBpardService.getDahsBoardCountstats("ALL", "ALL", "ALL", null, null, null)).thenReturn(counts);
 
         performGet("/dashboard/count?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
