@@ -160,6 +160,7 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 		        $scope.count_stats = data.data;
 		        $scope.totalRecords = data.data.total_devices || 0;
 		  });
+		  $scope.loading = false;
 		  $scope.loadPage(0);
 	  };
 	  
@@ -201,17 +202,20 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers',function($sc
 	
 	  $scope.turn_on_light = function (obj) {
 		  $scope.obj = obj;
-		$scope.qs_params = '?device_serial_number='+$scope.obj.dcu_details.gateway_serial_number + '&device_identifier='+$scope.obj.dcu_details.serial_number;
+		var params = '?device_serial_number='+$scope.obj.dcu_details.gateway_serial_number + '&device_identifier='+$scope.obj.dcu_details.serial_number;
 	     if($scope.obj.dcu_details.light_status == 1) {
-	   
-			monitorandcontrolFactory.turnOffLights($scope.qs_params).then(function(data){
+			monitorandcontrolFactory.turnOffLights(params).then(function(data){
+				$scope.obj.dcu_details.light_status = 0;
+		      }).catch(function(error){
+		    	  console.error('Failed to turn off light:', error);
 		      });
 	     } else {
-	    
-	    	 monitorandcontrolFactory.turnOnLights($scope.qs_params).then(function(data){
+	    	 monitorandcontrolFactory.turnOnLights(params).then(function(data){
+				$scope.obj.dcu_details.light_status = 1;
+		      }).catch(function(error){
+		    	  console.error('Failed to turn on light:', error);
 		      });
 	     }
-	     
 	  };
 		    
 	  $scope.delete = function(id){ 
