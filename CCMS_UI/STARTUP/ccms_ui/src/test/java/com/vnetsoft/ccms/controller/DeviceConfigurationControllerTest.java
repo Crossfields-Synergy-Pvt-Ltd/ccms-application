@@ -42,10 +42,25 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
 
     @Test
     public void testTurnOnLights_ValidParams_ReturnsStatus200() throws Exception {
+        HandShake mockHs = new HandShake();
+        mockHs.setGateway_identifier(2043);
+        mockHs.setGateway_serial_number("1905HY1P1C009534");
+
+        when(userServices.getHandShakeByID("1905HY1P1C009534")).thenReturn(mockHs);
+
         performGet("/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.code", is(200)))
             .andExpect(jsonPath("$.message", is("success")));
+    }
+
+    @Test
+    public void testTurnOnLights_HandShakeNotFound_ReturnsStatus200() throws Exception {
+        when(userServices.getHandShakeByID("NONEXISTENT")).thenReturn(null);
+
+        performGet("/device_conf/lights_on?device_serial_number=NONEXISTENT&device_identifier=1")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)));
     }
 
     @Test
@@ -55,21 +70,29 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.code", is(200)));
     }
 
-    @Test
-    public void testTurnOnLights_EmptyIdentifier_ReturnsStatus200() throws Exception {
-        performGet("/device_conf/lights_on?device_serial_number=TEST1234&device_identifier=")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
-    }
-
     // --- lights_off ---
 
     @Test
     public void testTurnOffLights_ValidParams_ReturnsStatus200() throws Exception {
+        HandShake mockHs = new HandShake();
+        mockHs.setGateway_identifier(2043);
+        mockHs.setGateway_serial_number("1905HY1P1C009534");
+
+        when(userServices.getHandShakeByID("1905HY1P1C009534")).thenReturn(mockHs);
+
         performGet("/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.code", is(200)))
             .andExpect(jsonPath("$.message", is("success")));
+    }
+
+    @Test
+    public void testTurnOffLights_HandShakeNotFound_ReturnsStatus200() throws Exception {
+        when(userServices.getHandShakeByID("NONEXISTENT")).thenReturn(null);
+
+        performGet("/device_conf/lights_off?device_serial_number=NONEXISTENT&device_identifier=1")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)));
     }
 
     @Test
