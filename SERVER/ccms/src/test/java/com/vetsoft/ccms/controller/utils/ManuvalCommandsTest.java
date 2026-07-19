@@ -118,10 +118,31 @@ public class ManuvalCommandsTest {
     }
 
     @Test
-    public void testTurnOnLight_ContainsNodeId() {
+    public void testTurnOnLight_ContainsDefaultNodeId() {
         String result = ManuvalCommands.turnOnLight(KNOWN_SERIAL, KNOWN_IDENTIFIER);
-        assertTrue("Packet should contain node id 00000001",
+        assertTrue("Packet should contain default node id 00000001",
                 result.toUpperCase().contains("00000001"));
+    }
+
+    @Test
+    public void testTurnOnLight_WithCustomNodeId() {
+        String result = ManuvalCommands.turnOnLight(KNOWN_SERIAL, KNOWN_IDENTIFIER, 5);
+        assertTrue("Packet should contain custom node id 00000005",
+                result.toUpperCase().contains("00000005"));
+    }
+
+    @Test
+    public void testTurnOffLight_WithCustomNodeId() {
+        String result = ManuvalCommands.turnOffLight(KNOWN_SERIAL, KNOWN_IDENTIFIER, 3);
+        assertTrue("Packet should contain custom node id 00000003",
+                result.toUpperCase().contains("00000003"));
+    }
+
+    @Test
+    public void testTurnOnLight_CustomNodeIdProducedDifferentPacket() {
+        String result1 = ManuvalCommands.turnOnLight(KNOWN_SERIAL, KNOWN_IDENTIFIER, 1);
+        String result2 = ManuvalCommands.turnOnLight(KNOWN_SERIAL, KNOWN_IDENTIFIER, 2);
+        assertNotEquals("Packets with different node IDs should differ", result1, result2);
     }
 
     @Test
