@@ -172,65 +172,47 @@ public class DeviceConfigurationController {
 	}
 	
 	@RequestMapping(value = "lights_on", method = RequestMethod.GET)
-	public @ResponseBody Status turnOnLights(@RequestParam("device_serial_number") String device_serial_number, 
+	public @ResponseBody Status turnOnLights(@RequestParam("device_serial_number") String device_serial_number,
 			@RequestParam("device_identifier") String device_identifier) {
-		
-		//http://204.93.160.139:8102/user/push/manuval_on?dcu_serial_number=1905HY1P1C009534&dcu_identifier=2043
-		
+
 		try {
-			
-			
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append( "http://"+serverHost+":8102/user/push/manuval_on?dcu_serial_number=")
-			.append(device_serial_number+ "&dcu_identifier=" + device_identifier );
-			
-			final String uri = sb.toString();
+			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
+			int gatewayId = hand_shake.getGateway_identifier();
+
+			String uri = "http://" + serverHost + ":8102/user/push/manuval_on?dcu_serial_number="
+					+ device_serial_number + "&dcu_identifier=" + gatewayId;
+
 			System.out.println(uri);
-			try {
-			    RestTemplate restTemplate = new RestTemplate();
-			    String result = restTemplate.getForObject(uri, String.class);
-			    System.out.println(result);
-			}catch(Exception e){
-				System.out.println("Exception while pushing sys sync : "+ e.getMessage());
-			}
-			
+			RestTemplate restTemplate = new RestTemplate();
+			String result = restTemplate.getForObject(uri, String.class);
+			System.out.println(result);
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			logger.error(""+e.getStackTrace());
+			logger.error("" + e.getStackTrace());
 		}
 		return new Status(200, "success");
 	}
-	
-	
-	
+
 	@RequestMapping(value = "lights_off", method = RequestMethod.GET)
-	public @ResponseBody Status turnOffLights(@RequestParam("device_serial_number") String device_serial_number, 
+	public @ResponseBody Status turnOffLights(@RequestParam("device_serial_number") String device_serial_number,
 			@RequestParam("device_identifier") String device_identifier) {
-		
-		//http://204.93.160.139:8102/user/push/manuval_on?dcu_serial_number=1905HY1P1C009534&dcu_identifier=2043
-		
+
 		try {
-			
-			
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append( "http://"+serverHost+":8102/user/push/manuval_off?dcu_serial_number=")
-			.append(device_serial_number+ "&dcu_identifier=" + device_identifier );
-			
-			final String uri = sb.toString();
+			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
+			int gatewayId = hand_shake.getGateway_identifier();
+
+			String uri = "http://" + serverHost + ":8102/user/push/manuval_off?dcu_serial_number="
+					+ device_serial_number + "&dcu_identifier=" + gatewayId;
+
 			System.out.println(uri);
-			try {
-			    RestTemplate restTemplate = new RestTemplate();
-			    String result = restTemplate.getForObject(uri, String.class);
-			    System.out.println(result);
-			}catch(Exception e){
-				System.out.println("Exception while pushing sys sync : "+ e.getMessage());
-			}
-			
+			RestTemplate restTemplate = new RestTemplate();
+			String result = restTemplate.getForObject(uri, String.class);
+			System.out.println(result);
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			logger.error(""+e.getStackTrace());
+			logger.error("" + e.getStackTrace());
 		}
 		return new Status(200, "success");
 	}
