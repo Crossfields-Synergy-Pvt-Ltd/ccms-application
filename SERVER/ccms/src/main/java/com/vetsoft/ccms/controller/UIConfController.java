@@ -133,10 +133,11 @@ public class UIConfController {
 	
 	@RequestMapping(value = "/manuval_on", method = RequestMethod.GET)
 	public String manuvalOn(@RequestParam("dcu_serial_number") String dcu_serial_number,
-			@RequestParam("dcu_identifier") int dcu_identifier
+			@RequestParam("dcu_identifier") int dcu_identifier,
+			@RequestParam(value = "node_id", defaultValue = "1") int node_id
 			) {
-		LOG.debug("MANUVAL ON COMMAND : "+ dcu_serial_number + " ID : "+ dcu_identifier);
-		String buffer = ManuvalCommands.turnOnLight(BaseUtil.getHexString(dcu_serial_number), dcu_identifier);
+		LOG.debug("MANUVAL ON COMMAND : "+ dcu_serial_number + " ID : "+ dcu_identifier + " NODE : "+ node_id);
+		String buffer = ManuvalCommands.turnOnLight(BaseUtil.getHexString(dcu_serial_number), dcu_identifier, node_id);
 		
 		serverHandler.sendManuvalOnOffRequest(buffer, dcu_serial_number);
 		return "DONE";
@@ -144,10 +145,11 @@ public class UIConfController {
 	
 	@RequestMapping(value = "/manuval_off", method = RequestMethod.GET)
 	public String manuvalOff(@RequestParam("dcu_serial_number") String dcu_serial_number,
-			@RequestParam("dcu_identifier") int dcu_identifier
+			@RequestParam("dcu_identifier") int dcu_identifier,
+			@RequestParam(value = "node_id", defaultValue = "1") int node_id
 			) {
-		LOG.debug("MANUVAL OFF COMMAND : "+ dcu_serial_number + " ID : "+ dcu_identifier);
-		String buffer = ManuvalCommands.turnOffLight(BaseUtil.getHexString(dcu_serial_number), dcu_identifier);
+		LOG.debug("MANUVAL OFF COMMAND : "+ dcu_serial_number + " ID : "+ dcu_identifier + " NODE : "+ node_id);
+		String buffer = ManuvalCommands.turnOffLight(BaseUtil.getHexString(dcu_serial_number), dcu_identifier, node_id);
 		
 		serverHandler.sendManuvalOnOffRequest(buffer, dcu_serial_number);
 		return "DONE";

@@ -45,6 +45,7 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
         HandShake mockHs = new HandShake();
         mockHs.setGateway_identifier(2043);
         mockHs.setGateway_serial_number("1905HY1P1C009534");
+        mockHs.setLight_node_id(1);
 
         when(userServices.getHandShakeByID("1905HY1P1C009534")).thenReturn(mockHs);
 
@@ -77,6 +78,7 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
         HandShake mockHs = new HandShake();
         mockHs.setGateway_identifier(2043);
         mockHs.setGateway_serial_number("1905HY1P1C009534");
+        mockHs.setLight_node_id(1);
 
         when(userServices.getHandShakeByID("1905HY1P1C009534")).thenReturn(mockHs);
 

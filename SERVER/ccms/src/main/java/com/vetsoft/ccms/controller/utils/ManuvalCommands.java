@@ -17,6 +17,9 @@ public class ManuvalCommands {
 		System.out.println(turnOffLight(BaseUtil.getHexString("1905HY1P1C009534"), 2043));
 	}
 	public static String turnOnLight(String dcu_serial_number, int dcu_identifier) {
+		return turnOnLight(dcu_serial_number, dcu_identifier, 1);
+	}
+	public static String turnOnLight(String dcu_serial_number, int dcu_identifier, int node_id) {
 		
 	StringBuffer sb = new StringBuffer();
 		
@@ -35,7 +38,7 @@ public class ManuvalCommands {
 			.append("01") // opration type
 			.append("0001") // opration value
 			.append("01") // node count
-			.append("00000001") // node id
+			.append(StringUtils.leftPad("" + Integer.toHexString(node_id), 8, "0")) // node id
 		
 				;
 			String buffer= sb.toString();
@@ -48,6 +51,9 @@ public class ManuvalCommands {
 		return sb.toString();
 	}
 	public static String turnOffLight(String dcu_serial_number, int dcu_identifier) {
+		return turnOffLight(dcu_serial_number, dcu_identifier, 1);
+	}
+	public static String turnOffLight(String dcu_serial_number, int dcu_identifier, int node_id) {
 		
 	StringBuffer sb = new StringBuffer();
 		
@@ -65,7 +71,7 @@ public class ManuvalCommands {
 			.append("01") // opration type
 			.append("0000") // opration value
 			.append("01") // node count
-			.append("00000001") // node id
+			.append(StringUtils.leftPad("" + Integer.toHexString(node_id), 8, "0")) // node id
 		
 				;
 			String buffer= sb.toString();

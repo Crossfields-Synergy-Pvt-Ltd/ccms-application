@@ -126,14 +126,17 @@ public class DeviceRequestDataRepository {
 			if(user.getEvent_id() == 304){// light off
 				update.set("light_status", 0);
 				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_node_id", user.getNode_identifier());
 				isRequiredAlert = true;
 			} else if(user.getEvent_id() == 303){ // lights on
 				update.set("light_status", 1);
 				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_node_id", user.getNode_identifier());
 				isRequiredAlert = true;
 			}else if(user.getEvent_id() == 305){ // lights dim
 				update.set("light_status", 2);
 				update.set("light_time_stamp", user.getTime_stamp() + UTC_TO_IST_SEC);
+				update.set("light_node_id", user.getNode_identifier());
 				isRequiredAlert = true;
 			}
 			

@@ -58,6 +58,7 @@ public class HandShake {
 	private String schedules_name	;
 	private int light_status; // 0 - OFF, 1 - ON 
 	private long light_time_stamp;
+	private int light_node_id = 1;
 	private int mcb_trip; // 0 - Resolved , 1 - Occured
 	private long mcb_trip_time_stamp;
 	private int door_status; // 0 - Closed, 1 - Open
@@ -239,6 +240,12 @@ public class HandShake {
 	public void setLight_time_stamp(long light_time_stamp) {
 		this.light_time_stamp = light_time_stamp;
 	}
+	public int getLight_node_id() {
+		return light_node_id;
+	}
+	public void setLight_node_id(int light_node_id) {
+		this.light_node_id = light_node_id;
+	}
 	public int getMcb_trip() {
 		return mcb_trip;
 	}
@@ -362,7 +369,8 @@ public class HandShake {
 				+ ", mandal=" + mandal + ", gp=" + gp + ", district=" + district
 				+ ", connected_load=" + connected_load + ", schedules_name="
 				+ schedules_name + ", light_status=" + light_status
-				+ ", light_time_stamp=" + light_time_stamp + ", mcb_trip="
+				+ ", light_time_stamp=" + light_time_stamp
+				+ ", light_node_id=" + light_node_id + ", mcb_trip="
 				+ mcb_trip + ", mcb_trip_time_stamp=" + mcb_trip_time_stamp
 				+ ", door_status=" + door_status + ", door_time_stamp="
 				+ door_time_stamp + ", cnt_status=" + cnt_status

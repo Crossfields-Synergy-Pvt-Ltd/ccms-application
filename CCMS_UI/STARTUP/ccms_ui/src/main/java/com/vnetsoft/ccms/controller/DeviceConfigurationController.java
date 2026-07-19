@@ -178,9 +178,10 @@ public class DeviceConfigurationController {
 		try {
 			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
 			int gatewayId = hand_shake.getGateway_identifier();
+			int nodeId = hand_shake.getLight_node_id();
 
 			String uri = "http://" + serverHost + ":8102/user/push/manuval_on?dcu_serial_number="
-					+ device_serial_number + "&dcu_identifier=" + gatewayId;
+					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
 
 			System.out.println(uri);
 			RestTemplate restTemplate = new RestTemplate();
@@ -201,9 +202,10 @@ public class DeviceConfigurationController {
 		try {
 			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
 			int gatewayId = hand_shake.getGateway_identifier();
+			int nodeId = hand_shake.getLight_node_id();
 
 			String uri = "http://" + serverHost + ":8102/user/push/manuval_off?dcu_serial_number="
-					+ device_serial_number + "&dcu_identifier=" + gatewayId;
+					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
 
 			System.out.println(uri);
 			RestTemplate restTemplate = new RestTemplate();

@@ -36,62 +36,76 @@ public class UIConfControllerTest {
 
     @Test
     public void testManuvalOn_ValidParams_ReturnsDONE() {
-        String result = controller.manuvalOn("1905HY1P1C009534", 2043);
+        String result = controller.manuvalOn("1905HY1P1C009534", 2043, 1);
         assertEquals("DONE", result);
         verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq("1905HY1P1C009534"));
     }
 
     @Test
     public void testManuvalOn_WithZeroIdentifier_ReturnsDONE() {
-        String result = controller.manuvalOn("TEST1234", 0);
+        String result = controller.manuvalOn("TEST1234", 0, 1);
         assertEquals("DONE", result);
         verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq("TEST1234"));
     }
 
     @Test
     public void testManuvalOn_WithEmptySerial_ReturnsDONE() {
-        String result = controller.manuvalOn("", 2043);
+        String result = controller.manuvalOn("", 2043, 1);
         assertEquals("DONE", result);
         verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq(""));
     }
 
     @Test
     public void testManuvalOn_CallsServerHandler() {
-        controller.manuvalOn("1905HY1P1C009534", 2043);
+        controller.manuvalOn("1905HY1P1C009534", 2043, 1);
         verify(serverHandler).sendManuvalOnOffRequest(anyString(), eq("1905HY1P1C009534"));
+    }
+
+    @Test
+    public void testManuvalOn_WithCustomNodeId_ReturnsDONE() {
+        String result = controller.manuvalOn("DCU001", 2043, 5);
+        assertEquals("DONE", result);
+        verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq("DCU001"));
     }
 
     // --- manuvalOff ---
 
     @Test
     public void testManuvalOff_ValidParams_ReturnsDONE() {
-        String result = controller.manuvalOff("1905HY1P1C009534", 2043);
+        String result = controller.manuvalOff("1905HY1P1C009534", 2043, 1);
         assertEquals("DONE", result);
         verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq("1905HY1P1C009534"));
     }
 
     @Test
     public void testManuvalOff_WithZeroIdentifier_ReturnsDONE() {
-        String result = controller.manuvalOff("TEST1234", 0);
+        String result = controller.manuvalOff("TEST1234", 0, 1);
         assertEquals("DONE", result);
     }
 
     @Test
     public void testManuvalOff_WithEmptySerial_ReturnsDONE() {
-        String result = controller.manuvalOff("", 2043);
+        String result = controller.manuvalOff("", 2043, 1);
         assertEquals("DONE", result);
     }
 
     @Test
     public void testManuvalOff_CallsServerHandler() {
-        controller.manuvalOff("1905HY1P1C009534", 2043);
+        controller.manuvalOff("1905HY1P1C009534", 2043, 1);
         verify(serverHandler).sendManuvalOnOffRequest(anyString(), eq("1905HY1P1C009534"));
     }
 
     @Test
+    public void testManuvalOff_WithCustomNodeId_ReturnsDONE() {
+        String result = controller.manuvalOff("DCU001", 2043, 3);
+        assertEquals("DONE", result);
+        verify(serverHandler, times(1)).sendManuvalOnOffRequest(anyString(), eq("DCU001"));
+    }
+
+    @Test
     public void testManuvalOnOff_ProduceDifferentCalls() {
-        controller.manuvalOn("DCU001", 100);
-        controller.manuvalOff("DCU001", 100);
+        controller.manuvalOn("DCU001", 100, 1);
+        controller.manuvalOff("DCU001", 100, 1);
         verify(serverHandler, times(2)).sendManuvalOnOffRequest(anyString(), eq("DCU001"));
     }
 
