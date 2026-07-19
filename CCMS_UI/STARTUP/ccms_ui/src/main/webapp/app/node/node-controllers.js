@@ -41,7 +41,9 @@ nodeCntl.controller('nodeListControllers', function($scope, $state,$stateParams,
 	  };
 		    
 	  $scope.delete = function(id){ 
-		  userFactory.delete(id);
+		  nodeFactory.delete(id).catch(function(error){
+			  console.log("Delete failed", error);
+		  });
 	  }
 	  
 	  $scope.deleteconf = function (id) {	
@@ -67,7 +69,9 @@ nodeCntl.controller('nodeAddControllers', function($scope, $state,$stateParams, 
 		 
 				$scope.ok = function () {	
 				$scope.node;
-				nodeFactory.add($scope.node);
+				nodeFactory.add($scope.node).catch(function(error){
+					console.log("Add failed", error);
+				});
 				$state.reload();
 				$state.go('user.node');
 		};
@@ -85,7 +89,9 @@ nodeCntl.controller('nodeUpdateControllers', function($scope, $state,$stateParam
 				
 				$scope.update=function(){
 				$scope.node;
-				nodeFactory.add($scope.node);
+				nodeFactory.add($scope.node).catch(function(error){
+					console.log("Update failed", error);
+				});
 				$state.reload();
 				$state.go('user.node');
 		};

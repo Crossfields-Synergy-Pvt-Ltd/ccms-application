@@ -1,5 +1,6 @@
 package com.vnetsoft.ccms.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.vnetsoft.ccms.pojo.Status;
 import com.vnetsoft.ccms.pojo.Node;
@@ -35,6 +37,7 @@ public class NodeController {
 				logger.debug(obj);
 			}
 			nodeServices.addEntity(obj);
+			triggerNodeConfigSync();
 			return new Status(200, "Success");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
@@ -48,18 +51,17 @@ public class NodeController {
 		if (logger.isDebugEnabled()) {
 			logger.debug("GET ALL REQUEST RECIVED");
 		}
-		List<Node> userList = null;
 		try {
-			userList = nodeServices.getEntityList();
+			List<Node> userList = nodeServices.getEntityList();
 			if (logger.isDebugEnabled()) {
 				logger.debug(userList);
 			}
+			return userList;
 		} catch (Exception e) {
 			System.out.println("Exception : " + e);
 			e.printStackTrace();
+			return Collections.emptyList();
 		}
-
-		return userList;
 	}
 
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
@@ -67,11 +69,21 @@ public class NodeController {
 
 		try {
 			nodeServices.deleteEntity(id);
+			triggerNodeConfigSync();
 			return new Status(1, "Employee deleted Successfully !");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
 		}
 
+	}
+
+	private void triggerNodeConfigSync() {
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getForObject("http://localhost:8080/device_conf/sync_node_conf_all", String.class);
+		} catch (Exception e) {
+			logger.error("Auto-sync node config failed: " + e.getMessage());
+		}
 	}
 
 }

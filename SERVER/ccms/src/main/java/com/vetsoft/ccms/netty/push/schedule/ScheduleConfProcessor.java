@@ -14,13 +14,14 @@ public class ScheduleConfProcessor {
 	public static Logger LOG =  LoggerFactory.getLogger(ScheduleConfProcessor.class);
 	
 	public static String getSchedulerConfZeroByteResponse(
-			DownloadContentRequest obj) {
+			DownloadContentRequest obj, int totalFileSize) {
 
 
 		
 		StringBuffer sb = new StringBuffer();
 		
 		try {
+			String offsetHex = StringUtils.leftPad(Integer.toHexString(totalFileSize), 8, "0");
 			
 			sb.append("55AA55AA")
 			.append(obj.protocol_version)
@@ -33,7 +34,7 @@ public class ScheduleConfProcessor {
 			.append("00")
 			.append(obj.file_type)
 			.append(obj.file_identifier)
-			.append("000000AB") // chunk off set
+			.append(offsetHex) // chunk off set = total file size
 			.append("0000")// 850/2 byte
 						;
 			String buffer= sb.toString();
@@ -85,11 +86,16 @@ public class ScheduleConfProcessor {
 	
 	}
 
-	public static String getSchedulerConfigurationFileInitResponse(DeviceDownloadInitRequest obj) {
+	public static String getSchedulerConfigurationFileInitResponse(DeviceDownloadInitRequest obj, String scheduleData) {
 	
 	StringBuffer sb = new StringBuffer();
 
 	try {
+		int totalFileSize = 0;
+		if (scheduleData != null && !scheduleData.isEmpty()) {
+			totalFileSize = scheduleData.length() / 2;
+		}
+		String totalFileSizeHex = StringUtils.leftPad(Integer.toHexString(totalFileSize), 8, "0");
 		
 		sb.append("55AA55AA")
 		.append(obj.protocol_version)
@@ -102,9 +108,7 @@ public class ScheduleConfProcessor {
 		.append("00")
 		.append(obj.file_type)
 		.append(obj.file_identifier)
-		//.append(obj.file_identifier)
-		//.append(StringUtils.leftPad("" + Integer.toHexString(total_file_size), 8, "0"))
-		.append(StringUtils.leftPad("" + "AB", 8, "0"))// change as per no of scheduler currently hard coded for 2 action AB
+		.append(totalFileSizeHex)
 		.append("0200")
 		;
 		String buffer= sb.toString();

@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,12 +38,6 @@ public class DCUDaoImpl implements DCUDao {
 	public MongoTemplate getMongoTemplate() {
 		return mongoTemplate;
 	}
-
-	@Autowired
-	SessionFactory sessionFactory;
-
-	Session session = null;
-	Transaction tx = null;
 
 	@Override
 	public boolean addDCU(DCU user) throws Exception {
@@ -307,6 +298,13 @@ public class DCUDaoImpl implements DCUDao {
 	}
 
 	@Override
+	public List<HandShake> findHandShakeBySchedulesName(String schedulesName) throws Exception {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("schedules_name").is(schedulesName));
+		return mongoTemplate.find(query, HandShake.class);
+	}
+
+	@Override
 	public List<SinglePhaseMeterData> getByMeterDataBetweenDate(String id, String start_date,
 			String end_date) throws Exception {
 		List<SinglePhaseMeterData> list = null;
@@ -496,7 +494,7 @@ public class DCUDaoImpl implements DCUDao {
 
 		List<SchedulerConfiguration> list = mongoTemplate.find(query, SchedulerConfiguration.class);
 
-		return list.get(0);
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override

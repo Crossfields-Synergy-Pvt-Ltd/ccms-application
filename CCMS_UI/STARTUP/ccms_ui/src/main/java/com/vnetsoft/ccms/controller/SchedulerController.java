@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
+import com.vnetsoft.ccms.pojo.HandShake;
 import com.vnetsoft.ccms.pojo.SchedulerConfiguration;
 import com.vnetsoft.ccms.pojo.Status;
 import com.vnetsoft.ccms.services.DCUServices;
@@ -38,9 +40,23 @@ public class SchedulerController {
 				obj.setScheduleId(System.currentTimeMillis());
 			
 			userServices.addSchedulerConfiguration(obj);
+			triggerScheduleSync(obj.getSchedules_name());
 			return new Status(200, "Success");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
+		}
+	}
+	
+	private void triggerScheduleSync(String schedulesName) {
+		try {
+			List<HandShake> dcus = userServices.findHandShakeBySchedulesName(schedulesName);
+			RestTemplate restTemplate = new RestTemplate();
+			for (HandShake hs : dcus) {
+				String uri = "http://localhost:8080/device_conf/sync_schduler_conf?id=" + hs.getGateway_serial_number();
+				restTemplate.getForObject(uri, String.class);
+			}
+		} catch (Exception e) {
+			logger.error("Auto-sync schedule config failed: " + e.getMessage());
 		}
 	}
 	

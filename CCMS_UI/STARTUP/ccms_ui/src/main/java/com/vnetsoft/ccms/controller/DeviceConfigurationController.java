@@ -144,8 +144,7 @@ public class DeviceConfigurationController {
 		try {
 			HandShake hand_shake = userServices.getHandShakeByID(id);
 			
-			//long scheduler_id = 1561101289928L;
-			obj = userServices.getSchedulerConfigurationById("schedule_1");
+			obj = userServices.getSchedulerConfigurationById(hand_shake.getSchedules_name());
 			System.out.println(obj);
 			
 			String buffer = getSchedulerConfBuffer(obj);
@@ -171,6 +170,32 @@ public class DeviceConfigurationController {
 		return new Status(200, "success");
 	}
 	
+	@RequestMapping(value = "sync_node_conf_all", method = RequestMethod.GET)
+	public @ResponseBody Status syncNodeConfigToAllDCUs() {
+		try {
+			List<HandShake> handShakeList = userServices.getHandShakeList();
+			for (HandShake hs : handShakeList) {
+				syncNodeConfigurations(hs.getGateway_serial_number());
+			}
+			return new Status(200, "Sync all node config triggered for all DCUs");
+		} catch (Exception e) {
+			return new Status(0, e.toString());
+		}
+	}
+
+	@RequestMapping(value = "sync_schduler_conf_all", method = RequestMethod.GET)
+	public @ResponseBody Status syncSchedulerConfigToAllDCUs() {
+		try {
+			List<HandShake> handShakeList = userServices.getHandShakeList();
+			for (HandShake hs : handShakeList) {
+				syncSchedulerConfigurations(hs.getGateway_serial_number());
+			}
+			return new Status(200, "Sync all scheduler config triggered for all DCUs");
+		} catch (Exception e) {
+			return new Status(0, e.toString());
+		}
+	}
+
 	@RequestMapping(value = "lights_on", method = RequestMethod.GET)
 	public @ResponseBody Status turnOnLights(@RequestParam("device_serial_number") String device_serial_number,
 			@RequestParam("device_identifier") String device_identifier) {

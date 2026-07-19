@@ -3,9 +3,6 @@ package com.vnetsoft.ccms.dao;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,14 +25,6 @@ public class NodeDaoImpl implements NodeDao {
 		return mongoTemplate;
 	}
 	
-	
-	@Autowired
-	SessionFactory sessionFactory;
-
-	Session session = null;
-	Transaction tx = null;
-
-
 	@Override
 	public boolean addEntity(Node user) throws Exception {
 		mongoTemplate.save(user, "node_details");
