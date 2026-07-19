@@ -80,16 +80,20 @@ public class ConfigurationDownloadHandler {
 		}else if(request_obj.file_type.equals("04")){ // Schedule conf
 			LOG.debug("SCHEDULER CONF SYN REQUEST : "+ request_obj);
 			
+			String dcu_serial_number = BaseUtil.convertHexToString(request_obj.duc_serial_no);
+			ScheduleConfData obj = db_repose.getScheduleConfData(dcu_serial_number);
+			
 			if(request_obj.file_offset.equals("00000000")){
-				String dcu_serial_number = BaseUtil.convertHexToString(request_obj.duc_serial_no);
-				ScheduleConfData obj = db_repose.getScheduleConfData(dcu_serial_number);
 				response = ScheduleConfProcessor.getSchedulerConfResponse(request_obj, obj.getData());
 				LOG.debug("SENDING SCHEDULER DATA RESPONSE : "+ response);
 			} else {
 				LOG.debug("SENDING SCHEDULER EMPTY RESPONSE : "+ response);
-				response = ScheduleConfProcessor.getSchedulerConfZeroByteResponse(request_obj);
-				String dcu_serial_number = BaseUtil.convertHexToString(request_obj.duc_serial_no);
-				ScheduleConfData obj = db_repose.getScheduleConfData(dcu_serial_number);
+				int totalFileSize = 0;
+				String data = obj.getData();
+				if (data != null && !data.isEmpty()) {
+					totalFileSize = data.length() / 2;
+				}
+				response = ScheduleConfProcessor.getSchedulerConfZeroByteResponse(request_obj, totalFileSize);
 				obj.setStatus("DONE");
 				obj.setLast_sync_time(System.currentTimeMillis());
 				db_repose.saveScheduleConfDataData(obj);

@@ -97,7 +97,7 @@ public class ConfigurationINITHandler {
 					LOG.error("Exception : "+e.getMessage());
 				}
 				if(obj.file_identifier.equalsIgnoreCase(sche_conf_change_request.getFile_identifier())){
-					response = ScheduleConfProcessor.getSchedulerConfigurationFileInitResponse(obj) ;
+					response = ScheduleConfProcessor.getSchedulerConfigurationFileInitResponse(obj, sche_conf_change_request.getData()) ;
 				} else {
 					LOG.error("UNKOWN FILE IDENTIFIER : "+ obj.file_identifier + " "+ sche_conf_change_request.getFile_identifier());
 					response = GWErrorResponse.getERRORResponse(buffer, common_obj, GWErrorResponse.UNKNOWN_FILE_TYPE);

@@ -132,6 +132,18 @@ dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $
 		   })
 	 
 	  };
+
+	  $scope.syncAllNodeConfig = function () {
+		  dcuFactory.syncAllNodeConf().then(function(data){
+			  console.log("Sync all node config triggered", data);
+		  });
+	  };
+
+	  $scope.syncAllSchedulerConfig = function () {
+		  dcuFactory.syncAllSchedulerConf().then(function(data){
+			  console.log("Sync all scheduler config triggered", data);
+		  });
+	  };
 	  $scope.delete = function(id){ 
 		  dcuFactory.delete(id);
 	  }

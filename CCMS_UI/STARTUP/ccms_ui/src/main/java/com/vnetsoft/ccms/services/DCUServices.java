@@ -29,6 +29,8 @@ public interface DCUServices {
 	
 	public HandShake getHandShakeByID(String dcu_serial_number) throws Exception;
 	
+	public List<HandShake> findHandShakeBySchedulesName(String schedulesName) throws Exception;
+	
 	public List<Event> getEventList() throws Exception;
 	
 	public List<Event> getEventListByDate(String id,String start_date, String end_date)

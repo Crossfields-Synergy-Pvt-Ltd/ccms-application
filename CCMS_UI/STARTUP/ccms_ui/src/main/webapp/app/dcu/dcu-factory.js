@@ -66,15 +66,21 @@ app.factory('dcuFactory', ['$http', function($http) {
 					return $http.get(serviceBase+ '/filter/get_vilage?gp=' + qs_params);
 				}
 			    
-				 obj.getAllScheduler = function(){
-				        return $http.get(serviceBase + '/scheduler/list');
-				    }
+			 obj.getAllScheduler = function(){
+			        return $http.get(serviceBase + '/scheduler/list');
+			    }
+		 
+			  obj.syncAllNodeConf = function(){
+			      return $http.get(serviceBase + '/device_conf/sync_node_conf_all');
+			  }
+			  
+			  obj.syncAllSchedulerConf = function(){
+			      return $http.get(serviceBase + '/device_conf/sync_schduler_conf_all');
+			  }
 			 
-				 
-				 
-				  obj.getAllConfSyncStatus= function(qs_params){
-				        return $http.get(serviceBase + '/cloudsms/conf_details_list?id='+ qs_params);
-				    }
+			  obj.getAllConfSyncStatus= function(qs_params){
+			        return $http.get(serviceBase + '/cloudsms/conf_details_list?id='+ qs_params);
+			    }
 				  
 		    return obj;   
 		    

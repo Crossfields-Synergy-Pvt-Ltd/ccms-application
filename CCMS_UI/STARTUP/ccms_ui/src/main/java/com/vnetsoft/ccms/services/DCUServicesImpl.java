@@ -55,9 +55,14 @@ public class DCUServicesImpl implements DCUServices {
 	public List<HandShake> getHandShakeList() throws Exception {
 		return dcuDao.getHandShakeList();
 	}
+	@Override
+	public List<HandShake> findHandShakeBySchedulesName(String schedulesName) throws Exception {
+		return dcuDao.findHandShakeBySchedulesName(schedulesName);
+	}
 
 	@Override
 	public List<Event> getEventList() throws Exception {
+		
 		return dcuDao.getEventList();
 	}
 

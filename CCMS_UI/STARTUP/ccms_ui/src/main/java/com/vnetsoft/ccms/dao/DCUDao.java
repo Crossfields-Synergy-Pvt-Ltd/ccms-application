@@ -29,6 +29,8 @@ public interface DCUDao {
 	
 	public HandShake getHandShakeByID(String dcu_serial_number) throws Exception;
 	
+	public List<HandShake> findHandShakeBySchedulesName(String schedulesName) throws Exception;
+	
 	public List<Event> getEventList() throws Exception;
 	
 	
