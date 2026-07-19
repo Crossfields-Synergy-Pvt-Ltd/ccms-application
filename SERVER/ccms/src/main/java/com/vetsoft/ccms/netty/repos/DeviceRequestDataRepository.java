@@ -51,7 +51,7 @@ public class DeviceRequestDataRepository {
 
 		Update update = new Update();
 		update.set("id", user.getId());
-		// update.set("gateway_identifier", user.getGateway_identifier());
+		update.set("gateway_identifier", user.getGateway_identifier());
 		update.set("protocol_version", user.getProtocol_version());
 		update.set("flag", user.getFlag());
 		update.set("dsn", user.getDsn());
