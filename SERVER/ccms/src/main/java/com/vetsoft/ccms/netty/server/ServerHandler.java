@@ -27,6 +27,10 @@ import com.vetsoft.ccms.netty.pojo.EventStatusRequest;
 import com.vetsoft.ccms.netty.pojo.HandShake;
 import com.vetsoft.ccms.netty.push.ConfigurationDownloadHandler;
 import com.vetsoft.ccms.netty.push.ConfigurationINITHandler;
+import com.vetsoft.ccms.controller.utils.Utiles;
+import com.vetsoft.ccms.netty.pojo.NodeConfData;
+import com.vetsoft.ccms.netty.pojo.ScheduleConfData;
+import com.vetsoft.ccms.netty.repos.DeviceRequestDataRepository;
 
 
 @Component
@@ -111,6 +115,37 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 				
 				ctx.flush();
 				
+				String dcuSerial = hs_req.getGateway_serial_number();
+				try {
+					DeviceRequestDataRepository db_repo = MainBootApp.context.getBean(DeviceRequestDataRepository.class);
+
+					NodeConfData pendingNode = db_repo.findNodeConfDataByDcuId(dcuSerial);
+					if (pendingNode != null) {
+						LOG.info("PENDING NODE CONF FOUND FOR DCU {} - RETRYING INFORM CHANGE ON NEW CHANNEL", dcuSerial);
+						String packet = Utiles.getNodeConfInformationExchangePacket(
+								pendingNode.getFile_identifier(), pendingNode.getDevice_identifier());
+						String CRC = Integer.toHexString(BaseUtil.calculateCRC(
+								BaseUtil.convertHexToString(packet).toCharArray(),
+								BaseUtil.convertHexToString(packet).length()));
+						ctx.writeAndFlush(Unpooled.copiedBuffer(
+								BaseUtil.convertHexToString(packet + CRC), CharsetUtil.ISO_8859_1));
+					}
+
+					ScheduleConfData pendingSched = db_repo.findScheduleConfDataByDcuId(dcuSerial);
+					if (pendingSched != null) {
+						LOG.info("PENDING SCHEDULE CONF FOUND FOR DCU {} - RETRYING INFORM CHANGE ON NEW CHANNEL", dcuSerial);
+						String packet = Utiles.getScheduleConfInformationExchangePacket(
+								pendingSched.getFile_identifier(), pendingSched.getDevice_identifier());
+						String CRC = Integer.toHexString(BaseUtil.calculateCRC(
+								BaseUtil.convertHexToString(packet).toCharArray(),
+								BaseUtil.convertHexToString(packet).length()));
+						ctx.writeAndFlush(Unpooled.copiedBuffer(
+								BaseUtil.convertHexToString(packet + CRC), CharsetUtil.ISO_8859_1));
+					}
+				} catch (Exception e) {
+					LOG.error("ERROR RETRYING PENDING CONFIG ON RECONNECT FOR DCU " + dcuSerial, e);
+				}
+
 			} else if(obj.getCommand_identifier() == Constants.CI_Status_Gateway_Server){
 				if(LOG.isDebugEnabled()){
 					LOG.debug("EVENTS / STATUS REQUEST FROM G/W");
