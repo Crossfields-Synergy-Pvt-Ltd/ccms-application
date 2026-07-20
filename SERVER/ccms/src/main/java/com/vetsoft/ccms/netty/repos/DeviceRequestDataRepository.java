@@ -272,6 +272,20 @@ public class DeviceRequestDataRepository {
 		NodeConfData obj = mongoTemplate.findOne(query, NodeConfData.class);
 		return obj;
 	}
+
+	public NodeConfData findNodeConfDataByDcuId(String serial) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(serial));
+		query.addCriteria(Criteria.where("status").is("PENDDING"));
+		return mongoTemplate.findOne(query, NodeConfData.class);
+	}
+
+	public ScheduleConfData findScheduleConfDataByDcuId(String serial) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(serial));
+		query.addCriteria(Criteria.where("status").is("PENDDING"));
+		return mongoTemplate.findOne(query, ScheduleConfData.class);
+	}
 	
 	
 public DCUSysConfData getDCUConfData(String serial_number) {
