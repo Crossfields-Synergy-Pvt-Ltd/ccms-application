@@ -289,10 +289,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		try {
 				ConfigurationINITHandler.saveConfChangeRequestData(packet, channel_id, conf_type);
 				LOG.debug("MESSAGE TO CLIENT " + channel_id);
-				ChannelHandlerContext tmp = MainBootApp.channels_list.get(channel_id).ctx;
+				ChannelDetails channelDetails = MainBootApp.channels_list.get(channel_id);
 				LOG.debug("PACKET : "+ packet);
-				if(tmp != null){
-					LOG.info("DEVICE IS ONLINE SYSNC SYS CONFIGURATIONS : "+ channel_id + " DEVICE IP : "+ MainBootApp.channels_list.get(channel_id).ip + " DEVICE STATUS "+ tmp.channel().isActive());
+				if(channelDetails != null){
+					ChannelHandlerContext tmp = channelDetails.ctx;
+					LOG.info("DEVICE IS ONLINE SYSNC SYS CONFIGURATIONS : "+ channel_id + " DEVICE IP : "+ channelDetails.ip + " DEVICE STATUS "+ tmp.channel().isActive());
 					tmp.writeAndFlush(Unpooled.copiedBuffer(
 							BaseUtil.convertHexToString(packet), CharsetUtil.ISO_8859_1));
 				} else {
@@ -392,13 +393,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 			ConfigurationINITHandler.saveNodeConfRequestData(node_data, dcu_id,
 					file_idetifier, dcu_identifier);
 			LOG.debug("MESSAGE TO CLIENT " + dcu_id);
-			ChannelHandlerContext tmp = MainBootApp.channels_list.get(dcu_id).ctx;
+			ChannelDetails channelDetails = MainBootApp.channels_list.get(dcu_id);
 			LOG.debug("PACKET : " + chnage_request_packet + " FILE ID "
 					+ file_idetifier);
-			if (tmp != null) {
+			if (channelDetails != null) {
+				ChannelHandlerContext tmp = channelDetails.ctx;
 				LOG.info("DEVICE IS ONLINE SYSNC NODE CONFIGURATIONS : "
 						+ dcu_id + " DEVICE IP : "
-						+ MainBootApp.channels_list.get(dcu_id).ip
+						+ channelDetails.ip
 						+ " DEVICE STATUS " + tmp.channel().isActive());
 				tmp.writeAndFlush(Unpooled.copiedBuffer(
 						BaseUtil.convertHexToString(chnage_request_packet),
@@ -420,10 +422,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 					ConfigurationINITHandler.saveDcuConfRequestData(node_data, dcu_id,
 							file_idetifier, dcu_identifier);
 					LOG.debug("MESSAGE TO CLIENT " + dcu_id);
-					ChannelHandlerContext tmp = MainBootApp.channels_list.get(dcu_id).ctx;
+					ChannelDetails channelDetails = MainBootApp.channels_list.get(dcu_id);
 					LOG.debug("PACKET : "+ chnage_request_packet);
-					if(tmp != null){
-						LOG.info("DEVICE IS ONLINE SYSNC SYS CONFIGURATIONS : "+ dcu_id + " DEVICE IP : "+ MainBootApp.channels_list.get(dcu_id).ip + " DEVICE STATUS "+ tmp.channel().isActive());
+					if(channelDetails != null){
+						ChannelHandlerContext tmp = channelDetails.ctx;
+						LOG.info("DEVICE IS ONLINE SYSNC SYS CONFIGURATIONS : "+ dcu_id + " DEVICE IP : "+ channelDetails.ip + " DEVICE STATUS "+ tmp.channel().isActive());
 						tmp.writeAndFlush(Unpooled.copiedBuffer(
 								BaseUtil.convertHexToString(chnage_request_packet), CharsetUtil.ISO_8859_1));
 					} else {
@@ -444,13 +447,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 			ConfigurationINITHandler.saveSchedulerConfRequestData(node_data, dcu_id,
 					file_idetifier, dcu_identifier);
 			LOG.debug("MESSAGE TO CLIENT " + dcu_id);
-			ChannelHandlerContext tmp = MainBootApp.channels_list.get(dcu_id).ctx;
+			ChannelDetails channelDetails = MainBootApp.channels_list.get(dcu_id);
 			LOG.debug("PACKET : " + chnage_request_packet + " FILE ID "
 					+ file_idetifier);
-			if (tmp != null) {
+			if (channelDetails != null) {
+				ChannelHandlerContext tmp = channelDetails.ctx;
 				LOG.info("DEVICE IS ONLINE SYSNC NODE CONFIGURATIONS : "
 						+ dcu_id + " DEVICE IP : "
-						+ MainBootApp.channels_list.get(dcu_id).ip
+						+ channelDetails.ip
 						+ " DEVICE STATUS " + tmp.channel().isActive());
 				tmp.writeAndFlush(Unpooled.copiedBuffer(
 						BaseUtil.convertHexToString(chnage_request_packet),
@@ -471,12 +475,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		try {
 			
 			LOG.debug("MESSAGE TO CLIENT " + dcu_id);
-			ChannelHandlerContext tmp = MainBootApp.channels_list.get(dcu_id).ctx;
+			ChannelDetails channelDetails = MainBootApp.channels_list.get(dcu_id);
 			LOG.debug("PACKET : " + buffer);
-			if (tmp != null) {
+			if (channelDetails != null) {
+				ChannelHandlerContext tmp = channelDetails.ctx;
 				LOG.info("DEVICE IS ONLINE SYSNC MANUVAL ON/OFF CONFIGURATIONS : "
 						+ dcu_id + " DEVICE IP : "
-						+ MainBootApp.channels_list.get(dcu_id).ip
+						+ channelDetails.ip
 						+ " DEVICE STATUS " + tmp.channel().isActive());
 				/*ByteBuf data = Unpooled.copiedBuffer(
 						BaseUtil.convertHexToString(buffer),
