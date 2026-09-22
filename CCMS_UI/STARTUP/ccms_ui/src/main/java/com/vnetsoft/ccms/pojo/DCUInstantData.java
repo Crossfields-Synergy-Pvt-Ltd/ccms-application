@@ -17,9 +17,8 @@ public class DCUInstantData {
 	List<InstantEventData> event_instant_list = new ArrayList<InstantEventData>();
 	*/
 	HandShake dcu_details;
-	
-	/*DCUConfiguration dcu_configurations;
-	*/
+	DCUConfiguration dcu_configurations;
+	SchedulerConfiguration schedule_configuration;
 	public DCUInstantData() {
 	
 	}
@@ -49,6 +48,22 @@ public class DCUInstantData {
 
 	public void setDcu_details(HandShake dcu_details) {
 		this.dcu_details = dcu_details;
+	}
+
+	public DCUConfiguration getDcu_configurations() {
+		return dcu_configurations;
+	}
+
+	public void setDcu_configurations(DCUConfiguration dcu_configurations) {
+		this.dcu_configurations = dcu_configurations;
+	}
+
+	public SchedulerConfiguration getSchedule_configuration() {
+		return schedule_configuration;
+	}
+
+	public void setSchedule_configuration(SchedulerConfiguration schedule_configuration) {
+		this.schedule_configuration = schedule_configuration;
 	}
 
 	

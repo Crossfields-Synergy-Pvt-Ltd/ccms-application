@@ -18,16 +18,22 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.vnetsoft.ccms.pojo.HandShake;
+import com.vnetsoft.ccms.pojo.DCUConfiguration;
+import com.vnetsoft.ccms.pojo.SchedulerConfiguration;
 import com.vnetsoft.ccms.pojo.server.InstantMeterData;
 import com.vnetsoft.ccms.pojo.MonitorControlCount;
 import com.vnetsoft.ccms.pojo.DCUInstantData;
 import com.vnetsoft.ccms.pojo.ui.MapData;
 import com.vnetsoft.ccms.services.DashBoardServices;
+import com.vnetsoft.ccms.services.DCUServices;
 
 public class MonitorControllerTest extends AbstractControllerTest {
 
     @Mock
     private DashBoardServices dashBpardService;
+
+    @Mock
+    private DCUServices dcuServices;
 
     @InjectMocks
     private MonitorController controller;
@@ -156,6 +162,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
         hs.setLight_status(1);
         hs.setLat("16.4792");
         hs.setLang("80.5469");
+        hs.setSchedules_name("schedule-1");
         hs.setHs_time_stamp(String.valueOf(System.currentTimeMillis() / 1000));
 
         InstantMeterData meterData = new InstantMeterData();
@@ -164,8 +171,19 @@ public class MonitorControllerTest extends AbstractControllerTest {
         when(dashBpardService.getHandShakeByID("DCU001")).thenReturn(hs);
         when(dashBpardService.getInstantMeterData("1905HY1P1C009534")).thenReturn(meterData);
 
+        DCUConfiguration configuration = new DCUConfiguration();
+        configuration.setPhase_2_current_min("0.02");
+        SchedulerConfiguration schedule = new SchedulerConfiguration();
+        schedule.setHandle_0_time("06:00");
+        schedule.setHandle_1_time("18:00");
+        when(dcuServices.getDCUConfigurationByID("1905HY1P1C009534")).thenReturn(configuration);
+        when(dcuServices.getSchedulerConfigurationById("schedule-1")).thenReturn(schedule);
+
         performGet("/dashboard/instant_data_id/DCU001")
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.dcu_details.gateway_serial_number", is("1905HY1P1C009534")))
+            .andExpect(jsonPath("$.dcu_configurations.phase_2_current_min", is("0.02")))
+            .andExpect(jsonPath("$.schedule_configuration.handle_0_time", is("06:00")));
     }
 
     @Test

@@ -6,11 +6,8 @@
 		</div>
 
 		<div class="col-md-8">
-
-			<!-- 				<div loading-indicator class="waiting-box"> -->
-			<!-- 					<span><img -->
-			<!-- 						src="images/waiting.gif" /></span> -->
-			<!-- 				</div> -->
+			<div class="waiting-box" ng-if="loading">Loading switch point information...</div>
+			<div class="alert alert-danger" ng-if="error_message">{{error_message}}</div>
 		</div>
 
 	</div>
@@ -20,7 +17,7 @@
 			<label class="col-md-1">Switch Point</label>
 			<div class="col-md-3">
 				<ui-select tagging tagging-label="('new')"
-					ng-model="selected_dcu.name" style="width: 150px;"
+					ng-model="selected_dcu" style="width: 150px;"
 					theme="bootstrap" title="Choose a DCU"> <ui-select-match
 					theme="bootstrap" placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
 				<ui-select-choices
@@ -41,21 +38,22 @@
 
 	</div>
 
-	<div class="col-md-12" style="margin-top: 10px">
+	<div class="col-md-12" style="margin-top: 10px" ng-if="obj">
 		<div class="panel panel-primary">
 
 			<div class="panel-heading" style="padding: 10px">
 				<div class="col-md-6">
 					<label><a>{{obj.device_name}}({{obj.id}})</a></label>
-					<md-icon class="material-icons"
-						ng-click="modifydcu(obj.dcu_details)" data-toggle="tooltip"
+						<md-icon class="material-icons"
+						ng-click="modifydcu(obj)" data-toggle="tooltip"
 						title="Update DCU Details" style="color:#ffffff"font-size: 20px; height: 20px">edit</md-icon>
 				</div>
 
 
 				<div class="col-md-6" align="right">
 					<i
-						class="fa fa-signal headerIcons  connectivity changeCursorPointer connected"></i>
+						class="fa fa-signal headerIcons connectivity changeCursorPointer"
+						ng-class="{'connected': obj.dcu_details.connection_status == 1, 'disconnected': obj.dcu_details.connection_status != 1}"></i>
 				</div>
 				<br>
 			</div>
@@ -77,7 +75,7 @@
 									<div class=" col-md-6 ">
 										<br> Light
 									</div>
-									<a type="button" ng-click="lighton">
+					<a type="button" ng-click="lighton()">
 										<div ng-if="obj.dcu_details.light_status == 1">
 											<img src='images/lighton.png'>
 										</div>
@@ -96,9 +94,9 @@
 								</div>
 								<br>
 								<div class="row">
-									<div class=" col-md-5">Voltage (A)</div>
+					<div class=" col-md-5">Voltage (V)</div>
 									<div class="col-md-4">
-										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.r_phase_voltage}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.r_phase_voltage}}</button>
 									</div>
 								</div>
 								<br>
@@ -119,7 +117,7 @@
 								<div class="row">
 									<div class=" col-md-5 ">Phase Power (kW)</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.r_phase_voltage}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.active_power}}</button>
 									</div>
 								</div>
 
@@ -138,14 +136,14 @@
 								<div class="row  vcenter">
 									<div class=" col-md-5">Lower current threshold (A)</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo" style="width: 90px">0.02{{obj.dcu_configurations.phase_2_current_min}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.dcu_configurations.phase_2_current_min}}</button>
 									</div>
 								</div>
 								<br>
 								<div class="row  vcenter">
 									<div class=" col-md-5 ">Higher current threshold (A)</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo" style="width: 90px">5{{obj.dcu_configurations.phase_3_current_min}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.dcu_configurations.phase_3_current_min}}</button>
 									</div>
 								</div>
 								<br>
@@ -153,14 +151,14 @@
 								<div class="row ">
 									<div class=" col-md-5">Lower voltage threshold (V)</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo" style="width: 90px">150{{obj.dcu_configurations.phase_2_voltage_min}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.dcu_configurations.phase_2_voltage_min}}</button>
 									</div>
 								</div>
 								<br>
 								<div class="row ">
 									<div class=" col-md-5 ">Higher voltage threshold (V)</div>
 									<div class="col-md-4">
-										<button type="button" class="mdinfo" style="width: 90px">260{{obj.dcu_configurations.phase_3_voltage_min}}</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.dcu_configurations.phase_3_voltage_min}}</button>
 									</div>
 								</div>
 
@@ -176,14 +174,14 @@
 								<div class="row  vcenter">
 									<div class=" col-md-5 ">Schedule ON</div>
 									<div class="col-md-4  ">
-										<button type="button" class="mdinfo" style="width: 90px">18:00</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.schedule_configuration.handle_1_time || 'N/A'}}</button>
 									</div>
 								</div>
 								<br>
 								<div class="row  ">
 									<div class=" col-md-5 ">Schedule OFF</div>
 									<div class="col-md-4  text-center">
-										<button type="button" class="mdinfo" style="width: 90px">6:00</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.schedule_configuration.handle_0_time || 'N/A'}}</button>
 									</div>
 								</div>
 
@@ -200,7 +198,7 @@
 								<br>
 								<div class="row  vcenter">
 									<div class=" col-md-5 ">Wattage</div>
-									<div class="col-md-4  " style="margin-left: 50px">count
+						<div class="col-md-4  " style="margin-left: 50px">{{obj.dcu_details.connected_load}}
 									</div>
 								</div>
 								<br> <label class="md">Calibration file not present</label>
@@ -214,7 +212,7 @@
 										Working lights</div>
 
 									<div class="col-md-4">
-										<button type="button" class="mdinfo" style="width: 90px">N/A</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.dcu_details.no_of_lights}}</button>
 									</div>
 								</div>
 								<br>
@@ -222,7 +220,7 @@
 									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
 										Less load (kW)</div>
 									<div class="col-md-4  ">
-										<button type="button" class="mdinfo" style="width: 90px">N/A</button>
+						<button type="button" class="mdinfo" style="width: 90px">{{obj.meter_data.active_power}}</button>
 									</div>
 								</div>
 
@@ -243,7 +241,7 @@
 									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
 										Overload</div>
 									<div class="col-md-4  ">
-										<button type="button" class="mdinfo">No</button>
+						<button type="button" class="mdinfo">{{obj.dcu_details.high_current == 1 ? 'Occurred' : 'No'}}</button>
 									</div>
 								</div>
 								<br>
@@ -251,7 +249,7 @@
 									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
 										Voltage</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo">In range</button>
+						<button type="button" class="mdinfo">{{obj.dcu_details.high_voltage == 1 ? 'Out of range' : 'In range'}}</button>
 									</div>
 								</div>
 								<br>
@@ -272,7 +270,7 @@
 								<div class="row ">
 									<div class=" col-md-5">Input power supply</div>
 									<div class="col-md-4  text-center">
-										<button type="button" class="mdinfo">Present</button>
+						<button type="button" class="mdinfo">{{obj.dcu_details.main_supply_status == 0 ? 'Present' : 'Absent'}}</button>
 									</div>
 								</div>
 								<br>
@@ -295,7 +293,7 @@
 									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
 										outputsupply</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo">Present</button>
+						<button type="button" class="mdinfo">{{obj.dcu_details.red_phse_no_output == 1 ? 'Absent' : 'Present'}}</button>
 									</div>
 								</div>
 								<br>
@@ -303,7 +301,7 @@
 									<div class=" col-md-5 text-left padding-left-10 padding-top-7">
 										RTU</div>
 									<div class="col-md-4 ">
-										<button type="button" class="mdinfo">On Mains</button>
+						<button type="button" class="mdinfo">{{obj.dcu_details.manual_mode_status == 1 ? 'Manual' : 'On Mains'}}</button>
 									</div>
 								</div>
 								<br>
