@@ -35,11 +35,17 @@ public class UserControllerTest extends AbstractControllerTest {
         configureController(controller);
     }
 
-    // --- login (hardcoded, no MongoDB dependency) ---
+    // --- login (database-backed) ---
 
     @Test
-    public void testLogin_AdminValidCredentials_ReturnsUserWithStatus100() throws Exception {
-        performGet("/superadmin/user/login?name=admin@example.com&password=admin123")
+    public void testLogin_ValidDatabaseCredentials_ReturnsUserWithStatus100() throws Exception {
+        User stored = validUser("admin@example.com", "admin123");
+        stored.setRole("ADMIN");
+        stored.setMonitor_and_controller(true);
+        stored.setHistory(true);
+        when(userServices.getEntityById("admin@example.com")).thenReturn(stored);
+
+        performPost("/superadmin/user/login", "{\"name\":\"admin@example.com\",\"password\":\"admin123\"}")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is("100")))
             .andExpect(jsonPath("$.email", is("admin@example.com")))
@@ -49,19 +55,10 @@ public class UserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testLogin_UserValidCredentials_ReturnsUserWithStatus100() throws Exception {
-        performGet("/superadmin/user/login?name=user@example.com&password=user123")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status", is("100")))
-            .andExpect(jsonPath("$.email", is("user@example.com")))
-            .andExpect(jsonPath("$.role", is("USER")))
-            .andExpect(jsonPath("$.monitor_and_controller", is(false)))
-            .andExpect(jsonPath("$.history", is(false)));
-    }
+    public void testLogin_InvalidPassword_ReturnsStatus00() throws Exception {
+        when(userServices.getEntityById("admin@example.com")).thenReturn(validUser("admin@example.com", "admin123"));
 
-    @Test
-    public void testLogin_InvalidPassword_ReturnsUserWithStatus00() throws Exception {
-        performGet("/superadmin/user/login?name=admin@example.com&password=wrong")
+        performPost("/superadmin/user/login", "{\"name\":\"admin@example.com\",\"password\":\"wrong\"}")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is("00")))
             .andExpect(jsonPath("$.email", is("admin@example.com")));
@@ -69,14 +66,15 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void testLogin_PasswordClearedInResponse() throws Exception {
-        performGet("/superadmin/user/login?name=admin@example.com&password=admin123")
+        when(userServices.getEntityById("admin@example.com")).thenReturn(validUser("admin@example.com", "admin123"));
+        performPost("/superadmin/user/login", "{\"name\":\"admin@example.com\",\"password\":\"admin123\"}")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.password", is("")));
     }
 
     @Test
     public void testLogin_UnknownUser_ReturnsStatus00() throws Exception {
-        performGet("/superadmin/user/login?name=unknown@test.com&password=test")
+        performPost("/superadmin/user/login", "{\"name\":\"unknown@test.com\",\"password\":\"test\"}")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is("00")))
             .andExpect(jsonPath("$.password", is("")));
@@ -103,26 +101,23 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void testCreateUser_ServiceThrows_ReturnsErrorStatus() throws Exception {
-        User newUser = new User();
-        newUser.setEmail("fail@test.com");
+        User newUser = validUser("fail@test.com", "pass123");
 
         when(userServices.addEntity(any(User.class))).thenThrow(new RuntimeException("Save failed"));
 
         performPost("/superadmin/user/create", toJson(newUser))
-            .andExpect(status().isOk())
+            .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code", is(0)));
     }
 
     @Test
-    public void testCreateUser_EmptyEmail_StillProcesses() throws Exception {
+    public void testCreateUser_EmptyEmail_IsRejected() throws Exception {
         User newUser = new User();
         newUser.setPassword("pass");
 
-        when(userServices.addEntity(any(User.class))).thenReturn(true);
-
         performPost("/superadmin/user/create", toJson(newUser))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code", is(0)));
     }
 
     // --- list users ---
@@ -180,5 +175,25 @@ public class UserControllerTest extends AbstractControllerTest {
         performDelete("/superadmin/user/delete/bad-id")
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.code", is(0)));
+    }
+
+    @Test
+    public void testUpdateUser_ReturnsSuccess() throws Exception {
+        User updated = validUser("new@test.com", "new-password");
+        when(userServices.updateEntity("old@test.com", updated)).thenReturn(true);
+
+        performPut("/superadmin/user/update/old@test.com", toJson(updated))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)));
+    }
+
+    private User validUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setRole("USER");
+        return user;
     }
 }

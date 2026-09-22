@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
 	@Id
+	private String email;
+
 	private String firstName;
 	
 	private String lastName;
@@ -14,8 +16,6 @@ public class User {
 	private String password;
 
 	private String mobnum1;
-
-	private String email;
 
 	private String role;
 
@@ -290,7 +290,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [firstName=" + firstName + ", lastName=" + lastName
-				+ ", password=" + password + ", mobnum1=" + mobnum1
+				+ ", password=[REDACTED], mobnum1=" + mobnum1
 				+ ", email=" + email + ", role=" + role + ", status=" + status
 				+ ", full_name=" + full_name + ", address=" + address
 				+ ", taluq=" + taluq + ", district=" + district + ", state=" + state

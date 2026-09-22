@@ -110,13 +110,11 @@ test_endpoint() {
     rm -f "$resp_file"
 }
 
-LOGIN_QS="?name=${SMOKE_ADMIN_EMAIL}&password=${SMOKE_ADMIN_PASSWORD}"
-
 echo "--- AUTH / LOGIN (4 tests) ---" | tee -a "$LOGFILE"
-test_endpoint "Login valid credentials" GET "${BASE}/superadmin/user/login${LOGIN_QS}" 200 '"status":"100"'
-test_endpoint "Login bad password" GET "${BASE}/superadmin/user/login?name=${SMOKE_ADMIN_EMAIL}&password=wrong" 200 '"status":"00"'
-test_endpoint "Login missing name" GET "${BASE}/superadmin/user/login?password=${SMOKE_ADMIN_PASSWORD}" 400 ""
-test_endpoint "Login missing password" GET "${BASE}/superadmin/user/login?name=${SMOKE_ADMIN_EMAIL}" 400 ""
+test_endpoint "Login valid credentials" POST "${BASE}/superadmin/user/login" 200 '"status":"100"' "{\"name\":\"${SMOKE_ADMIN_EMAIL}\",\"password\":\"${SMOKE_ADMIN_PASSWORD}\"}"
+test_endpoint "Login bad password" POST "${BASE}/superadmin/user/login" 200 '"status":"00"' "{\"name\":\"${SMOKE_ADMIN_EMAIL}\",\"password\":\"wrong\"}"
+test_endpoint "Login missing name" POST "${BASE}/superadmin/user/login" 400 "" "{\"password\":\"${SMOKE_ADMIN_PASSWORD}\"}"
+test_endpoint "Login missing password" POST "${BASE}/superadmin/user/login" 400 "" "{\"name\":\"${SMOKE_ADMIN_EMAIL}\"}"
 
 echo "" | tee -a "$LOGFILE"
 echo "--- DASHBOARD (5 tests) ---" | tee -a "$LOGFILE"

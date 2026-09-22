@@ -10,10 +10,15 @@ userCntl.controller('userListControllers', function($scope, $state,$stateParams,
 	  $scope.sortType     = 'id'; // set the default sort type
 	  $scope.sortReverse  = false;  // set the default sort order
 	  $scope.searchFish   = '';     // set the default search/filter term
+	  $scope.listData     = [];
+	  $scope.itemsPerPage = 10;
+	  $scope.currentPage  = 1;
 	  
 	 
 	  userFactory.getAll().then(function(data){
 	        $scope.listData = data.data;
+	    }, function() {
+	        $scope.error = 'Unable to load users.';
 	    });
 	
 	
@@ -25,7 +30,7 @@ userCntl.controller('userListControllers', function($scope, $state,$stateParams,
 
 		    
 	  $scope.delete = function(id){ 
-		  userFactory.delete(id);
+		  return userFactory.delete(id);
 	  }
 	  
 	  $scope.deleteconf = function (id) {	
@@ -51,6 +56,8 @@ userCntl.controller('userListControllers', function($scope, $state,$stateParams,
 userCntl.controller('userAddControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, userFactory, config) 	{
 	
 	$scope.selectedDistrict = '';
+	$scope.user = {};
+	$scope.saving = false;
 	 $scope.districts = config.districts; 
    	  $scope.getMandalOnSelect = function(district) {
    		userFactory.getByMandal($scope.user.district).then(function(data) {
@@ -71,13 +78,14 @@ userCntl.controller('userAddControllers', function($scope, $state,$stateParams, 
    			});
    		}
 	
-				$scope.ok = function () {	
-				$scope.user;
-				console.log($scope.user)
-				userFactory.add($scope.user);
-				
-				$state.reload();
-				$state.go('dashboard.user');
+				$scope.ok = function () {
+				$scope.saving = true;
+				userFactory.add($scope.user).then(function() {
+					$state.go('dashboard.user');
+				}, function(error) {
+					$scope.saving = false;
+					$scope.error = (error.data && error.data.message) || 'Unable to create user.';
+				});
 		};
 
 				$scope.cancel = function () {
@@ -87,6 +95,8 @@ userCntl.controller('userAddControllers', function($scope, $state,$stateParams, 
       
 userCntl.controller('userUpdateControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, userFactory, config) 	{
 	$scope.user = $stateParams.user;
+	$scope.originalEmail = $scope.user && $scope.user.email;
+	$scope.saving = false;
 	$scope.selectedDistrict = '';
 	 $scope.districts = config.districts; 
   
@@ -125,11 +135,13 @@ userCntl.controller('userUpdateControllers', function($scope, $state,$stateParam
    		}
 	  
 				$scope.update=function(){
-				$scope.user;
-				console.log($scope.user)
-				userFactory.add($scope.user);
-				$state.reload();
-				$state.go('dashboard.user');
+				$scope.saving = true;
+				userFactory.update($scope.originalEmail, $scope.user).then(function() {
+					$state.go('dashboard.user');
+				}, function(error) {
+					$scope.saving = false;
+					$scope.error = (error.data && error.data.message) || 'Unable to update user.';
+				});
 		};
 		
 				$scope.close = function () {
@@ -140,9 +152,12 @@ userCntl.controller('userUpdateControllers', function($scope, $state,$stateParam
 userCntl.controller('userDeleteController', function ($scope, $state, $modalInstance, id, userFactory) {
 
 				$scope.ok = function () {
-				userFactory.delete(id);
-				$modalInstance.close($scope.user);
-				$state.reload();
+				userFactory.delete(id).then(function() {
+					$modalInstance.close($scope.user);
+					$state.go('dashboard.user');
+				}, function() {
+					$scope.error = 'Unable to delete user.';
+				});
 	  };
 
 	  			$scope.cancel = function () {

@@ -15,15 +15,15 @@
 					<div class="panel-body">
 
 						<br> <br> <br>
-						<form class="form-horizontal">
+						<form name="userForm" class="form-horizontal" novalidate>
 							<div class="form-group">
 								<label class="col-md-4 control-label formTextWeight">First
 									Name:</label>
 								<div class="col-md-8">
 									<input type="text"
-										class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength"
+										class="form-control"
 										name="FirstName" id="firstName" placeholder="Enter First name"
-										ng-model="user.firstName" ng-change="user.fistName"
+										ng-model="user.firstName"
 										ng-maxlength="50" maxlength="100"
 										ng-pattern="/^[a-zA-Z0-9 ._-]+$/" ng-required="true"
 										required="required">
@@ -56,7 +56,7 @@
 								<div class="col-md-8">
 									<input type="password" class="form-control" name="LastName"
 										id="LastName" placeholder="Enter Password"
-										ng-model="user.password" ng-change="user.last_name"
+										ng-model="user.password"
 										required="required">
 								</div>
 							</div>
@@ -74,13 +74,14 @@
 								<label class="col-md-4 control-label formTextWeight">Role:</label>
 								<div class="col-md-8">
 									<select type="text"
-										class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength"
+										class="form-control"
 										name="LastName" id="LastName" placeholder="Role"
 										ng-model="user.role" ng-change="user.role" ng-maxlength="50"
 										maxlength="100" ng-pattern="/^[a-zA-Z0-9 ._-]+$/"
 										ng-required="true" required="required">
 										<option>ADMIN</option>
 										<option>USER</option>
+										<option>SUPER ADMIN</option>
 									</select>
 								</div>
 							</div>
@@ -115,11 +116,10 @@
 								<div class="col-md-8">
 									<select ng-model="user.state" placeholder="State"
 										class="form-control">
-										<option>Andra Pradesh</option>
+										<option>Andhra Pradesh</option>
 										<option>Arunachal Pradesh</option>
 										<option>Assam</option>
 										<option>Bihar</option>
-										<option>Aandra Pradesh</option>
 										<option>Chhattisgarh</option>
 										<option>Goa</option>
 										<option>Gujarat</option>
@@ -127,22 +127,22 @@
 										<option>Himachal Pradesh</option>
 										<option>Jammu and Kashmir</option>
 										<option>Jharkhand</option>
-										<option>Karnatka</option>
+										<option>Karnataka</option>
 										<option>Kerala</option>
-										<option>Madya Pradesh</option>
+										<option>Madhya Pradesh</option>
 										<option>Maharashtra</option>
 										<option>Manipur</option>
 										<option>Meghalaya</option>
 										<option>Mizoram</option>
 										<option>Nagaland</option>
-										<option>Orissa</option>
+										<option>Odisha</option>
 										<option>Punjab</option>
 										<option>Rajasthan</option>
 										<option>Sikkim</option>
 										<option>Tamil Nadu</option>
-										<option>Telagana</option>
+										<option>Telangana</option>
 										<option>Tripura</option>
-										<option>Uttaranchal</option>
+										<option>Uttarakhand</option>
 										<option>Uttar Pradesh</option>
 										<option>West Bengal</option>
 									</select>
@@ -192,7 +192,7 @@
 			<div class="col-sm-12">
 				<div class="col-sm-12" align="center">
 					<label style="color: #c8ea4d; font-size: 25px; height: 20px">Associate
-						Features to an Users</label> <br>
+										Features to Users</label> <br>
 				</div>
 
 
@@ -391,7 +391,7 @@
 
 
 			<button ng-click="ok()"
-				ng-disabled="myForm.$invalid || myForm.$pending"
+				ng-disabled="saving || userForm.$invalid"
 				class="btn btn-info btn-sm ">ADD</button>
 			<a type="button" ng-click="cancel()" class="btn btn-info btn-sm ">Cancel</a>
 
@@ -410,7 +410,5 @@
 
 
 </div>
-
-
 
 

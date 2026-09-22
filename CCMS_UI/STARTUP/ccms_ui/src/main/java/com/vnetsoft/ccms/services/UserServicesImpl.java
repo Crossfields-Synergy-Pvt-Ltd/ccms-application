@@ -19,6 +19,11 @@ public class UserServicesImpl implements UserServices {
 	}
 
 	@Override
+	public boolean updateEntity(String originalEmail, User user) throws Exception {
+		return userDao.updateEntity(originalEmail, user);
+	}
+
+	@Override
 	public User getEntityById(String id) throws Exception {
 		return userDao.getEntityById(id);
 	}
