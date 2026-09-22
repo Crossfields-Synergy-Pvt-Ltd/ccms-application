@@ -4,6 +4,7 @@ package com.vnetsoft.ccms.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -117,8 +118,8 @@ public class DCUController {
 		}
 		List<HandShake> userList = null;
 		try {
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
 		} catch (Exception e) {
 			System.out.println("Exception : " + e);
@@ -144,8 +145,8 @@ public class DCUController {
 		}
 		List<HandShake> userList = null;
 		try {
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			userList = dashboardService.getHandShakeByIDWithFilter(district, mandal, gp, name, startDate, endDate);
 		} catch (Exception e) {
 			System.out.println("Exception : " + e);
@@ -316,10 +317,17 @@ public class DCUController {
 	
 	
 
-	private Date parseDateParam(String dateStr) {
+	private Date parseDateParam(String dateStr, boolean exclusiveEnd) {
 		if (dateStr == null || dateStr.isEmpty()) return null;
 		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+			if (exclusiveEnd) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				calendar.add(Calendar.DATE, 1);
+				return calendar.getTime();
+			}
+			return date;
 		} catch (Exception e) {
 			logger.warn("Failed to parse date: " + dateStr);
 			return null;
@@ -347,8 +355,8 @@ public class DCUController {
 		
 		List<HandShake> userList = null;
 		try {
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
 			
 			for(HandShake tmp : userList){

@@ -2,6 +2,7 @@ package com.vnetsoft.ccms.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,8 +55,8 @@ public class MonitorController {
 		}
 		
 		try {
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, startDate, endDate, search);
 		} catch (Exception e) {
 			logger.error("Exception : " + e.getMessage());
@@ -80,18 +81,23 @@ public class MonitorController {
 		
 		List<MapData> update_list = new ArrayList<MapData>();
 		try {
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			List<HandShake> tmp_list = dashBpardService.getMapData(district, mandal, gp, startDate, endDate);
 			
 			for(HandShake tmp : tmp_list){
 				MapData obj = new MapData();
+				obj.id = tmp.getGateway_serial_number();
+				obj.name = tmp.getName();
 				obj.lang = tmp.getLang();
 				obj.lat = tmp.getLat();
 				obj.light_status = tmp.getLight_status();
 				obj.mcb_trip = tmp.getMcb_trip();
 				obj.high_current = tmp.getHigh_current();
 				obj.high_voltage = tmp.getHigh_voltage();
+				obj.no_of_lights = tmp.getNo_of_lights();
+				obj.connected_load = tmp.getConnected_load();
+				obj.offline = isOffline(tmp.getHs_time_stamp());
 				
 				obj.info_details = getMapInfoWindowDetails(tmp);
 				update_list.add(obj);
@@ -166,11 +172,25 @@ public class MonitorController {
 	}
 	*/
 	
+	private boolean isOffline(String timestamp) {
+		try {
+			return (System.currentTimeMillis() - Long.valueOf(timestamp)) > 7200000;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+	private String escapeHtml(String value) {
+		if (value == null) return "";
+		return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+				.replace("\"", "&quot;").replace("'", "&#39;");
+	}
+
 	private String getMapInfoWindowDetails(HandShake tmp) {
 		
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("CSA : ").append(tmp.getName()).append("  |   ");
+		sb.append("CSA : ").append(escapeHtml(tmp.getName())).append("  |   ");
 		if(tmp.getLight_status() == 1)
 			sb.append("ON");
 		else
@@ -183,19 +203,26 @@ public class MonitorController {
 		sb.append("<br>");
 		sb.append("Lat, Lang : ").append(tmp.getLat()).append(" , ").append(tmp.getLang());
 		sb.append("<br>");
-		sb.append("Land Mark : ").append(tmp.getDescription());
+		sb.append("Land Mark : ").append(escapeHtml(tmp.getDescription()));
 		sb.append("<br>");
-		sb.append("Device Status : ").append("OKAY");
+		sb.append("Device Status : ").append(isOffline(tmp.getHs_time_stamp()) ? "OFFLINE" : "ONLINE");
 		sb.append("<br>");
 		
 		return sb.toString();
 	}
 
 
-	private Date parseDateParam(String dateStr) {
+	private Date parseDateParam(String dateStr, boolean exclusiveEnd) {
 		if (dateStr == null || dateStr.isEmpty()) return null;
 		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+			if (exclusiveEnd) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				calendar.add(Calendar.DATE, 1);
+				return calendar.getTime();
+			}
+			return date;
 		} catch (Exception e) {
 			logger.warn("Failed to parse date: " + dateStr);
 			return null;
@@ -271,8 +298,8 @@ public class MonitorController {
 				 logger.debug("INSTANT DATA REQUEST");
 			}
 			
-			Date startDate = parseDateParam(startDateStr);
-			Date endDate = parseDateParam(endDateStr);
+			Date startDate = parseDateParam(startDateStr, false);
+			Date endDate = parseDateParam(endDateStr, true);
 			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp, startDate, endDate, search);
 			
 			int start = page * size;

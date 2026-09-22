@@ -25,6 +25,9 @@ public class MonitorControlCount {
 	public long ccms_on;
 	public long ccms_off;
 	public double active_load;
+	public long high_current_count;
+	public long high_voltage_count;
+	public double glow_rate;
 	
 
 }

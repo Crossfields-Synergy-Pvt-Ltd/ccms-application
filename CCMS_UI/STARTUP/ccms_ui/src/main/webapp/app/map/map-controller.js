@@ -1,354 +1,169 @@
-
 var mapCntl = angular.module('mapControllers', []);
 
-mapCntl.controller('mapViewControllers', function($scope, $filter,$rootScope,$interval ,$state,$stateParams, $modal,$location, $http,inform,$rootScope,  mapViewFactory,$window , config) {
-	
-	 $('.select2').select2();
-	
-	$scope.login = function () {
-			$state.go('login')
-	  };
-	  
-	  $scope.AssignedDate = Date; // 'Date' could be assigned too of course:)
-	    
-	    $interval(function(){
-	        // nothing is required here, interval triggers digest automaticaly
-	    },1000)
-	  
-	    
-	    
-	  var gmarkers1 = [];
-	  var markers1 = [];
-  var infowindow = new google.maps.InfoWindow({
-      content: ''
-  });
+mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory, config) {
+    var defaultCenter = { lat: 16.4792, lng: 80.5469 };
+    var map;
+    var markers = [];
+    var infoWindow = new google.maps.InfoWindow({ content: '' });
+    var requestSequence = 0;
 
-  function getPinIcon(color) {
-      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36">' +
-          '<path d="M12 0C5.4 0 0 5.4 0 12c0 6.6 12 24 12 24s12-17.4 12-24C24 5.4 18.6 0 12 0z" fill="' + color + '" stroke="#333" stroke-width="0.5"/>' +
-          '<circle cx="12" cy="12" r="4" fill="#fff"/>' +
-          '</svg>';
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  }
+    $scope.login = function() { $state.go('login'); };
+    $scope.AssignedDate = Date;
+    $scope.districts = config.districts;
+    $scope.district = 'ALL';
+    $scope.mandal = 'ALL';
+    $scope.gp = 'ALL';
+    $scope.selectedDistrict = 'ALL';
+    $scope.selectedMandal = 'ALL';
+    $scope.select_gp = 'ALL';
+    $scope.mandal_list = ['ALL'];
+    $scope.gp_list = ['ALL'];
+    $scope.loading = false;
+    $scope.errorMessage = '';
+    $scope.hasResults = false;
+    $scope.mapMarkerCategories = [];
+    $scope.datePicker = { date: { startDate: null, endDate: null } };
+    $scope.opts = {
+        locale: { applyClass: 'btn-green', applyLabel: 'Apply', fromLabel: 'From', format: 'YYYY-MM-DD', toLabel: 'To', cancelLabel: 'Cancel', customRangeLabel: 'Custom range' },
+        ranges: {
+            'Today': [moment().startOf('day'), moment().endOf('day')],
+            'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+            'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    };
 
-	 
-	  // Our markers
-	  markers1 = [ ];
+    function valueOrAll(value) { return value || 'ALL'; }
 
-	  $scope.district = 'ALL';
-	  $scope.mandal = 'ALL';
-	  $scope.gp = 'ALL';
-  $scope.selectedDistrict = $scope.district;
-  $scope.selectedMandal =  $scope.mandal;
-  $scope.select_gp =  $scope.gp;
-  $scope.districts = config.districts;
+    function queryString() {
+        var params = [
+            'district=' + encodeURIComponent(valueOrAll($scope.selectedDistrict)),
+            'mandal=' + encodeURIComponent(valueOrAll($scope.selectedMandal)),
+            'gp=' + encodeURIComponent(valueOrAll($scope.select_gp))
+        ];
+        if ($scope.datePicker && $scope.datePicker.date && $scope.datePicker.date.startDate && $scope.datePicker.date.endDate) {
+            params.push('start_date=' + encodeURIComponent(moment($scope.datePicker.date.startDate).format('YYYY-MM-DD')));
+            params.push('end_date=' + encodeURIComponent(moment($scope.datePicker.date.endDate).format('YYYY-MM-DD')));
+        }
+        return '?' + params.join('&');
+    }
 
-  $scope.datePicker = { date: { startDate: null, endDate: null } };
-  $scope.opts = {
-      locale: { applyClass: 'btn-green', applyLabel: "Apply", fromLabel: "From", format: "YYYY-MM-DD", toLabel: "To", cancelLabel: 'Cancel', customRangeLabel: 'Custom range' },
-      ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment()],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(29, 'days'), moment()]
-      }
-  };
+    function getPinIcon(color) {
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36">' +
+            '<path d="M12 0C5.4 0 0 5.4 0 12c0 6.6 12 24 12 24s12-17.4 12-24C24 5.4 18.6 0 12 0z" fill="' + color + '" stroke="#333" stroke-width="0.5"/>' +
+            '<circle cx="12" cy="12" r="4" fill="#fff"/></svg>';
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
 
-  $scope.qs_params = '?district=' + $scope.selectedDistrict + '&mandal=' + $scope.selectedMandal + '&gp=' + $scope.select_gp;
-	
-	  console.log($scope.qs_params)
-		mapViewFactory.getAllCount($scope.qs_params).then(function(data){
-		        $scope.listData = data.data;
-		  });
-		 
-	  mapViewFactory.getAllMapDashboardData($scope.qs_params).then(function(data){
-        $scope.dashboardData = data.data;
-        var mid_lat, mid_lang;
-        angular.forEach($scope.dashboardData,function(value,index){
-        	
-        	var details = value.info_details
-        	
-        	/*	" ID - " +value.id + 
-        	"<br> Lights Connected - " +value.mcb_trip 
-        	+ "<br> Non-Glowing Lights -"+value.mcb_trip 
-        	+ "<br> Connected Load -"+value.connected_load 
-        	+ "<br> Latitude - " +value.lat + "<br> Longitude -" +value.lang ;*/
-        	
-			var url =  "<br> "+ details ;
-			mid_lat =  value.lat;
-			mid_lang = value.lang;
-			
-//			if(typeof(value.lat) == "undefined" || typeof(value.lang) == "undefined"){
-//				return
-//			}
-			
-			if(value.mcb_trip == '1'){
-				markers1.push(['0',url, value.lat, value.lang, 'mcb_trip', getPinIcon('#FF0000')]);
-			}
-			
-		/*	if(value.manual_mode_status == '1'){
-					markers1.push(['0',url, value.lat, value.lang, 'manual', getPinIcon('#0000FF')]);
-				}
-			*/
-			if(value.high_current == '1'){
-				markers1.push(['0',url, value.lat, value.lang, 'high_curent', getPinIcon('#FFA500')]);
-			}
-        	
-			if(value.light_status == '1') {
-				markers1.push(['0',url, value.lat, value.lang, 'on', getPinIcon('#00AA00')]);
-			}
-			
-			if(value.light_status == '0'){
-				markers1.push(['0',url, value.lat, value.lang, 'off', getPinIcon('#808080')]);
-			} 
-        })
-	        
-	        map = new google.maps.Map(document.getElementById('map_canvas'), {
-	        	zoom: 11,
-	            panControl: true, //enable pan Control
-	            zoomControl: true, //enable zoom control
-	            scrollwheel: true,
-	            zoomControlOptions: {
-	                style: google.maps.ZoomControlStyle.SMALL, //zoom control size
-	                position: google.maps.ControlPosition.LEFT_CENTER
-	            },
-	            mapTypeId: google.maps.MapTypeId.ROADMAP,
-	            mapTypeControl: true,
-	            scaleControl: true,
-	            mapTypeControlOptions: {
-	                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
-	            },
-	            navigationControl: true,
-	            navigationControlOptions: {
-	                style: google.maps.NavigationControlStyle.ZOOM_PAN
-	            },
-	  		    center: new google.maps.LatLng(16.4792, 80.5469)
-			});
-	        
-	        for (i = 0; i < markers1.length; i++) {
-	            addMarker(markers1[i]);
-	        }
-	        
-			});
-		  
-      
+    function validCoordinate(value) { return value !== null && value !== undefined && value !== '' && isFinite(parseFloat(value)); }
 
-      /**
-       * Function to add marker to map
-       */
+    function markerFor(value) {
+        var categories = [], color = '#808080';
+        if (value.light_status === 1 || value.light_status === '1') { categories.push('on'); color = '#00AA00'; }
+        else if (value.light_status === 0 || value.light_status === '0') categories.push('off');
+        if (value.mcb_trip === 1 || value.mcb_trip === '1') { categories.push('mcb_trip'); color = '#FF0000'; }
+        if (value.high_voltage === 1 || value.high_voltage === '1') { categories.push('high_voltage'); color = '#800080'; }
+        if (value.high_current === 1 || value.high_current === '1') { categories.push('high_current'); color = '#FFA500'; }
+        if (value.offline === true || value.offline === 'true') { categories.push('offline'); color = '#000000'; }
+        if (!categories.length) categories.push('all');
+        return { categories: categories, title: value.name || value.id || '', content: value.info_details || '', lat: parseFloat(value.lat), lng: parseFloat(value.lang), icon: getPinIcon(color) };
+    }
 
-      function addMarker(marker) {
-          var category = marker[4];
-          var title = marker[1];
-          var pos = new google.maps.LatLng(marker[2], marker[3]);
+    function clearMarkers() {
+        angular.forEach(markers, function(marker) { marker.setMap(null); });
+        markers = [];
+    }
 
-          var content = marker[1];
+    function createMap(center) {
+        var element = document.getElementById('map_canvas');
+        if (!map) {
+            map = new google.maps.Map(element, {
+                zoom: 11, panControl: true, zoomControl: true, scrollwheel: true,
+                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL, position: google.maps.ControlPosition.LEFT_CENTER },
+                mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: true, scaleControl: true,
+                mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR },
+                navigationControl: true, navigationControlOptions: { style: google.maps.NavigationControlStyle.ZOOM_PAN },
+                center: new google.maps.LatLng(center.lat, center.lng)
+            });
+        } else map.setCenter(new google.maps.LatLng(center.lat, center.lng));
+    }
 
-          marker1 = new google.maps.Marker({
-              title: title,
-              position: pos,
-              category: category,
-              map: map,
-              icon: {
-                  url: marker[5],
-                  size: new google.maps.Size(24, 36),
-                  origin: new google.maps.Point(0, 0),
-                  anchor: new google.maps.Point(12, 36)
-              }
-          });
+    function addMarker(definition) {
+        var marker = new google.maps.Marker({
+            title: definition.title,
+            position: new google.maps.LatLng(definition.lat, definition.lng),
+            categories: definition.categories,
+            category: definition.categories[0],
+            map: map,
+            icon: { url: definition.icon, size: new google.maps.Size(24, 36), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(12, 36) }
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.setContent(definition.content);
+            infoWindow.open(map, marker);
+            map.panTo(marker.getPosition ? marker.getPosition() : new google.maps.LatLng(definition.lat, definition.lng));
+            map.setZoom(10);
+        });
+        markers.push(marker);
+    }
 
-          gmarkers1.push(marker1);
+    function renderMap(data) {
+        clearMarkers();
+        var definitions = [];
+        angular.forEach(angular.isArray(data) ? data : [], function(value) {
+            if (validCoordinate(value.lat) && validCoordinate(value.lang)) definitions.push(markerFor(value));
+        });
+        createMap(definitions.length ? { lat: definitions[0].lat, lng: definitions[0].lng } : defaultCenter);
+        angular.forEach(definitions, addMarker);
+        $scope.mapMarkerCategories = [];
+        angular.forEach(definitions, function(definition) {
+            $scope.mapMarkerCategories = $scope.mapMarkerCategories.concat(definition.categories);
+        });
+        $scope.hasResults = definitions.length > 0;
+    }
 
-          // Marker click listener
-          google.maps.event.addListener(marker1, 'click', (function (marker1, content) {
-              return function () {
-                  infowindow.setContent(content);
-                  infowindow.open(map, marker1);
-                  map.panTo(this.getPosition());
-                  map.setZoom(10);
-              }
-          })(marker1, content));
-      }
+    function loadData() {
+        var params = queryString(), sequence = ++requestSequence;
+        $scope.qs_params = params;
+        $scope.loading = true;
+        $scope.errorMessage = '';
+        var countDone = false, mapDone = false;
+        function updateLoading() { $scope.loading = !(countDone && mapDone); }
+        mapViewFactory.getAllCount(params).then(function(response) {
+            if (sequence === requestSequence) $scope.listData = response.data || {};
+            countDone = true; updateLoading();
+        }, function() {
+            if (sequence === requestSequence) $scope.errorMessage = 'Unable to load monitor counts.';
+            countDone = true; updateLoading();
+        });
+        mapViewFactory.getAllMapDashboardData(params).then(function(response) {
+            if (sequence === requestSequence) renderMap(response.data);
+            mapDone = true; updateLoading();
+        }, function() {
+            if (sequence === requestSequence) { renderMap([]); $scope.errorMessage = 'Unable to load monitor map data.'; }
+            mapDone = true; updateLoading();
+        });
+    }
 
-      /**
-       * Function to filter markers by category
-       */
-
-      $scope.filterMarkers = function (category) {
-    	  
-          for (i = 0; i < markers1.length; i++) {
-              marker = gmarkers1[i];
-              // If is same category or category not picked
-              if (marker.category == category || category.length === 0) {
-                  marker.setVisible(true);
-              } else if(category == 'all'){
-                  marker.setVisible(true);
-              }
-              // Categories don't match 
-              else {
-                  marker.setVisible(false);
-              }
-          }
-      }
-	 
-	
-		
-		$scope.search = function () {
-		for (var i = 0; i < gmarkers1.length; i++) {
-			gmarkers1[i].setMap(null);
-		}
-		gmarkers1 = [];
-		markers1 = [];
-		var dateParams = '';
-		if ($scope.datePicker && $scope.datePicker.date && $scope.datePicker.date.startDate && $scope.datePicker.date.endDate) {
-			var startDate = moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');
-			var endDate = moment($scope.datePicker.date.endDate).format('YYYY-MM-DD');
-			dateParams = '&start_date=' + startDate + '&end_date=' + endDate;
-		}
-		$scope.qs_params = '?district='+$scope.selectedDistrict+ '&mandal='+$scope.selectedMandal+'&gp='+$scope.select_gp + dateParams;
-		
-		 mapViewFactory.getAllCount($scope.qs_params).then(function(data){
-		        $scope.listData = data.data;
-		  });
-		 
-		mapViewFactory.getAllMapDashboardData($scope.qs_params).then(function(data){
-	        $scope.dashboardData = data.data;
-	        var mid_lat, mid_lang;
-	        angular.forEach($scope.dashboardData,function(value,index){
-	        	
-	        	var details =  " ID - " +value.id + "<br> Lights Connected - " +value.mcb_trip + "<br> Non-Glowing Lights -" +value.mcb_trip + "<br> Connected Load -" +value.connected_load + "<br> Latitude - " +value.lat + "<br> Longitude -" +value.lang ;
-				var url =  "<br> "+ details ;
-				  mid_lat =  value.lat;
-					mid_lang = value.lang;
-					
-				
-				if(value.mcb_trip == '1'){
-					markers1.push(['0',url, value.lat, value.lang, 'mcb_trip', getPinIcon('#FF0000')]);
-				}
-				if(value.manual_mode_status == '1'){
-					markers1.push(['0',url, value.lat, value.lang, 'manual', getPinIcon('#0000FF')]);
-				}
-				if(value.high_current == '1'){
-					markers1.push(['0',url, value.lat, value.lang, 'high_curent', getPinIcon('#FFA500')]);
-				}
-				if(value.light_status == '1') {
-					markers1.push(['0',url, value.lat, value.lang, 'on', getPinIcon('#00AA00')]);
-				}
-				if(value.light_status == '0'){
-					markers1.push(['0',url, value.lat, value.lang, 'off', getPinIcon('#808080')]);
-				} 
-	        	
-	        })
-	        map = new google.maps.Map(document.getElementById('map_canvas'), {
-	        	zoom: 11,
-	            panControl: true, //enable pan Control
-	            zoomControl: true, //enable zoom control
-	            scrollwheel: true,
-	            zoomControlOptions: {
-	                style: google.maps.ZoomControlStyle.SMALL, //zoom control size
-	                position: google.maps.ControlPosition.LEFT_CENTER
-	            },
-	            mapTypeId: google.maps.MapTypeId.ROADMAP,
-	            mapTypeControl: true,
-	            scaleControl: true,
-	            mapTypeControlOptions: {
-	                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
-	            },
-	            navigationControl: true,
-	            navigationControlOptions: {
-	                style: google.maps.NavigationControlStyle.ZOOM_PAN
-	            },
-		center: new google.maps.LatLng(
-			(mid_lat && isFinite(mid_lat)) ? parseFloat(mid_lat) : 16.4792,
-			(mid_lang && isFinite(mid_lang)) ? parseFloat(mid_lang) : 80.5469
-		)
-			});
-	        
-	        for (i = 0; i < markers1.length; i++) {
-	            addMarker(markers1[i]);
-	        }
-	        
-			});
-		  
-		  }
-
-	 
-	 $scope.getMandalOnSelect = function(selectedDistrict) {
-		 mapViewFactory.getByMandal($scope.selectedDistrict).then(function(data) {
-				$scope.mandal_list = data.data;
-			});
-		}
-
-		$scope.getGpOnSelect = function(selectedMandal) {
-			mapViewFactory.getByGp($scope.selectedMandal).then(function(data) {
-				$scope.gp_list = data.data;
-				
-			});
-		}
-		$scope.getMandalOnSelect($scope.selectedDistrict);
-		$scope.getGpOnSelect($scope.selectedMandal);
-	/*$scope.districts = [{
-   		state : "Srikakulam-11",
-   		code : "Srikakulam-11"
-   	},
-   	
-   	{
-   		state : "Visakhapatnam-13",
-   		code : "Visakhapatnam-13"
-   	},
-   	
-   	{
-   		state : "Prakasam-18",
-   		code : "Prakasam-18"
-   	},
-   	
-   	{
-   		state : "Nellore-19",
-   		code : "Nellore-19"
-   	},
-   	
-   	{
-   		state : "Kadapa-20",
-   		code : "Kadapa-20"
-   	},
-   	
-   	{
-   		state : "Kurnool-21",	
-   		code : "Kurnool-21"
-   	},
-	{
-   		state : "Guntur-17",
-   		code : "Guntur-17"
-   	},
-	{
-   		state : "West Godavari-15",
-   		code : "West Godavari-15"
-   	}];*/
-	  
-	 /* $('#mySelect2').on('select2:select', function (e) {
-		    $scope.district = e.params.data;
-		    console.log($scope.district.id);
-		    mapViewFactory.getByMandal($scope.district.id).then(function(data) {
-				$scope.mandal_list = data.data;
-			});
-		});
-	 
-	 $('#mySelect').on('select2:select', function (e) {
-		    $scope.mandal = e.params.data;
-		    console.log($scope.mandal.id);
-		    mapViewFactory.getByGp($scope.mandal.id).then(function(data) {
-				$scope.gp_list = data.data;
-			});
-		    
-		});
-	 
-	 $('#my').on('select2:select', function (e) {
-		 $scope.gp = e.params.data;
-		    console.log($scope.gp.id);
-		    
-		});*/
-	 
-
-	 
+    $scope.search = loadData;
+    $scope.filterMarkers = function(category) {
+        angular.forEach(markers, function(marker) {
+            marker.setVisible(category === 'all' || !category || (marker.categories && marker.categories.indexOf(category) !== -1));
+        });
+    };
+    $scope.getMandalOnSelect = function() {
+        $scope.selectedMandal = 'ALL'; $scope.select_gp = 'ALL'; $scope.gp_list = ['ALL'];
+        mapViewFactory.getByMandal(valueOrAll($scope.selectedDistrict)).then(function(response) {
+            $scope.mandal_list = ['ALL'].concat(response.data || []);
+        }, function() { $scope.mandal_list = ['ALL']; $scope.errorMessage = 'Unable to load mandals.'; });
+    };
+    $scope.getGpOnSelect = function() {
+        $scope.select_gp = 'ALL';
+        mapViewFactory.getByGp(valueOrAll($scope.selectedMandal)).then(function(response) {
+            $scope.gp_list = ['ALL'].concat(response.data || []);
+        }, function() { $scope.gp_list = ['ALL']; $scope.errorMessage = 'Unable to load GPs.'; });
+    };
+    $scope.getMandalOnSelect();
+    $scope.getGpOnSelect();
+    loadData();
 });
