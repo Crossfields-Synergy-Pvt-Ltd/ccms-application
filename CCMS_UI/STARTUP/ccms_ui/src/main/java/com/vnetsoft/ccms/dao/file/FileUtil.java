@@ -200,16 +200,20 @@ List<IOUIObject> io_data = new ArrayList<IOUIObject>();
 				IOUIObject ui_obj = new IOUIObject();
 				
 				// System.out.println(buffer);
-				 if(buffer.length() > 20){
-				 String tmp[] = buffer.split(",");
+					 if(buffer.length() > 20){
+					 String tmp[] = buffer.split(",", -1);
+					 if (tmp.length < 8) continue;
 				 ui_obj.setDcu_id(tmp[0]);
 				 ui_obj.setDate(tmp[1]);
 				 ui_obj.setOn_hours(tmp[2]);
 				 ui_obj.setOff_hours(tmp[3]);
 				 ui_obj.setOn_hour_min(tmp[4]);
 				 ui_obj.setOff_hour_min(tmp[5]);
-				 ui_obj.setCumulative_on_hour(tmp[6]);
-				 ui_obj.setCumulative_off_hour(tmp[7]);
+					 ui_obj.setCumulative_on_hour(tmp[6]);
+					 ui_obj.setCumulative_off_hour(tmp[7]);
+					 ui_obj.setCumulative_on_minutes(durationToMinutes(tmp[6]));
+					 ui_obj.setCumulative_off_minutes(durationToMinutes(tmp[7]));
+					 if (tmp.length > 8) ui_obj.setNode(tmp[8]);
 				
 				io_data.add(ui_obj);
 				 
@@ -228,7 +232,18 @@ List<IOUIObject> io_data = new ArrayList<IOUIObject>();
 		}
 		}
 		return io_data;
-	
+
+	}
+
+	public static int durationToMinutes(String duration) {
+		try {
+			String[] parts = duration.trim().split(":");
+			if (parts.length == 2)
+				return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+			return Integer.parseInt(duration.trim()) * 60;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }

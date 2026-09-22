@@ -45,7 +45,7 @@
 							<div class="col-sm-1"></div>
 							<div class="col-sm-2" align="center">
 								<label for="city">Village</label> <select
-									ng-model="filter.village" class="form-control">
+									ng-model="filterValues.village" class="form-control">
 									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
 								</select>
 							</div>
@@ -68,7 +68,7 @@
 		</div>
 	<div class="col-md-12">
 		<div class="form-group">
-			<label class="col-md-2">Data Concentrator Unit</span></label>
+			<label class="col-md-2">Data Concentrator Unit</label>
 			<div class="col-md-2" align="left">
 				<ui-select tagging tagging-label="('new')"
 					ng-model="selected_dcu.name" style="width: 190px;"
@@ -85,27 +85,29 @@
 
 		<div class="form-group">
 			<label class="col-md-1 " style="margin-top: 5px; padding-left: 10px">Date
-				range</span>
+				 range
 			</label>
 			<div class="col-md-2">
 				<input date-range-picker id="daterange3" name="daterange3"
-					class="form-control date-picker" type="text" style="top: 112px; left: 681.583px; right: auto; display: block;"
+					class="form-control date-picker" type="text"
 					ng-model="datePicker.date" options="opts" required />
 			</div>
 		</div>
 
 		<div class="col-sm-1" align="right">
-			<a type="button" ng-click="showdate(gateway_identifier);"
+			<a type="button" ng-click="showdate();" ng-disabled="loading"
 				class="btn btn-info btn-sm" ng-model="searchFish"
 				data-toggle="tooltip" title="Click here to filter the records">View</a>
 		</div>
 
 		<div class="col-sm-1" align="right">
-			<a type="button" ng-click="export_operationalhour();"
+			<a type="button" ng-click="export_operationalhour();" ng-disabled="loading"
 				class="btn btn-info btn-sm" data-toggle="tooltip"
 				title="Click to Export the data">Export</a>
 		</div>
 
+		<div class="text-danger" ng-if="errorMessage">{{ errorMessage }}</div>
+		<div class="text-info" ng-if="loading">Loading operational hours...</div>
 	</div>
 
 	<div class="col-md-12" style="margin-top: 20px">
@@ -159,11 +161,11 @@
 					</a></td>
 
 					<td align="center" rowspan="2"><a
-						ng-click="sortType = 'cumulative_on_hour'; sortReverse = !sortReverse">
-							Cumilative ON Hours <span
-							ng-show="sortType == 'cumulative_on_hour' && !sortReverse"
+						ng-click="sortType = 'cumulative_on_minutes'; sortReverse = !sortReverse">
+							Cumulative ON Hours <span
+							ng-show="sortType == 'cumulative_on_minutes' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'cumulative_on_hour' && sortReverse"
+							ng-show="sortType == 'cumulative_on_minutes' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 
@@ -193,7 +195,7 @@
 					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
 					<td align="center">{{ $index + 1 }}</td>
 					<td align="center">{{ obj.dcu_id}}</td>
-					<td align="center">R-Phase</td>
+					<td align="center">{{ obj.node || '' }}</td>
 					<td align="center">{{ obj.date}}</td>
 
 

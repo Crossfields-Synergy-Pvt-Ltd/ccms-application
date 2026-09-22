@@ -13,6 +13,7 @@ public class IOUIObject {
 	private String on_hours;
 	
 	private String cumulative_on_hour;
+	private int cumulative_on_minutes;
 
 	private String off_hour_min;
 
@@ -21,6 +22,9 @@ public class IOUIObject {
 	private String off_hours;
 	
 	private String cumulative_off_hour;
+	private int cumulative_off_minutes;
+
+	private String node;
 
 	public String getOn_hours() {
 		return on_hours;
@@ -78,6 +82,9 @@ public class IOUIObject {
 		this.cumulative_on_hour = cumulative_on_hour;
 	}
 
+	public int getCumulative_on_minutes() { return cumulative_on_minutes; }
+	public void setCumulative_on_minutes(int cumulative_on_minutes) { this.cumulative_on_minutes = cumulative_on_minutes; }
+
 	public String getOff_hour_min() {
 		return off_hour_min;
 	}
@@ -101,6 +108,11 @@ public class IOUIObject {
 	public void setCumulative_off_hour(String cumulative_off_hour) {
 		this.cumulative_off_hour = cumulative_off_hour;
 	}
+
+	public int getCumulative_off_minutes() { return cumulative_off_minutes; }
+	public void setCumulative_off_minutes(int cumulative_off_minutes) { this.cumulative_off_minutes = cumulative_off_minutes; }
+	public String getNode() { return node; }
+	public void setNode(String node) { this.node = node; }
 
 	@Override
 	public String toString() {

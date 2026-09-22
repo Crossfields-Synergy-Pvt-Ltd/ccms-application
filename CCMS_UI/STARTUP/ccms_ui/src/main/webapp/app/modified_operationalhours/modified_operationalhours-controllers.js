@@ -1,104 +1,71 @@
-	
 var modified_operationalCntl = angular.module('modified_operationalControllers', []);
 
-modified_operationalCntl.controller('modified_operationalListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,modified_operationalFactory) {
-	 
-	  $scope.sortType     = 'id'; // set the default sort type
-	  $scope.sortReverse  = false;  // set the default sort order
-	  $scope.searchFish   = '';     // set the default search/filter term
-	  
-	  
-	  $scope.datePicker = { date: {startDate: new Date(), endDate: new Date()} };
-	  
-	    $scope.opts = {
-	      locale: {
-	        applyClass: 'btn-green',
-	        applyLabel: "Apply",
-	        fromLabel: "From",
-	        format: "YYYY-MM-DD",
-	        toLabel: "To",
-	        cancelLabel: 'Cancel',
-	        customRangeLabel: 'Custom range' },
+modified_operationalCntl.controller('modified_operationalListControllers', function($scope, modified_operationalFactory) {
+  $scope.sortType = 'id';
+  $scope.sortReverse = false;
+  $scope.searchFish = '';
+  $scope.selected_dcu = {};
+  $scope.loading = false;
+  $scope.errorMessage = null;
+  $scope.todos = [];
+  $scope.list = [];
+  $scope.itemsPerPage = 25;
+  $scope.currentPage = 1;
 
-	      ranges: {
-	         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	        'This Month': [moment().startOf('month'), moment().endOf('month')],
-	        'Last Month': [moment().subtract(29, 'days'), moment()] } };
+  function selectedGateway() {
+    return $scope.selected_dcu && $scope.selected_dcu.name && $scope.selected_dcu.name.gateway_identifier;
+  }
+  function showError(message) { $scope.errorMessage = message; }
+  function clearError() { $scope.errorMessage = null; }
+  function dateParams() {
+    var start = moment($scope.datePicker.date.startDate).format('YYYYMMDD');
+    var end = moment($scope.datePicker.date.endDate).format('YYYYMMDD');
+    return '?id=' + encodeURIComponent(selectedGateway()) + '&start_date=' + encodeURIComponent(start) + '&end_date=' + encodeURIComponent(end);
+  }
 
-	  
-	  $scope.selected_dcu = {};
-	  modified_operationalFactory.getAllDcuNames().then(function(data){
-	        $scope.dcu_data = data.data;
-	    });
-	   
-	    $scope.showdate = function(gateway_identifier) {
-	    	 var start_date = $scope.datePicker.date.startDate
-	    	  var dayWrapper = moment(start_date); 
-	    	  var dayString = dayWrapper.format("YYYYMMDD"); 
-	    	  var start_date = dayString
-	    	  
-	    	  
-	    	   var end_Date = $scope.datePicker.date.endDate
-	    	  var dayWrapper = moment(end_Date); 
-	    	  var dayString = dayWrapper.format("YYYYMMDD"); 
-	    	  var end_Date = dayString
-	    	  
-	
-			$scope.qs_params = '?id=' + $scope.selected_dcu.name.gateway_identifier + '&start_date=' + start_date + '&end_date='+ end_Date;
-			
-			
-			modified_operationalFactory.getAllById($scope.qs_params).then(function(data) {
-//			 			$scope.list = data.data;
-			 			$scope.todos = data.data;
-			 			
-			 			$scope.list = [];
-						  $scope.itemsPerPage = 25;
-						  $scope.currentPage = 1;
-						  
-						  $scope.figureOutTodosToDisplay = function() {
-						    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-						    var end = begin + $scope.itemsPerPage;
-						    $scope.list = $scope.todos.slice(begin, end);
-						  };
-						  
-						  
-						  $scope.figureOutTodosToDisplay();
+  $scope.figureOutTodosToDisplay = function() {
+    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+    $scope.list = $scope.todos.slice(begin, begin + $scope.itemsPerPage);
+  };
+  $scope.pageChanged = function() { $scope.figureOutTodosToDisplay(); };
 
-						  $scope.pageChanged = function() {
-						    $scope.figureOutTodosToDisplay();
-						  };
-			});
-		
-	}
-	    
-	    $scope.export_operationalhour = function(gateway_identifier) {
-	    	 
-	    	 var start_date = $scope.datePicker.date.startDate
-	    	  var dayWrapper = moment(start_date); 
-	    	  var dayString = dayWrapper.format("YYYYMMDD"); 
-	    	  var start_date = dayString
-	    	  
-	    	  
-	    	   var end_Date = $scope.datePicker.date.endDate
-	    	  var dayWrapper = moment(end_Date); 
-	    	  var dayString = dayWrapper.format("YYYYMMDD"); 
-	    	  var end_Date = dayString
-			
-			$scope.qs_params = '?id=' + $scope.selected_dcu.name.gateway_identifier + '&start_date=' + start_date + '&end_date='+ end_Date;
-			
-			modified_operationalFactory.getAllExport($scope.qs_params).then(function(data) {
-			 			$scope.list = data.data;
-			});
-		
-	}
+  $scope.datePicker = { date: {startDate: new Date(), endDate: new Date()} };
+  $scope.opts = {
+    locale: { applyClass: 'btn-green', applyLabel: 'Apply', fromLabel: 'From', format: 'YYYY-MM-DD', toLabel: 'To', cancelLabel: 'Cancel', customRangeLabel: 'Custom range' },
+    ranges: {
+      'Today': [moment().startOf('day'), moment()],
+      'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+      'This Month': [moment().startOf('month'), moment().endOf('month')],
+      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+  };
 
+  modified_operationalFactory.getAllDcuNames().then(function(data) {
+    $scope.dcu_data = data.data;
+  }).catch(function() { showError('Unable to load DCU names.'); });
 
-	    
-	  });
+  $scope.showdate = function() {
+    if (!selectedGateway()) { showError('Please select a DCU first.'); return; }
+    clearError();
+    $scope.loading = true;
+    modified_operationalFactory.getAllById(dateParams()).then(function(data) {
+      $scope.todos = data.data || [];
+      $scope.currentPage = 1;
+      $scope.figureOutTodosToDisplay();
+    }).catch(function() {
+      $scope.todos = [];
+      $scope.list = [];
+      showError('Unable to load light status data.');
+    }).finally(function() { $scope.loading = false; });
+  };
 
-	 
-
-
-
+  $scope.export_operationalhour = function() {
+    if (!selectedGateway()) { showError('Please select a DCU first.'); return; }
+    clearError();
+    $scope.loading = true;
+    modified_operationalFactory.getAllExport(dateParams()).catch(function() {
+      showError('Unable to export light status data.');
+    }).finally(function() { $scope.loading = false; });
+  };
+});

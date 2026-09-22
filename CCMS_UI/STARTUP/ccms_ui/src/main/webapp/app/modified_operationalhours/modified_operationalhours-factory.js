@@ -17,35 +17,21 @@ app.factory('modified_operationalFactory', ['$http', function($http) {
 		        return $http.get(serviceBase + '/dcu/dcu_name_list');
 		    }
 		    
-		    obj.getAllExport = function(qs_params){
-		        return $http.get(serviceBase + '/io/export_operationalhour' +  qs_params)
-		   
-		        .success(function (data, status, headers) {
-		            headers = headers();
-		     
-		            var filename = headers['x-filename'];
-		            var contentType = headers['content-type'];
-		     
-		            var linkElement = document.createElement('a');
-		            try {
-		                var blob = new Blob([data], { type: contentType });
-		                var url = window.URL.createObjectURL(blob);
-		     
-		                linkElement.setAttribute('href', url);
-		                linkElement.setAttribute("download", filename);
-		     
-		                var clickEvent = new MouseEvent("click", {
-		                    "view": window,
-		                    "bubbles": true,
-		                    "cancelable": false
-		                });
-		                linkElement.dispatchEvent(clickEvent);
-		            } catch (ex) {
-		                console.log(ex);
-		            }
-		        }).error(function (data) {
-		            console.log(data);
-		        });
+			    obj.getAllExport = function(qs_params){
+			        return $http.get(serviceBase + '/io/export_operationalhour' + qs_params, { responseType: 'arraybuffer' })
+			            .then(function(response) {
+			                var headers = response.headers();
+			                var filename = headers['x-filename'] || 'operational-hours.csv';
+			                var contentType = headers['content-type'] || 'text/csv';
+			                var linkElement = document.createElement('a');
+			                var blob = new Blob([response.data], { type: contentType });
+			                var url = window.URL.createObjectURL(blob);
+			                linkElement.setAttribute('href', url);
+			                linkElement.setAttribute('download', filename);
+			                linkElement.dispatchEvent(new MouseEvent('click', { view: window, bubbles: true, cancelable: false }));
+			                window.URL.revokeObjectURL(url);
+			                return response;
+			            });
 		    }
 		  
 		    return obj;   
