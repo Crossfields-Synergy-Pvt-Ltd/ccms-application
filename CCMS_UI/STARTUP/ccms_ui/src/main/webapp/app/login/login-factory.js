@@ -8,17 +8,8 @@ app.factory('loginFactory', [
 				
 			var obj = {};
 			
-			obj.login_user = function(qs) {
-			
-				return $http.get(serviceBase + '/superadmin/user/login' + qs)
-						.success(function(data) {
-							
-							/*app.run(function($rootScope) {
-								console.log(data);
-								$rootScope.color = data;
-							});*/
-							return data;
-						});
+			obj.login_user = function(credentials) {
+				return $http.post(serviceBase + '/superadmin/user/login', credentials);
 
 			}
 

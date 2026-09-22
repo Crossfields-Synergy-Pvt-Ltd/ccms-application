@@ -13,10 +13,7 @@ app.controller('loginControllers', function($scope, $state, $stateParams,
 
 			 
 			
-				var qs = '?name=' + $scope.user.name + '&password='
-						+ $scope.user.password;
-				console.log(qs)
-				loginFactory.login_user(qs).then(function(data) {
+				loginFactory.login_user({name: $scope.user.name, password: $scope.user.password}).then(function(data) {
 					$scope.user_privilege = data.data;
 					//console.log($scope.user_privilege);
 					$rootScope.privilege = $scope.user_privilege;
@@ -47,6 +44,8 @@ app.controller('loginControllers', function($scope, $state, $stateParams,
 						
 					}
 					
+				}, function() {
+					inform.add('Unable to contact the login service.', {ttl: 3000, type: 'danger'});
 				});
 
 				

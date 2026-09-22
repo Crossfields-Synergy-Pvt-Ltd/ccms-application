@@ -47,6 +47,13 @@ public abstract class AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON));
     }
 
+    protected ResultActions performPut(String url, String jsonBody) throws Exception {
+        return mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
     protected void expectSuccess(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
               .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
