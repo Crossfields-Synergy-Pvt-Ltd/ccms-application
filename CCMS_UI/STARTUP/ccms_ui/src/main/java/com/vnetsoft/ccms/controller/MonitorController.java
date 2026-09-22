@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vnetsoft.ccms.pojo.DCUInstantData;
+import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.HandShake;
 import com.vnetsoft.ccms.pojo.MonitorControlCount;
+import com.vnetsoft.ccms.pojo.SchedulerConfiguration;
 import com.vnetsoft.ccms.pojo.server.InstantMeterData;
 import com.vnetsoft.ccms.pojo.ui.MapData;
 import com.vnetsoft.ccms.services.DashBoardServices;
+import com.vnetsoft.ccms.services.DCUServices;
 import com.vnetsoft.ccms.util.DateUtils;
 
 
@@ -29,6 +32,9 @@ import com.vnetsoft.ccms.util.DateUtils;
 public class MonitorController {
 	@Autowired
 	DashBoardServices dashBpardService;
+
+	@Autowired
+	DCUServices dcuServices;
 
 
 	static final Logger logger = Logger.getLogger(MonitorController.class);
@@ -207,7 +213,11 @@ public class MonitorController {
 				 logger.debug("INSTANT DATA REQUEST");
 			}
 			
-			HandShake dcu = dashBpardService.getHandShakeByID(id);
+				HandShake dcu = dashBpardService.getHandShakeByID(id);
+				if (dcu == null) {
+					return dcu_instant_data;
+				}
+				dcu_instant_data.setDcu_details(dcu);
 			
 			try {
 				String hs_last_communication_time  = DateUtils.getLastSeenTimeForMonitorControl(Long.valueOf(dcu.getHs_time_stamp()));
@@ -215,8 +225,14 @@ public class MonitorController {
 				}catch(Exception e){
 					System.out.println("Exception while setting last seen date : "+ e.getMessage());
 				}
-			InstantMeterData instant_meter_data = dashBpardService.getInstantMeterData(dcu.getGateway_serial_number());
-			dcu_instant_data.setMeter_data(instant_meter_data);
+				InstantMeterData instant_meter_data = dashBpardService.getInstantMeterData(dcu.getGateway_serial_number());
+				dcu_instant_data.setMeter_data(instant_meter_data);
+				if (dcuServices != null) {
+					DCUConfiguration dcuConfiguration = dcuServices.getDCUConfigurationByID(dcu.getGateway_serial_number());
+					dcu_instant_data.setDcu_configurations(dcuConfiguration);
+					SchedulerConfiguration scheduleConfiguration = dcuServices.getSchedulerConfigurationById(dcu.getSchedules_name());
+					dcu_instant_data.setSchedule_configuration(scheduleConfiguration);
+				}
 			dcu_instant_data.setId(dcu.getGateway_serial_number());
 			dcu_instant_data.setDevice_name(dcu.getName());
 			
