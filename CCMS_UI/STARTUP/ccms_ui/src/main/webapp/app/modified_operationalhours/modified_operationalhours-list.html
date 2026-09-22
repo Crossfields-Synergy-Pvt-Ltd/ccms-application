@@ -4,7 +4,7 @@
 
 		<div class="col-md-6">
 			<h3 class=heading>&nbsp;&nbsp;&nbsp;
-			LIGHT STATUS</h3>
+				MODIFIED OPERATIONAL HOURS</h3>
 		</div>
 
 		<div class="col-md-10"></div>
@@ -14,7 +14,7 @@
 	
 		<div class="col-md-12">
 		<div class="form-group">
-			<label class="col-md-2 " >Data Concentrator Unit (DCU)</span></label>
+			<label class="col-md-2 " >Data Concentrator Unit (DCU)</label>
 			<div class="col-md-2" style="margin-left:5px">
 				<ui-select tagging tagging-label="('new')"
 					ng-model="selected_dcu.name" style="width: 190px;" theme="bootstrap"
@@ -30,7 +30,7 @@
 		</div>
 
 		<div class="form-group">
-			<label class="col-md-1 " style="margin-top: 5px; padding-left: 10px">Date range</span></label>
+			<label class="col-md-1 " style="margin-top: 5px; padding-left: 10px">Date range</label>
 			<div class="col-md-2">
 				<input date-range-picker id="daterange3" name="daterange3"
 					class="form-control date-picker" type="text"
@@ -40,14 +40,16 @@
 		</div>
 
 	<div class="col-sm-1" align="right" >
-		<a type="button" ng-click="showdate(gateway_identifier);" class="btn btn-info btn-sm"
+		<a type="button" ng-click="showdate();" ng-disabled="loading" class="btn btn-info btn-sm"
 			ng-model="searchFish" data-toggle="tooltip"
 			title="Click here to filter the records">View</a>
 	</div>
 
 	<div class="col-sm-1" align="right" >
-		<a type="button" ng-click="export_operationalhour();" class="btn btn-info btn-sm"
+		<a type="button" ng-click="export_operationalhour();" ng-disabled="loading" class="btn btn-info btn-sm"
 			data-toggle="tooltip" title="Click to Export the data">Export</a>
+		<div class="text-danger" ng-if="errorMessage">{{ errorMessage }}</div>
+		<div class="text-info" ng-if="loading">Loading light status data...</div>
 	</div>
 
 	</div>
@@ -124,7 +126,7 @@
 					ng-repeat="obj in list | orderBy:sortType:sortReverse | filter:searchFish">
 					<td align="center">{{ $index + 1 }}</td>
 					<td align="center">{{ obj.dcu_id}}</td>
-					<td align="center">R-Phase</td>
+					<td align="center">{{ obj.node || '' }}</td>
 					<td align="center">{{ obj.yymmdd }}</td>
 					<td align="center">{{ obj.opration_type }}</td>
 					<td align="center">{{ obj.opration_value }}</td>

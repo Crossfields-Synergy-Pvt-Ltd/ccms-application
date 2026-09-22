@@ -2,6 +2,7 @@ package com.vnetsoft.ccms.scheduler;
 
 public class IOStatusTmpPojo {
 	private String dcu_id;
+	private String node;
 
 	private String date;
 
@@ -22,6 +23,9 @@ public class IOStatusTmpPojo {
 	public void setDcu_id(String dcu_id) {
 		this.dcu_id = dcu_id;
 	}
+
+	public String getNode() { return node; }
+	public void setNode(String node) { this.node = node; }
 
 	public String getStatus() {
 		return status;

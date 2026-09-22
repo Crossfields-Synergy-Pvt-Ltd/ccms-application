@@ -73,8 +73,9 @@ public class IODataGenerator {
 						ui_obj.setOff_hours(getOnHour(prv, obj));
 						ui_obj.setOn_hours("00:00");
 					}
-					ui_obj.setDate(obj.getDate());
-					ui_obj.setDcu_id(obj.getDcu_id());
+						ui_obj.setDate(obj.getDate());
+						ui_obj.setDcu_id(obj.getDcu_id());
+						ui_obj.setNode(obj.getNode());
 
 					if (cum_on_min > 60) {
 						cum_on_hour += 1;
@@ -119,6 +120,7 @@ public class IODataGenerator {
 				}
 				ui_obj.setDate(obj.getDate());
 				ui_obj.setDcu_id(obj.getDcu_id());
+				ui_obj.setNode(obj.getNode());
 
 				if (cum_on_min > 60) {
 					cum_on_hour += 1;
@@ -202,6 +204,7 @@ public class IODataGenerator {
 					ui_obj.setHour(Integer.parseInt(tmp[3].trim()));
 					ui_obj.setMin(Integer.parseInt(tmp[4].trim()));
 					ui_obj.setStatus(tmp[6]);
+					ui_obj.setNode(tmp[7].trim());
 					ui_obj.setOpration_resone(Integer.parseInt(tmp[7].trim()));
 
 					meter_data.put(Integer.parseInt(tmp[3].trim() + ""

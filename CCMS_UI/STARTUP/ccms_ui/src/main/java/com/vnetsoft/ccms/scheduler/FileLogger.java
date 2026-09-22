@@ -252,6 +252,7 @@ StringBuffer sb = new StringBuffer();
 			.append(tmp.getOff_hour_min()).append(",")
 			.append(tmp.getCumulative_on_hour()).append(",")
 			.append(tmp.getCumulative_off_hour()).append(",")
+			.append(tmp.getNode()).append(",")
 			
 			;
 			

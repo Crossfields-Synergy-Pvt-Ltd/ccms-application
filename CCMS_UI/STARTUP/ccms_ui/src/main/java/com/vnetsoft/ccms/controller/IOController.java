@@ -2,6 +2,9 @@ package com.vnetsoft.ccms.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +34,6 @@ public class IOController {
 	
 	static final Logger logger = Logger.getLogger(IOController.class);
 
-	static int previous_Op_Val = 0;
-
 	@RequestMapping(value = "/get_io_details/{id}", method = RequestMethod.GET)
 	public @ResponseBody List<IOUIObject_delete> getAllMeterData(
 			@PathVariable("id") String id) {
@@ -49,10 +50,14 @@ public class IOController {
 			io_list = meter_data_services.getIOPojoByID(id);
 			
 			
+			int previousOpVal = Integer.MIN_VALUE;
 			for(IOPojo tmp : io_list) {
-				IOStatusTmpPojo_delete obj = getIODetails(tmp);
+				IOStatusTmpPojo_delete obj = null;
+				if(tmp.getOpration_value() != previousOpVal)
+					obj = getIODetails(tmp);
 				if(obj != null)
 					tmp_io_list.add(obj);
+				previousOpVal = tmp.getOpration_value();
 			}
 			
 			System.out.println(tmp_io_list);
@@ -107,40 +112,20 @@ public class IOController {
 	}
 	
 
-	public static IOStatusTmpPojo_delete getIODetails(IOPojo obj) {
-
-	/*	final DateTimeFormatter formatter = DateTimeFormatter
-				.ofPattern("dd MMM yyyy");
-		//"yyyy-MM-dd HH:mm:ss"
-		long seconds = Long.valueOf(String.valueOf(obj.getId()).substring(0, 10));
-		
-		final String formattedDtm = Instant.ofEpochSecond(seconds)
-				.atZone(ZoneId.of("Asia/Kolkata")).format(formatter);
-
-		int hour = Instant.ofEpochSecond(seconds)
-				.atZone(ZoneId.of("Asia/Kolkata")).getHour();
-		int min = Instant.ofEpochSecond(seconds)
-				.atZone(ZoneId.of("Asia/Kolkata")).getMinute();*/
+		public static IOStatusTmpPojo_delete getIODetails(IOPojo obj) {
+			final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+			long seconds = Long.valueOf(String.valueOf(obj.getId()).substring(0, 10));
+			java.time.ZonedDateTime timestamp = Instant.ofEpochSecond(seconds).atZone(ZoneId.of("Asia/Kolkata"));
 		/*String status = null;
 		if(obj.getOpration_value() == 0)
 			status = "OFF";
 		else 
 			status = "ON";*/
-		if(obj.getOpration_value() == previous_Op_Val)
-			{
-			previous_Op_Val = obj.getOpration_value();
-				return null;
-			}else {
-				previous_Op_Val = obj.getOpration_value();
-				//System.out.println(obj.getOpration_value());
-			}
-		
-		//System.out.println(formattedDtm  + " 		"  + hour + ":"+ min + " 		 "+ status);
-		
 		IOStatusTmpPojo_delete tmp_obj = new IOStatusTmpPojo_delete();
-		/*tmp_obj.setDate(formattedDtm);
-		tmp_obj.setHour(hour);
-		tmp_obj.setMin(min);*/
+		tmp_obj.setDate(timestamp.format(formatter));
+		tmp_obj.setHour(timestamp.getHour());
+		tmp_obj.setMin(timestamp.getMinute());
+		tmp_obj.setDcu_id(obj.getDcu_id());
 		tmp_obj.setOpration_value(obj.getOpration_value());
 		
 		return tmp_obj;
