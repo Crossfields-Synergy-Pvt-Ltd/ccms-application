@@ -49,17 +49,18 @@ public class UserControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is("100")))
             .andExpect(jsonPath("$.email", is("admin@example.com")))
+            .andExpect(jsonPath("$.authToken", org.hamcrest.Matchers.notNullValue()))
             .andExpect(jsonPath("$.role", is("ADMIN")))
             .andExpect(jsonPath("$.monitor_and_controller", is(true)))
             .andExpect(jsonPath("$.history", is(true)));
     }
 
     @Test
-    public void testLogin_InvalidPassword_ReturnsStatus00() throws Exception {
+    public void testLogin_InvalidPassword_ReturnsUnauthorized() throws Exception {
         when(userServices.getEntityById("admin@example.com")).thenReturn(validUser("admin@example.com", "admin123"));
 
         performPost("/superadmin/user/login", "{\"name\":\"admin@example.com\",\"password\":\"wrong\"}")
-            .andExpect(status().isOk())
+            .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.status", is("00")))
             .andExpect(jsonPath("$.email", is("admin@example.com")));
     }
@@ -73,11 +74,20 @@ public class UserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testLogin_UnknownUser_ReturnsStatus00() throws Exception {
+    public void testLogin_UnknownUser_ReturnsUnauthorized() throws Exception {
         performPost("/superadmin/user/login", "{\"name\":\"unknown@test.com\",\"password\":\"test\"}")
-            .andExpect(status().isOk())
+            .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.status", is("00")))
             .andExpect(jsonPath("$.password", is("")));
+    }
+
+    @Test
+    public void testLogin_ServiceFailure_ReturnsServerError() throws Exception {
+        when(userServices.getEntityById("admin@example.com"))
+            .thenThrow(new RuntimeException("Database unavailable"));
+
+        performPost("/superadmin/user/login", "{\"name\":\"admin@example.com\",\"password\":\"admin123\"}")
+            .andExpect(status().isInternalServerError());
     }
 
     // --- create user ---

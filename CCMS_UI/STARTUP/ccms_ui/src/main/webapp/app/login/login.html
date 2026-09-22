@@ -27,35 +27,35 @@
 						<div class="ccms-login-heading" align="left"> <span class="fa fa-lock"></span>&nbsp;Login</div>
 						<br>
 						<div class="panel-body">
-							<form class="form-horizontal">
+								<form name="loginForm" class="form-horizontal" novalidate ng-submit="login(loginForm)">
 								<div class="form-group">
-									<label class="col-md-4 " style="padding-right:47px" align="left"><b>User
+											<label for="login-user" class="col-md-4 " style="padding-right:47px" align="left"><b>User
 										Id</b> </label>
 									<div class="col-md-8">
-										<input type="text" class="form-control" placeholder="User Id"
-											ng-model="user.name" required="required">
+												<input id="login-user" type="email" autocomplete="username" class="form-control" placeholder="User Id"
+													ng-model="user.name" required>
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-4 " style="padding-right:30px"><b>Password</b></label>
+											<label for="login-password" class="col-md-4 " style="padding-right:30px"><b>Password</b></label>
 									<div class="col-md-8">
-										<input type="password" required name="password" class="form-control"
+												<input id="login-password" type="password" autocomplete="current-password" required name="password" class="form-control"
 											placeholder="Password" ng-model="user.password"
 											required="required">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="col-sm-6">
-										<md-checkbox ng-model="user.node">
+										<md-checkbox ng-model="user.rememberMe">
 										&nbsp;&nbsp;&nbsp;&nbsp;<label
 											style= font-size: 15px; height: 8px"><b>Remember
 											me</b></label> <br>
 									</div>
 									<div class="col-sm-5">
 										<div align="right" style="padding-right: 10px">
-											<a type="button" ng-click="login();"
-												class="btn btn-info btn-sm">&nbsp;SIGN IN&nbsp;</a>
+													<button type="submit" ng-disabled="isSubmitting || loginForm.$invalid"
+													class="btn btn-info btn-sm">&nbsp;SIGN IN&nbsp;</button>
 										</div>
 									</div>
 								</div>
@@ -64,7 +64,7 @@
 								</div>
 							</form>
 						</div>
-						<div class="panel-footer" align="left" style="border-color: #8bc34a">Forgot password? Click here</div>
+							<div class="panel-footer" align="left" style="border-color: #8bc34a">Forgot password? Contact your administrator.</div>
 					</div>
 				</div>
 			</div>

@@ -19,6 +19,7 @@ import com.vnetsoft.ccms.pojo.Status;
 import com.vnetsoft.ccms.pojo.User;
 import com.vnetsoft.ccms.services.UserServices;
 import com.vnetsoft.ccms.util.PasswordHasher;
+import com.vnetsoft.ccms.security.AuthTokenService;
 
 
 @Controller
@@ -27,6 +28,9 @@ public class UserController {
 
 	@Autowired
 	UserServices userServices;
+
+	@Autowired(required = false)
+	private AuthTokenService authTokenService = new AuthTokenService();
 
 	static final Logger logger = Logger.getLogger(UserController.class);
 
@@ -92,22 +96,28 @@ public class UserController {
 				user = userServices.getEntityById(request.name);
 				if (user != null && PasswordHasher.matches(request.password, user.getPassword())) {
 					if (PasswordHasher.isLegacy(user.getPassword())) {
-						user.setPassword(PasswordHasher.hash(request.password));
-						userServices.updateEntity(request.name, user);
+						try {
+							user.setPassword(PasswordHasher.hash(request.password));
+							userServices.updateEntity(request.name, user);
+						} catch (Exception migrationFailure) {
+							logger.warn("Unable to upgrade legacy password for " + request.name, migrationFailure);
+						}
 					}
-				user.setStatus("100");
-				user.setPassword("");
-				return ResponseEntity.ok(user);
+					user.setStatus("100");
+					user.setPassword("");
+					user.setAuthToken(authTokenService.issue(user.getEmail()));
+					return ResponseEntity.ok(user);
 				}
 			} catch (Exception e) {
 				logger.warn("User authentication failed", e);
+				return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 		User failed = new User();
 		failed.setEmail(request == null ? null : request.name);
 		failed.setStatus("00");
 		failed.setPassword("");
-		return ResponseEntity.ok(failed);
+		return new ResponseEntity<User>(failed, HttpStatus.UNAUTHORIZED);
 	}
 
 	public static class LoginRequest {

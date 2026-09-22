@@ -1,62 +1,39 @@
-
 var app = angular.module('loginControllers', []);
-var user_privilege;
 
 app.controller('loginControllers', function($scope, $state, $stateParams,
-		$rootScope, $modal, $location, $http, inform, loginFactory, Base64) {
-	
-	
-	$scope.user_privilege;
-	$scope.login = function() {
-		//console.log($scope.user);
-		try {
+        inform, loginFactory, authService) {
+    $scope.user = {};
+    $scope.isSubmitting = false;
 
-			 
-			
-				loginFactory.login_user({name: $scope.user.name, password: $scope.user.password}).then(function(data) {
-					$scope.user_privilege = data.data;
-					//console.log($scope.user_privilege);
-					$rootScope.privilege = $scope.user_privilege;
-					//console.log($rootScope.privilege);
-					
-					if($scope.user_privilege.status == '100'){
-						 $scope.authdata = Base64.encode($scope.user_privilege.email + '|' + $scope.user_privilege.district + '|' + $scope.user_privilege.mandal + '|' + $scope.user_privilege.gp
-						 );
-						 
-						 $http.defaults.headers.common['Authorization'] =  $scope.authdata;
-						 localStorage.setItem('ccms_privilege', JSON.stringify($scope.user_privilege));
-						 localStorage.setItem('ccms_auth', $scope.authdata);
-						inform.add('WEL COME TO CROSS FIELD.', {
-							ttl : 5000,
-							type : 'info'
-						});
-						
-					
-						$state.go('dashboard.dashboard');	
-						 
-					}
-					else {
-						inform.add('Invalid User Name or Password.', {
-							ttl : 2000,
-							type : 'warning'
-						});
-						$state.go('/login');
-						
-					}
-					
-				}, function() {
-					inform.add('Unable to contact the login service.', {ttl: 3000, type: 'danger'});
-				});
-
-				
-			
-
-		} catch (e) {
-			inform.add('Invalid User Name or Password.', {
-				ttl : 2000,
-				type : 'warning'
-			});
-		}
-	};
-
+    $scope.login = function(form) {
+        if ($scope.isSubmitting) {
+            return;
+        }
+        if (!form || form.$invalid || !$scope.user.name || !$scope.user.password) {
+            inform.add('User Name and Password are required.', {ttl: 2000, type: 'warning'});
+            return;
+        }
+        $scope.isSubmitting = true;
+        authService.clear();
+        loginFactory.login_user({
+            name: $scope.user.name.trim(),
+            password: $scope.user.password
+        }).then(function(response) {
+            var user = response.data;
+            if (user.status === '100' && user.authToken) {
+                authService.setSession(user, !!$scope.user.rememberMe);
+                inform.add('WEL COME TO CROSS FIELD.', {ttl: 5000, type: 'info'});
+                $state.go($stateParams.returnTo || 'dashboard.dashboard');
+            } else {
+                inform.add('Invalid User Name or Password.', {ttl: 2000, type: 'warning'});
+            }
+            $scope.isSubmitting = false;
+        }, function(error) {
+            $scope.isSubmitting = false;
+            inform.add(error.status >= 500 ? 'Unable to contact the login service.' : 'Invalid User Name or Password.', {
+                ttl: 3000,
+                type: error.status >= 500 ? 'danger' : 'warning'
+            });
+        });
+    };
 });
