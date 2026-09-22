@@ -173,7 +173,7 @@ public class UserControllerTest extends AbstractControllerTest {
         when(userServices.deleteEntity("bad-id")).thenThrow(new RuntimeException("Delete failed"));
 
         performDelete("/superadmin/user/delete/bad-id")
-            .andExpect(status().isOk())
+            .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code", is(0)));
     }
 
