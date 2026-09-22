@@ -16,15 +16,14 @@ var app = angular.module('demoapp', [ 'ngResource', 'ui.router', 'inform','ngSan
 		
 ])
 
-app.run(function($rootScope, $http) {
-    var storedPrivilege = localStorage.getItem('ccms_privilege');
-    if (storedPrivilege) {
-        $rootScope.privilege = JSON.parse(storedPrivilege);
-    }
-    var storedAuth = localStorage.getItem('ccms_auth');
-    if (storedAuth) {
-        $http.defaults.headers.common['Authorization'] = storedAuth;
-    }
+app.run(function($rootScope, $state, authService) {
+    authService.restore();
+    $rootScope.$on('$stateChangeStart', function(event, toState) {
+        if (toState.name.indexOf('dashboard') === 0 && !authService.isAuthenticated()) {
+            event.preventDefault();
+            $state.go('login', {returnTo: toState.name});
+        }
+    });
 });
 
 app.constant('config', {
@@ -82,8 +81,12 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 		url : '',
 		abstract : true,
 		templateUrl : 'app/navi/leftnavi.html',
-		controller: function($scope, $rootScope) {
+		controller: function($scope, $rootScope, $state, authService) {
 			$scope.privilege = $rootScope.privilege;
+			$scope.logout = function() {
+				authService.clear();
+				$state.go('login');
+			};
 		},
 		ncyBreadcrumb : {
 			skip : true
@@ -98,7 +101,8 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	
 	.state('login', {
 		templateUrl : 'app/login/login.html',
-		url : '/login'
+		url : '/login',
+		params : {returnTo : null}
 	})
 	
 	.state('dashboard.home', {

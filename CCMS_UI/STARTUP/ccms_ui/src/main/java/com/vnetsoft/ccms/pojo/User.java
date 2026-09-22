@@ -1,6 +1,7 @@
 package com.vnetsoft.ccms.pojo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "ccms_user_details")
@@ -14,6 +15,9 @@ public class User {
 	private String lastName;
 	
 	private String password;
+
+	@Transient
+	private String authToken;
 
 	private String mobnum1;
 
@@ -77,6 +81,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 
 	public String getMobnum1() {

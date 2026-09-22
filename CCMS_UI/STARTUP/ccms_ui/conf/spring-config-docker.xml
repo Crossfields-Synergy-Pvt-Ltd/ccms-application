@@ -27,6 +27,9 @@
 		base-package="com.vnetsoft.ccms.controller" />
 
 	<mvc:annotation-driven />
+	<mvc:interceptors>
+		<ref bean="authInterceptor" />
+	</mvc:interceptors>
 
 	<mvc:default-servlet-handler />
 
@@ -87,6 +90,10 @@
 	<bean id="UserDao" class="com.vnetsoft.ccms.dao.UserDaoImpl"></bean>
 	<bean id="UserServices"
 		class="com.vnetsoft.ccms.services.UserServicesImpl"></bean>
+	<bean id="authTokenService" class="com.vnetsoft.ccms.security.AuthTokenService" />
+	<bean id="authInterceptor" class="com.vnetsoft.ccms.security.AuthInterceptor">
+		<constructor-arg ref="authTokenService" />
+	</bean>
 
 
 	<bean id="DCUDao" class="com.vnetsoft.ccms.dao.DCUDaoImpl"></bean>
