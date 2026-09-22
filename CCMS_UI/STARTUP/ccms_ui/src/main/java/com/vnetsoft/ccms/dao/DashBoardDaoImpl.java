@@ -57,7 +57,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		if (startDate != null && endDate != null) {
-			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
 		}
 		if (search != null && !search.isEmpty()) {
 			query.addCriteria(new Criteria().orOperator(
@@ -72,7 +72,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		 long total_devices = 0,  total_lights_connected = 0,  mcb_trip_count = 0,  cnt_failure = 0, 
 			main_supply_off = 0,  door_open = 0,  spd_failure = 0,  no_out_put = 0,  manual_mode = 0,
 			on_count = 0,  off_count = 0 ,  good_gprs = 0,  poor_gprs = 0,  light_off = 0,  light_on = 0,
-		offline_ccms = 0 ,  online_ccms = 0,  total_connected_load = 0;
+		 offline_ccms = 0 ,  online_ccms = 0,  total_connected_load = 0, high_current_count = 0, high_voltage_count = 0;
 		 
 		 long ccms_on = 0, ccms_off= 0;// IO on off
 		double active_load = 0.0;
@@ -104,8 +104,16 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				 else 
 					 poor_gprs++;
 				 
-				 if(tmp.getSpd_status() == 1)
-					 spd_failure++;
+					 if(tmp.getSpd_status() == 1)
+						 spd_failure++;
+					 if(tmp.getCnt_status() == 1)
+						 cnt_failure++;
+					 if(tmp.getRed_phse_no_output() == 1)
+						 no_out_put++;
+					 if(tmp.getHigh_current() == 1)
+						 high_current_count++;
+					 if(tmp.getHigh_voltage() == 1)
+						 high_voltage_count++;
 				 
 				 if(tmp.getMain_supply_status() == 1)
 					 main_supply_off++;
@@ -156,6 +164,10 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		 obj.ccms_on = ccms_on;
 		 obj.ccms_off = ccms_off;
 		 obj.active_load = active_load;
+		 obj.high_current_count = high_current_count;
+		 obj.high_voltage_count = high_voltage_count;
+		 obj.glow_rate = total_lights_connected == 0 ? 0.0
+				: (light_on * 100.0) / total_lights_connected;
 		/*obj.setTotal_devices(getTotalDevice(district,mandal, gp));
 		obj.setMcb_trip_count(getMCBTripCount(district,mandal, gp));
 		obj.setManual_mode(getManuvalModeCount(district,mandal, gp));
@@ -475,7 +487,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		if (startDate != null && endDate != null) {
-			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
@@ -507,7 +519,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("gp").is(gp));
 		}
 		if (startDate != null && endDate != null) {
-			query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
 		}
 		if (search != null && !search.isEmpty()) {
 			query.addCriteria(new Criteria().orOperator(
@@ -560,7 +572,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				.addCriteria(Criteria.where("gp").is(gp));
 			}
 			if (startDate != null && endDate != null) {
-				query.addCriteria(Criteria.where("installation_date").gte(startDate).lte(endDate));
+				query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
 			}
 			query.addCriteria(new Criteria().orOperator(
 				Criteria.where("name").regex(dcu_name, "i"),

@@ -132,4 +132,35 @@ describe('mapControllers', function() {
             expect($scope.gp_list).toBeDefined();
         });
     });
+
+    describe('public monitor marker filters', function() {
+        it('should expose high-voltage and high-current marker categories', function() {
+            createController();
+            $httpBackend.flush();
+			$scope.selectedDistrict = 'Guntur-17';
+			$scope.selectedMandal = 'Tenali';
+			$scope.select_gp = 'GP1';
+			$httpBackend.whenGET('/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1').respond({});
+			$httpBackend.whenGET('/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1').respond([
+                { lat: '16.4', lang: '80.5', light_status: 1, high_voltage: 1, high_current: 1 }
+            ]);
+
+            $scope.search();
+            $httpBackend.flush();
+			$scope.$digest();
+			expect($scope.mapMarkerCategories).toContain('high_voltage');
+			expect($scope.mapMarkerCategories).toContain('high_current');
+        });
+    });
+
+    it('encodes filter values in search query strings', function() {
+        createController();
+        $scope.selectedDistrict = 'West Godavari';
+        $scope.selectedMandal = 'Mandal One';
+        $scope.select_gp = 'GP/One';
+        $httpBackend.whenGET('/dashboard/count?district=West%20Godavari&mandal=Mandal%20One&gp=GP%2FOne').respond({});
+        $httpBackend.whenGET('/dashboard/map_data?district=West%20Godavari&mandal=Mandal%20One&gp=GP%2FOne').respond([]);
+        $scope.search();
+        expect($scope.qs_params).toBe('?district=West%20Godavari&mandal=Mandal%20One&gp=GP%2FOne');
+    });
 });

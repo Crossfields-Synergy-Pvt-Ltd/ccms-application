@@ -4,9 +4,13 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +18,7 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -115,11 +120,14 @@ public class MonitorControllerTest extends AbstractControllerTest {
         md2.info_details = "DCU-002";
 
         HandShake hs1 = new HandShake();
+		hs1.setGateway_serial_number("DCU-001");
+		hs1.setName("Main <Station>");
         hs1.setLat("16.4792");
         hs1.setLang("80.5469");
         hs1.setLight_status(1);
 
         HandShake hs2 = new HandShake();
+		hs2.setGateway_serial_number("DCU-002");
         hs2.setLat("16.5000");
         hs2.setLang("80.6000");
         hs2.setLight_status(0);
@@ -129,7 +137,26 @@ public class MonitorControllerTest extends AbstractControllerTest {
 
         performGet("/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL")
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", not(empty())));
+            .andExpect(jsonPath("$", not(empty())))
+            .andExpect(jsonPath("$[0].id", is("DCU-001")))
+            .andExpect(jsonPath("$[0].no_of_lights", is(0)))
+            .andExpect(jsonPath("$[0].offline", is(true)));
+    }
+
+    @Test
+    public void testMapDataDateEndIsExclusiveNextDay() throws Exception {
+        when(dashBpardService.getMapData(org.mockito.Matchers.eq("ALL"), org.mockito.Matchers.eq("ALL"),
+                org.mockito.Matchers.eq("ALL"), org.mockito.Matchers.any(Date.class), org.mockito.Matchers.any(Date.class)))
+            .thenReturn(Collections.<HandShake>emptyList());
+
+        performGet("/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL&start_date=2026-09-01&end_date=2026-09-22")
+            .andExpect(status().isOk());
+
+        ArgumentCaptor<Date> dates = ArgumentCaptor.forClass(Date.class);
+        org.mockito.Mockito.verify(dashBpardService).getMapData(org.mockito.Matchers.eq("ALL"), org.mockito.Matchers.eq("ALL"),
+                org.mockito.Matchers.eq("ALL"), dates.capture(), dates.capture());
+        Date end = dates.getAllValues().get(1);
+        assertThat(new SimpleDateFormat("yyyy-MM-dd").format(end), is("2026-09-23"));
     }
 
     @Test

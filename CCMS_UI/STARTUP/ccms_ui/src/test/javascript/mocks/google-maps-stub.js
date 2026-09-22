@@ -13,6 +13,8 @@ window.google = {
     },
     Marker: function(options) {
       this.setMap = function() {};
+      this.setVisible = function() {};
+      this.getPosition = function() { return options.position; };
       this.addListener = function() {};
     },
     InfoWindow: function(options) {

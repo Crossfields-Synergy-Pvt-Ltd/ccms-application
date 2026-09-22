@@ -14,16 +14,16 @@ app.factory('mapViewFactory', ['$http', 'inform', function($http, inform) {
 	        return $http.get(serviceBase + '/om/get_essl_list');
 	    };
 	    
-	    obj.getByMandal = function(qs_params) {
-			return $http.get(serviceBase+ '/filter/get_mandal?district=' + qs_params);
+		obj.getByMandal = function(qs_params) {
+				return $http.get(serviceBase+ '/filter/get_mandal?district=' + encodeURIComponent(qs_params));
 		}
 		
 		obj.getByGp = function(qs_params) {
-			return $http.get(serviceBase+ '/filter/get_gp?mandal=' + qs_params);
+				return $http.get(serviceBase+ '/filter/get_gp?mandal=' + encodeURIComponent(qs_params));
 		}
 		
 		obj.getByVillage = function(qs_params) {
-			return $http.get(serviceBase+ '/filter/get_vilage?gp=' + qs_params);
+				return $http.get(serviceBase+ '/filter/get_vilage?gp=' + encodeURIComponent(qs_params));
 		}
 		
 		/*obj.getAllMapData = function(qs_params){
