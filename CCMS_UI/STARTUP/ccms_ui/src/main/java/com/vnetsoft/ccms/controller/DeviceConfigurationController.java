@@ -145,8 +145,14 @@ public class DeviceConfigurationController {
 		
 		try {
 			HandShake hand_shake = userServices.getHandShakeByID(id);
+			if (hand_shake == null) {
+				return new Status(0, "DCU not found: " + id);
+			}
 			
 			obj = userServices.getSchedulerConfigurationById(hand_shake.getSchedules_name());
+			if (obj == null) {
+				return new Status(0, "Schedule not found: " + hand_shake.getSchedules_name());
+			}
 			System.out.println(obj);
 			
 			String buffer = getSchedulerConfBuffer(obj);
@@ -166,8 +172,9 @@ public class DeviceConfigurationController {
 			pushSchedulerConfData(id, dcu_identifier, node_file_id, buffer.toString());
 			
 			
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+			logger.error("Schedule configuration sync failed for DCU " + id, e);
+			return new Status(0, "Schedule configuration sync failed: " + e.getMessage());
 		}
 		return new Status(200, "success");
 	}

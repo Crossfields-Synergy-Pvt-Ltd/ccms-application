@@ -9,7 +9,10 @@ schedulesCntl.controller('schedulesListControllers', function($scope, $state,$st
 	  
 	 
 	  schedulesFactory.getAll().then(function(data){
-	        $scope.listData = data.data;
+	        $scope.listData = data.data || [];
+		$scope.itemsPerPage = 10;
+		$scope.currentPage = 1;
+		$scope.pageChanged = function() { };
 	    });
 	  
 	  		$scope.new_schedule= function () {
@@ -17,7 +20,7 @@ schedulesCntl.controller('schedulesListControllers', function($scope, $state,$st
 	  };
 		    
 	  $scope.delete = function(id){ 
-		  schedulesFactory.delete(id);
+		  return schedulesFactory.delete(id);
 	  }
 	  
 	  $scope.deleteconf = function (id) {	
@@ -330,12 +333,12 @@ schedulesCntl.controller('schedulesAddControllers', function($scope, $state,$sta
 		{
     		"schedules_name":"schedule_1",
   			"enable_fault_detection": false,
-  			"data_interval_collection":15,
-  			"enable_fault_detection":20,
+				"data_interval_collection":15,
   			"handle_0_apply_sunrise_sunset":false,
   			"handle_1_apply_sunrise_sunset":false,
   			"handle_2_apply_sunrise_sunset":false,
-  			"handle_4_apply_sunrise_sunset":false,
+				"handle_3_apply_sunrise_sunset":false,
+				"handle_4_apply_sunrise_sunset":false,
   			"Set_schedule_as_default_schedule":false,
   			"enable_fault_detection":false,
   			"timezoneid":"India Standard Time(UTC+05:30)",
@@ -346,6 +349,16 @@ schedulesCntl.controller('schedulesAddControllers', function($scope, $state,$sta
   			"handle_2_time":0,
   			"handle_3_time":0,
   			"handle_4_time":0,
+				"handle_0_val":"0",
+				"handle_1_val":"0",
+				"handle_2_val":"0",
+				"handle_3_val":"0",
+				"handle_4_val":"0",
+				"schedul_0_dim_value":"0",
+				"schedul_1_dim_value":"0",
+				"schedul_2_dim_value":"0",
+				"schedul_3_dim_value":"0",
+				"schedul_4_dim_value":"0",
   			
   			"handle_0_sunrise":true,
   			"handle_0_sunset":false,
@@ -446,9 +459,9 @@ schedulesCntl.controller('schedulesAddControllers', function($scope, $state,$sta
 				$scope.schedules.time_slot_3  = $scope.time_slot_3;
 				$scope.schedules.time_slot_4  = $scope.time_slot_4;
 				$scope.schedules.time_slot_5  = $scope.time_slot_5;
-				schedulesFactory.add($scope.schedules);
-				$state.reload();			
+				schedulesFactory.add($scope.schedules).then(function() {
 				$state.go('dashboard.schedules');
+			});
 		};
 		 
 				$scope.cancel = function () {
@@ -474,11 +487,11 @@ schedulesCntl.controller('schedulesUpdateControllers', function($scope, $state,$
 		console.log($scope.time_slot_4)
 		console.log($scope.time_slot_5)
 		
-	$scope.handle_0_time=$scope.schedules.handle_1_time;
-	$scope.handle_1_time=$scope.schedules.handle_2_time;
-	$scope.handle_2_time=$scope.schedules.handle_3_time;
-	$scope.handle_3_time=$scope.schedules.handle_4_time;
-	$scope.handle_4_time=$scope.schedules.handle_5_time;
+	$scope.handle_0_time = $scope.schedules.handle_0_time;
+		$scope.handle_1_time = $scope.schedules.handle_1_time;
+		$scope.handle_2_time = $scope.schedules.handle_2_time;
+		$scope.handle_3_time = $scope.schedules.handle_3_time;
+		$scope.handle_4_time = $scope.schedules.handle_4_time;
 	//
 	// To set handler to an time with previously set time
 	var handle_details =[];
@@ -859,10 +872,9 @@ schedulesCntl.controller('schedulesUpdateControllers', function($scope, $state,$
 				console.log($scope.schedules.handle_3_time)
 				console.log($scope.schedules.handle_5_time)
 				 	
-				schedulesFactory.add($scope.schedules);
-				$state.reload();
-				
+				schedulesFactory.update($scope.schedules).then(function() {
 				$state.go('dashboard.schedules');
+			});
 		};
 				$scope.close = function () {
 				$state.go('dashboard.schedules');
@@ -872,9 +884,10 @@ schedulesCntl.controller('schedulesUpdateControllers', function($scope, $state,$
 schedulesCntl.controller('schedulesDeleteController', function ($scope, $state, $modalInstance, id, schedulesFactory) {
 
 				$scope.ok = function () {
-				schedulesFactory.delete(id);
-				$modalInstance.close($scope.schedules);
-				$state.reload();
+				schedulesFactory.delete(id).then(function() {
+				$modalInstance.close();
+				$state.go('dashboard.schedules');
+			});
 	  };
 
 	  			$scope.cancel = function () {
