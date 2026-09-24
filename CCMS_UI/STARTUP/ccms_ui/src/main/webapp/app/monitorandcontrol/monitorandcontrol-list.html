@@ -20,7 +20,7 @@
 			<div class="col-sm-2">
 
 				<div align="center" style="margin-top: 13px">
-					<a type="button" ng-click="login();" class="btn btn-info btn-sm">&nbsp;Refresh&nbsp;</a>
+					<a type="button" ng-click="search();" class="btn btn-info btn-sm">&nbsp;Refresh&nbsp;</a>
 				</div>
 
 
@@ -148,6 +148,15 @@
 				</div>
 
 			</div>
+				<div class="col-sm-3">
+					<div class="col-sm-4" align="center"><label>Village&nbsp;</label></div>
+					<div class="col-sm-8" align="center">
+						<select ng-model="selectedVillage" class="form-control">
+							<option value="ALL">ALL</option>
+							<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
+						</select>
+					</div>
+				</div>
 			<div class="col-sm-3">
 				<div class="col-sm-4" align="center">
 					<label>Installation Date</label>
@@ -293,7 +302,7 @@
 						<div class="col-md-12" style="margin-top: 25px">
 							<div class="col-md-2" style="margin: 5px; margin-left: 20px"
 								align="center">
-								<a type="button" ng-click="turn_on_light(obj);"
+								<a type="button" ng-click="toggle_light(obj);"
 									title="Click to Turn ON/OFF Light ">
 									<div ng-if="obj.dcu_details.light_status == 1">
 										<img src='images/lighton.png'>
@@ -303,6 +312,8 @@
 									</div>
 								</a> <label style="margin: 1px">R-Phases </label> <br>
 							</div>
+					<span class="text-success" ng-if="command_message">{{command_message}}</span>
+					<span class="text-danger" ng-if="command_error">{{command_error}}</span>
 							<div class="col-md-6" style="margin-margin-bottom: 10px"></div>
 						</div>
 					</div>

@@ -44,6 +44,8 @@ public class DeviceConfigurationController {
 
 	@Value("${ccms.server.host}")
 	private String serverHost;
+	@Value("${backend.http.port:8102}")
+	private String serverPort = "8102";
 	
 	@RequestMapping(value = "/sync_dcu_configuration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Status syncDCUConfigurations(@RequestBody DCUConfiguration obj) {
@@ -66,7 +68,7 @@ public class DeviceConfigurationController {
 			HandShake hand_shake = userServices.getHandShakeByID(obj.getDcu_id());
 			StringBuilder sb = new StringBuilder();
 			
-			sb.append( "http://"+serverHost+":8102/user/push/sys_conf?dcu_id=")
+			sb.append( "http://"+serverHost+":"+serverPort+"/user/push/sys_conf?dcu_id=")
 			.append( obj.getDcu_id()+ "&buffer=" )
 			.append(getInformationExchangePacket(hand_shake.getGateway_identifier(), file_type))
 			.append("&dcu_identifier="+hand_shake.getGateway_identifier())
@@ -205,7 +207,7 @@ public class DeviceConfigurationController {
 			int gatewayId = hand_shake.getGateway_identifier();
 			int nodeId = hand_shake.getLight_node_id();
 
-			String uri = "http://" + serverHost + ":8102/user/push/manuval_on?dcu_serial_number="
+			String uri = "http://" + serverHost + ":" + serverPort+"/user/push/manuval_on?dcu_serial_number="
 					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
 
 			System.out.println(uri);
@@ -229,7 +231,7 @@ public class DeviceConfigurationController {
 			int gatewayId = hand_shake.getGateway_identifier();
 			int nodeId = hand_shake.getLight_node_id();
 
-			String uri = "http://" + serverHost + ":8102/user/push/manuval_off?dcu_serial_number="
+			String uri = "http://" + serverHost + ":" + serverPort+"/user/push/manuval_off?dcu_serial_number="
 					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
 
 			System.out.println(uri);
@@ -249,7 +251,7 @@ public class DeviceConfigurationController {
 			String node_file_id, String node_data) {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append( "http://"+serverHost+":8102/user/push/sync_scheduler_conf?dcu_id=")
+		sb.append( "http://"+serverHost+":"+serverPort+"/user/push/sync_scheduler_conf?dcu_id=")
 				.append(id+ "&dcu_identifier=")
 				.append(dcu_identifier+ "&node_data=")
 				.append(node_data+ "&file_idetifier="+node_file_id)
@@ -356,7 +358,7 @@ public class DeviceConfigurationController {
 			String node_file_id, String node_data) {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append( "http://"+serverHost+":8102/user/push/sync_node_conf?dcu_id=")
+		sb.append( "http://"+serverHost+":"+serverPort+"/user/push/sync_node_conf?dcu_id=")
 				.append(id+ "&dcu_identifier=")
 				.append(dcu_identifier+ "&node_data=")
 				.append(node_data+ "&file_idetifier="+node_file_id)
