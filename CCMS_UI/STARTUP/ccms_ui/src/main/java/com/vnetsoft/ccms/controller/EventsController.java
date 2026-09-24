@@ -42,50 +42,6 @@ public class EventsController {
 	static final Logger logger = Logger.getLogger(EventsController.class);
 	
 	
-	@RequestMapping(value = "/event_list", method = RequestMethod.GET)
-	public @ResponseBody List<EventUiObject> getAllEvents() {
-
-
-		/*if(logger.isDebugEnabled()) {
-			 logger.debug("GET ALL HandShake REQUEST RECIVED");
-		}
-		
-		
-		List<InstantEventData> event_list = null;
-		List<EventUiObject> updated_event_list = new ArrayList<EventUiObject>();
-		
-		try {
-			event_list = userServices.getInstantEventDataList();
-			
-			if(logger.isDebugEnabled()) {
-				 logger.debug(event_list);
-			}
-			
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			
-			for(InstantEventData tmp : event_list){
-				EventUiObject obj = new EventUiObject();
-				
-				  String utc_date  = DateUtils.getEpochTimeFromSeconds(tmp.getTime_stamp());
-				  
-				 obj.setTime_stamp(utc_date);
-				 obj.setEvent_id(tmp.getEvent_id());
-				 obj.setEvent_data(EventIdInformation.eventInformation.get(tmp.getEvent_id()));
-				 obj.setGateway_serial_number(tmp.getGateway_serial_number());
-				 obj.setNode_identifier(tmp.getNode_identifier());
-				 updated_event_list.add(obj);
-				 
-			}
-		} catch (Exception e) {
-			System.out.println("Exception : " + e);
-			e.printStackTrace();
-		}
-
-		return updated_event_list;*/
-		return null;
-	}
-	
-	
 	@RequestMapping(value = "/event_counts", method = RequestMethod.GET)
 	public @ResponseBody List<EventUICount> getAllEventsCounts() {
 
@@ -205,6 +161,10 @@ public class EventsController {
 
 		} catch (Exception e) {
 			logger.error(e);
+		}
+		if (meter_data_list.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			return;
 		}
 
 		String csvFileName = "CrossFields_Report_"+id+" _ "+start_date+" _ "+end_date+".csv";

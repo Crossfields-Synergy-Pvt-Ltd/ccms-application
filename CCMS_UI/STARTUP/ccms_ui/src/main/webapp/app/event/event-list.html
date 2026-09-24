@@ -48,7 +48,7 @@
 							<div class="col-sm-1"></div>
 							<div class="col-sm-2" align="center">
 								<label for="city">Village</label> <select
-									ng-model="filter.village" class="form-control">
+									ng-model="filterValues.village" class="form-control">
 									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
 								</select>
 							</div>
@@ -72,6 +72,7 @@
 	
 	
 		<div class="col-md-12">
+		<div class="alert alert-danger" ng-if="errorMessage">{{errorMessage}}</div>
 		<div class="form-group">
 			
 			<div class="col-md-3">
@@ -116,11 +117,11 @@
 		</div>
 
 	<div class="col-sm-3" align="right" style="padding-top: 20px" >
-		<a type="button" ng-click="showdate(gateway_identifier);" class="btn btn-info btn-sm"
+		<a type="button" ng-click="showdate();" ng-disabled="loading || exporting" class="btn btn-info btn-sm"
 			ng-model="searchFish" data-toggle="tooltip"
 			title="Click here to filter the records">View</a>
 			
-		<a type="button" ng-click="export_events(gateway_identifier);"  class="btn btn-info btn-sm"
+		<a type="button" ng-click="export_events();" ng-disabled="loading || exporting" class="btn btn-info btn-sm"
 			data-toggle="tooltip" title="Click here to filter the records">Export</a>
 	</div>
 
