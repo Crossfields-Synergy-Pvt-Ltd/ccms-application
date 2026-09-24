@@ -1,7 +1,7 @@
 
 var dcuCntl = angular.module('dcuControllers', []);
 
-dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory) {
+dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, inform) {
 	 
 	$scope.gateway_serial_number = $stateParams.gateway_serial_number;
 	
@@ -116,37 +116,45 @@ dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $
 		  $state.go('dashboard.meter',{gateway_serial_number:$scope.gateway_serial_number})
 	  };
 	  
-	  $scope.syncnodeconfig = function (gateway_serial_number) {
-		  console.log($scope.gateway_serial_number)
-		   dcuFactory.getSyncByID(gateway_serial_number).then(function(){
-		   })
-	 
-	  };
-	 
-	  $scope.syncsheduleconfig = function (gateway_serial_number) {
-		  console.log($scope.gateway_serial_number)
-		  
-		  var qs_params = '?id='+ gateway_serial_number ;
-		  
-		   dcuFactory.getScheduleSyncByID(qs_params).then(function(){
-		   })
-	 
-	  };
+	  function notify(message, type) {
+    if (inform && inform.add) {
+      inform.add(message, {ttl: type === "danger" ? 5000 : 3000, type: type || "success"});
+    }
+  }
 
-	  $scope.syncAllNodeConfig = function () {
-		  dcuFactory.syncAllNodeConf().then(function(data){
-			  console.log("Sync all node config triggered", data);
-		  });
-	  };
+  function reportOperation(promise, successMessage, failureMessage) {
+    promise.then(function(response) {
+      var status = response && response.data ? response.data : response;
+      if (status && status.code === 0) {
+        notify(status.message || failureMessage, "danger");
+      } else {
+        notify((status && status.message) || successMessage, "success");
+      }
+    }).catch(function(error) {
+      notify(failureMessage + ": " + ((error && error.data) || (error && error.statusText) || "request failed"), "danger");
+    });
+  }
 
-	  $scope.syncAllSchedulerConfig = function () {
-		  dcuFactory.syncAllSchedulerConf().then(function(data){
-			  console.log("Sync all scheduler config triggered", data);
-		  });
-	  };
-	  $scope.delete = function(id){ 
-		  dcuFactory.delete(id);
-	  }
+  $scope.syncnodeconfig = function(gateway_serial_number) {
+    reportOperation(dcuFactory.getSyncByID(gateway_serial_number), "Node configuration sync triggered", "Node configuration sync failed");
+  };
+
+  $scope.syncsheduleconfig = function(gateway_serial_number) {
+    reportOperation(dcuFactory.getScheduleSyncByID("?id=" + gateway_serial_number), "Scheduler configuration sync triggered", "Scheduler configuration sync failed");
+  };
+
+	  $scope.syncAllNodeConfig = function() {
+    if (!window.confirm("Sync node configuration to every DCU?")) { return; }
+    reportOperation(dcuFactory.syncAllNodeConf(), "Node configuration sync triggered for all DCUs", "Bulk node configuration sync failed");
+  };
+
+  $scope.syncAllSchedulerConfig = function() {
+    if (!window.confirm("Sync scheduler configuration to every DCU?")) { return; }
+    reportOperation(dcuFactory.syncAllSchedulerConf(), "Scheduler configuration sync triggered for all DCUs", "Bulk scheduler configuration sync failed");
+  };
+	  $scope.delete = function(id) {
+    $scope.deleteconf(id);
+  }
 	  
 	  $scope.deleteconf = function (id) {	
 	         var modalInstance = $modal.open({
@@ -187,9 +195,11 @@ dcuCntl.controller('viewModelCntroler_updated', ['$scope','$modalInstance', 'dcu
 	$scope.gateway_serial_number = gateway_serial_number;
 
 	console.log($scope.gateway_serial_number);
-	 $scope.listData;
-	dcuFactory.getAllConfSyncStatus($scope.gateway_serial_number).then(function(data){
-        $scope.listData = data.data;
+	 $scope.listData = [];
+	dcuFactory.getAllConfSyncStatus($scope.gateway_serial_number).then(function(data) {
+        $scope.listData = angular.isArray(data.data) ? data.data : [];
+    }).catch(function() {
+        $scope.listData = [];
     });
 	
 	
@@ -380,7 +390,7 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
 })
 
 
-dcuCntl.controller('dcuModifyControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory) {
+dcuCntl.controller('dcuModifyControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, inform) {
 	 
 	$scope.gateway_serial_number = $stateParams.gateway_serial_number;
 	  dcuFactory.getByIDmodify(	$scope.gateway_serial_number).then(function(data){
@@ -390,10 +400,13 @@ dcuCntl.controller('dcuModifyControllers', function($scope, $state,$stateParams,
 	  
 	
 	   $scope.apply=function(){
-		$scope.dcu.dcu_id =  $scope.gateway_serial_number;
-		$scope = dcuFactory.modifysystemconfig($scope.dcu);
-		$state.reload();
-		$state.go('dashboard.dcu');
+		$scope.dcu.dcu_id = $scope.gateway_serial_number;
+		dcuFactory.modifysystemconfig($scope.dcu).then(function() {
+			inform.add("DCU configuration saved successfully", {ttl: 3000, type: "success"});
+			$state.go("dashboard.dcu");
+		}).catch(function(error) {
+			inform.add("Failed to save DCU configuration: " + ((error && error.data) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+		});
 };
 
 		$scope.close = function () {
@@ -403,8 +416,12 @@ dcuCntl.controller('dcuModifyControllers', function($scope, $state,$stateParams,
 
 		   $scope.loadDefualtconfigsettings = function(dcu_id){
 			   $scope.dcu_id =  dcu_id;
-			   dcuFactory.load_default_conf($scope.dcu_id);
-			   	$state.reload();
+			   dcuFactory.load_default_conf($scope.dcu_id).then(function() {
+					inform.add("Default configuration loaded successfully", {ttl: 3000, type: "success"});
+					$state.reload();
+				}).catch(function(error) {
+					inform.add("Failed to load default configuration: " + ((error && error.data) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+				});
 	};
 
 		

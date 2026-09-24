@@ -96,6 +96,16 @@ public class DCUServicesImpl implements DCUServices {
 	}
 
 	@Override
+
+	public boolean addDefaultDCUConfiguration(DCUConfiguration configuration) throws Exception {
+		return dcuDao.addDefaultDCUConfiguration(configuration);
+	}
+
+
+	public DCUConfiguration getDefaultDCUConfiguration() throws Exception {
+		return dcuDao.getDefaultDCUConfiguration();
+	}
+
 	public SinglePhaseMeterData getByMeterDataID(String id) throws Exception {
 		
 		return dcuDao.getByMeterDataID(id);

@@ -146,6 +146,22 @@ public class DCUDaoImpl implements DCUDao {
 	}
 
 	@Override
+
+	public boolean addDefaultDCUConfiguration(DCUConfiguration configuration) throws Exception {
+		mongoTemplate.save(configuration, "dcu_default_system_conf_details");
+		return true;
+	}
+
+
+	public DCUConfiguration getDefaultDCUConfiguration() throws Exception {
+		try {
+			List<DCUConfiguration> list = mongoTemplate.findAll(DCUConfiguration.class, "dcu_default_system_conf_details");
+			return list.isEmpty() ? null : list.get(0);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public SinglePhaseMeterData getByMeterDataID(String id) throws Exception {
 		try {
 			Query query = new Query();
