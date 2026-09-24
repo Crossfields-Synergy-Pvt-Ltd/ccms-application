@@ -424,10 +424,10 @@ app.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
 	.state("dashboard.modified_operationalhour", {
 		parent : 'dashboard',
 		url : '/modified_operationalhour',
-		templateUrl : 'app/modified_operationalhours/modified_operationalhours-list.html?v=2',
+		templateUrl : 'app/modified_operationalhours/modified_operationalhours-list.html?v=3',
 		controller : 'modified_operationalListControllers',
 		ncyBreadcrumb : {
-			label : 'MODIFIED_OPERATIONALHOUR',
+			label : 'LIGHT STATUS',
 			parent : 'dashboard'
 		}
 	})

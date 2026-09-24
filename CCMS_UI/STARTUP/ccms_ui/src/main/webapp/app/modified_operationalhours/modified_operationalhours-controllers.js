@@ -18,8 +18,8 @@ modified_operationalCntl.controller('modified_operationalListControllers', funct
   function showError(message) { $scope.errorMessage = message; }
   function clearError() { $scope.errorMessage = null; }
   function dateParams() {
-    var start = moment($scope.datePicker.date.startDate).format('YYYYMMDD');
-    var end = moment($scope.datePicker.date.endDate).format('YYYYMMDD');
+    var start = moment($scope.datePicker.date.startDate).format('DD/MM/YYYY');
+    var end = moment($scope.datePicker.date.endDate).format('DD/MM/YYYY');
     return '?id=' + encodeURIComponent(selectedGateway()) + '&start_date=' + encodeURIComponent(start) + '&end_date=' + encodeURIComponent(end);
   }
 
@@ -49,7 +49,7 @@ modified_operationalCntl.controller('modified_operationalListControllers', funct
     if (!selectedGateway()) { showError('Please select a DCU first.'); return; }
     clearError();
     $scope.loading = true;
-    modified_operationalFactory.getAllById(dateParams()).then(function(data) {
+    modified_operationalFactory.getAllByDate(dateParams()).then(function(data) {
       $scope.todos = data.data || [];
       $scope.currentPage = 1;
       $scope.figureOutTodosToDisplay();
@@ -60,11 +60,11 @@ modified_operationalCntl.controller('modified_operationalListControllers', funct
     }).finally(function() { $scope.loading = false; });
   };
 
-  $scope.export_operationalhour = function() {
+  $scope.exportLightStatus = function() {
     if (!selectedGateway()) { showError('Please select a DCU first.'); return; }
     clearError();
     $scope.loading = true;
-    modified_operationalFactory.getAllExport(dateParams()).catch(function() {
+    modified_operationalFactory.exportLightStatus(dateParams()).catch(function() {
       showError('Unable to export light status data.');
     }).finally(function() { $scope.loading = false; });
   };

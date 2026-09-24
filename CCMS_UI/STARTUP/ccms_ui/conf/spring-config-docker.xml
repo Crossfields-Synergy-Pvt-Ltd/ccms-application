@@ -99,11 +99,8 @@
 	<bean id="DCUDao" class="com.vnetsoft.ccms.dao.DCUDaoImpl"></bean>
 	<bean id="DCUServices"
 		class="com.vnetsoft.ccms.services.DCUServicesImpl"></bean>
-	<!--
 	<bean id="ModifiedIOPojoDao" class="com.vnetsoft.ccms.dao.ModifiedIOPojoDaoImpl"></bean>
 	<bean id="ModifiedIOPojoServices" class="com.vnetsoft.ccms.services.ModifiedIOPojoServicesImpl"></bean>
-
-		 -->
 	<bean id="NodeDao" class="com.vnetsoft.ccms.dao.NodeDaoImpl"></bean>
 	<bean id="NodeServices"
 		class="com.vnetsoft.ccms.services.NodeServicesImpl"></bean>

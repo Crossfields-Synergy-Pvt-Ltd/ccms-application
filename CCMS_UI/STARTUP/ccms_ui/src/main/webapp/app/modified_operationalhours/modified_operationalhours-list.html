@@ -4,7 +4,7 @@
 
 		<div class="col-md-6">
 			<h3 class=heading>&nbsp;&nbsp;&nbsp;
-				MODIFIED OPERATIONAL HOURS</h3>
+				LIGHT STATUS</h3>
 		</div>
 
 		<div class="col-md-10"></div>
@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="col-sm-1" align="right" >
-		<a type="button" ng-click="export_operationalhour();" ng-disabled="loading" class="btn btn-info btn-sm"
+		<a type="button" ng-click="exportLightStatus();" ng-disabled="loading" class="btn btn-info btn-sm"
 			data-toggle="tooltip" title="Click to Export the data">Export</a>
 		<div class="text-danger" ng-if="errorMessage">{{ errorMessage }}</div>
 		<div class="text-info" ng-if="loading">Loading light status data...</div>
@@ -92,29 +92,29 @@
 					</a></td>
 					
 					<td align="center" rowspan="2" ><a
-						ng-click="sortType = 'opration_type'; sortReverse = !sortReverse">
+						ng-click="sortType = 'operation_type'; sortReverse = !sortReverse">
 							Operation Type <span
-							ng-show="sortType == 'opration_type' && !sortReverse"
+							ng-show="sortType == 'operation_type' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'opration_type' && sortReverse"
+							ng-show="sortType == 'operation_type' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 					
 					<td align="center" rowspan="2" ><a
-						ng-click="sortType = 'opration_value'; sortReverse = !sortReverse">
+						ng-click="sortType = 'operation_value'; sortReverse = !sortReverse">
 							Operation Value <span
-							ng-show="sortType == 'opration_value' && !sortReverse"
+							ng-show="sortType == 'operation_value' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'opration_value' && sortReverse"
+							ng-show="sortType == 'operation_value' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 					
 					<td align="center" rowspan="2" ><a
-						ng-click="sortType = 'opration_resone'; sortReverse = !sortReverse">
+						ng-click="sortType = 'operation_reason'; sortReverse = !sortReverse">
 							Operation Reason <span
-							ng-show="sortType == 'opration_resone' && !sortReverse"
+							ng-show="sortType == 'operation_reason' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'opration_resone' && sortReverse"
+							ng-show="sortType == 'operation_reason' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 		
@@ -127,10 +127,10 @@
 					<td align="center">{{ $index + 1 }}</td>
 					<td align="center">{{ obj.dcu_id}}</td>
 					<td align="center">{{ obj.node || '' }}</td>
-					<td align="center">{{ obj.yymmdd }}</td>
-					<td align="center">{{ obj.opration_type }}</td>
-					<td align="center">{{ obj.opration_value }}</td>
-					<td align="center">{{ obj.opration_resone }}</td>
+					<td align="center">{{ obj.date }}</td>
+					<td align="center">{{ obj.operation_type }}</td>
+					<td align="center">{{ obj.operation_value }}</td>
+					<td align="center">{{ obj.operation_reason }}</td>
 					
 
 
