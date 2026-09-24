@@ -125,10 +125,11 @@ public class DeviceConfigurationController {
 			
 			pushNodeConfData(id, dcu_identifier, node_file_id, sb.toString());
 			
-		}catch(Exception e){
-			
-		}
-		return new Status(200, "success");
+		} catch (Exception e) {
+				logger.error("Node configuration sync failed for DCU " + id, e);
+				return new Status(0, "Node configuration sync failed: " + e.getMessage());
+			}
+			return new Status(200, "success");
 	}
 	
 	
@@ -183,11 +184,19 @@ public class DeviceConfigurationController {
 	public @ResponseBody Status syncNodeConfigToAllDCUs() {
 		try {
 			List<HandShake> handShakeList = userServices.getHandShakeList();
+			int failures = 0;
 			for (HandShake hs : handShakeList) {
-				syncNodeConfigurations(hs.getGateway_serial_number());
+				Status status = syncNodeConfigurations(hs.getGateway_serial_number());
+				if (status.getCode() != 200) {
+					failures++;
+				}
+			}
+			if (failures > 0) {
+				return new Status(0, "Node configuration sync failed for " + failures + " DCU(s)");
 			}
 			return new Status(200, "Sync all node config triggered for all DCUs");
 		} catch (Exception e) {
+			logger.error("Sync all node configuration failed", e);
 			return new Status(0, e.toString());
 		}
 	}
@@ -196,11 +205,19 @@ public class DeviceConfigurationController {
 	public @ResponseBody Status syncSchedulerConfigToAllDCUs() {
 		try {
 			List<HandShake> handShakeList = userServices.getHandShakeList();
+			int failures = 0;
 			for (HandShake hs : handShakeList) {
-				syncSchedulerConfigurations(hs.getGateway_serial_number());
+				Status status = syncSchedulerConfigurations(hs.getGateway_serial_number());
+				if (status.getCode() != 200) {
+					failures++;
+				}
+			}
+			if (failures > 0) {
+				return new Status(0, "Scheduler configuration sync failed for " + failures + " DCU(s)");
 			}
 			return new Status(200, "Sync all scheduler config triggered for all DCUs");
 		} catch (Exception e) {
+			logger.error("Sync all scheduler configuration failed", e);
 			return new Status(0, e.toString());
 		}
 	}

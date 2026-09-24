@@ -57,11 +57,11 @@
 					
 
 					<td align="center"><a
-						ng-click="sortType = 'gateway_identifier'; sortReverse = !sortReverse">
+						ng-click="sortType = 'gateway_serial_number'; sortReverse = !sortReverse">
 							Serial Number  <span
-							ng-show="sortType == 'gateway_identifier' && !sortReverse"
+							ng-show="sortType == 'gateway_serial_number' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'gateway_identifier' && sortReverse"
+							ng-show="sortType == 'gateway_serial_number' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 
@@ -99,7 +99,7 @@
 
 						<md-icon class="material-icons"
 							ng-click="modifydcu(obj.gateway_serial_number);"
-							data-toggle="tooltip" title="Modify DCU Configuation"
+							data-toggle="tooltip" title="Modify DCU Configuration"
 							style="color:#004d00;font-size: 20px; height: 20px">settings</md-icon>
 
 						<md-icon class="material-icons" ng-click="syncnodeconfig(obj.gateway_serial_number);"
@@ -107,7 +107,7 @@
 							style="color:#607D8B;font-size: 20px; height: 20px">group_work</md-icon>
 
 						<md-icon class="material-icons" ng-click="syncsheduleconfig(obj.gateway_serial_number);"
-							data-toggle="tooltip" title="Sync Shedule Config "
+							data-toggle="tooltip" title="Sync Scheduler Config "
 							style="color:#7CB342;font-size: 20px; height: 20px">date_range</md-icon>
 
 						<md-icon class="material-icons"

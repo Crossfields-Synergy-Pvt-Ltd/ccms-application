@@ -17,6 +17,8 @@ import com.vnetsoft.ccms.services.DCUServices;
 @Controller
 @RequestMapping("/conf")
 public class DefultConfigurationsContrller {
+	private static final String LEGACY_DEFAULT_ID = "100";
+	private static final String DEFAULT_CONFIGURATION_ID = "default";
 
 
 	@Autowired
@@ -30,7 +32,10 @@ public class DefultConfigurationsContrller {
 		DCUConfiguration obj = null;
 
 		try {
-			obj  = userServices.getDCUConfigurationByID("100");
+			obj = userServices.getDefaultDCUConfiguration();
+			if (obj == null) {
+				obj = userServices.getDCUConfigurationByID(LEGACY_DEFAULT_ID);
+			}
 			return obj;
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -44,13 +49,13 @@ public class DefultConfigurationsContrller {
 	public @ResponseBody Status syncDCUConfigurations(@RequestBody DCUConfiguration obj) {
 
 		try {
-			obj.setDcu_id("100");
+			obj.setDcu_id(DEFAULT_CONFIGURATION_ID);
 		
 			if(logger.isDebugEnabled()) {
 				 logger.debug("UPDATTING DCU DEFULT CONFIGURATION : "+ obj);
 			}
 			
-			userServices.addDCUConfiguration(obj);
+			userServices.addDefaultDCUConfiguration(obj);
 			return new Status(200, "Success");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
@@ -63,7 +68,13 @@ public class DefultConfigurationsContrller {
 
 		try {
 			
-			DCUConfiguration obj = userServices.getDCUConfigurationByID("100");
+			DCUConfiguration obj = userServices.getDefaultDCUConfiguration();
+			if (obj == null) {
+				obj = userServices.getDCUConfigurationByID(LEGACY_DEFAULT_ID);
+			}
+			if (obj == null) {
+				return new Status(0, "Default DCU configuration not found");
+			}
 			obj.setDcu_id(id);
 			if(logger.isDebugEnabled()) {
 				 logger.debug("UPDATTING DCU WITH DEFULT CONFIGURATION : "+ obj);

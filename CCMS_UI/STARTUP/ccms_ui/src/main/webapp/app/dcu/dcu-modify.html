@@ -32,7 +32,7 @@
 							<div class="col-md-7">
 								<input type="text" class="form-control"
 									name="gateway_serial_number" placeholder="Serial number"
-									ng-model="dcu.dcu_id" readonly="readonly"></input>
+									ng-model="dcu.dcu_id" readonly="readonly" tabindex="-1"></input>
 							</div>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 							</label>
 							<div class="col-md-7">
 								<input type="text"
-									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									class="form-control"
 									name="change_interval" id="change_interval"
 									placeholder="Change request interval"
 									ng-model="dcu.change_interval" required="required"> <span
@@ -69,7 +69,7 @@
 								number</label>
 							<div class="col-md-7">
 								<input type="text"
-									class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+									class="form-control"
 									name="MobileNumber" id="MobileNumber"
 									placeholder="Mobile number" ng-model="dcu.mobile_no"
 									disabled=""> <span class="help-block ng-hide"
@@ -116,7 +116,7 @@
 							</label>
 							<div class="col-md-7">
 								<input type="text"
-									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									class="form-control"
 									name="retry_count" id="retry_count"
 									placeholder="Packet retry count" ng-model="dcu.retry_count"
 									required="required"> <span class="help-block ng-hide"
@@ -140,7 +140,7 @@
 							</label>
 							<div class="col-md-7">
 								<input type="text"
-									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									class="form-control"
 									name="retry_interval" id="retry_interval"
 									placeholder="Packet retry interval"
 									ng-model="dcu.retry_interval" required="required"> <span
@@ -256,7 +256,7 @@
 							</label>
 							<div class="col-md-7">
 								<input type="text"
-									class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+									class="form-control"
 									name="meter_polling_interval" id="meter_polling_interval "
 									placeholder="Enter Meterpollinginterval"
 									ng-model="dcu.meter_polling_interval "
@@ -298,7 +298,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="PrimaryServerIPAddress" id="Primary_server_ip"
 								placeholder="Enter primary server IP address"
 								ng-model="dcu.primary_server_ip"
@@ -349,7 +349,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="primary_dns" id="primary_dns"
 								placeholder="Enter primary DNS server"
 								ng-model="dcu.primary_dns"
@@ -377,7 +377,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="secondary_server_ip" id="secondary_server_ip"
 								placeholder="Enter secondary server IP address"
 								ng-model="dcu.secondary_server_ip"> <span
@@ -427,7 +427,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="secondary_dns" id="secondary_dns"
 								placeholder="Enter secondary DNS server"
 								ng-model="dcu.secondary_dns"
@@ -468,7 +468,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="pan_id" id="pan_id" placeholder="Enter PAN id"
 								ng-model="dcu.pan_id"
 								ng-pattern="/^([1-2]{0,1}[0-9]{0,1}[0-9]{0,1}[0-9]{0,1}[0-9]{1}|3[0-1]{1}[0-9]{1}[0-9]{1}[0-9]{1}|32[0-6]{1}[0-9]{1}[0-9]{1}|327[0-5]{1}[0-9]{1}|3276[0-7]{1})$/"
@@ -493,7 +493,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="hop_count" id="hop_count" placeholder="Enter hop count"
 								ng-model="dcu.hop_count"> <span
 								class="help-block ng-hide"
@@ -576,7 +576,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="rf_idle_timeout" id="rf_idle_timeout"
 								placeholder="Enter RF idle timeout"
 								ng-model="dcu.rf_idle_timeout"
@@ -602,7 +602,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="RFRetryCount" id="RFRetryCount"
 								placeholder="Enter RF retry count" ng-model="dcu.rf_retry_count"
 								ng-pattern="/^([5-9]|1[0-9]|2[0-9]|30)$/" maxlength="2"
@@ -629,7 +629,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="mod_value" id="mod_value" placeholder="Enter mod value"
 								ng-model="dcu.mod_value"
 								ng-pattern="/^([0-9]|[0-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/"
@@ -958,7 +958,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="RedThresholdVoltageMin" id="voltage_min"
 								placeholder="Enter threshold voltage min"
 								ng-model="dcu.voltage_min" maxlength="6" ng-maxlength="6"
@@ -986,7 +986,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="voltage_max" id="voltage_max"
 								placeholder="Enter threshold voltage max"
 								ng-model="dcu.voltage_max" maxlength="6" ng-maxlength="6"
@@ -1017,7 +1017,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="current_min" id="current_min"
 								placeholder="Enter threshold current min"
 								ng-model="dcu.current_min" maxlength="5" ng-maxlength="5"
@@ -1045,7 +1045,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="RedThresholdCurrentMax" id="RedThresholdCurrentMax"
 								placeholder="Enter threshold current max"
 								ng-model="dcu.current_max" maxlength="6" ng-maxlength="6"
@@ -1091,7 +1091,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_2_voltage_min" id="phase_2_voltage_min"
 								placeholder="Enter threshold voltage min"
 								ng-model="dcu.phase_2_voltage_min" maxlength="6"
@@ -1119,7 +1119,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="YellowThresholdVoltageMax" id="YellowThresholdVoltageMax"
 								placeholder="Enter threshold voltage max"
 								ng-model="dcu.phase_2_voltage_max" maxlength="6"
@@ -1150,7 +1150,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="YellowThresholdCurrentMin" id="phase_2_current_min"
 								placeholder="Enter threshold current min"
 								ng-model="dcu.phase_2_current_min" maxlength="5"
@@ -1179,7 +1179,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_2_current_max.$dirty"
 								id="phase_2_current_max.$dirty"
 								placeholder="Enter threshold current max"
@@ -1224,7 +1224,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_3_voltage_min" id="phase_3_voltage_min"
 								placeholder="Enter threshold voltage min"
 								ng-model="dcu.phase_3_voltage_min" required="required">
@@ -1250,7 +1250,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_3_voltage_max" id="phase_3_voltage_max"
 								placeholder="Enter threshold voltage max"
 								ng-model="dcu.phase_3_voltage_max" maxlength="6"
@@ -1281,7 +1281,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_3_current_min" id="phase_3_current_min"
 								placeholder="Enter threshold current min"
 								ng-model="dcu.phase_3_current_min" maxlength="5"
@@ -1310,7 +1310,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="phase_3_current_max" id="phase_3_current_max"
 								placeholder="Enter threshold current max" min="2"
 								ng-model="dcu.phase_3_current_max" maxlength="6"
@@ -1357,7 +1357,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="repetative_alert_timer" id="repetative_alert_timer"
 								placeholder="Enter repetative alert timer"
 								ng-model="dcu.repetative_alert_timer" maxlength="4"
@@ -1382,7 +1382,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="retry_intravl_for_io_recovery"
 								id="retry_intravl_for_io_recovery"
 								placeholder="Enter retry interval for IO recovery"
@@ -1408,7 +1408,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="retry_count_for_io_recovery"
 								id="retry_count_for_io_recovery"
 								placeholder="Enter retry count for IO recovery"
@@ -1435,7 +1435,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="max_time_for_io_recovery_after_max_retry_count"
 								id="max_time_for_io_recovery_after_max_retry_count"
 								placeholder="Enter maximum time forIO recovery after max retry count"
@@ -1477,7 +1477,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="power_off_gsm_off" id="power_off_gsm_off"
 								placeholder="Enter power off GSM off"
 								ng-model="dcu.power_off_gsm_off" maxlength="4"
@@ -1501,7 +1501,7 @@
 						</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid-pattern ng-valid-maxlength ng-valid ng-valid-required"
+								class="form-control"
 								name="power_off_gsm_on" id="power_off_gsm_on"
 								placeholder="Enter power off GSM on"
 								ng-model="dcu.power_off_gsm_on" maxlength="2"
@@ -1568,7 +1568,7 @@
 							No.3</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+								class="form-control"
 								name="number_3" id="number_3"
 								placeholder="Enter third mobile no." ng-model="dcu.number_3"
 								ng-pattern="/^[0-9]+$/" ng-minlength="10" ng-maxlength="20"
@@ -1596,7 +1596,7 @@
 							No. 4</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+								class="form-control"
 								name="number_4" id="number_4"
 								placeholder="Enter fourth mobile no." ng-model="dcu.number_4"
 								ng-pattern="/^[0-9]+$/" ng-minlength="10" ng-maxlength="20"
@@ -1622,7 +1622,7 @@
 							No. 5</label>
 						<div class="col-md-7">
 							<input type="text"
-								class="form-control ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
+								class="form-control"
 								name="number_5" id="number_5"
 								placeholder="Enter fifth mobile no." ng-model="dcu.number_5"
 								ng-pattern="/^[0-9]+$/" ng-minlength="10" ng-maxlength="20"

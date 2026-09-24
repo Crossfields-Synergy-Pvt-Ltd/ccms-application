@@ -42,6 +42,8 @@ public interface DCUDao {
 	public boolean addDCUConfiguration(DCUConfiguration user) throws Exception;
 	
 	public DCUConfiguration getDCUConfigurationByID(String dcu_serial_number) throws Exception;
+	public boolean addDefaultDCUConfiguration(DCUConfiguration configuration) throws Exception;
+	public DCUConfiguration getDefaultDCUConfiguration() throws Exception;
 
 	public SinglePhaseMeterData getByMeterDataID(String id)  throws Exception;
 	

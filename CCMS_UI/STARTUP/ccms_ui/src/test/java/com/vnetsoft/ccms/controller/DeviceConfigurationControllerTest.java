@@ -165,7 +165,7 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
 
         performGet("/device_conf/sync_node_conf/BAD-ID")
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(jsonPath("$.code", is(0)));
     }
 
     // --- sync_schduler_conf ---

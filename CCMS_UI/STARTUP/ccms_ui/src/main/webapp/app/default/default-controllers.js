@@ -1,7 +1,7 @@
 	
 var defaultCntl = angular.module('defaultControllers', []);
 
-defaultCntl.controller('defaultListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,defaultFactory) {
+defaultCntl.controller('defaultListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,defaultFactory, inform) {
 
 	
 	
@@ -21,8 +21,12 @@ defaultCntl.controller('defaultListControllers', function($scope, $state,$stateP
 	  		$scope.apply = function (dcu) {
 	  			$scope.config = dcu;
 	  			console.log($scope.config)
-			defaultFactory.add($scope.config);
-			$state.reload();
+			defaultFactory.add($scope.config).then(function() {
+				inform.add("Default DCU configuration saved successfully", {ttl: 3000, type: "success"});
+				$state.reload();
+			}).catch(function(error) {
+				inform.add("Failed to save default DCU configuration: " + ((error && error.data) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+			});
 	};
 	
 	
