@@ -76,13 +76,7 @@
 
 						<md-icon class="material-icons" ng-click="deleteconf(obj.scheduleId);"
 							data-toggle="tooltip" title="Delete"
-							style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon>
-
-						<a type="button" ng-click="light();" class="btn btn-info btn-sm "
-						data-toggle="tooltip" title="Apply Schedule to light">Apply to
-							Light</a> <a type="button" ng-click="rtu/dcu();"
-						class="btn btn-info btn-sm " data-toggle="tooltip"
-						title="Apply Schedule t RTU/DCU">Apply to RTU/DCU</a></td>
+							style="color:#F44336;font-size: 20px; height: 20px">delete</md-icon></td>
 				</tr>
 			</tbody>
 		</table>
@@ -92,7 +86,7 @@
 	</div>
 	<div class="col-md-12" align="center">
 		<pagination boundary-links="true" max-size="3"
-			items-per-page="itemsPerPage" total-items="todos.length"
+			items-per-page="itemsPerPage" total-items="listData.length"
 			ng-model="currentPage" ng-change="pageChanged()"></pagination>
 	</div>
 </section>

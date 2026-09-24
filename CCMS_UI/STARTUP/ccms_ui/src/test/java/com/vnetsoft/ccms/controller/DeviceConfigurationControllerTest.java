@@ -16,6 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.HandShake;
 import com.vnetsoft.ccms.pojo.Status;
+import com.vnetsoft.ccms.pojo.SchedulerConfiguration;
 import com.vnetsoft.ccms.services.DCUServices;
 import com.vnetsoft.ccms.services.NodeServices;
 
@@ -173,8 +174,13 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
     public void testSyncSchedulerConf_ValidId_ReturnsStatus200() throws Exception {
         HandShake mockHs = new HandShake();
         mockHs.setGateway_identifier(2043);
+        mockHs.setSchedules_name("night");
 
+        SchedulerConfiguration schedule = new SchedulerConfiguration();
+        schedule.setHandle_1_time("06:00");
+        schedule.setValid_till("2030-01-01T00:00:00.000Z");
         when(userServices.getHandShakeByID("DCU001")).thenReturn(mockHs);
+        when(userServices.getSchedulerConfigurationById("night")).thenReturn(schedule);
 
         performGet("/device_conf/sync_schduler_conf?id=DCU001")
             .andExpect(status().isOk())
@@ -182,11 +188,11 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testSyncSchedulerConf_NonexistentId_ReturnsStatus200() throws Exception {
+    public void testSyncSchedulerConf_NonexistentId_ReturnsErrorStatus() throws Exception {
         when(userServices.getHandShakeByID("BAD-ID")).thenThrow(new RuntimeException("Not found"));
 
         performGet("/device_conf/sync_schduler_conf?id=BAD-ID")
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(jsonPath("$.code", is(0)));
     }
 }

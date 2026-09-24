@@ -49,13 +49,13 @@ public class ControllerDaoImpl implements ControllerDao {
 	public SchedulerConfiguration getSchedulerConfigurationById(String id)
 			throws Exception {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
-	
-	
+		try {
+			query.addCriteria(Criteria.where("_id").is(Long.parseLong(id)));
+		} catch (NumberFormatException e) {
+			query.addCriteria(Criteria.where("schedules_name").is(id));
+		}
 		List<SchedulerConfiguration> list = mongoTemplate.find(query, SchedulerConfiguration.class);
-		 
-		
-		return list.get(0);
+		return list.isEmpty() ? null : list.get(0);
 	}
 	@Override
 	public List<SchedulerConfiguration> getSchedulerConfigurationList()
@@ -65,7 +65,11 @@ public class ControllerDaoImpl implements ControllerDao {
 	@Override
 	public boolean deleteSchedulerConfiguration(String id) throws Exception {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
+		try {
+			query.addCriteria(Criteria.where("_id").is(Long.parseLong(id)));
+		} catch (NumberFormatException e) {
+			query.addCriteria(Criteria.where("_id").is(id));
+		}
 		mongoTemplate.remove(query, SchedulerConfiguration.class);
 	 
 		return true;

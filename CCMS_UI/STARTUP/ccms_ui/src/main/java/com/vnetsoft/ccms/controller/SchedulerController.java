@@ -1,9 +1,13 @@
 package com.vnetsoft.ccms.controller;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +31,16 @@ public class SchedulerController {
 	DCUServices userServices;
 
 	static final Logger logger = Logger.getLogger(SchedulerController.class);
+	private static final AtomicLong NEXT_SCHEDULE_ID = new AtomicLong(System.currentTimeMillis());
+
+	private TaskExecutor scheduleSyncExecutor = new SimpleAsyncTaskExecutor("schedule-sync-");
+
+	@Autowired(required = false)
+	public void setScheduleSyncExecutor(@Qualifier("taskExecutor") TaskExecutor executor) {
+		if (executor != null) {
+			scheduleSyncExecutor = executor;
+		}
+	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Status add(@RequestBody SchedulerConfiguration obj,
@@ -36,9 +50,9 @@ public class SchedulerController {
 			if(logger.isDebugEnabled()) {
 				 logger.debug(obj);
 			}
-			if(obj.getScheduleId() < 1)
-				obj.setScheduleId(System.currentTimeMillis());
-			
+			if (obj.getScheduleId() < 1)
+				obj.setScheduleId(NEXT_SCHEDULE_ID.incrementAndGet());
+
 			userServices.addSchedulerConfiguration(obj);
 			triggerScheduleSync(obj.getSchedules_name());
 			return new Status(200, "Success");
@@ -46,20 +60,44 @@ public class SchedulerController {
 			return new Status(0, e.toString());
 		}
 	}
-	
-	private void triggerScheduleSync(String schedulesName) {
-		try {
-			List<HandShake> dcus = userServices.findHandShakeBySchedulesName(schedulesName);
-			RestTemplate restTemplate = new RestTemplate();
-			for (HandShake hs : dcus) {
-				String uri = "http://localhost:8080/device_conf/sync_schduler_conf?id=" + hs.getGateway_serial_number();
-				restTemplate.getForObject(uri, String.class);
+
+	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Status update(@RequestBody SchedulerConfiguration obj) {
+		return add(obj, null);
+	}
+
+	private void triggerScheduleSync(final String schedulesName) {
+		scheduleSyncExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					List<HandShake> dcus = userServices.findHandShakeBySchedulesName(schedulesName);
+					RestTemplate restTemplate = new RestTemplate();
+					for (HandShake hs : dcus) {
+						String uri = "http://localhost:8080/device_conf/sync_schduler_conf?id=" + hs.getGateway_serial_number();
+						try {
+							restTemplate.getForObject(uri, String.class);
+						} catch (Exception e) {
+							logger.error("Schedule sync failed for DCU " + hs.getGateway_serial_number(), e);
+						}
+					}
+				} catch (Exception e) {
+					logger.error("Auto-sync schedule config failed", e);
+				}
 			}
+		});
+	}
+
+	@RequestMapping(value = "/list/{id}", method = RequestMethod.GET)
+	public @ResponseBody SchedulerConfiguration getById(@PathVariable("id") String id) {
+		try {
+			return userServices.getSchedulerConfigurationById(id);
 		} catch (Exception e) {
-			logger.error("Auto-sync schedule config failed: " + e.getMessage());
+			logger.error("Schedule lookup failed for " + id, e);
+			return null;
 		}
 	}
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public @ResponseBody List<SchedulerConfiguration> getAll() {
 
@@ -83,7 +121,7 @@ public class SchedulerController {
 
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody Status delete(@PathVariable("id") String id) {
-		
+
 
 		try {
 			userServices.deleteSchedulerConfiguration(id);

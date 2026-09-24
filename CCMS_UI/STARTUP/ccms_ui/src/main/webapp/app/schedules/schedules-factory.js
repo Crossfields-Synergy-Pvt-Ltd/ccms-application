@@ -9,10 +9,14 @@ app.factory('schedulesFactory', ['$http', function($http) {
 		        return $http.get(serviceBase + '/scheduler/list');
 		    }
 		    obj.getByID = function(customerID){
-		        return $http.get(serviceBase + '/scheduler/list' + customerID);
-		    }
+			return $http.get(serviceBase + '/scheduler/list/' + customerID);
+		}
 		 
-		    obj.add = function (obj) {
+		    obj.update = function (obj) {
+			return $http.put(serviceBase + '/scheduler/update', obj);
+			};
+
+			obj.add = function (obj) {
 		    return $http.post(serviceBase + '/scheduler/create', obj).then(function (results) {
 		        return results;
 		    });
