@@ -5,23 +5,19 @@ app.factory('modified_operationalFactory', ['$http', function($http) {
 
 	 var serviceBase = ''
 		    var obj = {};
-		    obj.getAllById = function(dcu_id){
-		        return $http.get(serviceBase + '/modified_io/modified_io_list/' +  dcu_id);
-		    }
-			
-		    obj.getAll = function(){
-		        return $http.get(serviceBase + '/modified_io/modified_io_list/');
+		    obj.getAllByDate = function(qs_params){
+		        return $http.get(serviceBase + '/modified_io/modified_io_list' + qs_params);
 		    }
 		    
 		    obj.getAllDcuNames = function(){
 		        return $http.get(serviceBase + '/dcu/dcu_name_list');
 		    }
 		    
-			    obj.getAllExport = function(qs_params){
-			        return $http.get(serviceBase + '/io/export_operationalhour' + qs_params, { responseType: 'arraybuffer' })
+			    obj.exportLightStatus = function(qs_params){
+			        return $http.get(serviceBase + '/modified_io/export' + qs_params, { responseType: 'arraybuffer' })
 			            .then(function(response) {
 			                var headers = response.headers();
-			                var filename = headers['x-filename'] || 'operational-hours.csv';
+			                var filename = headers['x-filename'] || 'light-status.csv';
 			                var contentType = headers['content-type'] || 'text/csv';
 			                var linkElement = document.createElement('a');
 			                var blob = new Blob([response.data], { type: contentType });

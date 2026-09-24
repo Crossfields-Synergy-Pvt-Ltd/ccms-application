@@ -38,4 +38,13 @@ public class IOControllerTest {
 		assertNotNull(IOController.getIODetails(first));
 		assertNotNull(IOController.getIODetails(second));
 	}
+	@Test
+	public void validatesLightStatusDateFormat() {
+		assertEquals(20240703, com.vnetsoft.ccms.services.ModifiedIOPojoServicesImpl.parseDate("03/07/2024"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsInvalidLightStatusDateFormat() {
+		com.vnetsoft.ccms.services.ModifiedIOPojoServicesImpl.parseDate("2024-07-03");
+	}
 }

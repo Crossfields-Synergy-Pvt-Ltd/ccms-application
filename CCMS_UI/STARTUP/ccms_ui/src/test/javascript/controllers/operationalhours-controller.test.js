@@ -20,8 +20,8 @@ describe('operational hours controllers', function() {
         };
         modifiedFactory = {
             getAllDcuNames: jasmine.createSpy('getAllDcuNames').and.returnValue($q.when({ data: [] })),
-            getAllById: jasmine.createSpy('getAllById').and.returnValue($q.when({ data: [] })),
-            getAllExport: jasmine.createSpy('getAllExport').and.returnValue($q.when({}))
+            getAllByDate: jasmine.createSpy('getAllByDate').and.returnValue($q.when({ data: [] })),
+            exportLightStatus: jasmine.createSpy('exportLightStatus').and.returnValue($q.when({}))
         };
     }));
 
@@ -72,7 +72,7 @@ describe('operational hours controllers', function() {
         });
         $rootScope.$digest();
         $scope.showdate();
-        expect(modifiedFactory.getAllById).not.toHaveBeenCalled();
+        expect(modifiedFactory.getAllByDate).not.toHaveBeenCalled();
         expect($scope.errorMessage).toBe('Please select a DCU first.');
     });
 });
