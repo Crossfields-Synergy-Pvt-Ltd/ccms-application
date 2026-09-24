@@ -1,4 +1,6 @@
 <section id="brand" class="row">
+	<div class="alert alert-danger" ng-if="error">{{ error }}</div>
+	<div class="text-center" ng-if="loading || exporting">Loading...</div>
 
 	<div class="col-md-12">
 		<div class="col-md-2" align="left">
@@ -96,11 +98,11 @@
 		</div>
 
 	<div class="col-sm-2" align="right"  style="padding-top: 25px">
-		<a type="button" ng-click="showdate(gateway_identifier);" class="btn btn-info btn-sm"
+		<a type="button" ng-click="showdate();" class="btn btn-info btn-sm"
 			ng-model="searchFish" data-toggle="tooltip"
 			title="Click here to filter the records">View</a>
 	
-		<a type="button" ng-click="export_history(gateway_identifier);" class="btn btn-info btn-sm"
+		<a type="button" ng-click="export_history();" class="btn btn-info btn-sm"
 			data-toggle="tooltip" title="Click here to filter the records">Export</a>
 	</div>
 
@@ -118,20 +120,20 @@
 
 					<td align="center"><a>SI NO</a></td>
 					<td align="center"><a
-						ng-click="sortType = 'name'; sortReverse = !sortReverse"> Name
-							<span ng-show="sortType == 'name' && !sortReverse"
+						ng-click="sortType = 'dcu_name'; sortReverse = !sortReverse"> Name
+							<span ng-show="sortType == 'dcu_name' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'name' && sortReverse"
+							ng-show="sortType == 'dcu_name' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 
 
 					<td align="center"><a
-						ng-click="sortType = 'time_stamp'; sortReverse = !sortReverse">
+						ng-click="sortType = 'utc_date'; sortReverse = !sortReverse">
 							Date Time <span
-							ng-show="sortType == 'time_stamp' && !sortReverse"
+							ng-show="sortType == 'utc_date' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'time_stamp' && sortReverse"
+							ng-show="sortType == 'utc_date' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 
@@ -146,21 +148,21 @@
 					</a></td>
 
 					<td align="center"><a
-						ng-click="sortType = 'r_phase_current'; sortReverse = !sortReverse">
+						ng-click="sortType = 'current_line_1'; sortReverse = !sortReverse">
 							R-Phase Current(A) <span
-							ng-show="sortType == 'r_phase_current' && !sortReverse"
+							ng-show="sortType == 'current_line_1' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'r_phase_current	' && sortReverse"
+							ng-show="sortType == 'current_line_1' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 
 
 					<td align="center"><a
-						ng-click="sortType = 'power_factor'; sortReverse = !sortReverse">
+						ng-click="sortType = 'pf_1'; sortReverse = !sortReverse">
 							Power Factor <span
-							ng-show="sortType == 'power_factor' && !sortReverse"
+							ng-show="sortType == 'pf_1' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'power_factor' && sortReverse"
+							ng-show="sortType == 'pf_1' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 					<td align="center"><a
@@ -173,11 +175,11 @@
 					</a></td>
 
 					<td align="center"><a
-						ng-click="sortType = 'kwh_total'; sortReverse = !sortReverse">
+						ng-click="sortType = 'consumption'; sortReverse = !sortReverse">
 							Consumption(kWh) <span
-							ng-show="sortType == 'kwh_total' && !sortReverse"
+							ng-show="sortType == 'consumption' && !sortReverse"
 							class="fa fa-caret-down"></span> <span
-							ng-show="sortType == 'kwh_total' && sortReverse"
+							ng-show="sortType == 'consumption' && sortReverse"
 							class="fa fa-caret-up"></span>
 					</a></td>
 				</tr>
@@ -193,7 +195,7 @@
 					<td align="center">{{ obj.current_line_1 }}</td>
 					<td align="center">{{ obj.pf_1 }}</td>
 					<td align="center">{{ obj.kwh_total }}</td>
-					<td align="center">{{ obj.kwh_total }}</td>
+					<td align="center">{{ obj.consumption }}</td>
 
 				</tr>
 			</tbody>

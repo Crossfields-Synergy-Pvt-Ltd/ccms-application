@@ -338,6 +338,7 @@ public class DCUController {
 	public @ResponseBody List<DCUDropDown> getAllDcuName(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
+			@RequestParam(value = "village", required = false) String village,
 			@RequestParam(value = "start_date", required = false) String startDateStr,
 			@RequestParam(value = "end_date", required = false) String endDateStr
 			) {
@@ -357,7 +358,11 @@ public class DCUController {
 		try {
 			Date startDate = parseDateParam(startDateStr, false);
 			Date endDate = parseDateParam(endDateStr, true);
-			userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
+			if (village != null && !"ALL".equals(village)) {
+				userList = dashboardService.getMapData(district, mandal, gp, village, startDate, endDate);
+			} else {
+				userList = dashboardService.getMapData(district, mandal, gp, startDate, endDate);
+			}
 			
 			for(HandShake tmp : userList){
 				

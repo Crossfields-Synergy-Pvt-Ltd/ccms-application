@@ -470,6 +470,12 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	@Override
 	public List<HandShake> getMapData(String district, String mandal, String gp,
 			Date startDate, Date endDate) throws Exception {
+		return getMapData(district, mandal, gp, null, startDate, endDate);
+	}
+
+	@Override
+	public List<HandShake> getMapData(String district, String mandal, String gp, String village,
+			Date startDate, Date endDate) throws Exception {
 		Query query = new Query();
 		 
 		if(district.equals("5_districts")){ 
@@ -489,6 +495,9 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		}
 		if (startDate != null && endDate != null) {
 			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
+		}
+		if (village != null && !"ALL".equals(village)) {
+			query.addCriteria(Criteria.where("village").is(village));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 

@@ -12,6 +12,7 @@ public interface DashBoardServices {
 	public MonitorControlCount getDahsBoardCountstats(String district, String mandal, String gp, String village, Date startDate, Date endDate, String search) throws Exception;
 
 	public List<HandShake> getMapData(String district, String mandal, String gp, Date startDate, Date endDate)  throws Exception;
+	public List<HandShake> getMapData(String district, String mandal, String gp, String village, Date startDate, Date endDate) throws Exception;
 	
 	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp, String village, Date startDate, Date endDate, String search, int page, int size)  throws Exception;
 	
