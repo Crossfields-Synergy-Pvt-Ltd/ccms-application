@@ -39,14 +39,10 @@ describe('monitorandcontrolControllers', function() {
             user: true
         };
 
-        $httpBackend.whenGET('/dcu/dcu_name_list')
-            .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL')
+        $httpBackend.whenGET('/dashboard/count?district=ALL&mandal=ALL&gp=ALL&village=ALL')
             .respond({ total_devices: 10, mcb_trip_count: 0 });
-        $httpBackend.whenPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=0&size=50')
+        $httpBackend.whenPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&village=ALL&page=0&size=50')
             .respond([]);
-        $httpBackend.whenGET('/dashboard/meter_data_by_id/undefined')
-            .respond({});
         $httpBackend.whenGET('/filter/get_mandal?district=ALL')
             .respond([]);
         $httpBackend.whenGET('/filter/get_gp?mandal=ALL')
@@ -72,7 +68,7 @@ describe('monitorandcontrolControllers', function() {
         });
     }
 
-    describe('$scope.turn_on_light', function() {
+    describe('$scope.toggle_light', function() {
         it('should call turnOnLights when light_status is 0 and update status to 1 on success', function() {
             createController();
             var obj = {
@@ -86,7 +82,7 @@ describe('monitorandcontrolControllers', function() {
             $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
-            $scope.turn_on_light(obj);
+            $scope.toggle_light(obj);
             $httpBackend.flush();
 
             expect(obj.dcu_details.light_status).toBe(1);
@@ -105,7 +101,7 @@ describe('monitorandcontrolControllers', function() {
             $httpBackend.expectGET('/device_conf/lights_off?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond({ code: 200, message: 'success' });
 
-            $scope.turn_on_light(obj);
+            $scope.toggle_light(obj);
             $httpBackend.flush();
 
             expect(obj.dcu_details.light_status).toBe(0);
@@ -124,18 +120,15 @@ describe('monitorandcontrolControllers', function() {
             $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043')
                 .respond(500);
 
-            $scope.turn_on_light(obj);
+            $scope.toggle_light(obj);
             $httpBackend.flush();
 
             expect(obj.dcu_details.light_status).toBe(0);
         });
 
-        it('should handle empty dcu_details gracefully', function() {
+        it('should ignore an empty dcu_details object gracefully', function() {
             createController();
-            var obj = { dcu_details: null };
-            expect(function() {
-                $scope.turn_on_light(obj);
-            }).toThrow();
+            expect(function() { $scope.toggle_light({ dcu_details: null }); }).not.toThrow();
         });
 
         it('should handle missing serial number', function() {
@@ -151,7 +144,7 @@ describe('monitorandcontrolControllers', function() {
             $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=&device_identifier=')
                 .respond({ code: 200, message: 'success' });
 
-            $scope.turn_on_light(obj);
+            $scope.toggle_light(obj);
         });
     });
 

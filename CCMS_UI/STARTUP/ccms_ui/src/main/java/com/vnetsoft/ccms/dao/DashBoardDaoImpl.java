@@ -36,7 +36,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
-			String mandal, String gp, Date startDate, Date endDate, String search) throws Exception {
+			String mandal, String gp, String village, Date startDate, Date endDate, String search) throws Exception {
 	
 		MonitorControlCount obj = new MonitorControlCount();
 		
@@ -59,6 +59,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		if (startDate != null && endDate != null) {
 			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
 		}
+		if (village != null && !"ALL".equals(village)) query.addCriteria(Criteria.where("village").is(village));
 		if (search != null && !search.isEmpty()) {
 			query.addCriteria(new Criteria().orOperator(
 				Criteria.where("name").regex(search, "i"),
@@ -497,7 +498,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 
 	@Override
 	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
-			Date startDate, Date endDate, String search) throws Exception {
+			String village, Date startDate, Date endDate, String search, int page, int size) throws Exception {
 
 		Query query = new Query();
 		
@@ -520,6 +521,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		}
 		if (startDate != null && endDate != null) {
 			query.addCriteria(Criteria.where("installation_date").gte(startDate).lt(endDate));
+		if (village != null && !"ALL".equals(village)) query.addCriteria(Criteria.where("village").is(village));
 		}
 		if (search != null && !search.isEmpty()) {
 			query.addCriteria(new Criteria().orOperator(
@@ -528,6 +530,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				Criteria.where("_id").regex(search, "i")
 			));
 		}
+		query.skip(page * size).limit(size);
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
 		return list;

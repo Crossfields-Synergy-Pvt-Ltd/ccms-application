@@ -45,6 +45,7 @@ public class MonitorController {
 	public @ResponseBody MonitorControlCount getDashBoardCounts(@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
+			@RequestParam(value = "village", defaultValue = "ALL") String village,
 			@RequestParam(value = "start_date", required = false) String startDateStr,
 			@RequestParam(value = "end_date", required = false) String endDateStr,
 			@RequestParam(value = "search", required = false) String search
@@ -57,7 +58,7 @@ public class MonitorController {
 		try {
 			Date startDate = parseDateParam(startDateStr, false);
 			Date endDate = parseDateParam(endDateStr, true);
-			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, startDate, endDate, search);
+			return dashBpardService.getDahsBoardCountstats(district, mandal, gp, village, startDate, endDate, search);
 		} catch (Exception e) {
 			logger.error("Exception : " + e.getMessage());
 			logger.error(e.getStackTrace());
@@ -271,81 +272,46 @@ public class MonitorController {
 		}
 	}
 	
-	
-
 	@RequestMapping(value = "/instant_data_filter", method = RequestMethod.POST)
 	public @ResponseBody List<DCUInstantData> getAllDevicesInstantDataByFilter(
 			@RequestParam("district") String district,
 			@RequestParam("mandal") String mandal,
 			@RequestParam("gp") String gp,
+			@RequestParam(value = "village", defaultValue = "ALL") String village,
 			@RequestParam(value = "start_date", required = false) String startDateStr,
 			@RequestParam(value = "end_date", required = false) String endDateStr,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "50") int size,
 			@RequestParam(value = "search", required = false) String search,
-			
-			   @RequestHeader(
-			  "Authorization") String
-			  basicAuth) {
-		
-		
-		System.out.println("BASIC AOUTH : "+ basicAuth);
-		List<DCUInstantData> dcu_instant_data_list = new ArrayList<DCUInstantData>();
-		
+			@RequestHeader("Authorization") String basicAuth) {
+		List<DCUInstantData> result = new ArrayList<DCUInstantData>();
 		try {
-			
-			if(logger.isDebugEnabled()) {
-				 logger.debug("INSTANT DATA REQUEST");
-			}
-			
+			if (page < 0 || size <= 0) return result;
 			Date startDate = parseDateParam(startDateStr, false);
 			Date endDate = parseDateParam(endDateStr, true);
-			List<HandShake> dcu_list = dashBpardService.getAllHandShakeData(district, mandal, gp, startDate, endDate, search);
-			
-			int start = page * size;
-			int end = Math.min(start + size, dcu_list.size());
-			
-			if (start < dcu_list.size()) {
-				List<HandShake> paged_list = dcu_list.subList(start, end);
-				
-				for(HandShake tmp : paged_list){
-					
+			List<HandShake> dcuList = dashBpardService.getAllHandShakeData(district, mandal, gp, village, startDate, endDate, search, page, size);
+			for (HandShake tmp : dcuList) {
+				try {
+					if (tmp.getGateway_serial_number() == null || tmp.getGateway_serial_number().length() < 4) continue;
+					DCUInstantData data = new DCUInstantData();
 					try {
-						
-						if(tmp.getGateway_serial_number().length() < 4)
-							continue;
-						
-					DCUInstantData dcu_instant_data = new DCUInstantData();
-					
-					try {
-						String hs_last_communication_time  = DateUtils.getLastSeenTimeForMonitorControl(Long.valueOf(tmp.getHs_time_stamp()));
-						dcu_instant_data.setLast_communication_time(hs_last_communication_time);
-						}catch(Exception e){
-							System.out.println("Exception while setting last seen date : "+ e.getMessage());
-						}
-					
-					dcu_instant_data.setDcu_details(tmp);
-					InstantMeterData instant_meter_data = dashBpardService.getInstantMeterData(tmp.getGateway_serial_number());
-					dcu_instant_data.setMeter_data(instant_meter_data);
-					dcu_instant_data.setId(tmp.getGateway_serial_number());
-					dcu_instant_data.setDevice_name(tmp.getName());
-					dcu_instant_data_list.add(dcu_instant_data);
-					
-					}catch(Exception e){
-						System.out.println("Exception : "+ e.getMessage());
-						System.out.println(e.getStackTrace());
+						data.setLast_communication_time(DateUtils.getLastSeenTimeForMonitorControl(Long.valueOf(tmp.getHs_time_stamp())));
+					} catch (Exception e) {
+						System.out.println("Exception while setting last seen date : " + e.getMessage());
 					}
-					
+					data.setDcu_details(tmp);
+					data.setMeter_data(dashBpardService.getInstantMeterData(tmp.getGateway_serial_number()));
+					data.setId(tmp.getGateway_serial_number());
+					data.setDevice_name(tmp.getName());
+					result.add(data);
+				} catch (Exception e) {
+					System.out.println("Exception : " + e.getMessage());
 				}
 			}
-			
-			return dcu_instant_data_list;
+			return result;
 		} catch (Exception e) {
-			System.out.println("Exception : "+ e.getMessage());
-			System.out.println(e.getStackTrace());
-			
+			System.out.println("Exception : " + e.getMessage());
 		}
-		
 		return null;
 	}
 	
