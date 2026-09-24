@@ -29,6 +29,12 @@ public class DashBoardServicesImpl  implements DashBoardServices{
 	}
 
 	@Override
+	public List<HandShake> getMapData(String district, String mandal, String gp, String village,
+			Date startDate, Date endDate) throws Exception {
+		return dashBoardDao.getMapData(district, mandal, gp, village, startDate, endDate);
+	}
+
+	@Override
 	public List<HandShake> getAllHandShakeData(String district, String mandal, String gp,
 			String village, Date startDate, Date endDate, String search, int page, int size) throws Exception {
 		return dashBoardDao.getAllHandShakeData(district, mandal, gp, village, startDate, endDate, search, page, size);

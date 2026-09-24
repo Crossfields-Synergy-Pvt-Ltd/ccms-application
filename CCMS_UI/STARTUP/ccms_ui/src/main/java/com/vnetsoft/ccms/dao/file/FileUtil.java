@@ -22,7 +22,7 @@ public class FileUtil {
 
 
 	static final String FILE_SPRATER = "/";
-	public static String BASE_PATH = "/home/data/dontdelete/";
+	public static String BASE_PATH = "/home/data/dontdelete";
 	//public static String BASE_PATH = "E:/CCMS_DATA";
 	public static List<String> getDataFilenamesBetweenDate(String id, String start_date,
 			String end_date, String file_prefix) {
@@ -39,11 +39,18 @@ public class FileUtil {
 			date = simpleDateFormat.parse(start_date);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
-			for (int day = 0; day < 30; day++) {
+			Date endDate = simpleDateFormat.parse(end_date);
+			if (endDate.before(date)) {
+				return file_names;
+			}
+			Calendar endCalendar = Calendar.getInstance();
+			endCalendar.setTime(endDate);
+			Calendar currentCalendar = Calendar.getInstance();
+			currentCalendar.setTime(date);
+			while (!currentCalendar.after(endCalendar)) {
 
 				calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				calendar.add(Calendar.DAY_OF_MONTH, day);
+				calendar.setTime(currentCalendar.getTime());
 
 				String newDate = simpleDateFormat.format(calendar.getTime());
 			
@@ -59,9 +66,7 @@ public class FileUtil {
 						+ file_prefix;
 				file_names.add(file_name);
 				
-				if(newDate.equalsIgnoreCase(end_date)){
-					break;
-				}
+				currentCalendar.add(Calendar.DAY_OF_MONTH, 1);
 			}
 		} catch (ParseException e) {
 			logger.error("Exception : " + e.getMessage());
@@ -105,12 +110,12 @@ public class FileUtil {
 				 String tmp[] = buffer.split(",");
 				 	System.out.println("SIZE : "+ tmp.length);
 				 	ui_obj.setUtc_date(tmp[2]);
-					ui_obj.setDcu_id(tmp[1]);
+					ui_obj.setDcu_id(tmp[0]);
 					ui_obj.setConsumption(tmp[10]);
 					ui_obj.setR_phase_voltage(tmp[6]);
 					ui_obj.setCurrent_line_1(tmp[7]);
 					ui_obj.setPf_1(tmp[9]);
-					ui_obj.setKwh_total(tmp[10]);
+					ui_obj.setKwh_total(tmp[8]);
 					ui_obj.setDcu_name(tmp[1]);
 					meter_data.add(ui_obj);
 				 }

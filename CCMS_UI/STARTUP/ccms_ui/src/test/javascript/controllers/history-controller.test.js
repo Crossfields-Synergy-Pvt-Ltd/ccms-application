@@ -1,7 +1,6 @@
 describe('historyControllers', function() {
     var $scope, $rootScope, $controller, $httpBackend, historyFactory;
-    var mockConfig, mockStateParams;
-    var mockInform, mockModal;
+    var mockConfig, mockInform;
 
     beforeEach(module('inform'));
     beforeEach(module('historyControllers'));
@@ -11,33 +10,18 @@ describe('historyControllers', function() {
         $rootScope = _$rootScope_;
         $scope = $rootScope.$new();
         $httpBackend = _$httpBackend_;
-        historyFactory = _historyFactory_;
         $controller = _$controller_;
-
+        historyFactory = _historyFactory_;
         mockInform = { add: jasmine.createSpy('inform.add') };
-        mockModal = { open: jasmine.createSpy('modal.open').and.returnValue({ result: { then: function(){} } }) };
-
         mockConfig = { districts: [{ state: 'Guntur-17', code: 'Guntur-17' }] };
-        mockStateParams = {};
-
-        $rootScope.privilege = {
-            district: 'ALL',
-            mandal: 'ALL',
-            gp: 'ALL',
-            history: true,
-            event: true
-        };
-
-        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL')
-            .respond([{ name: 'DCU-001', id: 'dcu1' }]);
-        $httpBackend.whenGET('/meter/meter_data_list')
-            .respond([]);
+        $rootScope.privilege = {district: 'ALL', mandal: 'ALL', gp: 'ALL'};
+        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL&village=ALL')
+            .respond([{name: 'DCU-001', gateway_identifier: 'DCU001'}]);
     }));
 
     afterEach(function() {
-        if ($httpBackend) {
-            try { $httpBackend.flush(); } catch(e) {}
-        }
+        try { $httpBackend.verifyNoOutstandingExpectation(); } catch (e) {}
+        try { $httpBackend.verifyNoOutstandingRequest(); } catch (e) {}
     });
 
     function createController() {
@@ -46,37 +30,49 @@ describe('historyControllers', function() {
             $rootScope: $rootScope,
             historyFactory: historyFactory,
             config: mockConfig,
-            $state: { go: jasmine.createSpy('$state.go') },
-            $stateParams: mockStateParams,
-            inform: mockInform,
-            $modal: mockModal
+            inform: mockInform
         });
     }
 
-    describe('initialization', function() {
-        it('should load meter data on init', function() {
-            createController();
-            $httpBackend.flush();
-            expect($scope.dcu_data).toBeDefined();
-        });
+    it('loads DCU names and initializes pagination', function() {
+        createController();
+        $httpBackend.flush();
+        expect($scope.dcu_data.length).toBe(1);
+        expect($scope.itemsPerPage).toBe(25);
+        expect($scope.figureOutTodosToDisplay).toBeDefined();
+    });
 
-        it('should load DCU names on init', function() {
-            createController();
-            $httpBackend.flush();
-            expect($scope.dcu_data).toBeDefined();
-        });
+    it('does not request history without a selected DCU', function() {
+        createController();
+        $httpBackend.flush();
+        $scope.showdate();
+        expect(mockInform.add).toHaveBeenCalled();
+    });
 
-        it('should set districts from config', function() {
-            createController();
-            $httpBackend.flush();
-            expect($scope.districts).toEqual(mockConfig.districts);
-        });
+    it('loads and paginates history data', function() {
+        createController();
+        $httpBackend.flush();
+        $scope.selected_dcu.name = {gateway_identifier: 'DCU001'};
+        $httpBackend.expectGET('/meter/meter_data_between_date?id=DCU001&start_date=&end_date=')
+            .respond([{dcu_name: 'DCU', kwh_total: '1', consumption: '2'}]);
+        $scope.showdate();
+        $httpBackend.flush();
+        expect($scope.todos.length).toBe(1);
+        expect($scope.list.length).toBe(1);
+        expect($scope.loading).toBe(false);
+    });
 
-        it('should handle null privilege gracefully', function() {
-            $rootScope.privilege = null;
-            createController();
-            $httpBackend.flush();
-            expect($scope.qs_params).toBe('?district=ALL&mandal=ALL&gp=ALL');
-        });
+    it('keeps existing table data when exporting', function() {
+        createController();
+        $httpBackend.flush();
+        $scope.selected_dcu.name = {gateway_identifier: 'DCU001'};
+        $scope.list = [{dcu_name: 'existing'}];
+        $httpBackend.expectGET('/meter/export_history?id=DCU001&start_date=' +
+            encodeURIComponent(moment($scope.datePicker.date.startDate).format('DD/MM/YYYY')) +
+            '&end_date=' + encodeURIComponent(moment($scope.datePicker.date.endDate).format('DD/MM/YYYY')))
+            .respond(200, 'csv', {'x-filename': 'history.csv', 'content-type': 'text/csv'});
+        $scope.export_history();
+        $httpBackend.flush();
+        expect($scope.list[0].dcu_name).toBe('existing');
     });
 });

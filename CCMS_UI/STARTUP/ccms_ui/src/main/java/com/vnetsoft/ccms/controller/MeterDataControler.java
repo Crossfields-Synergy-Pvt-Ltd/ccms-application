@@ -208,8 +208,8 @@ public class MeterDataControler {
         String[] header_user_frendly = { "Name ", "Date Time ", "R-Phase Voltage(V) ",
                 "R-Phase Current(A) ", "Power Factor (pf) ", "R-Phase Power (kw) ", "Consumption (kwh)"};
        
-        String[] header = {"dcu_id", "utc_date", "r_phase_voltage",
-                "current_line_1", "pf_1", "kwh_total", "kwh_total"};
+        String[] header = {"dcu_name", "utc_date", "r_phase_voltage",
+                "current_line_1", "pf_1", "kwh_total", "consumption"};
        
         csvWriter.writeHeader(header_user_frendly);
        
