@@ -1,154 +1,108 @@
 var eventCntl = angular.module('eventControllers', []);
 
-eventCntl .controller( 'eventListControllers',
-				function($scope, $state, $stateParams, $modal, $location,$http, $rootScope, eventFactory, config) {
+eventCntl.controller('eventListControllers', function($scope, $rootScope, eventFactory, config, inform) {
+    $scope.sortType = 'id'; $scope.sortReverse = false; $scope.searchFish = '';
+    $scope.selected_dcu = {}; $scope.dcu_data = []; $scope.todos = []; $scope.list = [];
+    $scope.itemsPerPage = 25; $scope.currentPage = 1; $scope.loading = false;
+    $scope.exporting = false; $scope.errorMessage = null; $scope.filterValues = { village: null };
 
-					$scope.sortType = 'id'; // set the default sort type
-					$scope.sortReverse = false; // set the default sort order
-					$scope.searchFish = ''; // set the default search/filter
-					// term
+    function notify(message, type) {
+        $scope.errorMessage = message;
+        if (inform && inform.add) inform.add(message, {ttl: 4000, type: type || 'danger'});
+    }
+    function clearError() { $scope.errorMessage = null; }
+    function valueOrAll(value) { return value || 'ALL'; }
+    function selectedGateway() {
+        return $scope.selected_dcu && $scope.selected_dcu.name && $scope.selected_dcu.name.gateway_identifier;
+    }
+    function buildFilterQuery() {
+        return '?district=' + encodeURIComponent(valueOrAll($scope.selectedDistrict)) +
+            '&mandal=' + encodeURIComponent(valueOrAll($scope.selectedMandal)) +
+            '&gp=' + encodeURIComponent(valueOrAll($scope.select_gp)) +
+            '&village=' + encodeURIComponent(valueOrAll($scope.filterValues.village));
+    }
+    function dateQuery() {
+        return '?id=' + encodeURIComponent(selectedGateway()) +
+            '&start_date=' + encodeURIComponent(moment($scope.datePicker.date.startDate).format('DD/MM/YYYY')) +
+            '&end_date=' + encodeURIComponent(moment($scope.datePicker.date.endDate).format('DD/MM/YYYY'));
+    }
+    function validateSelection() {
+        if (!selectedGateway()) { notify('Please select a DCU first.', 'warning'); return false; }
+        return true;
+    }
 
-					$scope.selected_dcu = {};
-					 var dist = ($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL';
-					 var mandal = ($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL';
-					 var gp = ($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL';
-					 $scope.qs_params = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
+    var privilege = $rootScope.privilege || {};
+    var district = privilege.district || 'ALL', mandal = privilege.mandal || 'ALL', gp = privilege.gp || 'ALL';
+    $scope.qs_params = '?district=' + encodeURIComponent(district) + '&mandal=' + encodeURIComponent(mandal) +
+        '&gp=' + encodeURIComponent(gp) + '&village=ALL';
+    eventFactory.getAllDcuNames($scope.qs_params).then(function(data) {
+        $scope.dcu_data = data.data || [];
+    }).catch(function() { notify('Unable to load DCU names.'); });
 
-					 $scope.dcu_data = [];
-					 eventFactory.getAllDcuNames($scope.qs_params).then(function(data) {
-					 	$scope.dcu_data = data.data;
-					 });
+    $scope.filter = function() {
+        clearError();
+        eventFactory.getAllDcuNames(buildFilterQuery()).then(function(data) {
+            $scope.dcu_data = data.data || [];
+        }).catch(function() { notify('Unable to filter DCUs.'); });
+    };
 
-					 $scope.filter = function() {
-					 	var dist = $scope.selectedDistrict || 'ALL';
-						var mandal = $scope.selectedMandal || 'ALL';
-						var gp = $scope.select_gp || 'ALL';
-						var qs = '?district='+dist+ '&mandal='+mandal+'&gp='+gp;
-						eventFactory.getAllDcuNames(qs).then(function(data) {
-							$scope.dcu_data = data.data;
-						});
-					};
+    $scope.datePicker = {date: {startDate: new Date(), endDate: new Date()}};
+    $scope.opts = {
+        locale: {applyClass: 'btn-green', applyLabel: 'Apply', fromLabel: 'From', format: 'YYYY-MM-DD',
+            toLabel: 'To', cancelLabel: 'Cancel', customRangeLabel: 'Custom range'},
+        ranges: {
+            'Today': [moment().startOf('day'), moment()],
+            'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+            'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    };
 
-					$scope.datePicker = {
-						date : { startDate : new Date(), endDate : new Date()
-						}
-					};
+    $scope.figureOutTodosToDisplay = function() {
+        var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+        $scope.list = ($scope.todos || []).slice(begin, begin + $scope.itemsPerPage);
+    };
+    $scope.pageChanged = function() { $scope.figureOutTodosToDisplay(); };
 
-					$scope.opts = {
-						locale : {
-							applyClass : 'btn-green',
-							applyLabel : "Apply",
-							fromLabel : "From",
-							format : "YYYY-MM-DD",
-							toLabel : "To",
-							cancelLabel : 'Cancel',
-							customRangeLabel : 'Custom range'
-						},
-						ranges : {
-							'Today' : [ moment().today, moment() ],
-							'Yesterday' : [ moment().subtract(1, 'days'), moment() ],
-							'Last 7 Days' : [ moment().subtract(6, 'days'), moment() ],
-							'This Month' : [ moment().startOf('month'), moment().endOf('month') ],
-							'Last Month' : [ moment().subtract(29, 'days'),moment() ]
-						}
-					};
+    $scope.showdate = function() {
+        if (!validateSelection()) return;
+        clearError(); $scope.loading = true;
+        eventFactory.getByID(dateQuery()).then(function(data) {
+            $scope.todos = data.data || []; $scope.currentPage = 1; $scope.figureOutTodosToDisplay();
+        }).catch(function() {
+            $scope.todos = []; $scope.list = []; notify('Unable to load event data.');
+        }).finally(function() { $scope.loading = false; });
+    };
 
-					$scope.showdate = function(gateway_identifier) {
-						console.log($scope.selected_dcu.name.gateway_identifier)
-						console.log($scope.datePicker.date.startDate);
-						console.log($scope.datePicker.date.endDate);
+    $scope.export_events = function() {
+        if (!validateSelection()) return;
+        clearError(); $scope.exporting = true;
+        eventFactory.exportEventData(dateQuery()).then(function(response) {
+            if (response && response.status === 204) notify('No events found for the selected range.', 'warning');
+        }).catch(function(error) {
+            if (!error || error.status !== 204) notify('Unable to export event data.');
+        }).finally(function() { $scope.exporting = false; });
+    };
 
-						var start_date = $scope.datePicker.date.startDate
-				    	  var dayWrapper = moment(start_date); 
-				    	  var dayString = dayWrapper.format("DD/MM/YYYY"); 
-				    	  var start_date = dayString
-				    	  console.log(start_date)
-				    	  
-				    	   var end_Date = $scope.datePicker.date.endDate
-				    	  var dayWrapper = moment(end_Date); 
-				    	  var dayString = dayWrapper.format("DD/MM/YYYY"); 
-				    	  var end_Date = dayString
-				    	  console.log(end_Date)
-
-						$scope.qs_params = '?id=' + $scope.selected_dcu.name.gateway_identifier+ '&start_date=' + start_date+ '&end_date=' +end_Date;
-						console.log($scope.qs_params)
-
-						eventFactory .getByID($scope.qs_params) .then( function(data) {
-											// $scope.list = data.data;
-											$scope.todos = data.data;
-
-											$scope.list = [];
-											$scope.itemsPerPage = 25;
-											$scope.currentPage = 1;
-
-											$scope.figureOutTodosToDisplay = function() {
-												var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-												var end = begin
-														+ $scope.itemsPerPage;
-												$scope.list = $scope.todos
-														.slice(begin, end);
-											};
-
-											$scope.figureOutTodosToDisplay();
-
-											$scope.pageChanged = function() {
-												$scope
-														.figureOutTodosToDisplay();
-											};
-										});
-
-					}
-
-					
-				    $scope.export_events = function(gateway_identifier) {
-						  
-				    	console.log($scope.datePicker.date.startDate);
-						console.log($scope.datePicker.date.endDate);
-
-						var start_date = $scope.datePicker.date.startDate
-				    	  var dayWrapper = moment(start_date); 
-				    	  var dayString = dayWrapper.format("DD/MM/YYYY"); 
-				    	  var start_date = dayString
-				    	  console.log(start_date)
-				    	  
-				    	   var end_Date = $scope.datePicker.date.endDate
-				    	  var dayWrapper = moment(end_Date); 
-				    	  var dayString = dayWrapper.format("DD/MM/YYYY"); 
-				    	  var end_Date = dayString
-				    	  console.log(end_Date)
-						
-						$scope.qs_params = '?id=' + $scope.selected_dcu.name.gateway_identifier + '&start_date=' +start_date + '&end_date='+ end_Date;
-						console.log($scope.qs_params)
-						
-						eventFactory.exportEventData($scope.qs_params).then(function(data) {
-						 		//	$scope.list = data.data;
-						});
-					
-				}
-				    
-					$scope.selectedDistrict = '';
-					$scope.districts = config.districts;
-
-					$scope.getMandalOnSelect = function(selectedDistrict) {
-						eventFactory.getByMandal($scope.selectedDistrict).then(
-								function(data) {
-									$scope.mandal_list = data.data;
-								});
-					}
-
-					$scope.getGpOnSelect = function(selectedMandal) {
-						eventFactory.getByGp($scope.selectedMandal).then(
-								function(data) {
-									$scope.gp_list = data.data;
-
-								});
-					}
-
-					$scope.getVillageOnSelect = function(select_gp) {
-						eventFactory.getByVillage($scope.select_gp).then(
-								function(data) {
-									$scope.village_list = data.data;
-								});
-					}
-
-				});
+    $scope.selectedDistrict = ''; $scope.districts = config.districts;
+    $scope.getMandalOnSelect = function() {
+        $scope.selectedMandal = null; $scope.select_gp = null; $scope.filterValues.village = null;
+        $scope.gp_list = []; $scope.village_list = [];
+        eventFactory.getByMandal($scope.selectedDistrict).then(function(data) {
+            $scope.mandal_list = data.data || [];
+        }).catch(function() { notify('Unable to load Mandals.'); });
+    };
+    $scope.getGpOnSelect = function() {
+        $scope.select_gp = null; $scope.filterValues.village = null; $scope.village_list = [];
+        eventFactory.getByGp($scope.selectedMandal).then(function(data) {
+            $scope.gp_list = data.data || [];
+        }).catch(function() { notify('Unable to load GPs.'); });
+    };
+    $scope.getVillageOnSelect = function() {
+        $scope.filterValues.village = null;
+        eventFactory.getByVillage($scope.select_gp).then(function(data) {
+            $scope.village_list = data.data || [];
+        }).catch(function() { notify('Unable to load Villages.'); });
+    };
+});
