@@ -48,8 +48,13 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
     }
 
     function validateSelection() {
-        if (!($scope.dcuId || "").trim()) {
-            notify('Please select a DCU first.', 'warning');
+        var dcuId = ($scope.dcuId || '').trim();
+        if (!dcuId) {
+            notify('Enter a DCU gateway serial number first.', 'warning');
+            return false;
+        }
+        if (!/^[A-Za-z0-9._-]+$/.test(dcuId)) {
+            notify('Enter a valid DCU gateway serial number.', 'warning');
             return false;
         }
         return true;
@@ -95,10 +100,12 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
             $scope.todos = data.data || [];
             $scope.currentPage = 1;
             $scope.figureOutTodosToDisplay();
-        }).catch(function() {
+        }).catch(function(error) {
             $scope.todos = [];
             $scope.list = [];
-            reportError('Unable to load history data.');
+            if (error && error.status === 404) reportError('DCU gateway serial number was not found.');
+            else if (error && error.status === 400) reportError('Enter a valid DCU gateway serial number.');
+            else reportError('Unable to load history data.');
         }).finally(function() {
             $scope.loading = false;
         });
@@ -111,8 +118,10 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
 
         $scope.exporting = true;
         $scope.error = null;
-        historyFactory.getByIDhistory(buildDateQuery()).catch(function() {
-            reportError('Unable to export history data.');
+        historyFactory.getByIDhistory(buildDateQuery()).catch(function(error) {
+            if (error && error.status === 404) reportError('DCU gateway serial number was not found.');
+            else if (error && error.status === 400) reportError('Enter a valid DCU gateway serial number.');
+            else reportError('Unable to export history data.');
         }).finally(function() {
             $scope.exporting = false;
         });
@@ -153,4 +162,5 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
             reportError('Unable to load Villages.');
         });
     };
+    $scope.filter = function() { $scope.error = null; };
 });

@@ -231,6 +231,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetInstantDataFilter_ValidParams() throws Exception {
+        when(dashBpardService.getAllHandShakeData("ALL", "ALL", "ALL", "ALL", null, null, null, 1, 10)).thenReturn(Collections.emptyList());
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                 .post("/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10")
                 .header("Authorization", "dGVzdDp0ZXN0"))
@@ -239,6 +240,7 @@ public class MonitorControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetInstantDataFilter_MissingPage_Defaults() throws Exception {
+        when(dashBpardService.getAllHandShakeData("ALL", "ALL", "ALL", "ALL", null, null, null, 0, 50)).thenReturn(Collections.emptyList());
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                 .post("/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL")
                 .header("Authorization", "dGVzdDp0ZXN0"))

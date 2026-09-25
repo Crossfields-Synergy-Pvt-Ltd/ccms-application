@@ -11,21 +11,15 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
         if (inform && inform.add) inform.add(message, {ttl: 4000, type: type || 'danger'});
     }
     function clearError() { $scope.errorMessage = null; }
-    function valueOrAll(value) { return value || 'ALL'; }
-    function selectedGateway() { return ($scope.dcuId || "").trim(); }
-    function buildFilterQuery() {
-        return '?district=' + encodeURIComponent(valueOrAll($scope.selectedDistrict)) +
-            '&mandal=' + encodeURIComponent(valueOrAll($scope.selectedMandal)) +
-            '&gp=' + encodeURIComponent(valueOrAll($scope.select_gp)) +
-            '&village=' + encodeURIComponent(valueOrAll($scope.filterValues.village));
-    }
+    function selectedGateway() { return ($scope.dcuId || '').trim(); }
     function dateQuery() {
         return '?id=' + encodeURIComponent(selectedGateway()) +
             '&start_date=' + encodeURIComponent(moment($scope.datePicker.date.startDate).format('DD/MM/YYYY')) +
             '&end_date=' + encodeURIComponent(moment($scope.datePicker.date.endDate).format('DD/MM/YYYY'));
     }
     function validateSelection() {
-        if (!selectedGateway()) { notify('Please select a DCU first.', 'warning'); return false; }
+        if (!selectedGateway()) { notify('Enter a DCU gateway serial number first.', 'warning'); return false; }
+        if (!/^[A-Za-z0-9._-]+$/.test(selectedGateway())) { notify('Enter a valid DCU gateway serial number.', 'warning'); return false; }
         return true;
     }
 
@@ -53,8 +47,11 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
         clearError(); $scope.loading = true;
         eventFactory.getByID(dateQuery()).then(function(data) {
             $scope.todos = data.data || []; $scope.currentPage = 1; $scope.figureOutTodosToDisplay();
-        }).catch(function() {
-            $scope.todos = []; $scope.list = []; notify('Unable to load event data.');
+        }).catch(function(error) {
+            $scope.todos = []; $scope.list = [];
+            if (error && error.status === 404) notify("DCU gateway serial number was not found.");
+            else if (error && error.status === 400) notify("Enter a valid DCU gateway serial number.");
+            else notify("Unable to load event data.");
         }).finally(function() { $scope.loading = false; });
     };
 
@@ -64,7 +61,9 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
         eventFactory.exportEventData(dateQuery()).then(function(response) {
             if (response && response.status === 204) notify('No events found for the selected range.', 'warning');
         }).catch(function(error) {
-            if (!error || error.status !== 204) notify('Unable to export event data.');
+            if (error && error.status === 404) notify('DCU gateway serial number was not found.');
+            else if (error && error.status === 400) notify('Enter a valid DCU gateway serial number.');
+            else if (!error || error.status !== 204) notify('Unable to export event data.');
         }).finally(function() { $scope.exporting = false; });
     };
 
@@ -88,4 +87,5 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
             $scope.village_list = data.data || [];
         }).catch(function() { notify('Unable to load Villages.'); });
     };
+    $scope.filter = function() { clearError(); };
 });

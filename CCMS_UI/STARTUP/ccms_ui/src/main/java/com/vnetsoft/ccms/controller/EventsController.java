@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -120,17 +122,21 @@ public class EventsController {
 	
 
 	@RequestMapping(value = "/events_between_date", method = RequestMethod.GET)
-	public @ResponseBody List<EventUiObject> getEventsBetweenDates(
+	public ResponseEntity<List<EventUiObject>> getEventsBetweenDates(
 			@RequestParam("id") String id, @RequestParam("start_date") String start_date, @RequestParam("end_date") String end_date) {
 
-		List<EventUiObject> ui_obj_list = null;
+		String normalizedId = id == null ? null : id.trim();
+		if (normalizedId == null || normalizedId.isEmpty() || !normalizedId.matches("[A-Za-z0-9._-]+"))
+			return new ResponseEntity<List<EventUiObject>>(HttpStatus.BAD_REQUEST);
 		try {
-			ui_obj_list = FileDao.getByEventDataBetweenDate(id, start_date, end_date);
-			return ui_obj_list;
+			if (userServices.getHandShakeByID(normalizedId) == null)
+				return new ResponseEntity<List<EventUiObject>>(HttpStatus.NOT_FOUND);
+			List<EventUiObject> ui_obj_list = FileDao.getByEventDataBetweenDate(normalizedId, start_date, end_date);
+			return new ResponseEntity<List<EventUiObject>>(ui_obj_list, HttpStatus.OK);
 		} catch (Exception e) {
-			e.getStackTrace();
+			logger.error("Unable to load events for DCU " + normalizedId, e);
+			return new ResponseEntity<List<EventUiObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return ui_obj_list;
 	}
 
 	
@@ -147,13 +153,28 @@ public class EventsController {
 			@RequestParam(value = "id") String id,
 			@RequestParam(value = "start_date") String start_date,
 			@RequestParam(value = "end_date") String end_date) throws IOException {
+		String normalizedId = id == null ? null : id.trim();
+		if (normalizedId == null || normalizedId.isEmpty() || !normalizedId.matches("[A-Za-z0-9._-]+")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+        try {
+            if (userServices.getHandShakeByID(normalizedId) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+        } catch (Exception e) {
+            logger.error("Unable to validate event DCU " + normalizedId, e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
  
 	
 		List<EventUiObject> meter_data_list = new ArrayList<EventUiObject>();
 	
 		try {
 
-			meter_data_list = FileDao.getByEventDataBetweenDate(id, start_date, end_date);
+			meter_data_list = FileDao.getByEventDataBetweenDate(normalizedId, start_date, end_date);
 		
 			if (logger.isDebugEnabled()) {
 				logger.debug(meter_data_list);
@@ -167,7 +188,7 @@ public class EventsController {
 			return;
 		}
 
-		String csvFileName = "CrossFields_Report_"+id+" _ "+start_date+" _ "+end_date+".csv";
+		String csvFileName = "CrossFields_Report_"+normalizedId+" _ "+start_date+" _ "+end_date+".csv";
 		 
         response.setContentType("text/csv");
         

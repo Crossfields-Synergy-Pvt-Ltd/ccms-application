@@ -28,6 +28,10 @@ public class FileUtil {
 			String end_date, String file_prefix) {
 
 		List<String> file_names = new ArrayList<String>();
+        if (id == null || !id.trim().matches("[A-Za-z0-9._-]+")) {
+            return file_names;
+        }
+        id = id.trim();
 		
 		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

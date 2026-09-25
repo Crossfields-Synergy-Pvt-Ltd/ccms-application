@@ -47,7 +47,7 @@
 							<div class="col-sm-1"></div>
 							<div class="col-sm-2" align="center">
 								<label for="city">Village</label> <select
-									ng-model="filter.village" class="form-control">
+									ng-model="filterValues.village" class="form-control">
 									<option ng-repeat="x in village_list" value="{{x}}">{{x}}</option>
 								</select>
 							</div>
@@ -73,8 +73,8 @@
 		
 		
 			<div class="col-md-3">
-			<label >Data Concentrator Unit (DCU) <span class="text-danger">*</span></label>
-					<input id="history-dcu-id" type="text" class="form-control" ng-model="dcuId" placeholder="Type DCU number" autocomplete="off">
+			<label >DCU gateway serial number <span class="text-danger">*</span></label>
+					<input id="history-dcu-id" type="text" class="form-control" ng-model="dcuId" placeholder="Example: 1905HY1P1C009534" autocomplete="off">
 </div>
 
 		</div>

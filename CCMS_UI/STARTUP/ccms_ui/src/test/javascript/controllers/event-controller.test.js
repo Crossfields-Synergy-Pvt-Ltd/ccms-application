@@ -35,14 +35,23 @@ describe('eventListControllers', function() {
     it('does not load a DCU list on init', function() {
         createController();
         expect($scope.dcuId).toBe('');
+        expect(typeof $scope.filter).toBe('function');
     });
 
     it('rejects View when no DCU is selected', function() {
         createController();
         $scope.showdate();
-        expect($scope.errorMessage).toBe('Please select a DCU first.');
+        expect($scope.errorMessage).toBe('Enter a DCU gateway serial number first.');
         expect(mockInform.add).toHaveBeenCalled();
     });
+
+    it('rejects unsafe DCU IDs before requesting data', function() {
+        createController();
+        $scope.dcuId = '../etc';
+        $scope.showdate();
+        expect($scope.errorMessage).toBe('Enter a valid DCU gateway serial number.');
+    });
+
 
     it('requests events using the selected DCU and DD/MM/YYYY dates', function() {
         createController();
