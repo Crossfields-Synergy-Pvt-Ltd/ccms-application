@@ -2,7 +2,7 @@ var eventCntl = angular.module('eventControllers', []);
 
 eventCntl.controller('eventListControllers', function($scope, $rootScope, eventFactory, config, inform) {
     $scope.sortType = 'id'; $scope.sortReverse = false; $scope.searchFish = '';
-    $scope.selected_dcu = {}; $scope.dcu_data = []; $scope.todos = []; $scope.list = [];
+    $scope.dcuId = ""; $scope.todos = []; $scope.list = [];
     $scope.itemsPerPage = 25; $scope.currentPage = 1; $scope.loading = false;
     $scope.exporting = false; $scope.errorMessage = null; $scope.filterValues = { village: null };
 
@@ -12,9 +12,7 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
     }
     function clearError() { $scope.errorMessage = null; }
     function valueOrAll(value) { return value || 'ALL'; }
-    function selectedGateway() {
-        return $scope.selected_dcu && $scope.selected_dcu.name && $scope.selected_dcu.name.gateway_identifier;
-    }
+    function selectedGateway() { return ($scope.dcuId || "").trim(); }
     function buildFilterQuery() {
         return '?district=' + encodeURIComponent(valueOrAll($scope.selectedDistrict)) +
             '&mandal=' + encodeURIComponent(valueOrAll($scope.selectedMandal)) +
@@ -30,21 +28,6 @@ eventCntl.controller('eventListControllers', function($scope, $rootScope, eventF
         if (!selectedGateway()) { notify('Please select a DCU first.', 'warning'); return false; }
         return true;
     }
-
-    var privilege = $rootScope.privilege || {};
-    var district = privilege.district || 'ALL', mandal = privilege.mandal || 'ALL', gp = privilege.gp || 'ALL';
-    $scope.qs_params = '?district=' + encodeURIComponent(district) + '&mandal=' + encodeURIComponent(mandal) +
-        '&gp=' + encodeURIComponent(gp) + '&village=ALL';
-    eventFactory.getAllDcuNames($scope.qs_params).then(function(data) {
-        $scope.dcu_data = data.data || [];
-    }).catch(function() { notify('Unable to load DCU names.'); });
-
-    $scope.filter = function() {
-        clearError();
-        eventFactory.getAllDcuNames(buildFilterQuery()).then(function(data) {
-            $scope.dcu_data = data.data || [];
-        }).catch(function() { notify('Unable to filter DCUs.'); });
-    };
 
     $scope.datePicker = {date: {startDate: new Date(), endDate: new Date()}};
     $scope.opts = {

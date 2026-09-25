@@ -76,17 +76,9 @@
 		<div class="form-group">
 			
 			<div class="col-md-3">
-			<label >Data Concentrator Unit (DCU)</span></label>
-				<ui-select tagging tagging-label="('new')"
-					ng-model="selected_dcu.name" style="width: 200px;" theme="bootstrap"
-					title="Choose a DCU"> <ui-select-match theme="bootstrap"
-					placeholder="--Select--">{{$select.selected.name}}</ui-select-match>
-				<ui-select-choices
-					repeat="selected_dcu in dcu_data | filter: $select.search"
-					position='down'>
-				<div ng-bind-html="selected_dcu.name | highlight: $select.search"></div>
-				</ui-select-choices> </ui-select>
-			</div>
+			<label >Data Concentrator Unit (DCU) <span class="text-danger">*</span></label>
+					<input id="event-dcu-id" type="text" class="form-control" ng-model="dcuId" placeholder="Type DCU number" autocomplete="off">
+</div>
 		</div>
 
 		<!-- <div class="form-group">

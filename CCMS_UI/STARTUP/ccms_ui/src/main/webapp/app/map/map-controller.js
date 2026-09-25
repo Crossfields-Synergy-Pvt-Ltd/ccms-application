@@ -3,7 +3,7 @@ var mapCntl = angular.module('mapControllers', []);
 mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory, config) {
     var defaultCenter = { lat: 16.4792, lng: 80.5469 };
     var map;
-    var markers = [];
+        var markers = [];
     var infoWindow = new google.maps.InfoWindow({ content: '' });
     var requestSequence = 0;
 
@@ -49,13 +49,6 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
         return '?' + params.join('&');
     }
 
-    function getPinIcon(color) {
-        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36">' +
-            '<path d="M12 0C5.4 0 0 5.4 0 12c0 6.6 12 24 12 24s12-17.4 12-24C24 5.4 18.6 0 12 0z" fill="' + color + '" stroke="#333" stroke-width="0.5"/>' +
-            '<circle cx="12" cy="12" r="4" fill="#fff"/></svg>';
-        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    }
-
     function validCoordinate(value) { return value !== null && value !== undefined && value !== '' && isFinite(parseFloat(value)); }
 
     function markerFor(value) {
@@ -67,7 +60,7 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
         if (value.high_current === 1 || value.high_current === '1') { categories.push('high_current'); color = '#FFA500'; }
         if (value.offline === true || value.offline === 'true') { categories.push('offline'); color = '#000000'; }
         if (!categories.length) categories.push('all');
-        return { categories: categories, title: value.name || value.id || '', content: value.info_details || '', lat: parseFloat(value.lat), lng: parseFloat(value.lang), icon: getPinIcon(color) };
+        return { categories: categories, title: value.name || value.id || '', content: value.info_details || '', lat: parseFloat(value.lat), lng: parseFloat(value.lang), color: color };
     }
 
     function clearMarkers() {
@@ -96,7 +89,7 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
             categories: definition.categories,
             category: definition.categories[0],
             map: map,
-            icon: { url: definition.icon, size: new google.maps.Size(24, 36), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(12, 36) }
+            icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: definition.color, fillOpacity: 1, strokeColor: '#333', strokeWeight: 1 }
         });
         google.maps.event.addListener(marker, 'click', function() {
             infoWindow.setContent(definition.content);
