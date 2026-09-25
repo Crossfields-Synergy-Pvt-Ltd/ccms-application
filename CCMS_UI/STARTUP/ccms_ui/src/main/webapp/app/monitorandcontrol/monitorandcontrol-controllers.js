@@ -10,6 +10,7 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
   $scope.handshake_Data = [];
   $scope.filteredData = [];
   $scope.loading = false;
+  $scope.errorMessage = null;
 
   $scope.mcbtrip_check = true;
   $scope.contactorfailure_check = true;
@@ -55,13 +56,22 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
   $scope.loadPage = function(page) {
     if ($scope.loading) return;
     $scope.loading = true;
+    $scope.errorMessage = null;
     $scope.currentPage = page;
     var searchParam = ($scope.searchFish && $scope.searchFish.length >= 3) ? $scope.searchFish : null;
     monitorandcontrolFactory.getAllHandShake($scope.qs_params, page, $scope.pageSize, searchParam).then(function(data) {
       var newData = data.data || [];
       $scope.handshake_Data = page === 0 ? newData : $scope.handshake_Data.concat(newData);
       $scope.applyFilters();
-    }, angular.noop).finally(function() {
+    }, function(error) {
+      $scope.handshake_Data = [];
+      $scope.filteredData = [];
+      if (error && (error.status === 401 || error.status === 403)) {
+        $scope.errorMessage = "You are not authorized to view monitor data.";
+      } else {
+        $scope.errorMessage = "Unable to load monitor data. Please try again.";
+      }
+    }).finally(function() {
       $scope.loading = false;
     });
   };
@@ -107,6 +117,8 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
     monitorandcontrolFactory.getAllCount($scope.qs_params, searchParam).then(function(data) {
       $scope.count_stats = data.data || {};
       $scope.totalRecords = $scope.count_stats.total_devices || 0;
+    }, function(error) {
+      if (!$scope.errorMessage) $scope.errorMessage = error && (error.status === 401 || error.status === 403) ? "You are not authorized to view monitor data." : "Unable to load monitor counts.";
     });
   }
 
@@ -117,6 +129,9 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
         '&end_date=' + moment($scope.datePicker.date.endDate).format('YYYY-MM-DD');
     }
     $scope.qs_params = buildQuery(dateParams);
+    $scope.errorMessage = null;
+    $scope.handshake_Data = [];
+    $scope.filteredData = [];
     refreshCount();
     $scope.loading = false;
     $scope.loadPage(0);

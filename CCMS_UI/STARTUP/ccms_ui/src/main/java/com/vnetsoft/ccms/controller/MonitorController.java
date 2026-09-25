@@ -309,10 +309,10 @@ public class MonitorController {
 				}
 			}
 			return result;
-		} catch (Exception e) {
-			System.out.println("Exception : " + e.getMessage());
-		}
-		return null;
+        } catch (Exception e) {
+            logger.error("Unable to load monitor data", e);
+            throw new RuntimeException("Unable to load monitor data", e);
+        }
 	}
 	
 }

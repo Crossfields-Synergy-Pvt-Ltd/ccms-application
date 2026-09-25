@@ -148,6 +148,22 @@ describe('monitorandcontrolControllers', function() {
         });
     });
 
+    it('shows an error when monitor data loading fails', function() {
+        $httpBackend.expectPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&village=ALL&page=0&size=50').respond(500);
+        createController();
+        $httpBackend.flush();
+        expect($scope.errorMessage).toBe('Unable to load monitor data. Please try again.');
+        expect($scope.filteredData).toEqual([]);
+    });
+
+    it('keeps returned DCUs visible in the filtered list', function() {
+        $httpBackend.expectPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&village=ALL&page=0&size=50').respond([{device_name: 'DCU001', dcu_details: {}}]);
+        createController();
+        $httpBackend.flush();
+        expect($scope.filteredData.length).toBe(1);
+    });
+
+
     describe('$scope.search', function() {
         it('should reset loading flag before loading page', function() {
             createController();

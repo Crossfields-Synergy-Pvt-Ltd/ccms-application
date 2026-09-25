@@ -35,6 +35,7 @@ describe('historyControllers', function() {
     it('does not load a DCU list and initializes pagination', function() {
         createController();
         expect($scope.dcuId).toBe('');
+        expect(typeof $scope.filter).toBe('function');
         expect($scope.itemsPerPage).toBe(25);
     });
 
@@ -43,6 +44,14 @@ describe('historyControllers', function() {
         $scope.showdate();
         expect(mockInform.add).toHaveBeenCalled();
     });
+
+    it('rejects unsafe DCU IDs before requesting data', function() {
+        createController();
+        $scope.dcuId = '../etc';
+        $scope.showdate();
+        expect(mockInform.add).toHaveBeenCalled();
+    });
+
 
     it('loads and paginates history data', function() {
         createController();

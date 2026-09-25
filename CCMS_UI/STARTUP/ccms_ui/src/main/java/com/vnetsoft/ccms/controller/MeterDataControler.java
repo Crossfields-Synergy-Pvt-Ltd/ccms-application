@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,17 +121,21 @@ public class MeterDataControler {
 	
 	
 	@RequestMapping(value = "/meter_data_between_date", method = RequestMethod.GET)
-	public @ResponseBody List<MeterDataUI> getMeterDataBetweenDates(
+	public ResponseEntity<List<MeterDataUI>> getMeterDataBetweenDates(
 			@RequestParam("id") String id, @RequestParam("start_date") String start_date, @RequestParam("end_date") String end_date) {
 
-		List<MeterDataUI> ui_obj_list = null;
-		
+		String normalizedId = id == null ? null : id.trim();
+		if (normalizedId == null || normalizedId.isEmpty() || !normalizedId.matches("[A-Za-z0-9._-]+"))
+			return new ResponseEntity<List<MeterDataUI>>(HttpStatus.BAD_REQUEST);
 		try {
-			ui_obj_list = FileDao.getByMeterDataBetweenDate(id, start_date, end_date);
+			if (meter_data_services.getHandShakeByID(normalizedId) == null)
+				return new ResponseEntity<List<MeterDataUI>>(HttpStatus.NOT_FOUND);
+			List<MeterDataUI> ui_obj_list = FileDao.getByMeterDataBetweenDate(normalizedId, start_date, end_date);
+			return new ResponseEntity<List<MeterDataUI>>(ui_obj_list, HttpStatus.OK);
 		} catch (Exception e) {
-			e.getStackTrace();
+			logger.error("Unable to load history for DCU " + normalizedId, e);
+			return new ResponseEntity<List<MeterDataUI>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return ui_obj_list;
 	}
 
 	
@@ -175,13 +181,28 @@ public class MeterDataControler {
 			@RequestParam(value = "id") String id,
 			@RequestParam(value = "start_date") String start_date,
 			@RequestParam(value = "end_date") String end_date) throws IOException {
+		String normalizedId = id == null ? null : id.trim();
+		if (normalizedId == null || normalizedId.isEmpty() || !normalizedId.matches("[A-Za-z0-9._-]+")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+        try {
+            if (meter_data_services.getHandShakeByID(normalizedId) == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+        } catch (Exception e) {
+            logger.error("Unable to validate history DCU " + normalizedId, e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
  
 	
 		List<MeterDataUI> meter_data_list = new ArrayList<MeterDataUI>();
 	
 		try {
 
-			meter_data_list = FileDao.getByMeterDataBetweenDate(id, start_date, end_date);
+			meter_data_list = FileDao.getByMeterDataBetweenDate(normalizedId, start_date, end_date);
 		
 			if (logger.isDebugEnabled()) {
 				logger.debug(meter_data_list);
@@ -191,7 +212,7 @@ public class MeterDataControler {
 			logger.error(e);
 		}
 
-		String csvFileName = "CrossFields_Report_"+id+" _ "+start_date+" _ "+end_date+".csv";
+		String csvFileName = "CrossFields_Report_"+normalizedId+" _ "+start_date+" _ "+end_date+".csv";
 		 
         response.setContentType("text/csv");
         

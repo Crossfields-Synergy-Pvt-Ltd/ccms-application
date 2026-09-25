@@ -2,6 +2,7 @@ package com.vnetsoft.ccms.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.vnetsoft.ccms.services.DCUServices;
+import com.vnetsoft.ccms.pojo.HandShake;
 
 public class EventsControllerTest extends AbstractControllerTest {
 
@@ -33,21 +35,29 @@ public class EventsControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetEventsBetweenDates_ValidParams_ReturnsEvents() throws Exception {
+        when(userServices.getHandShakeByID("DCU001")).thenReturn(new HandShake());
         performGet("/events/events_between_date?id=DCU001&start_date=01/01/2024&end_date=02/01/2024")
             .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetEventsBetweenDates_NoResults_ReturnsEmpty() throws Exception {
+    public void testGetEventsBetweenDates_UnknownDcu_ReturnsNotFound() throws Exception {
         performGet("/events/events_between_date?id=NONEXISTENT&start_date=01/01/2020&end_date=02/01/2020")
+            .andExpect(status().isNotFound());
+    }
+    @Test
+    public void testGetEventsBetweenDates_EndBeforeStart_ReturnsEmpty() throws Exception {
+        when(userServices.getHandShakeByID("DCU001")).thenReturn(new HandShake());
+        performGet("/events/events_between_date?id=DCU001&start_date=31/12/2024&end_date=01/01/2024")
             .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetEventsBetweenDates_EndBeforeStart_ReturnsEmpty() throws Exception {
-        performGet("/events/events_between_date?id=DCU001&start_date=31/12/2024&end_date=01/01/2024")
-            .andExpect(status().isOk());
+    public void testGetEventsBetweenDates_InvalidId_ReturnsBadRequest() throws Exception {
+        performGet("/events/events_between_date?id=../etc&start_date=01/01/2024&end_date=02/01/2024")
+            .andExpect(status().isBadRequest());
     }
+
 
     @Test
     public void testGetEventsBetweenDates_MissingId_Returns4xx() throws Exception {
@@ -57,8 +67,9 @@ public class EventsControllerTest extends AbstractControllerTest {
 
     @Test
     public void testExportEvents_EmptyResult_ReturnsNoContent() throws Exception {
+        when(userServices.getHandShakeByID("DCU001")).thenReturn(new HandShake());
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .get("/events/export_events?id=NONEXISTENT&start_date=01/01/2020&end_date=02/01/2020"))
+                .get("/events/export_events?id=DCU001&start_date=01/01/2020&end_date=02/01/2020"))
             .andExpect(status().isNoContent());
     }
 
