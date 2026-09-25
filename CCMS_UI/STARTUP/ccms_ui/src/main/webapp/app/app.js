@@ -485,6 +485,11 @@ app.config(function($httpProvider) {
 	$httpProvider.interceptors.push(function($q, $rootScope) {
 		return {
 			'request' : function(config) {
+                    var token = localStorage.getItem("ccms_auth") || sessionStorage.getItem("ccms_auth");
+                    if (token && (!config.headers || !config.headers.Authorization)) {
+                        config.headers = config.headers || {};
+                        config.headers.Authorization = token;
+                    }
 				$rootScope.$broadcast('loading-started');
 				return config || $q.when(config);
 			},

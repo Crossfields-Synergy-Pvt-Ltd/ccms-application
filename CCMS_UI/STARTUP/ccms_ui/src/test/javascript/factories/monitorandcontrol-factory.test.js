@@ -81,7 +81,7 @@ describe('monitorandcontrolFactory', function() {
 
     describe('getAllHandShake', function() {
         it('should call /dashboard/instant_data_filter with params', function() {
-            $httpBackend.expectGET('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
+            $httpBackend.expectPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&page=1&size=10')
                 .respond([]);
 
             monitorandcontrolFactory.getAllHandShake('?district=ALL&mandal=ALL&gp=ALL', 1, 10);

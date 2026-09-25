@@ -2,6 +2,7 @@ package com.vnetsoft.ccms.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.HandShake;
@@ -27,6 +29,8 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
 
     @Mock
     private NodeServices nodeServices;
+    @Mock
+    private RestTemplate commandClient;
 
     @InjectMocks
     private DeviceConfigurationController controller;
@@ -36,6 +40,8 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(controller, "serverHost", "localhost");
+        ReflectionTestUtils.setField(controller, "commandClient", commandClient);
+        when(commandClient.getForObject(any(String.class), eq(String.class))).thenReturn("OK");
         configureController(controller);
     }
 
@@ -57,19 +63,19 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testTurnOnLights_HandShakeNotFound_ReturnsStatus200() throws Exception {
+    public void testTurnOnLights_HandShakeNotFound_ReturnsStatus404() throws Exception {
         when(userServices.getHandShakeByID("NONEXISTENT")).thenReturn(null);
 
         performGet("/device_conf/lights_on?device_serial_number=NONEXISTENT&device_identifier=1")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.code", is(404)));
     }
 
     @Test
-    public void testTurnOnLights_EmptySerial_ReturnsStatus200() throws Exception {
+    public void testTurnOnLights_EmptySerial_ReturnsBadRequest() throws Exception {
         performGet("/device_conf/lights_on?device_serial_number=&device_identifier=2043")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code", is(400)));
     }
 
     // --- lights_off ---
@@ -90,19 +96,19 @@ public class DeviceConfigurationControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void testTurnOffLights_HandShakeNotFound_ReturnsStatus200() throws Exception {
+    public void testTurnOffLights_HandShakeNotFound_ReturnsStatus404() throws Exception {
         when(userServices.getHandShakeByID("NONEXISTENT")).thenReturn(null);
 
         performGet("/device_conf/lights_off?device_serial_number=NONEXISTENT&device_identifier=1")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.code", is(404)));
     }
 
     @Test
-    public void testTurnOffLights_EmptyParams_ReturnsStatus200() throws Exception {
+    public void testTurnOffLights_EmptyParams_ReturnsBadRequest() throws Exception {
         performGet("/device_conf/lights_off?device_serial_number=&device_identifier=")
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.code", is(200)));
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code", is(400)));
     }
 
     // --- sync_dcu_configuration ---
