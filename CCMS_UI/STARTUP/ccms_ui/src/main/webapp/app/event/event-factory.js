@@ -4,9 +4,6 @@ app.factory('eventFactory', ['$http', function($http) {
     var serviceBase = '';
     var obj = {};
 
-    obj.getAllDcuNames = function(qs_params) {
-        return $http.get(serviceBase + '/dcu/dcu_name_list' + (qs_params || ''));
-    };
     obj.getByID = function(qs_params) {
         return $http.get(serviceBase + '/events/events_between_date' + qs_params);
     };

@@ -15,8 +15,6 @@ describe('eventListControllers', function() {
         mockConfig = {districts: [{state: 'Guntur-17', code: 'Guntur-17'}]};
         mockInform = {add: jasmine.createSpy('inform.add')};
         $rootScope.privilege = {district: 'ALL', mandal: 'ALL', gp: 'ALL'};
-        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL&village=ALL')
-            .respond([{name: 'DCU-001', gateway_identifier: 'dcu1'}]);
     }));
 
     function createController() {
@@ -34,15 +32,13 @@ describe('eventListControllers', function() {
         try { $httpBackend.verifyNoOutstandingRequest(); } catch (e) {}
     });
 
-    it('loads DCU names with the village filter on init', function() {
+    it('does not load a DCU list on init', function() {
         createController();
-        $httpBackend.flush();
-        expect($scope.dcu_data.length).toBe(1);
+        expect($scope.dcuId).toBe('');
     });
 
     it('rejects View when no DCU is selected', function() {
         createController();
-        $httpBackend.flush();
         $scope.showdate();
         expect($scope.errorMessage).toBe('Please select a DCU first.');
         expect(mockInform.add).toHaveBeenCalled();
@@ -50,8 +46,7 @@ describe('eventListControllers', function() {
 
     it('requests events using the selected DCU and DD/MM/YYYY dates', function() {
         createController();
-        $httpBackend.flush();
-        $scope.selected_dcu = {name: {gateway_identifier: 'DCU001'}};
+        $scope.dcuId = 'DCU001';
         var originalMoment = window.moment;
         window.moment = function() {
             return {format: function() { return '01/01/2024'; }};
@@ -66,35 +61,10 @@ describe('eventListControllers', function() {
         expect($scope.loading).toBe(false);
     });
 
-    it('includes village when filtering DCUs and clears child selections', function() {
-        createController();
-        $httpBackend.flush();
-        $scope.selectedMandal = 'Mandal 1';
-        $scope.select_gp = 'GP 1';
-        $scope.filterValues.village = 'Village 1';
-        $scope.gp_list = ['old GP'];
-        $scope.village_list = ['old Village'];
-        $httpBackend.expectGET('/filter/get_mandal?district=Guntur-17').respond(['Mandal 2']);
-        $scope.selectedDistrict = 'Guntur-17';
-        $scope.getMandalOnSelect();
-        expect($scope.selectedMandal).toBe(null);
-        expect($scope.select_gp).toBe(null);
-        expect($scope.gp_list).toEqual([]);
-        expect($scope.village_list).toEqual([]);
-        $httpBackend.flush();
 
-        $httpBackend.expectGET('/dcu/dcu_name_list?district=Guntur-17&mandal=Mandal%201&gp=GP%201&village=Village%201')
-            .respond([]);
-        $scope.selectedMandal = 'Mandal 1';
-        $scope.select_gp = 'GP 1';
-        $scope.filterValues.village = 'Village 1';
-        $scope.filter();
-        $httpBackend.flush();
-    });
 
     it('clears village when the mandal changes', function() {
         createController();
-        $httpBackend.flush();
         $scope.filterValues.village = 'Village 1';
         $scope.village_list = ['Village 1'];
         $httpBackend.expectGET('/filter/get_gp?mandal=Mandal%202').respond(['GP 2']);
@@ -107,7 +77,6 @@ describe('eventListControllers', function() {
 
     it('keeps pagination available before and after loading events', function() {
         createController();
-        $httpBackend.flush();
         expect(typeof $scope.figureOutTodosToDisplay).toBe('function');
         $scope.todos = [1, 2, 3];
         $scope.currentPage = 1;

@@ -4,8 +4,7 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
     $scope.sortType = 'utc_date';
     $scope.sortReverse = false;
     $scope.searchFish = '';
-    $scope.selected_dcu = {};
-    $scope.dcu_data = [];
+    $scope.dcuId = "";
     $scope.todos = [];
     $scope.list = [];
     $scope.itemsPerPage = 25;
@@ -13,6 +12,7 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
     $scope.loading = false;
     $scope.exporting = false;
     $scope.error = null;
+    $scope.filterValues = { village: null };
 
     var privilege = $rootScope.privilege || {};
     var initialDistrict = privilege.district || 'ALL';
@@ -36,44 +36,24 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
         return '?district=' + encodeURIComponent(valueOrAll($scope.selectedDistrict)) +
             '&mandal=' + encodeURIComponent(valueOrAll($scope.selectedMandal)) +
             '&gp=' + encodeURIComponent(valueOrAll($scope.select_gp)) +
-            '&village=' + encodeURIComponent(valueOrAll($scope.filter && $scope.filter.village));
+            '&village=' + encodeURIComponent(valueOrAll($scope.filterValues.village));
     }
 
     function buildDateQuery() {
         var startDate = moment($scope.datePicker.date.startDate).format('DD/MM/YYYY');
         var endDate = moment($scope.datePicker.date.endDate).format('DD/MM/YYYY');
-        return '?id=' + encodeURIComponent($scope.selected_dcu.name.gateway_identifier) +
+        return '?id=' + encodeURIComponent(($scope.dcuId || "").trim()) +
             '&start_date=' + encodeURIComponent(startDate) +
             '&end_date=' + encodeURIComponent(endDate);
     }
 
     function validateSelection() {
-        if (!$scope.selected_dcu || !$scope.selected_dcu.name ||
-                !$scope.selected_dcu.name.gateway_identifier) {
+        if (!($scope.dcuId || "").trim()) {
             notify('Please select a DCU first.', 'warning');
             return false;
         }
         return true;
     }
-
-    $scope.qs_params = '?district=' + encodeURIComponent(initialDistrict) +
-        '&mandal=' + encodeURIComponent(initialMandal) +
-        '&gp=' + encodeURIComponent(initialGp) + '&village=ALL';
-
-    historyFactory.getAllDcuNames($scope.qs_params).then(function(data) {
-        $scope.dcu_data = data.data || [];
-    }).catch(function() {
-        reportError('Unable to load DCU names.');
-    });
-
-    $scope.filter = function() {
-        $scope.error = null;
-        historyFactory.getAllDcuNames(buildFilterQuery()).then(function(data) {
-            $scope.dcu_data = data.data || [];
-        }).catch(function() {
-            reportError('Unable to filter DCUs.');
-        });
-    };
 
     $scope.datePicker = {date: {startDate: new Date(), endDate: new Date()}};
     $scope.opts = {
@@ -144,7 +124,7 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
     $scope.getMandalOnSelect = function() {
         $scope.selectedMandal = null;
         $scope.select_gp = null;
-        $scope.filter.village = null;
+        $scope.filterValues.village = null;
         $scope.gp_list = [];
         $scope.village_list = [];
         historyFactory.getByMandal($scope.selectedDistrict).then(function(data) {
@@ -156,7 +136,7 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
 
     $scope.getGpOnSelect = function() {
         $scope.select_gp = null;
-        $scope.filter.village = null;
+        $scope.filterValues.village = null;
         $scope.village_list = [];
         historyFactory.getByGp($scope.selectedMandal).then(function(data) {
             $scope.gp_list = data.data || [];
@@ -166,7 +146,7 @@ historyCntl.controller('historyListControllers', function($scope, $rootScope, hi
     };
 
     $scope.getVillageOnSelect = function() {
-        $scope.filter.village = null;
+        $scope.filterValues.village = null;
         historyFactory.getByVillage($scope.select_gp).then(function(data) {
             $scope.village_list = data.data || [];
         }).catch(function() {

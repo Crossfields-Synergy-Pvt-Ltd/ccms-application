@@ -17,7 +17,7 @@
 						<br> <br> <br>
 						<form name="userForm" class="form-horizontal" novalidate>
 							<div class="form-group">
-								<label class="col-md-4 control-label formTextWeight">First
+								<label class="col-md-4 control-label formTextWeight">First <span class="text-danger">*</span>
 									Name:</label>
 								<div class="col-md-8">
 									<input type="text"
@@ -31,7 +31,7 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label formTextWeight">Last
+								<label class="col-md-4 control-label formTextWeight">Last <span class="text-danger">*</span>
 									Name:</label>
 								<div class="col-md-8">
 									<input type="text" class="form-control" name="LastName"
@@ -44,15 +44,15 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label formTextWeight">Email:</label>
+								<label class="col-md-4 control-label formTextWeight">Email <span class="text-danger">*</span>:</label>
 								<div class="col-md-8">
 									<input type="email" class="form-control" name="email"
-										id="email" placeholder="Enter Email." ng-model="user.email">
+										id="email" placeholder="Enter Email." ng-model="user.email" required="required">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label formTextWeight">Password:</label>
+								<label class="col-md-4 control-label formTextWeight">Password <span class="text-danger">*</span>:</label>
 								<div class="col-md-8">
 									<input type="password" class="form-control" name="LastName"
 										id="LastName" placeholder="Enter Password"
@@ -71,7 +71,7 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label formTextWeight">Role:</label>
+								<label class="col-md-4 control-label formTextWeight">Role <span class="text-danger">*</span>:</label>
 								<div class="col-md-8">
 									<select type="text"
 										class="form-control"

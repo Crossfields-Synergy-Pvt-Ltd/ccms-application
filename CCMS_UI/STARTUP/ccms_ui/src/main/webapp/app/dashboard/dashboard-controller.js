@@ -17,14 +17,8 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 			 'Last Month': [moment().subtract(29, 'days'), moment()]
 		 }
 	 };
-		
-			
-	dashboardFactory.getAllDcuNames($scope.qs_params).then(function(data){
-		$rootScope.dcu_name_list =  data.data;
-	});
-			
 	$('.select2').select2();
-	
+
 	var gmarkers1 = [];
 	  var markers1 = [];
   var infowindow = new google.maps.InfoWindow({
@@ -42,7 +36,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
   // Our markers
   markers1 = [ ];
 
-	  
+
    /* var map = new google.maps.Map(document.getElementById('map_canvas'), {
   	  zoom: 8,
         panControl: true, //enable pan Control
@@ -63,30 +57,30 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
             style: google.maps.NavigationControlStyle.ZOOM_PAN
         },
 		    center: new google.maps.LatLng(16.51732, -80.46492 )
-		  
+
 		});*/
-    
-	  
+
+
 
 		//$scope.qs_params = '?district='+$scope.district.id+ '&mandal='+$scope.mandal.id+'&gp='+$scope.gp.id;
 		console.log($scope.qs_params)
 		dashboardFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;
 		  });
-		 
+
 		dashboardFactory.getAllMapDashboardData($scope.qs_params).then(function(data){
 	        $scope.dashboardData = data.data;
 	        var mid_lat, mid_lang;
 	        angular.forEach($scope.dashboardData,function(value,index){
-	        	
+
 	        	var details =  " ID - " +value.id + "<br> Lights Connected - " +value.mcb_trip + "<br> Non-Glowing Lights -" +value.mcb_trip + "<br> Connected Load -" +value.connected_load + "<br> Latitude - " +value.lat + "<br> Longitude -" +value.lang ;
 				var url =  "<br> "+ details ;
-				
+
 				mid_lat =  value.lat;
 				mid_lang = value.lang;
 				/*if(typeof(value.lat) == "undefined" || typeof(value.lang) == "undefined")
 					continue;*/
-				
+
 				if(value.mcb_trip == '1'){
 					markers1.push(['0',url, value.lat, value.lang, 'mcb_trip', getPinIcon('#FF0000')]);
 				}
@@ -96,7 +90,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 				if(value.high_current == '1'){
 					markers1.push(['0',url, value.lat, value.lang, 'high_curent', getPinIcon('#FFA500')]);
 				}
-        	
+
 
 				if(value.light_status == '1') {
 					markers1.push(['0',url, value.lat, value.lang, 'on', getPinIcon('#00AA00')]);
@@ -129,15 +123,15 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 					(mid_lang && isFinite(mid_lang)) ? parseFloat(mid_lang) : 80.5469
 				)
 			});
-	        
+
 	        for (i = 0; i < markers1.length; i++) {
 	            addMarker(markers1[i]);
 	        }
-	        
+
 			});
-		  
-		  
-		
+
+
+
 
     /**
      * Function to add marker to map
@@ -147,7 +141,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
         var category = marker[4];
         var title = marker[1];
         var pos = new google.maps.LatLng(marker[2], marker[3]);
-        
+
         var content = marker[1];
 
         marker1 = new google.maps.Marker({
@@ -182,7 +176,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
      */
 
     $scope.filterMarkers = function (category) {
-  	  
+
         for (i = 0; i < markers1.length; i++) {
             marker = gmarkers1[i];
             // If is same category or category not picked
@@ -191,24 +185,24 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
             } else if(category == 'all'){
                 marker.setVisible(true);
             }
-            // Categories don't match 
+            // Categories don't match
             else {
                 marker.setVisible(false);
             }
         }
     }
     $scope.selectedDistrict = '';
-	 $scope.districts = config.districts; 
-	
+	 $scope.districts = config.districts;
+
 	 $scope.district = (($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL');
 	 $scope.mandal = (($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL');
 	 $scope.gp = (($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
-	 
-	 
+
+
 	 $scope.selectedDistrict = (($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL');
 	 $scope.selectedMandal = (($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL');
 	 $scope.select_gp = (($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
-	 
+
 	 $scope.getMandalOnSelect = function(selectedDistrict) {
 		 dashboardFactory.getByMandal($scope.selectedDistrict).then(function(data) {
 				$scope.mandal_list = data.data;
@@ -218,7 +212,7 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 		$scope.getGpOnSelect = function(selectedMandal) {
 			dashboardFactory.getByGp($scope.selectedMandal).then(function(data) {
 				$scope.gp_list = data.data;
-				
+
 			});
 		}
 		$scope.getMandalOnSelect($scope.selectedDistrict);
@@ -231,24 +225,24 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 			});
 		});
 	 $('#mySelect2').val($scope.district);
-	 
-	 
+
+
 	 $('#mySelect').on('select2:select', function (e) {
 		    $scope.mandal = e.params.data;
 		    console.log($scope.mandal.id);
 		    dashboardFactory.getByGp($scope.mandal.id).then(function(data) {
 				$scope.gp_list = data.data;
 			});
-		    
+
 		});
-	 
+
 	 $('#my').on('select2:select', function (e) {
 		 $scope.gp = e.params.data;
 		    console.log($scope.gp.id);
-		    
+
 		});*/
-	 
-	 
+
+
 		$scope.search = function () {
 		for (var i = 0; i < gmarkers1.length; i++) {
 			gmarkers1[i].setMap(null);
@@ -266,35 +260,35 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 		dashboardFactory.getAllCount($scope.qs_params).then(function(data){
 		        $scope.listData = data.data;
 		  });
-		 
+
 		dashboardFactory.getAllMapDashboardData($scope.qs_params).then(function(data){
 	        $scope.dashboardData = data.data;
 	        var mid_lat, mid_lang;
 	        angular.forEach($scope.dashboardData,function(value,index){
-	        	
+
 	        	var details =  " ID - " +value.id + "<br> Lights Connected - " +value.mcb_trip + "<br> Non-Glowing Lights -" +value.mcb_trip + "<br> Connected Load -" +value.connected_load + "<br> Latitude - " +value.lat + "<br> Longitude -" +value.lang ;
 				var url =  "<br> "+ details ;
-				
+
 				  mid_lat =  value.lat;
 					mid_lang = value.lang;
-					
+
 				if(value.mcb_trip == '1'){
 					markers1.push(['0',url, value.lat, value.lang, 'mcb_trip', getPinIcon('#FF0000')]);
 				}
-				
+
 				if(value.manual_mode_status == '1'){
 					markers1.push(['0',url, value.lat, value.lang, 'manual', getPinIcon('#0000FF')]);
 				}
-				
+
 				if(value.high_current == '1'){
 					markers1.push(['0',url, value.lat, value.lang, 'high_curent', getPinIcon('#FFA500')]);
 				}
-        	
+
 
 				if(value.light_status == '1') {
 					markers1.push(['0',url, value.lat, value.lang, 'on', getPinIcon('#00AA00')]);
 				}
-				
+
 				if(value.light_status == '0'){
 					markers1.push(['0',url, value.lat, value.lang, 'off', getPinIcon('#808080')]);
 				}
@@ -323,14 +317,14 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 					(mid_lang && isFinite(mid_lang)) ? parseFloat(mid_lang) : 80.5469
 				)
 			});
-	        
+
 	        for (i = 0; i < markers1.length; i++) {
 	            addMarker(markers1[i]);
 	        }
-	        
+
 			});
-		  
+
 		  }
 
-		
+
 });

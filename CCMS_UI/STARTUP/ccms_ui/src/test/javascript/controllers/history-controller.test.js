@@ -15,8 +15,6 @@ describe('historyControllers', function() {
         mockInform = { add: jasmine.createSpy('inform.add') };
         mockConfig = { districts: [{ state: 'Guntur-17', code: 'Guntur-17' }] };
         $rootScope.privilege = {district: 'ALL', mandal: 'ALL', gp: 'ALL'};
-        $httpBackend.whenGET('/dcu/dcu_name_list?district=ALL&mandal=ALL&gp=ALL&village=ALL')
-            .respond([{name: 'DCU-001', gateway_identifier: 'DCU001'}]);
     }));
 
     afterEach(function() {
@@ -34,25 +32,21 @@ describe('historyControllers', function() {
         });
     }
 
-    it('loads DCU names and initializes pagination', function() {
+    it('does not load a DCU list and initializes pagination', function() {
         createController();
-        $httpBackend.flush();
-        expect($scope.dcu_data.length).toBe(1);
+        expect($scope.dcuId).toBe('');
         expect($scope.itemsPerPage).toBe(25);
-        expect($scope.figureOutTodosToDisplay).toBeDefined();
     });
 
     it('does not request history without a selected DCU', function() {
         createController();
-        $httpBackend.flush();
         $scope.showdate();
         expect(mockInform.add).toHaveBeenCalled();
     });
 
     it('loads and paginates history data', function() {
         createController();
-        $httpBackend.flush();
-        $scope.selected_dcu.name = {gateway_identifier: 'DCU001'};
+        $scope.dcuId = 'DCU001';
         $httpBackend.expectGET('/meter/meter_data_between_date?id=DCU001&start_date=&end_date=')
             .respond([{dcu_name: 'DCU', kwh_total: '1', consumption: '2'}]);
         $scope.showdate();
@@ -64,8 +58,7 @@ describe('historyControllers', function() {
 
     it('keeps existing table data when exporting', function() {
         createController();
-        $httpBackend.flush();
-        $scope.selected_dcu.name = {gateway_identifier: 'DCU001'};
+        $scope.dcuId = 'DCU001';
         $scope.list = [{dcu_name: 'existing'}];
         $httpBackend.expectGET('/meter/export_history?id=DCU001&start_date=' +
             encodeURIComponent(moment($scope.datePicker.date.startDate).format('DD/MM/YYYY')) +

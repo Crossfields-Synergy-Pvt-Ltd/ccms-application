@@ -56,20 +56,6 @@ describe('dashboardControllers', function() {
     });
 
     describe('initialization', function() {
-        it('should load DCU names on init', function() {
-        $controller('dashboardControllers', {
-            $scope: $scope,
-            $rootScope: $rootScope,
-            dashboardFactory: dashboardFactory,
-            config: mockConfig,
-            $state: mockState,
-            $stateParams: mockStateParams,
-            inform: mockInform,
-            $modal: mockModal
-        });
-            $httpBackend.flush();
-            expect($rootScope.dcu_name_list).toBeDefined();
-        });
 
         it('should set districts from config', function() {
             $controller('dashboardControllers', {

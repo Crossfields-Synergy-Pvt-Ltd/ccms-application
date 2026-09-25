@@ -1,6 +1,8 @@
 package com.vnetsoft.ccms.dao;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -27,23 +29,29 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		return mongoTemplate;
 	}
 
+	private List<String> extractGatewayIds(List<HandShake> handshakes) {
+		List<String> ids = new java.util.ArrayList<String>();
+		for (HandShake handshake : handshakes) ids.add(handshake.getGateway_serial_number());
+		return ids;
+	}
+
 	@Autowired
 	SessionFactory sessionFactory;
 
 	Session session = null;
 	Transaction tx = null;
 
-	
+
 	@Override
 	public MonitorControlCount getDahsBoardCountstats(String district,
 			String mandal, String gp, String village, Date startDate, Date endDate, String search) throws Exception {
-	
+
 		MonitorControlCount obj = new MonitorControlCount();
-		
+
 		Query query = new Query();
-		 if(district.equals("5_districts")){ 
+		 if(district.equals("5_districts")){
 			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 				;
 		}else if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
@@ -51,7 +59,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
 		}else {
-		
+
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
@@ -68,28 +76,35 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			));
 		}
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
-		
-		
-		 long total_devices = 0,  total_lights_connected = 0,  mcb_trip_count = 0,  cnt_failure = 0, 
+
+		Map<String, Double> activeLoads = new HashMap<String, Double>();
+		if (!list.isEmpty()) {
+			Query meterQuery = new Query(Criteria.where("dcu_serial_number").in(extractGatewayIds(list)));
+			for (InstantMeterData meter : mongoTemplate.find(meterQuery, InstantMeterData.class)) {
+				try { activeLoads.put(meter.getDcu_serial_number(), Double.parseDouble(meter.getKwh_total())); } catch (Exception ignored) { }
+			}
+		}
+
+		long total_devices = 0,  total_lights_connected = 0,  mcb_trip_count = 0,  cnt_failure = 0,
 			main_supply_off = 0,  door_open = 0,  spd_failure = 0,  no_out_put = 0,  manual_mode = 0,
 			on_count = 0,  off_count = 0 ,  good_gprs = 0,  poor_gprs = 0,  light_off = 0,  light_on = 0,
 		 offline_ccms = 0 ,  online_ccms = 0,  total_connected_load = 0, high_current_count = 0, high_voltage_count = 0;
-		 
+
 		 long ccms_on = 0, ccms_off= 0;// IO on off
 		double active_load = 0.0;
-		
+
 		 total_devices = list.size();
-		 
-		
+
+
 		 for(HandShake tmp : list){
 			 try {
-				
+
 				 if(tmp.getMcb_trip() == 1)
 					 mcb_trip_count ++;
-				 
+
 				 if(tmp.getManual_mode_status() == 1)
 					 manual_mode++;
-				 
+
 				 if(tmp.getLight_status() == 1) {
 					 light_on += tmp.getNo_of_lights();
 					 ccms_on++;
@@ -99,12 +114,12 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				 }
 				 if(tmp.getDoor_status() == 1)
 					 door_open++;
-				 
+
 				 if(tmp.getCsq() > 15)
 					 good_gprs++;
-				 else 
+				 else
 					 poor_gprs++;
-				 
+
 					 if(tmp.getSpd_status() == 1)
 						 spd_failure++;
 					 if(tmp.getCnt_status() == 1)
@@ -115,13 +130,13 @@ public class DashBoardDaoImpl implements DashBoardDao {
 						 high_current_count++;
 					 if(tmp.getHigh_voltage() == 1)
 						 high_voltage_count++;
-				 
+
 				 if(tmp.getMain_supply_status() == 1)
 					 main_supply_off++;
-				 
+
 				 total_connected_load +=tmp.getConnected_load();
 				 total_lights_connected += tmp.getNo_of_lights();
-				 
+
 				 try {
 					 long hs = Long.valueOf(tmp.getHs_time_stamp()) ;
 					 if((System.currentTimeMillis() - hs) > 7200000){
@@ -132,26 +147,26 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				} catch (Exception e) {
 					 offline_ccms++;
 				}
-				 
+
 				try {
-					active_load += getConectedActiveLoad(tmp.getGateway_serial_number());
+					if (activeLoads.containsKey(tmp.getGateway_serial_number())) active_load += activeLoads.get(tmp.getGateway_serial_number());
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				 
+
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 		 }
-		 
-		 
+
+
 		 obj.total_devices = total_devices;
 		 obj.total_lights_connected = total_lights_connected;
 		 obj.mcb_trip_count = mcb_trip_count;
 		 obj.cnt_failure = cnt_failure;
 		 obj.main_supply_off = main_supply_off;
 		 obj.door_open = door_open;
-		 
+
 		 obj.spd_failure = spd_failure;
 		 obj.no_out_put = no_out_put;
 		 obj.manual_mode = manual_mode;
@@ -173,17 +188,17 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		obj.setMcb_trip_count(getMCBTripCount(district,mandal, gp));
 		obj.setManual_mode(getManuvalModeCount(district,mandal, gp));
 		obj.setLight_off(getLightsOffCount(district,mandal, gp));
-	
+
 		obj.setLight_on(getLightOnCount(district,mandal, gp));
 		obj.setDoor_open(getDorrOpenCount(district,mandal, gp));
 		obj.setGood_gprs(getGoodGprsCount(district,mandal, gp));
 		obj.setMain_supply_off(getMainSupplyStatus(district,mandal, gp));
 		obj.setSpd_failure(getSpdFailureCount(district,mandal, gp));
 		obj.setPoor_gprs(obj.getTotal_devices() - obj.getGood_gprs());
-		
+
 		obj.setTotal_connected_load(getTotalConectedLoad(district,mandal, gp));*/
-		
-		
+
+
 		return obj;
 	}
 
@@ -197,17 +212,17 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			InstantMeterData list = mongoTemplate.findOne(query,
 					InstantMeterData.class);
 
-		
-	
-		
-		
+
+
+
+
 			try {
 			kwh += Double.parseDouble(list.getKwh_total());
 			}catch(Exception e){
-				
+
 			}
-		
-		
+
+
 		} catch (Exception e) {
 			return 0;
 		}
@@ -218,8 +233,8 @@ public class DashBoardDaoImpl implements DashBoardDao {
 /*
 	private long getTotalDevice(String district, String mandal, String gp) {
 		Query query = new Query();
-		
-		 if(district.equals("ALL")){ 
+
+		 if(district.equals("ALL")){
 			;
 		} else if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
@@ -230,10 +245,10 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
-		
+
 		return mongoTemplate.count(query, HandShake.class, "handshake_info");
 	}
 
@@ -245,7 +260,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("spd_status").is(1))
 		;
-	
+
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
@@ -254,7 +269,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("spd_status").is(1));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			query.addCriteria(Criteria.where("spd_status").is(1));
 		}else {
 			query.addCriteria(Criteria.where("district").is(district))
@@ -263,7 +278,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			.addCriteria(Criteria.where("spd_status").is(1))
 			;
 		}
-		
+
 		return  mongoTemplate.count(query, HandShake.class, "handshake_info");
 	}
 
@@ -275,24 +290,24 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("main_supply_status").is(1))
 		;
-	
+
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			;
 		}else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("main_supply_status").is(1));
-		
+
 		return  mongoTemplate.count(query, HandShake.class, "handshake_info");
 	}
 
@@ -304,20 +319,20 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("csq").gt(15))
 		;
-	
+
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		}else if(district.equals("ALL")){ 
+		}else if(district.equals("ALL")){
 			;
 		} else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("csq").gt(15));
@@ -339,13 +354,13 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		}else if(district.equals("ALL")){ 
+		}else if(district.equals("ALL")){
 			;
 		} else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("door_status").is(1));
@@ -360,20 +375,20 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("light_status").is(1))
 		;
-	
+
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		}else if(district.equals("ALL")){ 
+		}else if(district.equals("ALL")){
 			;
 		} else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("light_status").is(1));
@@ -394,18 +409,18 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			;
 		}else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("light_status").is(0));
 		return  mongoTemplate.count(query, HandShake.class, "handshake_info");
-	
+
 	}
 
 
@@ -423,18 +438,18 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			;
 		}else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
 		query.addCriteria(Criteria.where("manual_mode_status").is(1));
 		return  mongoTemplate.count(query, HandShake.class, "handshake_info");
-	
+
 	}
 
 
@@ -445,23 +460,23 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		.addCriteria(Criteria.where("gp").is(gp))
 		.addCriteria(Criteria.where("mcb_trip").is(1))
 		;
-	
+
 		Query query = new Query();
 		if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
 		} else if(gp.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			;
 		}else {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp))
-			
+
 			;
 		}
-		
+
 		query.addCriteria(Criteria.where("mcb_trip").is(1));
 		return  mongoTemplate.count(query, HandShake.class, "handshake_info");
 	}
@@ -477,10 +492,10 @@ public class DashBoardDaoImpl implements DashBoardDao {
 	public List<HandShake> getMapData(String district, String mandal, String gp, String village,
 			Date startDate, Date endDate) throws Exception {
 		Query query = new Query();
-		 
-		if(district.equals("5_districts")){ 
+
+		if(district.equals("5_districts")){
 			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 				;
 		} else if(gp.equals("ALL") && mandal.equals("ALL")){
 			query.addCriteria(Criteria.where("district").is(district));
@@ -488,7 +503,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
 		} else {
-		
+
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
@@ -510,11 +525,11 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			String village, Date startDate, Date endDate, String search, int page, int size) throws Exception {
 
 		Query query = new Query();
-		
-		
-		 if(district.equals("5_districts")){ 
+
+
+		 if(district.equals("5_districts")){
 			query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-		} else if(district.equals("ALL")){ 
+		} else if(district.equals("ALL")){
 			;
 		}
 		 else if(gp.equals("ALL") && mandal.equals("ALL")){
@@ -523,7 +538,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal));
 		}  else {
-		
+
 			query.addCriteria(Criteria.where("district").is(district))
 			.addCriteria(Criteria.where("mandal").is(mandal))
 			.addCriteria(Criteria.where("gp").is(gp));
@@ -543,7 +558,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		List<HandShake> list = mongoTemplate.find(query, HandShake.class);
 
 		return list;
-	
+
 	}
 
 
@@ -563,13 +578,13 @@ public class DashBoardDaoImpl implements DashBoardDao {
 			Date startDate, Date endDate) throws Exception {
 
 		try {
-			
+
 			Query query = new Query();
-			
-			
-			 if(district.equals("5_districts")){ 
+
+
+			 if(district.equals("5_districts")){
 				query.addCriteria(Criteria.where("district").in("YSR Kadapa", "Kurnool", "Prakasam", "Srikakulam", "West Godavari"));
-			} else if(district.equals("ALL")){ 
+			} else if(district.equals("ALL")){
 				;
 			}
 			 else if(gp.equals("ALL") && mandal.equals("ALL")){
@@ -578,7 +593,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 				query.addCriteria(Criteria.where("district").is(district))
 				.addCriteria(Criteria.where("mandal").is(mandal));
 			}  else {
-			
+
 				query.addCriteria(Criteria.where("district").is(district))
 				.addCriteria(Criteria.where("mandal").is(mandal))
 				.addCriteria(Criteria.where("gp").is(gp));
@@ -599,7 +614,7 @@ public class DashBoardDaoImpl implements DashBoardDao {
 		} catch (Exception e) {
 			return null;
 		}
-	
+
 	}
 
 
