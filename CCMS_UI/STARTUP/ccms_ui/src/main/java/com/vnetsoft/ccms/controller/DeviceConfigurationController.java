@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +48,7 @@ public class DeviceConfigurationController {
 	private String serverHost;
 	@Value("${backend.http.port:8102}")
 	private String serverPort = "8102";
+	private RestTemplate commandClient = new RestTemplate();
 	
 	@RequestMapping(value = "/sync_dcu_configuration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Status syncDCUConfigurations(@RequestBody DCUConfiguration obj) {
@@ -223,57 +226,43 @@ public class DeviceConfigurationController {
 	}
 
 	@RequestMapping(value = "lights_on", method = RequestMethod.GET)
-	public @ResponseBody Status turnOnLights(@RequestParam("device_serial_number") String device_serial_number,
+	public ResponseEntity<Status> turnOnLights(@RequestParam("device_serial_number") String device_serial_number,
 			@RequestParam("device_identifier") String device_identifier) {
-
-		try {
-			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
-			int gatewayId = hand_shake.getGateway_identifier();
-			int nodeId = hand_shake.getLight_node_id();
-
-			String uri = "http://" + serverHost + ":" + serverPort+"/user/push/manuval_on?dcu_serial_number="
-					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
-
-			System.out.println(uri);
-			RestTemplate restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject(uri, String.class);
-			System.out.println(result);
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			logger.error("" + e.getStackTrace());
+		if (device_serial_number == null || device_serial_number.trim().isEmpty() || device_identifier == null || device_identifier.trim().isEmpty()) {
+			return new ResponseEntity<Status>(new Status(400, "Invalid DCU command parameters"), HttpStatus.BAD_REQUEST);
 		}
-		return new Status(200, "success");
+		try {
+			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number.trim());
+			if (hand_shake == null) return new ResponseEntity<Status>(new Status(404, "DCU not found"), HttpStatus.NOT_FOUND);
+			String uri = "http://" + serverHost + ":" + serverPort + "/user/push/manuval_on?dcu_serial_number=" + device_serial_number.trim() + "&dcu_identifier=" + hand_shake.getGateway_identifier() + "&node_id=" + hand_shake.getLight_node_id();
+			commandClient.getForObject(uri, String.class);
+			return new ResponseEntity<Status>(new Status(200, "success"), HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Unable to turn on lights for DCU " + device_serial_number, e);
+			return new ResponseEntity<Status>(new Status(502, "Unable to deliver command"), HttpStatus.BAD_GATEWAY);
+		}
 	}
 
 	@RequestMapping(value = "lights_off", method = RequestMethod.GET)
-	public @ResponseBody Status turnOffLights(@RequestParam("device_serial_number") String device_serial_number,
+	public ResponseEntity<Status> turnOffLights(@RequestParam("device_serial_number") String device_serial_number,
 			@RequestParam("device_identifier") String device_identifier) {
-
-		try {
-			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number);
-			int gatewayId = hand_shake.getGateway_identifier();
-			int nodeId = hand_shake.getLight_node_id();
-
-			String uri = "http://" + serverHost + ":" + serverPort+"/user/push/manuval_off?dcu_serial_number="
-					+ device_serial_number + "&dcu_identifier=" + gatewayId + "&node_id=" + nodeId;
-
-			System.out.println(uri);
-			RestTemplate restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject(uri, String.class);
-			System.out.println(result);
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			logger.error("" + e.getStackTrace());
+		if (device_serial_number == null || device_serial_number.trim().isEmpty() || device_identifier == null || device_identifier.trim().isEmpty()) {
+			return new ResponseEntity<Status>(new Status(400, "Invalid DCU command parameters"), HttpStatus.BAD_REQUEST);
 		}
-		return new Status(200, "success");
+		try {
+			HandShake hand_shake = userServices.getHandShakeByID(device_serial_number.trim());
+			if (hand_shake == null) return new ResponseEntity<Status>(new Status(404, "DCU not found"), HttpStatus.NOT_FOUND);
+			String uri = "http://" + serverHost + ":" + serverPort + "/user/push/manuval_off?dcu_serial_number=" + device_serial_number.trim() + "&dcu_identifier=" + hand_shake.getGateway_identifier() + "&node_id=" + hand_shake.getLight_node_id();
+			commandClient.getForObject(uri, String.class);
+			return new ResponseEntity<Status>(new Status(200, "success"), HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Unable to turn off lights for DCU " + device_serial_number, e);
+			return new ResponseEntity<Status>(new Status(502, "Unable to deliver command"), HttpStatus.BAD_GATEWAY);
+		}
 	}
-	
-	
+
 	private void pushSchedulerConfData(String id, String dcu_identifier,
 			String node_file_id, String node_data) {
-		
 		StringBuilder sb = new StringBuilder();
 		sb.append( "http://"+serverHost+":"+serverPort+"/user/push/sync_scheduler_conf?dcu_id=")
 				.append(id+ "&dcu_identifier=")

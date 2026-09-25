@@ -9,6 +9,7 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
   $scope.totalRecords = 0;
   $scope.handshake_Data = [];
   $scope.filteredData = [];
+  $scope.commandBusy = false;
   $scope.loading = false;
   $scope.errorMessage = null;
 
@@ -52,7 +53,6 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
   }
 
   $scope.qs_params = buildQuery();
-
   $scope.loadPage = function(page) {
     if ($scope.loading) return;
     $scope.loading = true;
@@ -60,14 +60,14 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
     $scope.currentPage = page;
     var searchParam = ($scope.searchFish && $scope.searchFish.length >= 3) ? $scope.searchFish : null;
     monitorandcontrolFactory.getAllHandShake($scope.qs_params, page, $scope.pageSize, searchParam).then(function(data) {
-      var newData = data.data || [];
+      var newData = angular.isArray(data.data) ? data.data : [];
       $scope.handshake_Data = page === 0 ? newData : $scope.handshake_Data.concat(newData);
       $scope.applyFilters();
     }, function(error) {
       $scope.handshake_Data = [];
       $scope.filteredData = [];
       if (error && (error.status === 401 || error.status === 403)) {
-        $scope.errorMessage = "You are not authorized to view monitor data.";
+        $scope.errorMessage = "Your session has expired or you are not authorized to view monitor data.";
       } else {
         $scope.errorMessage = "Unable to load monitor data. Please try again.";
       }
@@ -118,7 +118,11 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
       $scope.count_stats = data.data || {};
       $scope.totalRecords = $scope.count_stats.total_devices || 0;
     }, function(error) {
-      if (!$scope.errorMessage) $scope.errorMessage = error && (error.status === 401 || error.status === 403) ? "You are not authorized to view monitor data." : "Unable to load monitor counts.";
+      if (error && (error.status === 401 || error.status === 403)) {
+        $scope.errorMessage = "Your session has expired or you are not authorized to view monitor data.";
+      } else if (!$scope.errorMessage) {
+        $scope.errorMessage = "Unable to load monitor counts.";
+      }
     });
   }
 
@@ -148,22 +152,29 @@ monitorandcontrolCntl.controller('monitorandcontrolListControllers', function($s
   };
 
   $scope.toggle_light = function(obj) {
-    if (!obj || !obj.dcu_details) return;
+    if (!obj || !obj.dcu_details || $scope.commandBusy) return;
     $scope.obj = obj;
     var details = obj.dcu_details;
-    var params = '?device_serial_number=' + encodeURIComponent(details.gateway_serial_number) +
-      '&device_identifier=' + encodeURIComponent(details.serial_number);
+    var params = '?device_serial_number=' + encodeURIComponent(details.gateway_serial_number || '') +
+      '&device_identifier=' + encodeURIComponent(details.serial_number || '');
     $scope.command_message = null;
     $scope.command_error = null;
-    var request = details.light_status == 1 ? monitorandcontrolFactory.turnOffLights(params) : monitorandcontrolFactory.turnOnLights(params);
-    request.then(function() {
-      details.light_status = details.light_status == 1 ? 0 : 1;
+    $scope.commandBusy = true;
+    var wasOn = details.light_status == 1;
+    var request = wasOn ? monitorandcontrolFactory.turnOffLights(params) : monitorandcontrolFactory.turnOnLights(params);
+    request.then(function(response) {
+      if (!response || !response.data || response.data.code !== 200) {
+        $scope.command_error = "Command was not accepted by the backend.";
+        return;
+      }
+      details.light_status = wasOn ? 0 : 1;
       $scope.command_message = details.light_status == 1 ? 'Light turned on successfully.' : 'Light turned off successfully.';
     }, function() {
       $scope.command_error = 'Unable to change the light status.';
+    }).finally(function() {
+      $scope.commandBusy = false;
     });
   };
-
   $scope.deleteconf = function(id) {
     $modal.open({ templateUrl: 'app/common/delete.html', controller: 'dcuDeleteController', resolve: { id: function() { return id; } } });
   };

@@ -304,7 +304,7 @@
 						<div class="col-md-12" style="margin-top: 25px">
 							<div class="col-md-2" style="margin: 5px; margin-left: 20px"
 								align="center">
-								<a type="button" ng-click="toggle_light(obj);"
+								<a type="button" ng-click="toggle_light(obj);" ng-disabled="commandBusy" ng-class="{disabled: commandBusy}"
 									title="Click to Turn ON/OFF Light ">
 									<div ng-if="obj.dcu_details.light_status == 1">
 										<img src='images/lighton.png'>

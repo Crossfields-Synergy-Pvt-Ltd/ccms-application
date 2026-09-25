@@ -107,6 +107,17 @@ describe('monitorandcontrolControllers', function() {
             expect(obj.dcu_details.light_status).toBe(0);
         });
 
+        it('should not update light_status when backend reports command failure', function() {
+            createController();
+            var obj = { dcu_details: { gateway_serial_number: '1905HY1P1C009534', serial_number: '2043', light_status: 0 } };
+            $httpBackend.expectGET('/device_conf/lights_on?device_serial_number=1905HY1P1C009534&device_identifier=2043').respond(200, {code: 502, message: 'failed'});
+            $scope.toggle_light(obj);
+            $httpBackend.flush();
+            expect(obj.dcu_details.light_status).toBe(0);
+            expect($scope.command_error).toContain('Command was not accepted');
+        });
+
+
         it('should not update light_status on API failure', function() {
             createController();
             var obj = {
@@ -153,6 +164,14 @@ describe('monitorandcontrolControllers', function() {
         createController();
         $httpBackend.flush();
         expect($scope.errorMessage).toBe('Unable to load monitor data. Please try again.');
+        expect($scope.filteredData).toEqual([]);
+    });
+
+    it('shows a visible error when the DCU data request fails', function() {
+        $httpBackend.expectPOST('/dashboard/instant_data_filter?district=ALL&mandal=ALL&gp=ALL&village=ALL&page=0&size=50').respond(401);
+        createController();
+        $httpBackend.flush();
+        expect($scope.errorMessage).toContain('session has expired');
         expect($scope.filteredData).toEqual([]);
     });
 
