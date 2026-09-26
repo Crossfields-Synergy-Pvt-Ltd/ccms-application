@@ -11,6 +11,7 @@ public class MapData {
 	public int mcb_trip; 
 	public int high_current; 
 	public long high_voltage; 
+	public int manual_mode_status;
 	public int no_of_lights;
 	public int connected_load;
 	public boolean offline;

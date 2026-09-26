@@ -4,6 +4,7 @@ app.controller('loginControllers', function($scope, $state, $stateParams,
         inform, loginFactory, authService) {
     $scope.user = {};
     $scope.isSubmitting = false;
+    $scope.backToPublicMonitor = function() { $state.go('map'); };
 
     $scope.login = function(form) {
         if ($scope.isSubmitting) {

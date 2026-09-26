@@ -51,16 +51,22 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
 
     function validCoordinate(value) { return value !== null && value !== undefined && value !== '' && isFinite(parseFloat(value)); }
 
+    function getPinIcon(color) {
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36"><path d="M12 0C5.4 0 0 5.4 0 12c0 6.6 12 24 12 24s12-17.4 12-24C24 5.4 18.6 0 12 0z" fill="' + color + '" stroke="#333" stroke-width="0.5"/><circle cx="12" cy="12" r="4" fill="#fff"/></svg>';
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+
     function markerFor(value) {
         var categories = [], color = '#808080';
         if (value.light_status === 1 || value.light_status === '1') { categories.push('on'); color = '#00AA00'; }
         else if (value.light_status === 0 || value.light_status === '0') categories.push('off');
+        if (value.manual_mode_status === 1 || value.manual_mode_status === '1') { categories.push('manual'); color = '#0000FF'; }
         if (value.mcb_trip === 1 || value.mcb_trip === '1') { categories.push('mcb_trip'); color = '#FF0000'; }
         if (value.high_voltage === 1 || value.high_voltage === '1') { categories.push('high_voltage'); color = '#800080'; }
         if (value.high_current === 1 || value.high_current === '1') { categories.push('high_current'); color = '#FFA500'; }
         if (value.offline === true || value.offline === 'true') { categories.push('offline'); color = '#000000'; }
         if (!categories.length) categories.push('all');
-        return { categories: categories, title: value.name || value.id || '', content: value.info_details || '', lat: parseFloat(value.lat), lng: parseFloat(value.lang), color: color };
+        return { categories: categories, icon: getPinIcon(color), title: value.name || value.id || "", content: value.info_details || "", lat: parseFloat(value.lat), lng: parseFloat(value.lang), color: color };
     }
 
     function clearMarkers() {
@@ -70,16 +76,14 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
 
     function createMap(center) {
         var element = document.getElementById('map_canvas');
-        if (!map) {
-            map = new google.maps.Map(element, {
-                zoom: 11, panControl: true, zoomControl: true, scrollwheel: true,
-                zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL, position: google.maps.ControlPosition.LEFT_CENTER },
-                mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: true, scaleControl: true,
-                mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR },
-                navigationControl: true, navigationControlOptions: { style: google.maps.NavigationControlStyle.ZOOM_PAN },
-                center: new google.maps.LatLng(center.lat, center.lng)
-            });
-        } else map.setCenter(new google.maps.LatLng(center.lat, center.lng));
+        map = new google.maps.Map(element, {
+            zoom: 11, panControl: true, zoomControl: true, scrollwheel: true,
+            zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL, position: google.maps.ControlPosition.LEFT_CENTER },
+            mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: true, scaleControl: true,
+            mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR },
+            navigationControl: true, navigationControlOptions: { style: google.maps.NavigationControlStyle.ZOOM_PAN },
+            center: new google.maps.LatLng(center.lat, center.lng)
+        });
     }
 
     function addMarker(definition) {
@@ -89,7 +93,7 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
             categories: definition.categories,
             category: definition.categories[0],
             map: map,
-            icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: definition.color, fillOpacity: 1, strokeColor: '#333', strokeWeight: 1 }
+            icon: { url: definition.icon, size: new google.maps.Size(24, 36), origin: new google.maps.Point(0, 0), anchor: new google.maps.Point(12, 36) }
         });
         google.maps.event.addListener(marker, 'click', function() {
             infoWindow.setContent(definition.content);
@@ -103,12 +107,16 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
     function renderMap(data) {
         clearMarkers();
         var definitions = [];
+        var center = defaultCenter;
         angular.forEach(angular.isArray(data) ? data : [], function(value) {
-            if (validCoordinate(value.lat) && validCoordinate(value.lang)) definitions.push(markerFor(value));
+            if (validCoordinate(value.lat) && validCoordinate(value.lang)) {
+                definitions.push(markerFor(value));
+                center = { lat: parseFloat(value.lat), lng: parseFloat(value.lang) };
+            }
         });
-        createMap(definitions.length ? { lat: definitions[0].lat, lng: definitions[0].lng } : defaultCenter);
-        angular.forEach(definitions, addMarker);
+        createMap(center);
         $scope.mapMarkerCategories = [];
+        angular.forEach(definitions, addMarker);
         angular.forEach(definitions, function(definition) {
             $scope.mapMarkerCategories = $scope.mapMarkerCategories.concat(definition.categories);
         });
@@ -156,7 +164,5 @@ mapCntl.controller('mapViewControllers', function($scope, $state, mapViewFactory
             $scope.gp_list = ['ALL'].concat(response.data || []);
         }, function() { $scope.gp_list = ['ALL']; $scope.errorMessage = 'Unable to load GPs.'; });
     };
-    $scope.getMandalOnSelect();
-    $scope.getGpOnSelect();
     loadData();
 });

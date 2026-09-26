@@ -142,7 +142,7 @@ describe('mapControllers', function() {
 			$scope.select_gp = 'GP1';
 			$httpBackend.whenGET('/dashboard/count?district=Guntur-17&mandal=Tenali&gp=GP1').respond({});
 			$httpBackend.whenGET('/dashboard/map_data?district=Guntur-17&mandal=Tenali&gp=GP1').respond([
-                { lat: '16.4', lang: '80.5', light_status: 1, high_voltage: 1, high_current: 1 }
+                { lat: '16.4', lang: '80.5', light_status: 1, manual_mode_status: 1, high_voltage: 1, high_current: 1, offline: true }
             ]);
 
             $scope.search();
@@ -150,6 +150,8 @@ describe('mapControllers', function() {
 			$scope.$digest();
 			expect($scope.mapMarkerCategories).toContain('high_voltage');
 			expect($scope.mapMarkerCategories).toContain('high_current');
+			expect($scope.mapMarkerCategories).toContain('manual');
+			expect($scope.mapMarkerCategories).toContain('offline');
         });
     });
 
