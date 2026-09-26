@@ -38,6 +38,13 @@ describe('loginControllers', function() {
         }
     });
 
+    describe('back to public monitor', function() {
+        it('should navigate to the public monitor', function() {
+            $scope.backToPublicMonitor();
+            expect(mockState.go).toHaveBeenCalledWith('map');
+        });
+    });
+
     describe('$scope.login', function() {
         it('should send login credentials in the request body', function() {
             $scope.user = { name: 'admin@test.com', password: 'pass123' };

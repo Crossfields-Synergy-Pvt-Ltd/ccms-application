@@ -96,6 +96,7 @@ public class MonitorController {
 				obj.mcb_trip = tmp.getMcb_trip();
 				obj.high_current = tmp.getHigh_current();
 				obj.high_voltage = tmp.getHigh_voltage();
+				obj.manual_mode_status = tmp.getManual_mode_status();
 				obj.no_of_lights = tmp.getNo_of_lights();
 				obj.connected_load = tmp.getConnected_load();
 				obj.offline = isOffline(tmp.getHs_time_stamp());

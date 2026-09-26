@@ -1,5 +1,5 @@
-<section id="brand" class="row" ng-controller="mapViewControllers">
-	<nav class="navbar navbar-inverse navbar-fixed-top"
+<section id="brand" class="row public-monitor-page" ng-controller="mapViewControllers">
+	<nav class="navbar navbar-inverse public-monitor-header"
 		style="background: #EAEDED;">
 		<div class="line" style="height: 55px">
 			<div style="position: fixed; float: left">
@@ -24,7 +24,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="col-md-12">
+		<div class="col-md-12 public-monitor-filters">
 			<div class="panel-heading"
 				style="padding-bottom: 30px; background-color: #333333;">
 				<div class="form-group">
@@ -37,6 +37,7 @@
 
 						<select ng-model="selectedDistrict"
 							ng-change="getMandalOnSelect();" class="form-control">
+						<option value="ALL">ALL</option>
 							<option ng-repeat="x in districts" value="{{x.code}}">{{x.state}}</option>
 						</select>
 
@@ -88,12 +89,12 @@
 		</div>
 	</nav>
 
-	<div class="col-sm-12">
-		<div id="map_canvas" style="width: auto; height: 515px;"></div>
+	<div class="col-sm-12 public-monitor-map-wrap">
+		<div id="map_canvas" class="public-monitor-map"></div>
 		<div class="text-info" ng-if="loading" align="center">Loading monitor data...</div>
 		<div class="text-danger" ng-if="errorMessage" align="center">{{errorMessage}}</div>
 		<div class="text-muted" ng-if="!loading && !errorMessage && !hasResults" align="center">No devices match the selected filters.</div>
-		<div style="position: fixed; top: 120px; left: 14px; z-index: 20;">
+		<div class="public-monitor-stats stats-left">
 
 			<div class="ccms-box" style="background-color: #85144b;">
 				<p class="ccms-status-heading">CCMS CONNECTED</p>
@@ -130,7 +131,7 @@
 
 
 		</div>
-		<div style="position: fixed; top: 120px; right: 10px; z-index: 20;">
+		<div class="public-monitor-stats stats-right">
 
 			<div class="ccms-box " style="background-color: #8B4513;">
 				<p class="ccms-status-heading">MANUAL MODE CCMS</p>
@@ -167,7 +168,7 @@
 
 		</div>
 	</div>
-	<div class="col-md-12" style="padding-top: 10px" align="center">
+	<div class="col-md-12 public-monitor-legend" align="center">
 		<div class="col-md-3"></div>
 		<div class="col-md-9">
 
@@ -187,12 +188,12 @@
 				<div style="font-size: 10px">OFF</div>
 			</div>
 
-			<!-- <div class="col-md-1">
+			<div class="col-md-1">
 				<img src="images/ccmsManual.png"
 					style="width: 30px; height: 20px; float: left; padding-left: 10px"
 					ng-click="filterMarkers('manual');"><br>
 				<div style="font-size: 10px">Manual</div>
-			</div> -->
+			</div>
 			<div class="col-md-1">
 				<img src="images/mccmsfail.png"
 					style="width: 40px; height: 20px; float: left; padding-left: 20px"
@@ -213,18 +214,12 @@
 					ng-click="filterMarkers('high_current');"><br>
 				<div style="font-size: 10px">High Current</div>
 			</div>
-			<!-- 	<div class="col-md-1">
+			<div class="col-md-1">
 				<img src="images/ccmsNoSignal.png"
 					style="width: 25px; height: 20px; float: left; padding-left: 5px"
 					ng-click="filterMarkers('offline');"><br>
 				<div style="font-size: 10px">Offline</div>
 			</div>
-			<div class="col-md-1">
-				<img src="images/overload.png"
-					style="width: 25px; height: 20px; float: left; padding-left: 10px"
-					ng-click="filterMarkers('overload');"><br>
-				<div style="font-size: 10px">Overload</div>
-			</div> -->
 			<div class="col-md-1">
 				<img src="images/lightoff.png"
 					style="width: 25px; height: 20px; float: left; padding-left: 10px"

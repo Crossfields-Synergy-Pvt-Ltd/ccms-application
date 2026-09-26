@@ -1,0 +1,21 @@
+.public-monitor-page { position: relative; }
+.public-monitor-header { min-height: 92px; }
+.public-monitor-map { width: 100%; height: 515px; }
+.public-monitor-stats { position: absolute; top: 18px; z-index: 20; }
+.stats-left { left: 14px; }
+.stats-right { right: 10px; }
+.public-monitor-stats .ccms-box { min-width: 150px; }
+.public-monitor-legend { padding-top: 10px; }
+@media (max-width: 767px) {
+    .public-monitor-page { position: relative; }
+    .public-monitor-header { min-height: 210px; }
+    .public-monitor-header .line { height: 92px !important; }
+    .public-monitor-header .headerimagesize { max-width: 120px !important; height: auto !important; margin-left: 5px !important; margin-right: 5px !important; }
+    .public-monitor-header .logo { font-size: 14px !important; margin: 8px 0 !important; }
+    .public-monitor-filters .form-group { margin-bottom: 8px; }
+    .public-monitor-map { height: 420px; }
+    .public-monitor-stats { position: static; display: inline-block; vertical-align: top; width: 49%; margin-top: 8px; }
+    .stats-left { padding-left: 8px; }
+    .stats-right { padding-right: 8px; }
+    .public-monitor-legend .col-md-1, .public-monitor-legend .col-md-2 { display: inline-block; float: none; width: 18%; min-width: 72px; padding: 4px; vertical-align: top; }
+}
