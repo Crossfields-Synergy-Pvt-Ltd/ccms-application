@@ -3,6 +3,7 @@ package com.vnetsoft.ccms.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -130,6 +132,33 @@ public class DCUControllerTest extends AbstractControllerTest {
 
         performPost("/dcu/create", toJson(hs))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateDCU_LegacySerialNumberIsNormalised() throws Exception {
+        HandShake hs = new HandShake();
+        hs.setSerial_number("LEGACY-DCU-001");
+        when(userServices.addHandShake(any(HandShake.class))).thenReturn(true);
+
+        performPost("/dcu/create", toJson(hs))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)));
+
+        ArgumentCaptor<HandShake> captor = ArgumentCaptor.forClass(HandShake.class);
+        verify(userServices).addHandShake(captor.capture());
+        org.junit.Assert.assertEquals("LEGACY-DCU-001", captor.getValue().getGateway_serial_number());
+        org.junit.Assert.assertEquals("LEGACY-DCU-001", captor.getValue().getId());
+    }
+
+    @Test
+    public void testCreateDCU_ServiceFailureIsReportedInStatusBody() throws Exception {
+        HandShake hs = new HandShake();
+        hs.setGateway_serial_number("DCU-FAIL");
+        when(userServices.addHandShake(any(HandShake.class))).thenReturn(false);
+
+        performPost("/dcu/create", toJson(hs))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(0)));
     }
 
     @Test

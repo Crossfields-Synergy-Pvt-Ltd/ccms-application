@@ -46,16 +46,42 @@ public class DCUController {
 	public @ResponseBody Status add(@RequestBody HandShake obj) {
 
 		try {
+			if (obj == null) {
+				return new Status(0, "DCU payload is required");
+			}
+
+			// The older form sends serial_number. Keep accepting that payload while
+			// normalising the identity used by the handshake list and action buttons.
+			String gatewaySerial = trimToNull(obj.getGateway_serial_number());
+			if (gatewaySerial == null) {
+				gatewaySerial = trimToNull(obj.getSerial_number());
+			}
+			if (gatewaySerial == null) {
+				return new Status(0, "Gateway serial number is required");
+			}
+			obj.setGateway_serial_number(gatewaySerial);
+			if (trimToNull(obj.getId()) == null) {
+				obj.setId(gatewaySerial);
+			}
 			
 			if(logger.isDebugEnabled()) {
 				 logger.debug(obj);
 			}
 			
-			userServices.addHandShake(obj);
-			return new Status(200, "Success");
+			return userServices.addHandShake(obj)
+					? new Status(200, "Success")
+					: new Status(0, "Unable to save DCU");
 		} catch (Exception e) {
 			return new Status(0, e.toString());
 		}
+	}
+
+	private String trimToNull(String value) {
+		if (value == null) {
+			return null;
+		}
+		String trimmed = value.trim();
+		return trimmed.length() == 0 ? null : trimmed;
 	}
 	
 	
@@ -179,8 +205,9 @@ public class DCUController {
 	public @ResponseBody Status deletDCUByID(@PathVariable("id") String id) {
 	System.out.println("DCU DELETE REQUEST : "+ id);
 		try {
-			userServices.deleteDCU(id);
-			return new Status(1, "DCU deleted Successfully !");
+			return userServices.deleteDCU(id)
+					? new Status(1, "DCU deleted Successfully !")
+					: new Status(0, "Unable to delete DCU");
 		} catch (Exception e) {
 			e.getStackTrace();
 			return new Status(0, e.toString());

@@ -248,43 +248,51 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
    			});
    		}
 	
-   		$scope.locatedcuonmap = function () {
-  		  var map;
-  		    function initialize() {
-  		    	
-  		    	 $scope.map_location_lat	= document.getElementById("lat").value ;
-  		    	 $scope.map_location_long	= document.getElementById("long").value ;
-  				  
-  		        var myLatlng = new google.maps.LatLng( $scope.map_location_lat,  $scope.map_location_long);
-  		        var myOptions = {
-  		                  zoom: 16,
-  		                  center: myLatlng,
-  		                  mapTypeId: google.maps.MapTypeId.ROADMAP
-  		              };
-  		        
-  		        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-  		        var marker = new google.maps.Marker({
-  		            draggable: true,
-  		            position: myLatlng,
-  		            map: map,
-  		            title: "Your location"
-  		        });
-  		        google.maps.event.addListener(marker, 'dragend', function (event) {
-  		            document.getElementById("latlong").value = event.latLng.lat() + " , "+event.latLng.lng(); 
-  		            //document.getElementById("long").value = event.latLng.lng();
-  		            infoWindow.open(map, marker);
-  		        });
-  		    }
-  		    google.maps.event.addDomListener(window, "load", initialize());
-  		    
-  	  };
-				$scope.ok = function () {	
-				dcuFactory.add($scope.dcu).then(function (response) {
-					inform.add("DCU saved successfully", {ttl: 3000, type: "success"});
-					$state.go('dashboard.dcu');
-				}, function (error) {
-					inform.add("Failed to save DCU: " + (error.data || error.statusText), {ttl: 5000, type: "danger"});
+		$scope.locatedcuonmap = function () {
+			if (!window.google || !google.maps) {
+				inform.add("Map is not available", {ttl: 5000, type: "danger"});
+				return;
+			}
+			var lat = parseFloat($scope.dcu && $scope.dcu.lat) || 15.350328;
+			var lng = parseFloat($scope.dcu && $scope.dcu.lang) || 75.110198;
+			$scope.map_location_lat = lat;
+			$scope.map_location_long = lng;
+			var map = new google.maps.Map(document.getElementById("map_canvas"), {
+				zoom: 16,
+				center: new google.maps.LatLng(lat, lng),
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			});
+			var marker = new google.maps.Marker({draggable: true, position: new google.maps.LatLng(lat, lng), map: map, title: "Your location"});
+			google.maps.event.addListener(marker, 'dragend', function (event) {
+				$scope.$apply(function () {
+					$scope.dcu.lat = String(event.latLng.lat());
+					$scope.dcu.lang = String(event.latLng.lng());
 				});
+			});
+		};
+		$scope.submitting = false;
+		$scope.ok = function () {
+			if ($scope.submitting) { return; }
+			var dcu = angular.copy($scope.dcu || {});
+			var serial = String(dcu.gateway_serial_number || dcu.serial_number || '').trim();
+			if (!serial) {
+				inform.add("Gateway serial number is required", {ttl: 5000, type: "danger"});
+				return;
+			}
+			dcu.gateway_serial_number = serial;
+			dcu.serial_number = dcu.serial_number || serial;
+			$scope.submitting = true;
+			dcuFactory.add(dcu).then(function (response) {
+				var status = response && response.data ? response.data : response;
+				if (!status || status.code !== 200) {
+					inform.add((status && status.message) || "Unable to save DCU", {ttl: 5000, type: "danger"});
+					return;
+				}
+				inform.add("DCU saved successfully", {ttl: 3000, type: "success"});
+				$state.go('dashboard.dcu');
+			}, function (error) {
+				inform.add("Failed to save DCU: " + ((error && error.data) || (error && error.message) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+			}).finally(function () { $scope.submitting = false; });
 		};
 
 				$scope.cancel = function () {
@@ -295,11 +303,12 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
       
 dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope,dcuFactory, inform, config) 	{
 	
-	$scope.dcu = $stateParams.gateway_serial_number;
-	console.log($scope.dcu)
-	if ($scope.dcu  == null){
-	$scope.dcu = $stateParams.dcu;
-	console.log($scope.dcu)
+	$scope.dcu = $stateParams.dcu || $stateParams.gateway_serial_number;
+	if (angular.isString($scope.dcu)) {
+		$scope.dcu = {gateway_serial_number: $scope.dcu, serial_number: $scope.dcu};
+	}
+	if (!$scope.dcu) {
+		$scope.dcu = {};
 	}
 	  dcuFactory.getAllScheduler().then(function(data){
 	   $scope.scheduler_data = data.data;
@@ -332,57 +341,49 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
    				
    			});
    		}
-   		$scope.selected_scheduler = {};
-  	  dcuFactory.getAllScheduler().then(function(data){
-  	   $scope.scheduler_data = data.data;
-  	    });
-  	  
 	$scope.locatedcuonmap = function () {
-		  var map;
-		    function initialize() {
-		    	console.log($scope.dcu.latitude)
-		    	console.log($scope.dcu.longitude)
-		    	 $scope.map_location_lat	= document.getElementById("lat").value ;
-		    	 $scope.map_location_long	= document.getElementById("long").value ;
-				  
-		        var myLatlng = new google.maps.LatLng( $scope.map_location_lat, $scope.map_location_long);
-		        var myOptions = {
-		                  zoom: 16,
-		                  center: myLatlng,
-		                  mapTypeId: google.maps.MapTypeId.ROADMAP
-		              };
-		        
-		        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		        var marker = new google.maps.Marker({
-		            draggable: true,
-		            position: myLatlng,
-		            map: map,
-		            title: "Your location"
-		        });
-		        google.maps.event.addListener(marker, 'dragend', function (event) {
-		            document.getElementById("latlong").value = event.latLng.lat() + " , "+event.latLng.lng(); 
-		            //document.getElementById("long").value = event.latLng.lng();
-		            infoWindow.open(map, marker);
-		        });
-		    }
-		    google.maps.event.addDomListener(window, "load", initialize());
-		    
-	  };
+		if (!window.google || !google.maps) {
+			inform.add("Map is not available", {ttl: 5000, type: "danger"});
+			return;
+		}
+		var lat = parseFloat($scope.dcu && $scope.dcu.lat) || 15.350328;
+		var lng = parseFloat($scope.dcu && $scope.dcu.lang) || 75.110198;
+		$scope.map_location_lat = lat;
+		$scope.map_location_long = lng;
+		var map = new google.maps.Map(document.getElementById("map_canvas"), {zoom: 16, center: new google.maps.LatLng(lat, lng), mapTypeId: google.maps.MapTypeId.ROADMAP});
+		var marker = new google.maps.Marker({draggable: true, position: new google.maps.LatLng(lat, lng), map: map, title: "Your location"});
+		google.maps.event.addListener(marker, 'dragend', function (event) {
+			$scope.$apply(function () {
+				$scope.dcu.lat = String(event.latLng.lat());
+				$scope.dcu.lang = String(event.latLng.lng());
+			});
+		});
+	};
  
 	   
-	  if($scope.dcu == null){
-	         $scope.dcu = $stateParams.gateway_serial_number;
-	         
-}    
-				
+				$scope.submitting = false;
 				$scope.update=function(){
-				dcuFactory.add($scope.dcu).then(function (response) {
-					inform.add("DCU updated successfully", {ttl: 3000, type: "success"});
-					$state.go('dashboard.dcu');
-				}, function (error) {
-					inform.add("Failed to update DCU: " + (error.data || error.statusText), {ttl: 5000, type: "danger"});
-				});
-		};
+					if ($scope.submitting || !$scope.dcu) { return; }
+					var dcu = angular.copy($scope.dcu);
+					dcu.gateway_serial_number = String(dcu.gateway_serial_number || dcu.serial_number || '').trim();
+					if (!dcu.gateway_serial_number) {
+						inform.add("Gateway serial number is required", {ttl: 5000, type: "danger"});
+						return;
+					}
+					dcu.serial_number = dcu.serial_number || dcu.gateway_serial_number;
+					$scope.submitting = true;
+					dcuFactory.add(dcu).then(function (response) {
+						var status = response && response.data ? response.data : response;
+						if (!status || status.code !== 200) {
+							inform.add((status && status.message) || "Unable to update DCU", {ttl: 5000, type: "danger"});
+							return;
+						}
+						inform.add("DCU updated successfully", {ttl: 3000, type: "success"});
+						$state.go('dashboard.dcu');
+					}, function (error) {
+						inform.add("Failed to update DCU: " + ((error && error.data) || (error && error.message) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+					}).finally(function () { $scope.submitting = false; });
+				};
 		
 				$scope.close = function () {
 				$state.go('dashboard.dcu');
@@ -429,12 +430,22 @@ dcuCntl.controller('dcuModifyControllers', function($scope, $state,$stateParams,
 
 
 
-dcuCntl.controller('dcuDeleteController', function ($scope, $state, $modalInstance, id, dcuFactory) {
+dcuCntl.controller('dcuDeleteController', function ($scope, $state, $modalInstance, id, dcuFactory, inform) {
 
+				$scope.deleting = false;
 				$scope.ok = function () {
-				dcuFactory.delete(id);
-				$modalInstance.close($scope.dcu);
-				$state.reload();
+					if ($scope.deleting) { return; }
+					$scope.deleting = true;
+					dcuFactory.delete(id).then(function (status) {
+						if (!status || status.code === 0) {
+							inform.add((status && status.message) || "Unable to delete DCU", {ttl: 5000, type: "danger"});
+							return;
+						}
+						$modalInstance.close($scope.dcu);
+						$state.reload();
+					}, function (error) {
+						inform.add("Failed to delete DCU: " + ((error && error.data) || (error && error.message) || (error && error.statusText) || "request failed"), {ttl: 5000, type: "danger"});
+					}).finally(function () { $scope.deleting = false; });
 	  };
 
 	  			$scope.cancel = function () {

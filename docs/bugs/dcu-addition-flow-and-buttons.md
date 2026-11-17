@@ -2,7 +2,9 @@
 
 ## Summary
 
-The DCU/RTU addition flow reaches the expected `/dcu/create` endpoint, but the form does not provide a consistent gateway identity, does not enforce validation, and treats business failures as successful HTTP responses. As a result, a manually added DCU can appear to save while remaining unusable in the list, delete, handshake, and configuration workflows.
+The active DCU/RTU flow is implemented under `app/dcu` and reaches the expected `/dcu/create` endpoint, but the form does not provide a consistent gateway identity, does not enforce validation, and treats business failures as successful HTTP responses. As a result, a manually added DCU can appear to save while remaining unusable in the list, delete, handshake, and configuration workflows.
+
+The `app/default` DCU-related files are legacy code. The current routes use `app/dcu/dcu-list.html`, `app/dcu/dcu-add.html`, `app/dcu/dcu-update.html`, and `app/dcu/dcu-modify.html`.
 
 ## Expected flow
 
@@ -43,7 +45,7 @@ The Add view contains required attributes and validation-related markup, but the
 - `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-add.html:355-357`
 - `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-controllers.js:281-288`
 
-There is no reliable form-validity check before the request. Empty or malformed DCU metadata can therefore be submitted.
+There is no reliable form-validity check before the request. Empty or malformed DCU metadata can therefore be submitted. The Add controller does not check a form object before calling the factory.
 
 ### 3. Add reports success for backend business failures
 
@@ -83,13 +85,13 @@ The controller defines `update()`, not `ok()`:
 
 Clicking the Save button invokes `update()`, but pressing Enter to submit the form can call an undefined handler.
 
-### 6. Update Save button contains a static disabled attribute
+### 6. Update Save button contains conflicting disabled logic
 
 The Save button has both `ng-disabled` and a literal `disabled="disabled"`:
 
 - `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-update.html:341-343`
 
-Depending on AngularJS directive processing and form state, the static attribute can leave the button disabled or make its behavior difficult to reason about.
+This is a fragile implementation and should be removed or tested explicitly. AngularJS may override the DOM property after digest based on the `ng-disabled` expression, so the literal attribute is not conclusively a permanent blocker by itself.
 
 ### 7. Delete does not wait for the API result
 
@@ -116,6 +118,19 @@ The Settings button loads configuration using the gateway serial:
 
 If a manually added record only contains `serial_number`, configuration lookup will not necessarily find the corresponding DCU.
 
+### 9. Sync buttons use the expected endpoints
+
+The individual node and scheduler sync buttons call the expected gateway-specific endpoints:
+
+- `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-controllers.js:138-144`
+- `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-factory.js:32-38`
+
+The bulk sync buttons ask for confirmation and use the shared status-reporting helper:
+
+- `CCMS_UI/STARTUP/ccms_ui/src/main/webapp/app/dcu/dcu-controllers.js:125-154`
+
+The helper checks `Status.code === 0`, so these buttons have better failure reporting than the Add and Update flows. They still depend on every listed record having a valid `gateway_serial_number`.
+
 ## Button behavior summary
 
 | Button | Current behavior | Result |
@@ -125,7 +140,7 @@ If a manually added record only contains `serial_number`, configuration lookup w
 | Cancel | Returns to DCU list | Works; no unsaved-change warning |
 | Locate on map | Initializes map and marker | Unreliable; coordinate/model update defects |
 | Edit | Opens Update route with selected object | Route works |
-| Save / Update | Calls `update()` on click | Enter-submit mismatch and possible static disabled state |
+| Save / Update | Calls `update()` on click | Enter-submit mismatch and conflicting disabled logic; static attribute is fragile but not conclusively a permanent blocker |
 | Delete | Sends delete request and immediately reloads | No result handling; may fail for generated Mongo IDs |
 | Modify configuration | Loads and saves DCU configuration | Depends on valid gateway identity |
 | Sync node/scheduler | Calls configuration sync endpoints | Uses expected gateway serial path |
@@ -143,6 +158,8 @@ If a manually added record only contains `serial_number`, configuration lookup w
 
 ## Verification performed
 
-- Static inspection covered the DCU list, Add, Update, Modify Configuration, Delete, map action, AngularJS factory, controller, Spring controller, service, DAO, model, and route definitions.
+- Static inspection covered the active DCU list, Add, Update, Modify Configuration, Delete, map action, sync buttons, AngularJS factory, controller, Spring controller, service, DAO, model, and route definitions.
+- Confirmed that the active routes use `app/dcu`; `app/default` is legacy and not the current DCU list/add flow.
+- `node --check` passed for `app/dcu/dcu-controllers.js` and `app/dcu/dcu-factory.js`.
 - The DCU Maven module previously compiled successfully with `mvn test -DskipTests`.
 - No source files were changed during this inspection.
