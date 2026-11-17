@@ -99,7 +99,7 @@ docker network connect <ccms_network_name> <npm_container_name>
 | Forward hostname changed | 502 — NPM can't resolve the container name |
 | Forward port changed | 502 — NPM connects to wrong port |
 | Domain changed | SSL cert mismatch — browser rejects connection |
-| Redirect rule removed | Users must type `/CCMS/` manually — broken UX |
+| Legacy redirect retained | `/CCMS/` is obsolete; the UI is served at root `/` |
 | SSL disabled | Traffic in transit is unencrypted |
 
 ---
@@ -218,7 +218,7 @@ After the CCMS stack is running, configure NPM:
    - Forward hostname: `cspl-ccms-ui`
    - Forward port: `8080`
    - Enable SSL (Let's Encrypt)
-   - Add redirect: `/` → `/CCMS/` (301)
+   - Do not add the old `/` → `/CCMS/` redirect; the UI is served at `/`
 3. Ensure NPM and the CCMS stack share the same Docker network
 
 ### 4. Verify Deployment
@@ -376,6 +376,51 @@ Quick reference:
 - **API params:** `start_date` / `end_date` (format: `YYYY-MM-DD`)
 - **Migration result:** 17,442 documents migrated, 1 failed, 7 skipped
 
+## Latest application changes
+
+The current `main` branch includes the following operationally relevant fixes.
+These preserve the existing ports, container names, MongoDB collections, API
+routes, and DCU wire protocol.
+
+### Handshake registration and logging
+
+- Handshake parsing fails closed for malformed packets, invalid CRCs, and
+  invalid gateway serial values.
+- MongoDB failures include the exception and gateway context in SERVER logs.
+- Channel registration rejects blank identities, replaces only the same
+  gateway's previous channel, and removes disconnected channels by channel
+  identity.
+- Reconnect handling closes stale channels once and prevents an old channel
+  from removing a newer connection.
+- SERVER file logging uses the deployed Log4j2 configuration and
+  `SERVER_LOG_DIR`; the obsolete `SpringNettyLog4j.properties` reference is
+  not part of the Docker logging path.
+
+See `docs/fix/container-handshake-registration-fix.md` for the implementation
+details and verification notes.
+
+### DCU add/update/delete and configuration flows
+
+- DCU create and update normalise `gateway_serial_number` and legacy
+  `serial_number` inputs.
+- UI create, update, and delete flows inspect business status codes instead of
+  treating every HTTP 200 response as success.
+- UI updates preserve Netty/protocol fields by updating editable MongoDB
+  fields rather than replacing the complete handshake document.
+- Pending node, scheduler, or system configuration is retried after a new
+  handshake channel is registered.
+
+See `docs/fix/dcu-addition-update-flow-fix.md` and
+`docs/feat/pending-config-retry-on-reconnect.md` for scope and tests.
+
+### Documentation source of truth
+
+- `Deployment_Guide.md` describes the current Hostinger deployment: external
+  NPM, root UI context `/`, GHCR images, Hostinger environment variables, and
+  named volumes.
+- The old in-stack Nginx service, `/CCMS/` context, NPM redirect, and
+  production `.env` workflow are obsolete.
+
 ---
 
 ## Config Coupling Map
@@ -515,9 +560,9 @@ The following files are safe for team members to modify without affecting deploy
 
 | Path | What's There |
 |---|---|
-| `SERVER/ccms/src/test/**/*.java` | Server JUnit tests (76 tests) |
-| `CCMS_UI/STARTUP/ccms_ui/src/test/**/*.java` | UI JUnit tests (75 tests) |
-| `CCMS_UI/STARTUP/ccms_ui/src/test/javascript/**/*.js` | AngularJS Karma tests (66 tests) |
+| `SERVER/ccms/src/test/**/*.java` | Server JUnit tests |
+| `CCMS_UI/STARTUP/ccms_ui/src/test/**/*.java` | UI JUnit tests |
+| `CCMS_UI/STARTUP/ccms_ui/src/test/javascript/**/*.js` | AngularJS Karma tests |
 | `CCMS_UI/STARTUP/ccms_ui/karma.conf.js` | Karma test runner config |
 
 ### Build Dependencies
