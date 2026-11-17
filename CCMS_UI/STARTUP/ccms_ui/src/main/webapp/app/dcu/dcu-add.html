@@ -5,11 +5,11 @@
 	<div class="row">
 		<div class="col-md-6 " style="padding: 10px">
 			<div class="panel-body">
-				<form class="form-horizontal">
+				<form name="newDcuForm" class="form-horizontal" ng-submit="ok()" novalidate>
 					<div class="form-group">
 
 						<div class="form-group"
-							ng-class="{'has-error': newNodeForm.CCMSId.$invalid &amp;&amp; (newNodeForm.CCMSId.$dirty || submitted)}">
+							ng-class="{'has-error': newDcuForm.CCMSId.$invalid &amp;&amp; (newDcuForm.CCMSId.$dirty || submitted)}">
 							<label class="col-md-4" style="marin-right: 10px" align="left">CCMS
 								panel id</label>
 							<div class="col-md-8">
@@ -38,7 +38,7 @@
 							</div>
 						</div>
 						<div class="form-group"
-							ng-class="{'has-error': newNodeForm.SerialNumber.$invalid &amp;&amp; (newNodeForm.SerialNumber.$dirty || submitted)}">
+							ng-class="{'has-error': newDcuForm.SerialNumber.$invalid &amp;&amp; (newDcuForm.SerialNumber.$dirty || submitted)}">
 							<label class="col-md-4 " style="marin-right: 10px" align="left">Serial
 								number<span class="compulsaryFieldsColor">*</span>
 							</label>
@@ -47,12 +47,13 @@
 									class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern ng-valid-minlength ng-valid-maxlength"
 									name="SerialNumber" id="SerialNumber"
 									placeholder="Enter serial number"
-									ng-change="MakePristineTrue()" ng-model="dcu.serial_number">
+							ng-change="MakePristineTrue()" ng-model="dcu.gateway_serial_number"
+							ng-required="true" required="required" ng-maxlength="50">
 							</div>
 						</div>
 
 						<div class="form-group"
-							ng-class="{'has-error': newNodeForm.ModelNumber.$invalid &amp;&amp; (newNodeForm.ModelNumber.$dirty || submitted)}">
+							ng-class="{'has-error': newDcuForm.ModelNumber.$invalid &amp;&amp; (newDcuForm.ModelNumber.$dirty || submitted)}">
 							<label class="col-md-4 " style="marin-right: 10px" align="left">Model<span
 								class="compulsaryFieldsColor">*</span></label>
 							<div class="col-md-8">
@@ -276,7 +277,7 @@
 						</div> -->
 
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 
@@ -286,7 +287,7 @@
 
 		<div class="col-md-6 " style="padding: 10px">
 			<div class="panel-body">
-				<form class="form-horizontal">
+				<div class="form-horizontal">
 
 					<!-- <div class="form-group"
 						ng-class="{'has-error': newNodeForm.Description.$invalid &amp;&amp; (newNodeForm.Description.$dirty || submitted)}">
@@ -343,17 +344,18 @@
 			</div>
 			<br>
 
-			</form>
+			</div>
 		</div>
 	</div>
 </div>
+	</form>
 
 <div class="col-md-12">
 	<br>
 </div>
 
-<div align="center">
-	<a type="button" ng-click="ok()" class="btn btn-info btn-sm ">Add</a> <a
-		type="button" ng-click="cancel()" class="btn btn-info btn-sm ">Cancel</a>
+	<div align="center">
+	<button type="button" ng-click="ok()" ng-disabled="submitting" class="btn btn-info btn-sm ">Add</button> <button
+		type="button" ng-click="cancel()" ng-disabled="submitting" class="btn btn-info btn-sm ">Cancel</button>
 </div>
 

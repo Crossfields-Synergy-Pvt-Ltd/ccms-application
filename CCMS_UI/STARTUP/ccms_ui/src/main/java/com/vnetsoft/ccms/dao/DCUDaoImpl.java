@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.vnetsoft.ccms.pojo.DCU;
 import com.vnetsoft.ccms.pojo.DCUConfiguration;
@@ -63,7 +64,9 @@ public class DCUDaoImpl implements DCUDao {
 	@Override
 	public boolean deleteDCU(String id) throws Exception {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
+		query.addCriteria(new Criteria().orOperator(
+				Criteria.where("_id").is(id),
+				Criteria.where("gateway_serial_number").is(id)));
 		mongoTemplate.remove(query, HandShake.class);
 
 		return true;
@@ -103,7 +106,43 @@ public class DCUDaoImpl implements DCUDao {
 
 	@Override
 	public boolean addHandShake(HandShake user) throws Exception {
-		mongoTemplate.save(user, "handshake_info");
+		String gatewaySerial = user.getGateway_serial_number();
+		if (gatewaySerial == null || gatewaySerial.trim().length() == 0) {
+			gatewaySerial = user.getSerial_number();
+		}
+		if (gatewaySerial == null || gatewaySerial.trim().length() == 0) {
+			throw new IllegalArgumentException("Gateway serial number is required");
+		}
+		gatewaySerial = gatewaySerial.trim();
+
+		String id = user.getId();
+		if (id == null || id.trim().length() == 0) {
+			id = gatewaySerial;
+		}
+
+		// Update only fields owned by this UI. A full save would replace the
+		// handshake document and erase protocol fields written by the Netty server.
+		Query query = new Query(Criteria.where("_id").is(id));
+		Update update = new Update()
+				.set("gateway_serial_number", gatewaySerial)
+				.set("panel_unique_id", user.getPanel_unique_id())
+				.set("name", user.getName())
+				.set("date", user.getDate())
+				.set("installation_date", user.getInstallation_date())
+				.set("serial_number", user.getSerial_number())
+				.set("model", user.getModel())
+				.set("description", user.getDescription())
+				.set("mobile_number", user.getMobile_number())
+				.set("lat", user.getLat())
+				.set("lang", user.getLang())
+				.set("village", user.getVillage())
+				.set("mandal", user.getMandal())
+				.set("gp", user.getGp())
+				.set("district", user.getDistrict())
+				.set("connected_load", user.getConnected_load())
+				.set("schedules_name", user.getSchedules_name())
+				.set("no_of_lights", user.getNo_of_lights());
+		mongoTemplate.upsert(query, update, "handshake_info");
 		return true;
 	}
 

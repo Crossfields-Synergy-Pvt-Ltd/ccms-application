@@ -15,7 +15,11 @@ module.exports = function(config) {
       'src/main/webapp/app/**/*.js',
       'src/test/javascript/**/*.test.js'
     ],
-    exclude: [],
+    // The default DCU controller registers the same controller names as the
+    // active app/dcu controller and would overwrite the implementation under test.
+    exclude: [
+      'src/main/webapp/app/default/dcu-controllers.js'
+    ],
     preprocessors: {},
     reporters: ['progress'],
     port: 9876,

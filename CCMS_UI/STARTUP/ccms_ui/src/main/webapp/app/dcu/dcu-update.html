@@ -3,7 +3,7 @@
 		RTU/DCU information</div>
 	<br>
 	<div class="row">
-<form name="newMeterForm" ng-submit="ok()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
+<form name="newMeterForm" ng-submit="update()" novalidate="" class="ng-pristine ng-scope ng-invalid ng-invalid-required ng-valid-pattern ng-valid-maxlength ng-valid-minlength">
 	
 		<div class="col-md-6 " style="padding: 10px">
 			<div class="panel-body">
@@ -12,7 +12,7 @@
 
 
 						<!-- <div class="form-group"
-							ng-class="{'has-error': newNodeForm.CCMSId.$invalid &amp;&amp; (newNodeForm.CCMSId.$dirty || submitted)}">
+						ng-class="{'has-error': newMeterForm.CCMSId.$invalid &amp;&amp; (newMeterForm.CCMSId.$dirty || submitted)}">
 							<label class="col-md-4" style="marin-right: 10px" align="left">CCMS
 								panel id</label>
 							<div class="col-md-8">
@@ -38,7 +38,7 @@
 						
 
 						 <!-- <div class="form-group"
-							ng-class="{'has-error': newNodeForm.NodeName.$invalid &amp;&amp; (newNodeForm.NodeName.$dirty || submitted)}">
+						ng-class="{'has-error': newMeterForm.NodeName.$invalid &amp;&amp; (newMeterForm.NodeName.$dirty || submitted)}">
 							<label class="col-md-4 " style="marin-right: 10px" align="left">Name<span
 								class="compulsaryFieldsColor">*</span></label>
 							<div class="col-md-8">
@@ -76,7 +76,7 @@
 						
 						
 						<!-- <div class="form-group"
-							ng-class="{'has-error': newNodeForm.SerialNumber.$invalid &amp;&amp; (newNodeForm.SerialNumber.$dirty || submitted)}">
+						ng-class="{'has-error': newMeterForm.SerialNumber.$invalid &amp;&amp; (newMeterForm.SerialNumber.$dirty || submitted)}">
 							<label class="col-md-4 " style="marin-right: 10px" align="left">Serial
 								number<span class="compulsaryFieldsColor">*</span>
 							</label>
@@ -103,7 +103,7 @@
 						
 
 						<div class="form-group"
-							ng-class="{'has-error': newNodeForm.ModelNumber.$invalid &amp;&amp; (newNodeForm.ModelNumber.$dirty || submitted)}">
+						ng-class="{'has-error': newMeterForm.ModelNumber.$invalid &amp;&amp; (newMeterForm.ModelNumber.$dirty || submitted)}">
 							<label class="col-md-4 " style="marin-right: 10px" align="left">Model<span
 								class="compulsaryFieldsColor">*</span></label>
 							<div class="col-md-8">
@@ -258,10 +258,10 @@
 
 		<div class="col-md-6 " style="padding: 10px">
 			<div class="panel-body">
-				<form class="form-horizontal">
+					<div class="form-horizontal">
 					
 					<div class="form-group"
-						ng-class="{'has-error': newNodeForm.Description.$invalid &amp;&amp; (newNodeForm.Description.$dirty || submitted)}">
+						ng-class="{'has-error': newMeterForm.Description.$invalid &amp;&amp; (newMeterForm.Description.$dirty || submitted)}">
 						<label class="col-md-4" style="marin-right: 10px" align="left">Description</label>
 						<div class="col-md-7">
 							<textarea
@@ -270,7 +270,7 @@
 								placeholder="Enter description" ng-model="dcu.description"
 								rows="5" ng-change="MakePristineTrue()" ng-maxlength="70"></textarea>
 							<span class="help-block ng-hide"
-								ng-show="newNodeForm.Description.$error.maxlength &amp;&amp; (newNodeForm.Description.$dirty || submitted)">The
+							ng-show="newMeterForm.Description.$error.maxlength &amp;&amp; (newMeterForm.Description.$dirty || submitted)">The
 								maximum length of the DCU description should be 70 characters.</span>
 						</div>
 					</div> 
@@ -330,7 +330,7 @@
 			
 
 		</div>
-		</form>
+			</div>
 		</div>
 		
 	</div>
@@ -340,7 +340,7 @@
         <br>
             <div class="pull-left"><span class="compulsaryFieldsColor">*</span>Marked fields are compulsory.</div>
             <button type="button" class="btn btn-primary pull-right adjusantButtons" ng-click="close()" ng-disabled="backtoCreateMeterClicked==1">Cancel</button>
-            <input type="button" data-toggle="tooltip" data-placement="bottom" title="Update" class="btn btn-primary pull-right adjusantButtons" ng-click="update()" ng-disabled="newMeterForm.$pristine || newMeterForm.$dirty &amp;&amp; newMeterForm.$invalid" value="Save &amp; proceed" disabled="disabled">
+            <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Update" class="btn btn-primary pull-right adjusantButtons" ng-disabled="newMeterForm.$invalid || submitting" value="Save &amp; proceed">
         
             
         </div>
@@ -357,4 +357,4 @@
 	<a type="button" ng-click="update()" class="btn btn-info btn-sm ">Update</a>
 	<a type="button" ng-click="close()" class="btn btn-info btn-sm ">Cancel</a>
 </div> -->
- 
+
