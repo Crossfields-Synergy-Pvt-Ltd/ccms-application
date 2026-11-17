@@ -137,8 +137,13 @@ public class BaseUtilTest {
     }
 
     @Test
-    public void testValidatPacket_EmptyString_ReturnsTrue() {
-        assertTrue(BaseUtil.validatPacket(""));
+    public void testValidatPacket_EmptyString_ReturnsFalse() {
+        assertFalse(BaseUtil.validatPacket(""));
+    }
+
+    @Test
+    public void testValidatPacket_InvalidHex_ReturnsFalse() {
+        assertFalse(BaseUtil.validatPacket("not-a-packet"));
     }
 
     // --- getDeviceSerialNumberFromDecimalToHexWithPadding ---
