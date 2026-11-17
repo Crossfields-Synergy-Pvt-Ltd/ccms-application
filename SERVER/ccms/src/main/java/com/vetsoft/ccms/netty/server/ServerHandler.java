@@ -88,6 +88,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 				
 				
 				HandShake hs_req = HandShakeParser.parseRequest(sTextAsHex, obj);
+					if (hs_req == null || !HandShakeParser.isValidGatewaySerial(hs_req.getGateway_serial_number())) {
+						LOG.error("Handshake rejected before channel registration; remote={}", ctx.channel().remoteAddress());
+						return;
+					}
 				
 				response = HandShakeParser.getHandshakeResponseData(sTextAsHex, hs_req);
 				
@@ -99,14 +103,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 				ChannelHandlerContext prv_ctx =	MainBootApp.trackChannels(hs_req.getGateway_serial_number(), ((InetSocketAddress)ctx.channel().remoteAddress()).getAddress().getHostAddress(), ctx);
 				if(prv_ctx != null){
 					try {
-						prv_ctx.writeAndFlush(Unpooled.EMPTY_BUFFER) .addListener(ChannelFutureListener.CLOSE);;
 						prv_ctx.close();
-						prv_ctx.flush();
-						super.channelInactive(prv_ctx);
-						super.channelUnregistered(prv_ctx);
-						//LOG.error("INFO :: CLOSING OLD CONNECTION");
 					}catch(Exception e){
-						LOG.error("ERROR :: Exception while closing old connection : "+ e.getMessage());
+							LOG.error("ERROR while closing old connection", e);
 					}
 				}
 				
@@ -315,8 +314,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
 
-		LOG.error("CONNECTION CLOSED BY CLIENT");
-		MainBootApp.channels_list.remove(ctx);
+			LOG.error("CONNECTION CLOSED BY CLIENT", cause);
+			MainBootApp.removeChannel(ctx);
 		ctx.writeAndFlush(Unpooled.EMPTY_BUFFER) .addListener(ChannelFutureListener.CLOSE);;
 		ctx.close();
 		
@@ -337,22 +336,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 			LOG.debug("Channel is disconnected");
 		
 		try {
-		MainBootApp.channels_list.remove(ctx);
+			MainBootApp.removeChannel(ctx);
 		ctx.writeAndFlush(Unpooled.EMPTY_BUFFER) .addListener(ChannelFutureListener.CLOSE);;
 		
 
-		ctx.channel().closeFuture();
-		ctx.channel().deregister();
-		ctx.channel().pipeline().close();
-		ctx.channel().disconnect();
 		ctx.channel().close();
-		ctx.channel().flush();
 		ctx.close();
-		ctx.flush();
 		
 		super.channelInactive(ctx);
 		}catch(Exception e){
-			LOG.error("Exception  while disconnecting channel: "+ e.getMessage());
+				LOG.error("Exception while disconnecting channel", e);
 		}
 		}
 

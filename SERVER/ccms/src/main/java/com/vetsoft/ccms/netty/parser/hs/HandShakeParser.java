@@ -111,8 +111,9 @@ public class HandShakeParser extends BaseUtil {
 					buffer.substring(index, (index + 2)), 16));
 			index += 2;
 		} catch (Exception e) {
-			LOG.error("Exception : while parssing hand shake request [ "+ buffer + " ] "+ e.getMessage());
-			e.getStackTrace();
+			LOG.error("Exception while parsing handshake request; packet length="
+					+ (buffer == null ? "null" : buffer.length()), e);
+			return null;
 		}
 
 		if(LOG.isDebugEnabled()){
@@ -123,17 +124,19 @@ public class HandShakeParser extends BaseUtil {
 		try {
 			DeviceRequestDataRepository personRepository = MainBootApp.context.getBean(DeviceRequestDataRepository.class);
 		
-			hand_shake_request.setId(hand_shake_request.getGateway_serial_number());
+			String gatewaySerial = hand_shake_request.getGateway_serial_number();
+			if (!isValidGatewaySerial(gatewaySerial)) {
+				LOG.warn("Rejecting handshake with invalid gateway serial: {}", printable(gatewaySerial));
+				return hand_shake_request;
+			}
+			gatewaySerial = gatewaySerial.trim();
+			hand_shake_request.setGateway_serial_number(gatewaySerial);
+			hand_shake_request.setId(gatewaySerial);
 			hand_shake_request.setHs_time_stamp(String.valueOf(System.currentTimeMillis()));
-			
-			if(hand_shake_request.getGateway_serial_number().length() == 16) /* Some Empty device serial number handshake was happening to avoid that we added, we should check for 16*/
-				{
-					if(LOG.isDebugEnabled()){
-						LOG.debug("SAVE HAND SHAKE DATA TO DB : "+ hand_shake_request);
-					}
-					
-					hand_shake_request = personRepository.addOrUpdateHandShake(hand_shake_request);
-				}	
+			if(LOG.isDebugEnabled()){
+				LOG.debug("SAVE HAND SHAKE DATA TO DB : "+ hand_shake_request);
+			}
+			hand_shake_request = personRepository.addOrUpdateHandShake(hand_shake_request);
 			/*	
 			if(hand_shake_request.getCsq() < 15){ // Poor GPRS communication Event
 				try {
@@ -151,10 +154,28 @@ public class HandShakeParser extends BaseUtil {
 				}
 			}*/
 		}catch(Exception e){
-			LOG.error("Exception while updatting db "+ e.getMessage());
+			LOG.error("Exception while updating handshake in DB for gateway serial {}",
+					hand_shake_request.getGateway_serial_number(), e);
 		}
 		return hand_shake_request;
 
+	}
+
+	public static boolean isValidGatewaySerial(String serial) {
+		if (serial == null || serial.length() != 16) {
+			return false;
+		}
+		for (int i = 0; i < serial.length(); i++) {
+			char c = serial.charAt(i);
+			if (c < 0x20 || c == 0x7f || Character.isWhitespace(c)) {
+				return false;
+			}
+		}
+		return serial.trim().length() == 16;
+	}
+
+	private static String printable(String value) {
+		return value == null ? "null" : value.replace("\u0000", "\\0");
 	}
 	
 	

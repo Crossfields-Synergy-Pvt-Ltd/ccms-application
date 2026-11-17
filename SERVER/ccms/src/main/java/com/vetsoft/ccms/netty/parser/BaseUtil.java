@@ -159,6 +159,10 @@ public class BaseUtil {
 	  }
 	 
 	 public static  boolean validatPacket(String buffer){
+			if (buffer == null || buffer.length() < 10 || (buffer.length() % 2) != 0) {
+				LOG.warn("Rejecting packet with invalid hex length: {}", buffer == null ? "null" : buffer.length());
+				return false;
+			}
 			try {
 				String tmp = buffer.substring(0, (buffer.length() - 2));
 				int server_crc = Integer.parseInt(buffer.substring((buffer.length() - 2), buffer.length()), 16);
@@ -174,10 +178,9 @@ public class BaseUtil {
 							
 				
 			} catch (Exception e) {
-				System.out.println("Exception while validating packet");
+				LOG.error("Exception while validating packet", e);
+				return false;
 			}
-			
-			return true;
 		}
 	
 	
