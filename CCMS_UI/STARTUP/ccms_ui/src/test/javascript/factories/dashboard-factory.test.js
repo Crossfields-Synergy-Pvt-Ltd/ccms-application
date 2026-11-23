@@ -51,6 +51,16 @@ describe('dashboardFactory', function() {
         });
     });
 
+    describe('clearDatabase', function() {
+        it('should clear the database through the protected endpoint', function() {
+            $httpBackend.expectPOST('/dashboard/clear_database')
+                .respond({ code: 200, message: 'Database cleared successfully' });
+
+            dashboardFactory.clearDatabase();
+            $httpBackend.flush();
+        });
+    });
+
     describe('getAllMapDashboardData', function() {
         it('should call /dashboard/map_data with params', function() {
             $httpBackend.expectGET('/dashboard/map_data?district=ALL&mandal=ALL&gp=ALL')

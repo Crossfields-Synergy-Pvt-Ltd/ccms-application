@@ -90,6 +90,8 @@
 	<bean id="UserDao" class="com.vnetsoft.ccms.dao.UserDaoImpl"></bean>
 	<bean id="UserServices"
 		class="com.vnetsoft.ccms.services.UserServicesImpl"></bean>
+	<bean id="DatabaseClearService"
+		class="com.vnetsoft.ccms.services.DatabaseClearService"></bean>
 	<bean id="authTokenService" class="com.vnetsoft.ccms.security.AuthTokenService" />
 	<bean id="authInterceptor" class="com.vnetsoft.ccms.security.AuthInterceptor">
 		<constructor-arg ref="authTokenService" />

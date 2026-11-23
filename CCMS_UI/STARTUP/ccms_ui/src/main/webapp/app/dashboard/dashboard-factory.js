@@ -26,6 +26,9 @@ app.factory('dashboardFactory', [ '$http', 'inform', function($http, inform) {
 		obj.getAllMapDashboardData = function(qs_params){
 	        return $http.get(serviceBase + '/dashboard/map_data'+ qs_params);
 	    } 
+		obj.clearDatabase = function(){
+			return $http.post(serviceBase + '/dashboard/clear_database');
+		}
 		
 	obj.getAllDcuNames = function(qs_params){
 		  return $http.get(serviceBase + '/dcu/dcu_name_list' + qs_params);

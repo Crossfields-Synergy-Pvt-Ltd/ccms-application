@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,10 +26,14 @@ import com.vnetsoft.ccms.pojo.DCUConfiguration;
 import com.vnetsoft.ccms.pojo.HandShake;
 import com.vnetsoft.ccms.pojo.MonitorControlCount;
 import com.vnetsoft.ccms.pojo.SchedulerConfiguration;
+import com.vnetsoft.ccms.pojo.Status;
+import com.vnetsoft.ccms.pojo.User;
 import com.vnetsoft.ccms.pojo.server.InstantMeterData;
 import com.vnetsoft.ccms.pojo.ui.MapData;
+import com.vnetsoft.ccms.services.DatabaseClearService;
 import com.vnetsoft.ccms.services.DashBoardServices;
 import com.vnetsoft.ccms.services.DCUServices;
+import com.vnetsoft.ccms.services.UserServices;
 import com.vnetsoft.ccms.util.DateUtils;
 
 
@@ -37,8 +46,38 @@ public class MonitorController {
 	@Autowired
 	DCUServices dcuServices;
 
+	@Autowired
+	UserServices userServices;
+
+	@Autowired
+	DatabaseClearService databaseClearService;
+
 
 	static final Logger logger = Logger.getLogger(MonitorController.class);
+
+	@RequestMapping(value = "/clear_database", method = RequestMethod.POST)
+	public ResponseEntity<Status> clearDatabase(HttpServletRequest request) {
+		String email = (String) request.getAttribute("authenticatedEmail");
+		try {
+			User user = email == null ? null : userServices.getEntityById(email);
+			if (user == null || !isDatabaseClearAdmin(user.getRole())) {
+				return new ResponseEntity<Status>(new Status(0, "Only ADMIN or SUPER ADMIN users can clear the database"),
+						HttpStatus.FORBIDDEN);
+			}
+
+			Set<String> clearedCollections = databaseClearService.clearApplicationData();
+			return ResponseEntity.ok(new Status(200,
+					"Database cleared successfully. Collections cleared: " + clearedCollections.size()));
+		} catch (Exception e) {
+			logger.error("Unable to clear MongoDB", e);
+			return new ResponseEntity<Status>(new Status(0, "Unable to clear the database"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	private boolean isDatabaseClearAdmin(String role) {
+		return "ADMIN".equals(role) || "SUPER ADMIN".equals(role);
+	}
 	
 
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
