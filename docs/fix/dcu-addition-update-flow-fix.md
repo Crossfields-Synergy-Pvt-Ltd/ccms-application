@@ -16,6 +16,7 @@ This change rectifies the active DCU add, update, map, action-button, and delete
 8. Delete waits for the API result, reports failures, and reloads only after a successful delete.
 9. Delete lookup supports both the Mongo `_id` and `gateway_serial_number`, covering records created by either flow.
 10. UI edits now use Mongo updates for editable fields instead of replacing the complete handshake document. Netty/protocol fields are therefore preserved during DCU updates.
+11. Removed the stale `MakePristineTrue()` binding from the active Add form. The function was not defined by `dcuAddControllers`, causing an AngularJS error while entering the serial number and preventing the Add flow from completing reliably.
 
 ## Compatibility
 
@@ -32,3 +33,5 @@ The following communication contracts were not changed:
 - JavaScript syntax check for `dcu-controllers.js` — passed.
 - Added AngularJS regression coverage for canonical add payloads and business-failure handling in `src/test/javascript/controllers/dcu-controller.test.js`.
 - `npm test -- --single-run` — passed, 91/91 tests. The Karma configuration excludes the legacy duplicate DCU controller so the active implementation is tested.
+- `node --check app/dcu/dcu-controllers.js` — passed after removing the undefined Add-form change handler.
+- `git diff --check` — passed.
