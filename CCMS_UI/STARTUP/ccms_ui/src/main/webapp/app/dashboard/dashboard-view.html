@@ -63,6 +63,12 @@
 				<a type="button" ng-click="search();" class="btn btn-info btn-sm"
 					data-toggle="tooltip" title="Click here to filter the records">Search</a>
 			</div>
+			<div class="col-sm-2" align="right" ng-if="isDatabaseClearAdmin">
+				<button type="button" ng-click="clearDatabase();" class="btn btn-danger btn-sm"
+					data-toggle="tooltip" title="Clear all MongoDB data except users and schedules">
+					Clear Database
+				</button>
+			</div>
 		</div>
 	</div>
 

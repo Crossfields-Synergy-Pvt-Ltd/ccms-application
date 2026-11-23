@@ -14,6 +14,7 @@ import java.util.Date;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,10 @@ import com.vnetsoft.ccms.pojo.MonitorControlCount;
 import com.vnetsoft.ccms.pojo.DCUInstantData;
 import com.vnetsoft.ccms.pojo.ui.MapData;
 import com.vnetsoft.ccms.services.DashBoardServices;
+import com.vnetsoft.ccms.services.DatabaseClearService;
 import com.vnetsoft.ccms.services.DCUServices;
+import com.vnetsoft.ccms.services.UserServices;
+import com.vnetsoft.ccms.pojo.User;
 
 public class MonitorControllerTest extends AbstractControllerTest {
 
@@ -40,6 +44,12 @@ public class MonitorControllerTest extends AbstractControllerTest {
     @Mock
     private DCUServices dcuServices;
 
+    @Mock
+    private UserServices userServices;
+
+    @Mock
+    private DatabaseClearService databaseClearService;
+
     @InjectMocks
     private MonitorController controller;
 
@@ -48,6 +58,46 @@ public class MonitorControllerTest extends AbstractControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         configureController(controller);
+    }
+
+    @Test
+    public void clearDatabaseAllowsSuperAdminAndReportsClearedCollections() throws Exception {
+        User user = new User();
+        user.setEmail("admin@example.com");
+        user.setRole("SUPER ADMIN");
+        when(userServices.getEntityById("admin@example.com")).thenReturn(user);
+        when(databaseClearService.clearApplicationData()).thenReturn(
+                new HashSet<String>(Arrays.asList("dcu_details", "handshake_info")));
+
+        performPostWithRequestAttribute("/dashboard/clear_database", "authenticatedEmail", "admin@example.com")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)))
+            .andExpect(jsonPath("$.message", is("Database cleared successfully. Collections cleared: 2")));
+    }
+
+    @Test
+    public void clearDatabaseRejectsNonAdmin() throws Exception {
+        User user = new User();
+        user.setEmail("operator@example.com");
+        user.setRole("USER");
+        when(userServices.getEntityById("operator@example.com")).thenReturn(user);
+
+        performPostWithRequestAttribute("/dashboard/clear_database", "authenticatedEmail", "operator@example.com")
+            .andExpect(status().isForbidden())
+            .andExpect(jsonPath("$.code", is(0)));
+    }
+
+    @Test
+    public void clearDatabaseAllowsAdmin() throws Exception {
+        User user = new User();
+        user.setEmail("admin@example.com");
+        user.setRole("ADMIN");
+        when(userServices.getEntityById("admin@example.com")).thenReturn(user);
+        when(databaseClearService.clearApplicationData()).thenReturn(new HashSet<String>());
+
+        performPostWithRequestAttribute("/dashboard/clear_database", "authenticatedEmail", "admin@example.com")
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code", is(200)));
     }
 
     // --- dashboard/count ---

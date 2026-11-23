@@ -1,9 +1,11 @@
 
 var mapCntl = angular.module('dashboardControllers', []);
 
-mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams, $modal,$location, $http,inform,$rootScope,  dashboardFactory, config ) {
+mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams, $modal,$location, $http,inform,$rootScope, $window, dashboardFactory, config ) {
 
 	 $scope.qs_params = '?district='+(($rootScope.privilege && $rootScope.privilege.district) ? $rootScope.privilege.district : 'ALL')+ '&mandal='+(($rootScope.privilege && $rootScope.privilege.mandal) ? $rootScope.privilege.mandal : 'ALL')+'&gp='+(($rootScope.privilege && $rootScope.privilege.gp) ? $rootScope.privilege.gp : 'ALL');
+	 $scope.isDatabaseClearAdmin = !!($rootScope.privilege &&
+		($rootScope.privilege.role === 'ADMIN' || $rootScope.privilege.role === 'SUPER ADMIN'));
 	 $rootScope.searchFish = '';
 
 	 $scope.datePicker = { date: { startDate: null, endDate: null } };
@@ -217,6 +219,20 @@ mapCntl.controller('dashboardControllers', function($scope, $state,$stateParams,
 		}
 		$scope.getMandalOnSelect($scope.selectedDistrict);
 		$scope.getGpOnSelect($scope.selectedMandal);
+
+	$scope.clearDatabase = function () {
+		if (!$scope.isDatabaseClearAdmin) return;
+		if (!$window.confirm('This will permanently clear all MongoDB data except users and schedules. Continue?')) return;
+		if ($window.prompt('Type CLEAR to confirm database reset:') !== 'CLEAR') return;
+
+		dashboardFactory.clearDatabase().then(function () {
+			inform.add('Database cleared. Users and schedules were preserved.', {ttl: 5000, type: 'success'});
+			$scope.search();
+		}, function (error) {
+			var message = error && error.status === 403 ? 'Only ADMIN or SUPER ADMIN users can clear the database.' : 'Unable to clear the database.';
+			inform.add(message, {ttl: 5000, type: 'danger'});
+		});
+	};
 	/* $('#mySelect2').on('select2:select', function (e) {
 		    $scope.district = e.params.data;
 		    console.log($scope.district.id);

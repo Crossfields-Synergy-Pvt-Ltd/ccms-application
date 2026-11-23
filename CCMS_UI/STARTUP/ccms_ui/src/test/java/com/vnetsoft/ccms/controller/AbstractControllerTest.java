@@ -42,6 +42,12 @@ public abstract class AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON));
     }
 
+    protected ResultActions performPostWithRequestAttribute(String url, String name, Object value) throws Exception {
+        return mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(url)
+                .requestAttr(name, value)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
     protected ResultActions performDelete(String url) throws Exception {
         return mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(url)
                 .accept(MediaType.APPLICATION_JSON));

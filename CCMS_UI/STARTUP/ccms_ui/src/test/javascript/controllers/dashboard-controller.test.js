@@ -2,6 +2,7 @@ describe('dashboardControllers', function() {
     var $scope, $rootScope, $controller, $httpBackend, dashboardFactory;
     var mockState, mockConfig, mockStateParams;
     var mockInform, mockModal;
+    var mockWindow;
 
     beforeEach(module('inform'));
     beforeEach(module('dashboardControllers'));
@@ -16,6 +17,10 @@ describe('dashboardControllers', function() {
 
         mockInform = { add: jasmine.createSpy('inform.add') };
         mockModal = { open: jasmine.createSpy('modal.open').and.returnValue({ result: { then: function(){} } }) };
+        mockWindow = {
+            confirm: jasmine.createSpy('$window.confirm').and.returnValue(true),
+            prompt: jasmine.createSpy('$window.prompt').and.returnValue('CLEAR')
+        };
         mockState = { go: jasmine.createSpy('$state.go') };
 
         mockConfig = {
@@ -97,6 +102,61 @@ describe('dashboardControllers', function() {
             expect($scope.district).toBe('ALL');
             expect($scope.mandal).toBe('ALL');
             expect($scope.gp).toBe('ALL');
+        });
+
+        it('should expose database clearing to admins', function() {
+            $rootScope.privilege.role = 'SUPER ADMIN';
+            $controller('dashboardControllers', {
+                $scope: $scope, $rootScope: $rootScope,
+                dashboardFactory: dashboardFactory, config: mockConfig,
+                $state: mockState,
+                $stateParams: mockStateParams,
+                inform: mockInform,
+                $modal: mockModal,
+                $window: mockWindow
+            });
+            $httpBackend.flush();
+            expect($scope.isDatabaseClearAdmin).toBe(true);
+        });
+
+        it('should expose database clearing to admins with the ADMIN role', function() {
+            $rootScope.privilege.role = 'ADMIN';
+            $controller('dashboardControllers', {
+                $scope: $scope, $rootScope: $rootScope,
+                dashboardFactory: dashboardFactory, config: mockConfig,
+                $state: mockState,
+                $stateParams: mockStateParams,
+                inform: mockInform,
+                $modal: mockModal,
+                $window: mockWindow
+            });
+            $httpBackend.flush();
+            expect($scope.isDatabaseClearAdmin).toBe(true);
+        });
+    });
+
+    describe('$scope.clearDatabase', function() {
+        it('confirms, clears the database, and reloads the dashboard', function() {
+            $rootScope.privilege.role = 'SUPER ADMIN';
+            $controller('dashboardControllers', {
+                $scope: $scope, $rootScope: $rootScope,
+                dashboardFactory: dashboardFactory, config: mockConfig,
+                $state: mockState,
+                $stateParams: mockStateParams,
+                inform: mockInform,
+                $modal: mockModal,
+                $window: mockWindow
+            });
+            $httpBackend.flush();
+
+            $httpBackend.expectPOST('/dashboard/clear_database')
+                .respond({ code: 200, message: 'Database cleared successfully' });
+            $scope.clearDatabase();
+            $httpBackend.flush();
+
+            expect(mockWindow.confirm).toHaveBeenCalled();
+            expect(mockWindow.prompt).toHaveBeenCalled();
+            expect(mockInform.add).toHaveBeenCalled();
         });
     });
 
