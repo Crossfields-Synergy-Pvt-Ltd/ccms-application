@@ -15,6 +15,7 @@ MYSQL_PORT="${MYSQL_PORT:-3306}"
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}"
 MYSQL_DATABASE="${MYSQL_DATABASE:-employee_db}"
 SEED_DATA="${SEED_DATA:-true}"
+SYNC_USERS="${SYNC_USERS:-true}"
 USERS_JSON="${USERS_JSON:-[]}"
 # Strip surrounding single or double quotes if present (defensive —
 # Hostinger or Docker Compose may pass them).
@@ -47,55 +48,55 @@ wait_for() {
     green "  $name is up"
 }
 
-if [ "$SEED_DATA" != "true" ]; then
-    blue "SEED_DATA=$SEED_DATA - skipping seed"
-    exit 0
-fi
-
 wait_for "$MONGO_HOST" "$MONGO_PORT" "MongoDB"
-wait_for "$MYSQL_HOST" "$MYSQL_PORT" "MySQL"
 
-# --- MongoDB ---
-# We drop everything EXCEPT ccms_user_details so that any password
-# changes made via the UI are preserved across restarts.  The
-# ccms_user_details collection is managed entirely by sync_env_users
-# below (which adds new env users but never overwrites existing ones).
-if [ -f "$MONGO_ARCHIVE" ]; then
-    blue "Restoring MongoDB from $MONGO_ARCHIVE (preserving users) ..."
-    if mongorestore \
-        --host="${MONGO_HOST}" \
-        --port="${MONGO_PORT}" \
-        --archive="$MONGO_ARCHIVE" \
-        --drop \
-        --quiet \
-        --nsInclude='ccms.*' \
-        --nsExclude='ccms.ccms_user_details'; then
-        green "  MongoDB restore complete"
+if [ "$SEED_DATA" = "true" ]; then
+    wait_for "$MYSQL_HOST" "$MYSQL_PORT" "MySQL"
+
+    # --- MongoDB ---
+    # We drop everything EXCEPT ccms_user_details so that any password
+    # changes made via the UI are preserved across restarts.  The
+    # ccms_user_details collection is managed entirely by sync_env_users
+    # below (which adds new env users but never overwrites existing ones).
+    if [ -f "$MONGO_ARCHIVE" ]; then
+        blue "Restoring MongoDB from $MONGO_ARCHIVE (preserving users) ..."
+        if mongorestore \
+            --host="${MONGO_HOST}" \
+            --port="${MONGO_PORT}" \
+            --archive="$MONGO_ARCHIVE" \
+            --drop \
+            --quiet \
+            --nsInclude='ccms.*' \
+            --nsExclude='ccms.ccms_user_details'; then
+            green "  MongoDB restore complete"
+        else
+            red "  MongoDB restore FAILED"
+            exit 1
+        fi
     else
-        red "  MongoDB restore FAILED"
-        exit 1
+        red "MongoDB archive not found at $MONGO_ARCHIVE - skipping"
     fi
-else
-    red "MongoDB archive not found at $MONGO_ARCHIVE - skipping"
-fi
 
-# --- MySQL ---
-if [ -f "$MYSQL_SCHEMA" ]; then
-    blue "Applying MySQL schema from $MYSQL_SCHEMA ..."
-    out=$(mysql \
-        -h "$MYSQL_HOST" \
-        -P "$MYSQL_PORT" \
-        -u root \
-        -p"${MYSQL_ROOT_PASSWORD}" \
-        "$MYSQL_DATABASE" < "$MYSQL_SCHEMA" 2>&1 || true)
-    if echo "$out" | grep -qiE "^ERROR "; then
-        red "  MySQL schema apply FAILED:"
-        echo "$out" | sed 's/^/    /'
-        exit 1
+    # --- MySQL ---
+    if [ -f "$MYSQL_SCHEMA" ]; then
+        blue "Applying MySQL schema from $MYSQL_SCHEMA ..."
+        out=$(mysql \
+            -h "$MYSQL_HOST" \
+            -P "$MYSQL_PORT" \
+            -u root \
+            -p"${MYSQL_ROOT_PASSWORD}" \
+            "$MYSQL_DATABASE" < "$MYSQL_SCHEMA" 2>&1 || true)
+        if echo "$out" | grep -qiE "^ERROR "; then
+            red "  MySQL schema apply FAILED:"
+            echo "$out" | sed 's/^/    /'
+            exit 1
+        fi
+        green "  MySQL schema applied"
+    else
+        blue "No MySQL schema at $MYSQL_SCHEMA - skipping"
     fi
-    green "  MySQL schema applied"
 else
-    blue "No MySQL schema at $MYSQL_SCHEMA - skipping"
+    blue "SEED_DATA=$SEED_DATA - skipping archive and MySQL schema"
 fi
 
 # --- Env users (USERS_JSON) ---
@@ -164,7 +165,11 @@ JS
         return 1
     fi
 }
-sync_env_users
+if [ "$SYNC_USERS" = "true" ]; then
+    sync_env_users
+else
+    blue "SYNC_USERS=$SYNC_USERS - skipping user sync"
+fi
 
 green ""
 green "============================================"

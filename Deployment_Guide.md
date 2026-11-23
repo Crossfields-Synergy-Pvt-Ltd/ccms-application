@@ -67,6 +67,7 @@ The complete annotated template is [.env.example](.env.example). Supported defau
 | BACKEND_HTTP_CONTEXT | /user | UI-to-SERVER context |
 | SERVER_LOG_DIR | /home/CCMS/roadmap/logs | SERVER log directory |
 | SEED_DATA | true | Enable seeding |
+| SYNC_USERS | true | Synchronise USERS_JSON independently of seed data |
 | USERS_JSON | [] | Users inserted if absent |
 | SMOKE_ADMIN_EMAIL | admin@example.com | Smoke-test login |
 | SMOKE_ADMIN_PASSWORD | — | Matching smoke-test password |
@@ -124,7 +125,9 @@ The application URL is https://apgp.crossfields.in/. Public monitor is /#/public
 
 ## Seed data and users
 
-On a new volume, seed waits for healthy MongoDB and MySQL, restores db/seeds/mongo.archive, applies the MySQL schema, and synchronises USERS_JSON. It exits successfully after the one-shot operation.
+On a new volume, the seed service always waits for MongoDB. When `SEED_DATA=true`, it also waits for MySQL, restores `db/seeds/mongo.archive`, and applies the MySQL schema. When `SYNC_USERS=true`, it synchronises `USERS_JSON` independently of archive/schema seeding.
+
+For a fresh deployment without the committed application data, use `SEED_DATA=false` and `SYNC_USERS=true` so an admin user is still created and can log in. This does not restore schedules, hierarchy, DCUs, or other archive data; those must come from a separate backup or be created through the UI.
 
 ~~~json
 [{"email":"admin@example.com","password":"CHANGE_ME","role":"SUPER ADMIN","first_name":"Admin","last_name":"User","all_privileges":true}]
@@ -219,7 +222,8 @@ The first command runs SERVER Maven tests, CCMS_UI Java tests, and AngularJS tes
 |---|---|
 | NPM returns 502 | Confirm cspl-ccms-ui is healthy, NPM shares its Docker network, and forwarding uses port 8080. |
 | Root redirects to /CCMS/ | Remove the old NPM redirect and confirm ROOT.war is deployed. |
-| seed fails | Inspect docker compose logs seed and verify database health and SEED_DATA. |
+| seed fails | Inspect docker compose logs seed and verify database health, SEED_DATA, SYNC_USERS, and USERS_JSON. |
+| Login fails with SEED_DATA=false | Confirm SYNC_USERS=true, USERS_JSON contains a valid user, and rerun the one-shot seed service. |
 | MongoDB is empty | Check whether seeding was disabled or existing volumes were reused; do not wipe volumes without a backup. |
 | UI cannot reach SERVER | Verify CCMS_SERVER_HOST=server, BACKEND_HTTP_PORT=8102, and BACKEND_HTTP_CONTEXT=/user. |
 | DCUs cannot connect | Check the firewall and host mapping for TCP 9100, then inspect server logs. |
