@@ -70,6 +70,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-employee_db}
       SEED_DATA: ${SEED_DATA:-true}
+      SYNC_USERS: ${SYNC_USERS:-true}
       USERS_JSON: ${USERS_JSON:-[]}
     restart: "no"
 

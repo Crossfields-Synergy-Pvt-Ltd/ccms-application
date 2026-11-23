@@ -32,7 +32,9 @@
 >    after first login via the UI — UI changes are preserved across
 >    restarts).
 > 2. If you do not intend to keep the seed data, set `SEED_DATA=false`
->    in `.env` and start with empty databases.
+>    and keep `SYNC_USERS=true` in `.env` so the configured admin user is
+>    still created. Set `SYNC_USERS=false` only when users are provisioned
+>    separately.
 
 ---
 

@@ -10,7 +10,7 @@ populated database.
 |---|---|
 | `mongo.archive` | `mongodump --archive` snapshot of the `ccms` database (21 collections: users, DCUs, events, meter data, scheduler configurations, etc.) |
 | `mysql/01-schema.sql` | MySQL `employee_db` schema. Currently only creates a `ccms_meta` marker table — see header comment in the file for why the app doesn't actually need any MySQL tables |
-| `seed.sh` | Orchestrator script. Runs inside the `seed` service container, waits for MongoDB + MySQL to be reachable, then restores from `mongo.archive`, applies the MySQL schema, and syncs users from `USERS_JSON` in `.env` |
+| `seed.sh` | Orchestrator script. Runs inside the `seed` service container, waits for MongoDB, optionally restores from `mongo.archive` and applies the MySQL schema, and independently syncs users from `USERS_JSON` in `.env` |
 | `Dockerfile` | Image build for the `seed` service. Based on `mongo:3.4` (provides `mongo` shell + `mongorestore`) with `bash` and `mysql-client` added |
 
 ## Behavior
@@ -20,8 +20,15 @@ The `seed` service in `docker-compose.yml` runs once on first
 services have `depends_on: seed: { condition: service_completed_successfully }`,
 so the app only starts once seeding is complete.
 
-To skip seeding (e.g. when restoring from your own backup), set
-`SEED_DATA=false` in `.env`.
+To skip archive/schema seeding (e.g. when restoring from your own backup), set
+`SEED_DATA=false` in `.env`. User synchronization remains enabled by default;
+set `SYNC_USERS=false` only when user synchronization is also managed elsewhere.
+
+For a fresh deployment with no application archive but with login enabled:
+```bash
+SEED_DATA=false
+SYNC_USERS=true
+```
 
 To re-seed from scratch:
 ```bash
@@ -33,7 +40,7 @@ docker compose up -d --build           # seed runs on first start
 
 The `ccms_user_details` collection is **not** restored from
 `mongo.archive`. It is managed by the `sync_env_users` step in
-`seed.sh`, which reads `USERS_JSON` from `.env` and inserts any
+`seed.sh`, which runs when `SYNC_USERS=true`, reads `USERS_JSON` from `.env`, and inserts any
 users that don't already exist in MongoDB. Existing users
 (including those with passwords changed via the UI) are
 preserved across restarts.
