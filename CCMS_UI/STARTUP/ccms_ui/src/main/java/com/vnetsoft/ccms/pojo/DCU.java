@@ -41,7 +41,7 @@ public class DCU {
 	
 	// UI RELATED 
 	
-	private int panel_unique_id;
+	private String panel_unique_id;
 	private String name;
 	private String date;
 	private String serial_number = "00000000";
@@ -103,10 +103,10 @@ public class DCU {
 		this.hs_time_stamp = hs_time_stamp;
 	}	
 	
-	public int getPanel_unique_id() {
+	public String getPanel_unique_id() {
 		return panel_unique_id;
 	}
-	public void setPanel_unique_id(int panel_unique_id) {
+	public void setPanel_unique_id(String panel_unique_id) {
 		this.panel_unique_id = panel_unique_id;
 	}
 	public String getName() {
