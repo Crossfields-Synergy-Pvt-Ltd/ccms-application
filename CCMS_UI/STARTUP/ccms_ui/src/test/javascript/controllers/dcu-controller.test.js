@@ -34,6 +34,7 @@ describe('dcu addition and update controllers', function() {
 
     it('sends a canonical gateway serial and handles a successful add', function() {
         createAddController();
+        expect($scope.dcu.date).toBeDefined();
         $scope.dcu = { serial_number: 'DCU-001' };
         $httpBackend.expectPOST('/dcu/create', function(body) {
             var payload = angular.fromJson(body);
@@ -54,5 +55,29 @@ describe('dcu addition and update controllers', function() {
         $httpBackend.flush();
         expect(mockState.go).not.toHaveBeenCalled();
         expect(mockInform.add).toHaveBeenCalled();
+    });
+
+    it('serializes the date picker and numeric fields before creating a DCU', function() {
+        createAddController();
+        $scope.dcu = {
+            gateway_serial_number: 'DCU-003',
+            date: {format: function(format) {
+                expect(format).toBe('YYYY-MM-DD');
+                return '2026-11-24';
+            }},
+            connected_load: '12',
+            no_of_lights: '8'
+        };
+        $httpBackend.expectPOST('/dcu/create', function(body) {
+            var payload = angular.fromJson(body);
+            return payload.gateway_serial_number === 'DCU-003' &&
+                payload.date === '2026-11-24' &&
+                payload.connected_load === 12 &&
+                payload.no_of_lights === 8;
+        }).respond({code: 200, message: 'Success'});
+
+        $scope.ok();
+        $httpBackend.flush();
+        expect(mockState.go).toHaveBeenCalledWith('dashboard.dcu');
     });
 });
