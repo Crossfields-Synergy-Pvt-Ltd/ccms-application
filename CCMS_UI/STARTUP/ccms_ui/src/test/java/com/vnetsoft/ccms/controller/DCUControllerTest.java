@@ -169,6 +169,14 @@ public class DCUControllerTest extends AbstractControllerTest {
             .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    public void testCreateDCU_InvalidNumericFieldReturns4xx() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/dcu/create")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content("{\"gateway_serial_number\":\"DCU-INVALID\",\"connected_load\":\"not-a-number\"}"))
+            .andExpect(status().is4xxClientError());
+    }
+
     // --- dcu/sys_conf_id/{id} ---
 
     @Test

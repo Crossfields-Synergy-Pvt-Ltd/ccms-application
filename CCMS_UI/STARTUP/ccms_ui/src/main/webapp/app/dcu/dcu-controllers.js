@@ -1,6 +1,26 @@
 
 var dcuCntl = angular.module('dcuControllers', []);
 
+function buildDcuPayload(source) {
+	var payload = angular.copy(source || {});
+	var date = payload.date;
+	if (date && angular.isFunction(date.format)) {
+		payload.date = date.format('YYYY-MM-DD');
+	}
+	if (payload.connected_load !== undefined && payload.connected_load !== '') {
+		payload.connected_load = Number(payload.connected_load);
+	}
+	if (payload.no_of_lights !== undefined && payload.no_of_lights !== '') {
+		payload.no_of_lights = Number(payload.no_of_lights);
+	}
+	return payload;
+}
+
+function hasInvalidDcuNumber(payload, field) {
+	return payload[field] !== undefined && payload[field] !== '' &&
+		(!isFinite(Number(payload[field])) || !/^\d+$/.test(String(payload[field]).trim()));
+}
+
 dcuCntl.controller('dcuListControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, inform) {
 	 
 	$scope.gateway_serial_number = $stateParams.gateway_serial_number;
@@ -209,7 +229,7 @@ dcuCntl.controller('viewModelCntroler_updated', ['$scope','$modalInstance', 'dcu
 }]);
 
 dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $modal,$location, $http,$rootScope, dcuFactory, inform, config) 	{
-	
+		$scope.dcu = {date: moment()};
 	 $scope.selected_scheduler = {};
 	  dcuFactory.getAllScheduler("schedule_1").then(function(data){
 	   $scope.scheduler_data = data.data;
@@ -273,10 +293,14 @@ dcuCntl.controller('dcuAddControllers', function($scope, $state,$stateParams, $m
 		$scope.submitting = false;
 		$scope.ok = function () {
 			if ($scope.submitting) { return; }
-			var dcu = angular.copy($scope.dcu || {});
+			var dcu = buildDcuPayload($scope.dcu);
 			var serial = String(dcu.gateway_serial_number || dcu.serial_number || '').trim();
 			if (!serial) {
 				inform.add("Gateway serial number is required", {ttl: 5000, type: "danger"});
+				return;
+			}
+			if (hasInvalidDcuNumber(dcu, 'connected_load') || hasInvalidDcuNumber(dcu, 'no_of_lights')) {
+				inform.add("Connected load and number of lights must be whole numbers", {ttl: 5000, type: "danger"});
 				return;
 			}
 			dcu.gateway_serial_number = serial;
@@ -309,6 +333,9 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
 	}
 	if (!$scope.dcu) {
 		$scope.dcu = {};
+	}
+	if (!$scope.dcu.date) {
+		$scope.dcu.date = moment();
 	}
 	  dcuFactory.getAllScheduler().then(function(data){
 	   $scope.scheduler_data = data.data;
@@ -364,10 +391,14 @@ dcuCntl.controller('dcuUpdateControllers', function($scope, $state,$stateParams,
 				$scope.submitting = false;
 				$scope.update=function(){
 					if ($scope.submitting || !$scope.dcu) { return; }
-					var dcu = angular.copy($scope.dcu);
+					var dcu = buildDcuPayload($scope.dcu);
 					dcu.gateway_serial_number = String(dcu.gateway_serial_number || dcu.serial_number || '').trim();
 					if (!dcu.gateway_serial_number) {
 						inform.add("Gateway serial number is required", {ttl: 5000, type: "danger"});
+						return;
+					}
+					if (hasInvalidDcuNumber(dcu, 'connected_load') || hasInvalidDcuNumber(dcu, 'no_of_lights')) {
+						inform.add("Connected load and number of lights must be whole numbers", {ttl: 5000, type: "danger"});
 						return;
 					}
 					dcu.serial_number = dcu.serial_number || dcu.gateway_serial_number;
