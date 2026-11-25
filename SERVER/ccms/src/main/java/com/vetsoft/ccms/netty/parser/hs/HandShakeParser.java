@@ -183,7 +183,11 @@ public class HandShakeParser extends BaseUtil {
 
 	public static String getHandshakeResponseData(String buffer, HandShake hs_req){
 	
-		String gateway_identifier = StringUtils.leftPad("" + Integer.toHexString(Integer.parseInt(hs_req.getSerial_number())), 8, "0");
+		// The protocol gateway identifier is parsed from the handshake header. Do not
+		// use serial_number here: that is a UI-owned field and may contain an
+		// alphanumeric DCU serial (for example, 1903SO1P1C013917).
+		String gateway_identifier = StringUtils.leftPad(
+				Integer.toHexString(hs_req.getGateway_identifier()), 8, "0");
 		StringBuffer handshake_resp = new StringBuffer();
 		try {
 			handshake_resp.append(buffer.substring(0, 12)); //SOF(8), Protocol version(2), Flag(2)
